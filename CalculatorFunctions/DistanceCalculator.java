@@ -22,7 +22,7 @@ public class DistanceCalculator {
 
         return EARTH_RADIUS * c; // distance in meters
 
-		}
+	}
 		
 }
 
