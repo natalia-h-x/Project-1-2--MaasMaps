@@ -24,7 +24,7 @@ public class Location {
     }
 
     public String toString() {
-        return "[Lantitude: " + getLatitude() + ", " + "Longitude: " + getLongitude() + "]";
+        return "[Latitude: " + getLatitude() + ", " + "Longitude: " + getLongitude() + "]";
     }
 
 }
