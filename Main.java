@@ -1,5 +1,6 @@
 import Objects.Location;
 import TransportModes.*;
+import Utils.ZipCodeDatabaseInteractor;
 
 
 
@@ -9,8 +10,15 @@ import TransportModes.*;
  */
 public class Main {
     public static void main(String[] args) {
-        Location loc1 = new Location(50.8492, 5.6889);
-        Location loc2 = new Location(50.8418, 5.6671);
+
+        /*
+         * Location fetching logic
+         */
+        ZipCodeDatabaseInteractor db = new ZipCodeDatabaseInteractor();
+
+        Location loc1 = db.getLocation("6211BE");
+        Location loc2 = db.getLocation("6224KB");
+
         TransportMode bike = new Biking();
         TransportMode walk = new Walking();
 
@@ -23,7 +31,8 @@ public class Main {
         System.out.println("Walking time in mins: " + walk.calculateTravelTime(loc1, loc2));
         System.out.println("Biking time in mins: " + bike.calculateTravelTime(loc1, loc2));
         System.out.println();
-
+        
+        
     }
     
 }
