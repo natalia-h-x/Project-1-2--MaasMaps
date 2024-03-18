@@ -7,7 +7,7 @@ public class Biking implements TransportMode {
         return AVERAGE_SPEED;
     }
 
-    public String getName() {
+    public String toString() {
         return "biking";
     }
 }

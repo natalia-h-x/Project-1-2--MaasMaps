@@ -8,6 +8,6 @@ public interface TransportMode {
         return distance / getAverageSpeed();
     }
 
-    abstract String getName();
+    abstract String toString();
     abstract double getAverageSpeed();
 }

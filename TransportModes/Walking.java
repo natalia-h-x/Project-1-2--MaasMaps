@@ -7,7 +7,7 @@ public class Walking implements TransportMode {
         return AVERAGE_SPEED;
     }
 
-    public String getName() {
+    public String toString() {
         return "walking";
     }
 }
