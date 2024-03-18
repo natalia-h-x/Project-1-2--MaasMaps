@@ -9,6 +9,7 @@ public class ZipCodeDatabaseInteractor implements LocationReader {
     
     ZipCodeCSV_Parser csvFile = new ZipCodeCSV_Parser("Database/MassZipLatLon.csv");
 
+    @Override
     public Location getLocation(String zipcode) {
 
         try {

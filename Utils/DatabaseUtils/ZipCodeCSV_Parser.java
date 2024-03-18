@@ -16,6 +16,11 @@ public class ZipCodeCSV_Parser implements LocationReader {
         initializeZipCodeMap();
     }
 
+    @Override
+    public Location getLocation(String zipCode) {
+        return zipcodeToLocationMap.get(zipCode);
+    }
+
     private void initializeZipCodeMap() {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -43,7 +48,4 @@ public class ZipCodeCSV_Parser implements LocationReader {
         return zipcodeToLocationMap.containsKey(zipCode);
     }
 
-    public Location getLocation(String zipCode) {
-        return zipcodeToLocationMap.get(zipCode);
-    }
 }
