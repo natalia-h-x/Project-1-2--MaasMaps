@@ -1,5 +1,6 @@
 package ui.map;
 
+import java.util.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
@@ -16,7 +17,7 @@ public class Map extends JPanel implements Moveable {
     private transient int mapHeight;
     private double scale;
     private Point offset;
-    private List<Line> lines;
+    private ArrayList<Line> lines;
 
     public Map() {
         scale = 1;
