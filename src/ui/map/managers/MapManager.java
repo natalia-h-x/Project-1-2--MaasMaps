@@ -13,8 +13,6 @@ public class MapManager {
         BufferedImage img = null;
         img = ImageIO.read(new File("resources/PlaceholderMap.jpg"));
 
-        // 9_9
-
         return img;
     }
 }
