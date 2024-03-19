@@ -1,4 +1,4 @@
-package ui.map;
+package ui.map.geometry;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

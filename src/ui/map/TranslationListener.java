@@ -8,11 +8,12 @@ import javax.swing.*;
 import ui.map.interfaces.Moveable;
 
 public class TranslationListener {
+    private static final int ZOOM_LEVEL_BOUND_MIN = -3;
+    private static final int ZOOM_LEVEL_BOUND_MAX = 10;
+
     private Moveable moveable;
     private Point translation;
     private int zoomLevel;
-    private int zoomLevelBoundMin;
-    private int zoomLevelBoundMax;
 
     public TranslationListener(Moveable moveable) {
         this.moveable = moveable;
@@ -81,8 +82,14 @@ public class TranslationListener {
         translation.y = y;
     }
 
+    public void setTranslation(Point point) {
+        translation = point;
+    }
+
     public void setScale(int level) {
-        zoomLevel = Math.min(Math.max(zoomLevel + level, zoomLevelBoundMin), zoomLevelBoundMax);
+        zoomLevel = Math.min(Math.max(zoomLevel + level, ZOOM_LEVEL_BOUND_MIN), ZOOM_LEVEL_BOUND_MAX);
+
+        moveable.setScale(getScale());
     }
 
     public double getScale() {

@@ -8,6 +8,7 @@ import java.io.*;
 
 import javax.swing.*;
 
+import ui.map.geometry.Line;
 import ui.map.interfaces.Moveable;
 import ui.map.managers.MapManager;
 

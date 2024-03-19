@@ -1,4 +1,4 @@
-package ui.map;
+package ui.map.geometry;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -7,7 +7,7 @@ import java.awt.geom.Ellipse2D;
 
 
 public class Marker extends Component {
-    @Override 
+    @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         int x = 10;
