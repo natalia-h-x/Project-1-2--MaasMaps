@@ -82,6 +82,38 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
         return scaleY(y) + translation.y;
     }
 
+    private void translateShape(Shape s) {
+        if (s instanceof Rectangle2D rectangle)
+            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
+        else if (s instanceof Ellipse2D ellipse)
+            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
+    }
+
+    private void translatePolygon(Polygon p) {
+        // Translate Polygon
+        p.translate(translation.x, translation.y);
+        
+        // Scale Polygon
+        int[] xpoints = p.xpoints.clone();
+        int[] ypoints = p.ypoints.clone();
+        
+        for (int i = 0; i < xpoints.length; i++)
+            p.xpoints[i] = scaleX(xpoints[i]);
+        
+        for (int i = 0; i < ypoints.length; i++)
+            p.ypoints[i] = scaleY(ypoints[i]);
+    }
+
+    private void translateAffineTransform(AffineTransform xform) {
+        xform.translate(translation.x, translation.y);
+        xform.scale(scaleX, scaleY);
+    }
+
+    private void translateRectangle(Rectangle rect) {
+        rect.translate(translation.x, translation.x);
+        rect.setSize(scaleX(rect.getSize().getWidth()), scaleY(rect.getSize().getHeight()));
+    }
+
     @Override
     public Color getColor() {
         return mGraphics.getColor();
@@ -144,8 +176,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void setClip(Shape clip) {
-        if (clip instanceof Rectangle2D rectangle)
-            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
+        translateShape(clip);
 
         mGraphics.setClip(clip);
     }
@@ -197,18 +228,14 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void draw(Shape s) {
-        if (s instanceof Rectangle2D rectangle)
-            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
-        else if (s instanceof Ellipse2D ellipse)
-            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
+        translateShape(s);
 
         mGraphics.draw(s);
     }
 
     @Override
     public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-        xform.translate(translation.x, translation.y);
-        xform.scale(scaleX, scaleY);
+        translateAffineTransform(xform);
 
         return mGraphics.drawImage(img, xform, obs);
     }
@@ -225,8 +252,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
-        xform.translate(translation.x, translation.y);
-        xform.scale(scaleX, scaleY);
+        translateAffineTransform(xform);
 
         mGraphics.drawRenderedImage(img, xform);
     }
@@ -238,8 +264,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-        xform.translate(translation.x, translation.y);
-        xform.scale(scaleX, scaleY);
+        translateAffineTransform(xform);
 
         mGraphics.drawRenderableImage(img, xform);
     }
@@ -286,18 +311,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void drawPolygon(Polygon p) {
-        // Translate Polygon
-        p.translate(translation.x, translation.y);
-        
-        // Scale Polygon
-        int[] xpoints = p.xpoints.clone();
-        int[] ypoints = p.ypoints.clone();
-        
-        for (int i = 0; i < xpoints.length; i++)
-            p.xpoints[i] = scaleX(xpoints[i]);
-        
-        for (int i = 0; i < ypoints.length; i++)
-            p.ypoints[i] = scaleY(ypoints[i]);
+        translatePolygon(p);
 
         // Finally, draw it
         mGraphics.drawPolygon(p);
@@ -315,28 +329,14 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void fill(Shape s) {
-        if (s instanceof Rectangle2D rectangle)
-            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
-        else if (s instanceof Ellipse2D ellipse)
-            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
+        translateShape(s);
 
         mGraphics.fill(s);
     }
 
     @Override
     public void fillPolygon(Polygon p) {
-        // Translate Polygon
-        p.translate(translation.x, translation.y);
-        
-        // Scale Polygon
-        int[] xpoints = p.xpoints.clone();
-        int[] ypoints = p.ypoints.clone();
-        
-        for (int i = 0; i < xpoints.length; i++)
-            p.xpoints[i] = scaleX(xpoints[i]);
-        
-        for (int i = 0; i < ypoints.length; i++)
-            p.ypoints[i] = scaleY(ypoints[i]);
+        translatePolygon(p);
 
         // Finally, draw it
         mGraphics.fillPolygon(p);
@@ -344,16 +344,13 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
-        if (s instanceof Rectangle2D rectangle)
-            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
-        else if (s instanceof Ellipse2D ellipse)
-            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
+        translateShape(s);
 
-        rect.translate(translation.x, translation.x);
-        rect.setSize(scaleX(rect.getSize().getWidth()), scaleY(rect.getSize().getHeight()));
+        translateRectangle(rect);
         
         return hit(rect, s, onStroke);
     }
+
     @Override
     public GraphicsConfiguration getDeviceConfiguration() {
         return mGraphics.getDeviceConfiguration();
@@ -476,8 +473,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void transform(AffineTransform Tx) {
-        Tx.translate(translation.x, translation.y);
-        Tx.scale(scaleX, scaleY);
+        translateAffineTransform(Tx);
 
         mGraphics.transform(Tx);
     }
@@ -493,8 +489,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void setTransform(AffineTransform Tx) {
-        Tx.translate(translation.x, translation.y);
-        Tx.scale(scaleX, scaleY);
+        translateAffineTransform(Tx);
 
         mGraphics.setTransform(Tx);
     }
@@ -540,10 +535,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void clip(Shape s) {
-        if (s instanceof Rectangle2D rectangle)
-            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
-        else if (s instanceof Ellipse2D ellipse)
-            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
+        translateShape(s);
 
         mGraphics.clip(s);
     }
@@ -570,9 +562,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public Rectangle getClipBounds(Rectangle r) {
-        r.translate(translation.x, translation.y);
-        r.setSize(scaleX(r.getSize().getWidth()), scaleY(r.getSize().getHeight()));
-
+        translateRectangle(r);
 
         return mGraphics.getClipBounds(r);
     }
