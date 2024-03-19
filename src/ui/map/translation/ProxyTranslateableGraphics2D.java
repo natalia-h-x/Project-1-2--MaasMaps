@@ -1,4 +1,4 @@
-package ui.map;
+package ui.map.translation;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -30,8 +30,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
-
-import ui.map.interfaces.Translateable;
 
 /**
  * Proxy for translating a Graphics2D independent from it.

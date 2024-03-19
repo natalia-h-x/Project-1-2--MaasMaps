@@ -12,7 +12,9 @@ import core.Context;
 import core.managers.FileManager;
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
-import ui.map.interfaces.TranslateableComponent;
+import ui.map.translation.ProxyTranslateableGraphics2D;
+import ui.map.translation.TranslateableComponent;
+import ui.map.translation.TranslationListener;
 
 public class Map extends JPanel implements TranslateableComponent {
     private transient BufferedImage mapImage;

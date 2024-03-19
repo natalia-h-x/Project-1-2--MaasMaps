@@ -1,4 +1,4 @@
-package ui.map.interfaces;
+package ui.map.translation;
 
 import java.awt.Point;
 

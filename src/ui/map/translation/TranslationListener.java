@@ -1,11 +1,9 @@
-package ui.map;
+package ui.map.translation;
 
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-
-import ui.map.interfaces.TranslateableComponent;
 
 public class TranslationListener {
     //* For zooming out */
