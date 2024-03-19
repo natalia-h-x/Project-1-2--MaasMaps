@@ -28,8 +28,8 @@ public class MapManager {
         double x = ((double) (world.x - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.x - MAP_TOP_LEFT_GLOBAL_XY.x));
         double y = ((double) (world.y - MAP_TOP_LEFT_GLOBAL_XY.y) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.y - MAP_TOP_LEFT_GLOBAL_XY.y));
 
-        int screenX = (int) (Context.getContext().getMap().getWidth() * x);
-        int screenY = (int) (Context.getContext().getMap().getHeight() * y);
+        int screenX = (int) (Context.getContext().getMap().getMapWidth() * x);
+        int screenY = (int) (Context.getContext().getMap().getMapHeight() * y);
 
         System.out.println(screenX + ", " + screenY);
 

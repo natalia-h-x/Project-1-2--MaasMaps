@@ -53,9 +53,9 @@ public class Map extends JPanel implements TranslateableComponent {
 
         Graphics2D g2 = new ProxyTranslateableGraphics2D((Graphics2D) g, scale, translation);
 
-        TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(0, 0, mapWidth * mapScale, mapHeight * mapScale));
+        TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
         g2.setPaint(paint);
-        g2.fill(new Rectangle2D.Double(0, 0, mapWidth * mapScale, mapHeight * mapScale));
+        g2.fill(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
 
         LineDraw(g2);
         DrawMarker(g2);
