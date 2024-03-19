@@ -1,13 +1,14 @@
 
-package Utils.DatabaseUtils;
+package database;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import Objects.Location;
 
-public class ZipCodeAPI_Request implements LocationReader {
+import models.Location;
+
+public class ZipCodeAPIRequest implements LocationReader {
 
     private static final String BASE_URL = "https://computerscience.dacs.unimaas.nl/get_coordinates";
 
@@ -31,6 +32,7 @@ public class ZipCodeAPI_Request implements LocationReader {
             }
 
             int responseCode = connection.getResponseCode();
+
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
@@ -46,17 +48,22 @@ public class ZipCodeAPI_Request implements LocationReader {
                 double longitude = extractValue(response.toString(), "longitude");
 
                 return new Location(latitude, longitude);
-            } else {
+            }
+            else {
                 System.out.println("Error: Received HTTP response code " + responseCode);
             }
-        } catch (java.net.SocketTimeoutException e) {
+        }
+        catch (java.net.SocketTimeoutException e) {
             System.out.println("Error: Timeout while connecting to the API. Please check your network connection.");
-        } catch (java.net.UnknownHostException e) {
+        }
+        catch (java.net.UnknownHostException e) {
             System.out.println("Error: Unable to reach the API. Please check if you are connected to the university network or VPN.");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             System.out.println("An error occurred while fetching the coordinates.");
         }
+
         return null; // no location
     }
 
@@ -64,19 +71,25 @@ public class ZipCodeAPI_Request implements LocationReader {
     private static double extractValue(String json, String key) {
         String keyWithQuotes = "\"" + key + "\":";
         int startIndex = json.indexOf(keyWithQuotes) + keyWithQuotes.length();
+
         if (startIndex == -1) {
             // key not found
             return Double.NaN; // TODO (maybe) throw error
         }
+
         int endIndex = json.indexOf(",", startIndex);
+
         if (endIndex == -1) { // If it's the last element, there might not be a comma
             endIndex = json.indexOf("}", startIndex);
         }
+
         if (endIndex == -1) {
             // Proper JSON closure not found
             return Double.NaN; // TODO (maybe) throw error
         }
+
         String value = json.substring(startIndex, endIndex).trim();
+
         // remove porential quotes
         value = value.replaceAll("^\"|\"$", "");
         return Double.parseDouble(value);
