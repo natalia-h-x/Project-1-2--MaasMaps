@@ -9,7 +9,7 @@ public class MaasMapsUI extends JFrame {
         initialiseUI();
     }
 
-    private void initialiseUI(){
+    private void initialiseUI() {
         setSize(500, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
