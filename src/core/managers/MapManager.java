@@ -8,6 +8,8 @@ import java.awt.Point;
 import core.Context;
 
 public class MapManager {
+    private MapManager() {}
+
     private static final Location MAP_TOP_LEFT_LOCATION = new Location(50.90074, 5.64213);
     private static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
     private static final Location MAP_BOTTOM_RIGHT_LOCATION = new Location(50.815816, 5.753384);
