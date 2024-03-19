@@ -9,7 +9,6 @@ import java.net.URL;
 import models.Location;
 
 public class ZipCodeAPIRequest implements LocationReader {
-
     private static final String BASE_URL = "https://computerscience.dacs.unimaas.nl/get_coordinates";
 
     public Location getLocation(String postcode) {

@@ -1,4 +1,4 @@
-package ui;
+package ui.map.managers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -1,4 +1,4 @@
-package ui;
+package ui.map;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -6,6 +6,9 @@ import java.awt.image.*;
 import java.io.*;
 
 import javax.swing.*;
+
+import ui.map.interfaces.Moveable;
+import ui.map.managers.MapManager;
 
 public class Map extends JPanel implements Moveable {
     private transient BufferedImage mapImage;

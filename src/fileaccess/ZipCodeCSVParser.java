@@ -51,4 +51,5 @@ public class ZipCodeCSVParser implements LocationReader {
     public boolean zipCodeInFile(String zipCode) {
         return zipcodeToLocationMap.containsKey(zipCode);
     }
+
 }
