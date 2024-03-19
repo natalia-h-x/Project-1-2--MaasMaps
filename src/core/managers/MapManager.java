@@ -25,13 +25,13 @@ public class MapManager {
     public static Point locationToPoint(Location location) {
         Point world = getGlobalXY(location);
 
-        double x = ((double) (world.x - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.x - MAP_TOP_LEFT_GLOBAL_XY.x));
-        double y = ((double) (world.y - MAP_TOP_LEFT_GLOBAL_XY.y) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.y - MAP_TOP_LEFT_GLOBAL_XY.y));
+        /** Convert world coordinate to range from 0 - 1 as u and v (@see shader uv) */
+        double u = ((double) (world.x - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.x - MAP_TOP_LEFT_GLOBAL_XY.x));
+        double v = ((double) (world.y - MAP_TOP_LEFT_GLOBAL_XY.y) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.y - MAP_TOP_LEFT_GLOBAL_XY.y));
 
-        int screenX = (int) (Context.getContext().getMap().getMapWidth() * x);
-        int screenY = (int) (Context.getContext().getMap().getMapHeight() * y);
-
-        System.out.println(screenX + ", " + screenY);
+        /** Multiply uv with the screen width and height to get screenX and screenY */
+        int screenX = (int) (Context.getContext().getMap().getMapWidth() * u);
+        int screenY = (int) (Context.getContext().getMap().getMapHeight() * v);
 
         return new Point(screenX, screenY);
     }
