@@ -42,6 +42,10 @@ public class Map extends JPanel implements Moveable {
         TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(offset.x, offset.y, mapWidth * scale, mapHeight * scale));
         g2.setPaint(paint);
         g2.fill(new Rectangle2D.Double(offset.x, offset.y, mapWidth * scale, mapHeight * scale));
+
+        for (Line line : lines) {
+            line.paint(g2);
+        }
     }
 
     private void loadMap(BufferedImage image){
