@@ -90,7 +90,7 @@ public class Map extends JPanel implements TranslateableComponent {
 
     public void addMarker(Marker marker) {
         markers.add(marker);
-        
+
         repaint();
     }
 
@@ -128,8 +128,6 @@ public class Map extends JPanel implements TranslateableComponent {
     @Override
     public void setTranslation(Point translation) {
         this.translation = translation;
-
-        System.out.println(translation);
 
         repaint();
     }

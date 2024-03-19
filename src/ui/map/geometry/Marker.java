@@ -24,8 +24,6 @@ public class Marker extends Component {
         Point point = MapManager.locationToPoint(location);
         Ellipse2D ellipse2d = new Ellipse2D.Double(point.getX(), point.getY(), 10, 10);
 
-        System.out.println("Point " + point.x + ", " + point.y + " placed!");
-
         g2.setStroke(new BasicStroke(10.0f));
         g2.draw(ellipse2d);
     }
