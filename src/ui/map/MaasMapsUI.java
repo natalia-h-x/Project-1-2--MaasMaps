@@ -22,3 +22,4 @@ public class MaasMapsUI extends JFrame {
         new Location(50.90074,5.714544), new Location(50.877296,5.672557)));
     }
 }
+
