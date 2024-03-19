@@ -11,6 +11,8 @@ public class TranslationListener {
     private Moveable moveable;
     private Point translation;
     private int zoomLevel;
+    private int zoomLevelBoundMin;
+    private int zoomLevelBoundMax;
 
     public TranslationListener(Moveable moveable) {
         this.moveable = moveable;
