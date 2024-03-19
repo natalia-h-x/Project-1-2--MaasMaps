@@ -5,6 +5,7 @@ import javax.swing.WindowConstants;
 
 public class MaasMapsUI extends JFrame {
     Map map;
+
     public MaasMapsUI(){
         super("Maas Maps");
         initialiseUI();

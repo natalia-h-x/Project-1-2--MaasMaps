@@ -17,7 +17,7 @@ public class Map extends JPanel implements Moveable {
     private transient int mapHeight;
     private double scale;
     private Point offset;
-    private ArrayList<Line> lines;
+    private ArrayList<Line> lines = new ArrayList<>();
 
     public Map() {
         scale = 1;
@@ -45,7 +45,8 @@ public class Map extends JPanel implements Moveable {
         g2.fill(new Rectangle2D.Double(offset.x, offset.y, mapWidth * scale, mapHeight * scale));
 
         for (Line line : lines) {
-            line.paint(g2);
+            if (line != null)
+                line.paint(g2);
         }
     }
 
