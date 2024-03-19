@@ -19,6 +19,8 @@ public class Map extends JPanel implements Moveable {
     private double scale;
     private Point offset;
     private ArrayList<Line> lines = new ArrayList<>();
+    private ArrayList<Marker> markers = new ArrayList<>();
+
 
     public Map() {
         scale = 1;
@@ -45,9 +47,21 @@ public class Map extends JPanel implements Moveable {
         g2.setPaint(paint);
         g2.fill(new Rectangle2D.Double(offset.x, offset.y, mapWidth * scale, mapHeight * scale));
 
+        LineDraw(g2);
+        DrawMarker(g2);
+    }
+
+    private void LineDraw(Graphics2D g2) {
         for (Line line : lines) {
             if (line != null)
                 line.paint(g2);
+        }
+    }
+
+    private void DrawMarker(Graphics2D g2) {
+        for (Marker marker : markers) {
+            if (marker != null)
+                marker.paint(g2);
         }
     }
 
@@ -62,6 +76,10 @@ public class Map extends JPanel implements Moveable {
 
     public void addLine(Line line) {
         lines.add(line);
+    }
+
+    public void addMarker(Marker marker) {
+        markers.add(marker);
     }
 
     public double getScale() {
