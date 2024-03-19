@@ -16,6 +16,7 @@ public class Map extends JPanel implements Moveable {
     private transient int mapHeight;
     private double scale;
     private Point offset;
+    private List<Line> lines;
 
     public Map() {
         scale = 1;
@@ -50,6 +51,10 @@ public class Map extends JPanel implements Moveable {
         mapHeight = image.getHeight();
 
         repaint();
+    }
+
+    public void addLine(Line line) {
+        lines.add(line);
     }
 
     public double getScale() {
