@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.utils;
 import models.Location;
 
 public class DistanceCalculator {

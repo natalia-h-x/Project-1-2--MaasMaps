@@ -7,9 +7,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class MapManager {
-    public static BufferedImage getMapData() throws IOException{
+    private MapManager() {}
+
+    public static BufferedImage getMapData() throws IOException {
         BufferedImage img = null;
-        img = ImageIO.read(new File("C:\\Users\\sianl\\University\\prj1-2\\project 1-2 MaasMaps\\src\\Database\\PlaceholderMap.jpg"));
+        img = ImageIO.read(new File("resources/PlaceholderMap.jpg"));
 
         return img;
     }

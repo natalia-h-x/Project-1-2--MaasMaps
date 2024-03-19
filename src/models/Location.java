@@ -1,6 +1,6 @@
 package models;
 
-import algorithms.DistanceCalculator;
+import algorithms.utils.DistanceCalculator;
 
 public class Location {
     private double latitude;
