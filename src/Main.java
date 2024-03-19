@@ -1,5 +1,4 @@
-package ui;
-import database.ZipCodeDatabaseInteractor;
+import fileaccess.ZipCodeDatabaseInteractor;
 import models.Location;
 import transport.*;
 
@@ -22,10 +21,8 @@ public class Main {
         TransportMode walk = new Walking();
 
         System.out.println();
-        System.out.println("Start: ");
-        System.out.println(loc1);
-        System.out.println("Finish: ");
-        System.out.println(loc2);
+        System.out.println("Start:  " + loc2);
+        System.out.println("Finish: " + loc2);
         System.out.println();
         System.out.println("Walking time in mins: " + walk.calculateTravelTime(loc1, loc2));
         System.out.println("Biking time in mins: " + bike.calculateTravelTime(loc1, loc2));
