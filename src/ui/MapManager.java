@@ -11,6 +11,8 @@ public class MapManager {
         BufferedImage img = null;
         img = ImageIO.read(new File("C:\\Users\\sianl\\University\\prj1-2\\project 1-2 MaasMaps\\src\\Database\\PlaceholderMap.jpg"));
 
+        // 9_9
+
         return img;
     }
 }
