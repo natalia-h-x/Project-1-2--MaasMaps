@@ -5,19 +5,19 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import ui.map.interfaces.Translateable;
+import ui.map.interfaces.TranslateableComponent;
 
 public class TranslationListener {
     private static final int ZOOM_LEVEL_BOUND_MIN = -3;
     private static final int ZOOM_LEVEL_BOUND_MAX = 10;
 
-    private Translateable moveable;
+    private TranslateableComponent moveable;
     private Point translation;
     private int zoomLevel;
 
     private boolean useMiddle = false;
 
-    public TranslationListener(Translateable moveable) {
+    public TranslationListener(TranslateableComponent moveable) {
         this.moveable = moveable;
         zoomLevel = 0;
         translation = new Point(0, 0);

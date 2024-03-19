@@ -34,19 +34,15 @@ public class Line extends Component {
         g2.setPaint(new Color(001, 010, 100));
         BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10);
         g2.setStroke(bs);
+
         for (int i = 0; i < locations.size() - 1; i++) {
-<<<<<<< HEAD:src/ui/map/Line.java
             Location loc1 = locations.get(i);
-            Point p1 = Converter.convertedLocation(loc1);
+            Point p1 = MapManager.locationToPoint(loc1);
             Location loc2 = locations.get(i + 1);
-            Point p2 = Converter.convertedLocation(loc2);
+            Point p2 = MapManager.locationToPoint(loc2);
 
             // Set paint color to blue for the line
             g2.setPaint(new Color(1, 10, 100));
-=======
-            Point p1 = MapManager.locationToPoint(locations.get(i));
-            Point p2 = MapManager.locationToPoint(locations.get(i + 1));
->>>>>>> 76007fbcf4c9a43b26d365d7c106c3ce1849c401:src/ui/map/geometry/Line.java
             g2.drawLine(p1.x, p1.y, p2.x, p2.y);
 
             // Calculate distance and midpoint
@@ -66,7 +62,6 @@ public class Line extends Component {
             g2.drawString(distance, center.x, center.y);
             g2.setPaint(new Color(1, 10, 100));
         }
-        
 
     }
 

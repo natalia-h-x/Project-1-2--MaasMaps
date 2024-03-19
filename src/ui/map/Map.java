@@ -12,23 +12,27 @@ import core.Context;
 import core.managers.FileManager;
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
-import ui.map.interfaces.Translateable;
+import ui.map.geometry.ProxyTranslateableGraphics2D;
+import ui.map.interfaces.TranslateableComponent;
 
-public class Map extends JPanel implements Translateable {
+public class Map extends JPanel implements TranslateableComponent {
     private transient BufferedImage mapImage;
     private transient int mapWidth;
     private transient int mapHeight;
-    private double scale;
-    private Point offset;
-    private TranslationListener translationListener = new TranslationListener(this);
+    @SuppressWarnings("unused")
+    private transient TranslationListener translationListener = new TranslationListener(this);
     private ArrayList<Line> lines = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
+
+    /** Variables for translating this Map */
+    private double scale;
+    private Point translation;
 
     public Map() {
         Context.getContext().setMap(this);
 
-        scale = 2;
-        offset = new Point(0, 0);
+        scale = 0;
+        translation = new Point(0, 0);
 
         try {
             loadMap(FileManager.getMapImage());
@@ -45,11 +49,11 @@ public class Map extends JPanel implements Translateable {
         if (mapImage == null)
             return;
 
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = new ProxyTranslateableGraphics2D((Graphics2D) g, scale, translation);
 
-        TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(offset.x, offset.y, mapWidth * scale, mapHeight * scale));
+        TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
         g2.setPaint(paint);
-        g2.fill(new Rectangle2D.Double(offset.x, offset.y, mapWidth * scale, mapHeight * scale));
+        g2.fill(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
 
         LineDraw(g2);
         DrawMarker(g2);
@@ -107,7 +111,7 @@ public class Map extends JPanel implements Translateable {
     }
 
     public Point getTranslation() {
-        return offset;
+        return translation;
     }
 
     @Override
@@ -118,8 +122,8 @@ public class Map extends JPanel implements Translateable {
     }
 
     @Override
-    public void setTranslation(Point offset) {
-        this.offset = offset;
+    public void setTranslation(Point translation) {
+        this.translation = translation;
 
         repaint();
     }
