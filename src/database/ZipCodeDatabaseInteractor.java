@@ -3,7 +3,7 @@ package database;
 import models.Location;
 
 public class ZipCodeDatabaseInteractor implements LocationReader {
-    ZipCodeCSVParser csvFile = new ZipCodeCSVParser("Database/MassZipLatLon.csv");
+    private ZipCodeCSVParser csvFile = new ZipCodeCSVParser("Database/MassZipLatLon.csv");
 
     @Override
     public Location getLocation(String zipcode) {
