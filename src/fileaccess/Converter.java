@@ -8,8 +8,8 @@ public class Converter {
     private static final int SCALE = 10;
 
     public static Location convertedLocation(Location location) {
-        double latitude =  ((MAX_LATITUDE_MAASTRICHT - location.getLatitude()) * SCALE);
-        double longitude =  ((location.getLongitude() - MIN_LONGITUDE_MAASTRICHT) * SCALE);
+        double latitude = ((MAX_LATITUDE_MAASTRICHT - location.getLatitude()) * SCALE);
+        double longitude = ((location.getLongitude() - MIN_LONGITUDE_MAASTRICHT) * SCALE);
 
         return new Location(latitude, longitude);
     }
