@@ -8,25 +8,30 @@ import java.io.*;
 
 import javax.swing.*;
 
-import ui.map.interfaces.Moveable;
-import ui.map.managers.MapManager;
+import core.Context;
+import core.managers.FileManager;
+import ui.map.geometry.Line;
+import ui.map.geometry.Marker;
+import ui.map.interfaces.Translateable;
 
-public class Map extends JPanel implements Moveable {
+public class Map extends JPanel implements Translateable {
     private transient BufferedImage mapImage;
     private transient int mapWidth;
     private transient int mapHeight;
     private double scale;
     private Point offset;
+    private TranslationListener translationListener = new TranslationListener(this);
     private ArrayList<Line> lines = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
 
-
     public Map() {
-        scale = 1;
+        Context.getContext().setMap(this);
+
+        scale = 2;
         offset = new Point(0, 0);
 
         try {
-            loadMap(MapManager.getMapData());
+            loadMap(FileManager.getMapImage());
         }
         catch (IOException e) {
             e.printStackTrace();

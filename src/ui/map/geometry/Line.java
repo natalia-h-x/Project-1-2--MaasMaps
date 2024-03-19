@@ -1,4 +1,4 @@
-package ui.map;
+package ui.map.geometry;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import algorithms.utils.DistanceCalculator;
+import core.managers.MapManager;
 import models.Location;
-import fileaccess.Converter;
 
 public class Line extends Component {
     private transient List<Location> locations = new ArrayList<>();
@@ -35,6 +35,7 @@ public class Line extends Component {
         BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10);
         g2.setStroke(bs);
         for (int i = 0; i < locations.size() - 1; i++) {
+<<<<<<< HEAD:src/ui/map/Line.java
             Location loc1 = locations.get(i);
             Point p1 = Converter.convertedLocation(loc1);
             Location loc2 = locations.get(i + 1);
@@ -42,6 +43,10 @@ public class Line extends Component {
 
             // Set paint color to blue for the line
             g2.setPaint(new Color(1, 10, 100));
+=======
+            Point p1 = MapManager.locationToPoint(locations.get(i));
+            Point p2 = MapManager.locationToPoint(locations.get(i + 1));
+>>>>>>> 76007fbcf4c9a43b26d365d7c106c3ce1849c401:src/ui/map/geometry/Line.java
             g2.drawLine(p1.x, p1.y, p2.x, p2.y);
 
             // Calculate distance and midpoint

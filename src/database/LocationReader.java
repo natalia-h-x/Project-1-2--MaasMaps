@@ -1,4 +1,4 @@
-package fileaccess;
+package database;
 
 import models.Location;
 

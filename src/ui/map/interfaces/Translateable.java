@@ -3,7 +3,7 @@ package ui.map.interfaces;
 import java.awt.Point;
 import java.awt.event.*;
 
-public interface Moveable {
+public interface Translateable {
     public abstract void setScale(double scale);
     public abstract void setTranslation(Point point);
     public abstract void repaint();

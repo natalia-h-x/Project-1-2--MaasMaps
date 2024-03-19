@@ -5,18 +5,22 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import ui.map.interfaces.Moveable;
+import ui.map.interfaces.Translateable;
 
 public class TranslationListener {
-    private Moveable moveable;
+    private static final int ZOOM_LEVEL_BOUND_MIN = -3;
+    private static final int ZOOM_LEVEL_BOUND_MAX = 10;
+
+    private Translateable moveable;
     private Point translation;
     private int zoomLevel;
-    private int zoomLevelBoundMin;
-    private int zoomLevelBoundMax;
 
-    public TranslationListener(Moveable moveable) {
+    private boolean useMiddle = false;
+
+    public TranslationListener(Translateable moveable) {
         this.moveable = moveable;
         zoomLevel = 0;
+        translation = new Point(0, 0);
 
         initMouseListeners();
     }
@@ -27,7 +31,7 @@ public class TranslationListener {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (SwingUtilities.isMiddleMouseButton(e)) {
+                if (SwingUtilities.isMiddleMouseButton(e) || !useMiddle) {
                     Point cp = e.getPoint();
                     translate(pp.x - cp.x, pp.y - cp.y);
                     pp.setLocation(cp);
@@ -38,7 +42,7 @@ public class TranslationListener {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isMiddleMouseButton(e)) {
+                if (SwingUtilities.isMiddleMouseButton(e) || !useMiddle) {
                     pp.setLocation(e.getPoint());
                 }
             }
@@ -74,15 +78,25 @@ public class TranslationListener {
     public void translate(int x, int y) {
         translation.x -= x;
         translation.y -= y;
+
+        moveable.setTranslation(translation);
     }
 
     public void translateTo(int x, int y) {
         translation.x = x;
         translation.y = y;
+
+        moveable.setTranslation(translation);
+    }
+
+    public void setTranslation(Point point) {
+        translation = point;
     }
 
     public void setScale(int level) {
-        zoomLevel = Math.min(Math.max(zoomLevel + level, zoomLevelBoundMin), zoomLevelBoundMax);
+        zoomLevel = Math.min(Math.max(zoomLevel + level, ZOOM_LEVEL_BOUND_MIN), ZOOM_LEVEL_BOUND_MAX);
+
+        moveable.setScale(getScale());
     }
 
     public double getScale() {
