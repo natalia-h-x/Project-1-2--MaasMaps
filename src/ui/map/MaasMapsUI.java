@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 public class MaasMapsUI extends JFrame {
+    Map map;
     public MaasMapsUI(){
         super("Maas Maps");
         initialiseUI();
@@ -13,6 +14,7 @@ public class MaasMapsUI extends JFrame {
         setSize(500, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        add(new Map());
+        add(map = new Map());
+        map.addLine(null);
     }
 }
