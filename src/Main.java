@@ -1,4 +1,4 @@
-import ui.map.MaasMapsUI;
+import ui.MaasMapsUI;
 
 /*
  *  Location 1: Latitude: 50.8492, Longitude: 5.6889 (This could be near the Maastricht University area)

@@ -12,7 +12,6 @@ import core.Context;
 import core.managers.FileManager;
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
-import ui.map.geometry.ProxyTranslateableGraphics2D;
 import ui.map.interfaces.TranslateableComponent;
 
 public class Map extends JPanel implements TranslateableComponent {
