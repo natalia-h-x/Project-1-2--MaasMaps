@@ -11,7 +11,7 @@ public class MapManager {
 
     public static BufferedImage getMapData() throws IOException {
         BufferedImage img = null;
-        img = ImageIO.read(new File("resources/PlaceholderMap.jpg"));
+        img = ImageIO.read(new File("resources/PlaceholderMap.png"));
 
         return img;
     }
