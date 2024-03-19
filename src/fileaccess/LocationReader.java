@@ -1,4 +1,5 @@
 package fileaccess;
+
 import models.Location;
 
 public interface LocationReader {
