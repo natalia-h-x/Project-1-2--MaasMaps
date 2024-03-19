@@ -14,7 +14,6 @@ public class Converter {
         int latitude = (int) ((map.getWidth()/360.0) * (180 + location.getLongitude()));
         int longitude = (int) ((map.getHeight()/180.0) * (90 - location.getLatitude()));
 
-
         return new Point(latitude, longitude);
     }
 }

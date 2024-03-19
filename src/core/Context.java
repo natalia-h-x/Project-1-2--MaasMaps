@@ -12,7 +12,7 @@ public class Context {
         context = new Context();
     }
 
-    public Context getContext() {
+    public static Context getContext() {
         return context;
     }
 

@@ -8,6 +8,8 @@ import java.io.*;
 
 import javax.swing.*;
 
+import core.Context;
+
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
 import ui.map.interfaces.Moveable;
@@ -22,8 +24,9 @@ public class Map extends JPanel implements Moveable {
     private ArrayList<Line> lines = new ArrayList<>();
     private ArrayList<Marker> markers = new ArrayList<>();
 
-
     public Map() {
+        Context.getContext().setMap(this);
+
         scale = 1;
         offset = new Point(0, 0);
 
