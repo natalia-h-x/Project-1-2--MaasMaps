@@ -1,10 +1,11 @@
-package ui.map;
+package ui;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import models.Location;
 import ui.map.geometry.Marker;
+import ui.map.Map;
 import ui.map.geometry.Line;
 
 public class MaasMapsUI extends JFrame {
