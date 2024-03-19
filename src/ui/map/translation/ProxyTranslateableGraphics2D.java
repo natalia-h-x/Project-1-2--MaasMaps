@@ -548,12 +548,11 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
         mGraphics.dispose();
     }
 
-    @Deprecated()
     /**
      * @deprecated As of JDK version 1.1, replaced by `getClipBounds()`.
-     * @return
-    
-    @Override */
+     */
+    @Override
+    @Deprecated
     public Rectangle getClipRect() {
         return mGraphics.getClipRect();
     }

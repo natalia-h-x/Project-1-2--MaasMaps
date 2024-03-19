@@ -16,7 +16,7 @@ import constants.Constants.Paths;
 public class FileManager {
     private FileManager() {}
 
-    public static List<String> getZipcodeLocations() {
+    public static List<String> getZipCodeLocations() {
         List<String> locations = new ArrayList<>();
         
         try (BufferedReader br = new BufferedReader(new FileReader(Constants.Paths.MAAS_ZIP_LATLON_PATH))) {

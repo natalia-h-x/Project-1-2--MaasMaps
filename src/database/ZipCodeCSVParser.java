@@ -12,6 +12,7 @@ public class ZipCodeCSVParser implements LocationReader {
 
     public ZipCodeCSVParser() {
         this.zipcodeToLocationMap = new HashMap<>();
+
         initializeZipCodeMap();
     }
 
@@ -21,7 +22,7 @@ public class ZipCodeCSVParser implements LocationReader {
     }
 
     private void initializeZipCodeMap() {
-        List<String> data = FileManager.getZipcodeLocations();
+        List<String> data = FileManager.getZipCodeLocations();
 
         for (String line : data) {
             String[] parts = line.split(",");

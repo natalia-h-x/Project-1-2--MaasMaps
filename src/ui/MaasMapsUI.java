@@ -17,11 +17,13 @@ public class MaasMapsUI extends JFrame {
     }
 
     private void initialiseUI() {
+        map = new Map();
+
         setSize(500, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
-        add(map = new Map());
+        add(map);
 
         buildTestMap();
 

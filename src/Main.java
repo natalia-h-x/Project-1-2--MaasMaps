@@ -1,3 +1,8 @@
+import database.ZipCodeDatabaseInteractor;
+import models.Location;
+import transport.Biking;
+import transport.TransportMode;
+import transport.Walking;
 import ui.MaasMapsUI;
 
 /*
@@ -6,27 +11,28 @@ import ui.MaasMapsUI;
  */
 public class Main {
     public static void main(String[] args) {
-
-        // /*
-        //  * Location fetching logic
-        //  */
-        // ZipCodeDatabaseInteractor db = new ZipCodeDatabaseInteractor();
-
-        // Location loc1 = db.getLocation("6211BE");
-        // Location loc2 = db.getLocation("6224KB");
-
-        // TransportMode bike = new Biking();
-        // TransportMode walk = new Walking();
-
-        // System.out.println();
-        // System.out.println("Start:  " + loc2);
-        // System.out.println("Finish: " + loc2);
-        // System.out.println();
-        // System.out.println("Walking time in mins: " + walk.calculateTravelTime(loc1, loc2));
-        // System.out.println("Biking time in mins: " + bike.calculateTravelTime(loc1, loc2));
-        // System.out.println();
-
         new MaasMapsUI();
-    }
 
+        /*
+         * Location fetching logic
+         */
+        ZipCodeDatabaseInteractor db = new ZipCodeDatabaseInteractor();
+
+        Location loc1 = db.getLocation("6211BE");
+        Location loc2 = db.getLocation("6224KB");
+
+        TransportMode bike = new Biking();
+        TransportMode walk = new Walking();
+
+        double travelTimeWalking = walk.calculateTravelTime(loc1, loc2);
+        double travelTimeBiking = bike.calculateTravelTime(loc1, loc2);
+
+        System.out.println();
+        System.out.println("Start:  " + loc1);
+        System.out.println("Finish: " + loc2);
+        System.out.println();
+        System.out.println("Walking time in mins: " + travelTimeWalking);
+        System.out.println("Biking time in mins: " + travelTimeBiking);
+        System.out.println();
+    }
 }
