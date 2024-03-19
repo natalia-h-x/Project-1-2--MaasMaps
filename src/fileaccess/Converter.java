@@ -3,17 +3,36 @@ package fileaccess;
 import models.Location;
 import java.awt.Point;
 
+import core.Context;
+
 public class Converter {
-    private static final double MIN_LONGITUDE_MAASTRICHT = 5.64213;
-    private static final double MAX_LATITUDE_MAASTRICHT = 50.90074;
-    private static final int SCALE = 10000/2;
+    private static final int SCALE = 1000;
+    private static final Location MAP_TOP_LEFT_LOCATION = new Location(50.90074, 5.64213);
+    private static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
+    private static final Location MAP_BOTTOM_RIGHT_LOCATION = new Location(50.815816, 5.753384);
+    private static final Point MAP_BOTTOM_RIGHT_GLOBAL_XY = getGlobalXY(MAP_BOTTOM_RIGHT_LOCATION);
+
+    private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
+    private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
 
     public static Point convertedLocation(Location location) {
         /* int x =  (int) ((MAP_WIDTH/360.0) * (180 + lon));
         int y =  (int) ((MAP_HEIGHT/180.0) * (90 - lat)); */
-        int latitude = (int) ((map.getWidth()/360.0) * (180 + location.getLongitude()));
-        int longitude = (int) ((map.getHeight()/180.0) * (90 - location.getLatitude()));
+        Point world = getGlobalXY(location);
+        int x = ((world.x - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.x - MAP_TOP_LEFT_GLOBAL_XY.x));
+        int y = ((world.y - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.y - MAP_TOP_LEFT_GLOBAL_XY.y));
 
-        return new Point(latitude, longitude);
+        System.out.println(x + ", " + y);
+
+        return new Point(
+            Context.getContext().getMap().getWidth() * x,
+            Context.getContext().getMap().getHeight() * y
+        );
+    }
+
+    private static Point getGlobalXY(Location location) {
+        double x = (RADIUS_MAASTRICHT_EARTH * (location.getLongitude()) * Math.cos(CENTER_LATITUDE_MAASTRICHT));
+        double y = (RADIUS_MAASTRICHT_EARTH * (location.getLatitude()));
+        return new Point((int) x, (int) y);
     }
 }

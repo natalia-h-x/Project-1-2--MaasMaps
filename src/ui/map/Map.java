@@ -27,7 +27,7 @@ public class Map extends JPanel implements Moveable {
     public Map() {
         Context.getContext().setMap(this);
 
-        scale = 1;
+        scale = 2;
         offset = new Point(0, 0);
 
         try {
