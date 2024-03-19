@@ -55,6 +55,10 @@ public class Map extends JPanel implements TranslateableComponent {
         g2.setPaint(paint);
         g2.fill(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
 
+        g2.setPaint(new Color(0, 0, 0));
+        g2.drawLine(0, 0, 500, 500);
+        g2.drawLine(60, 580, -800, -1600);
+
         LineDraw(g2);
         DrawMarker(g2);
     }
@@ -124,6 +128,8 @@ public class Map extends JPanel implements TranslateableComponent {
     @Override
     public void setTranslation(Point translation) {
         this.translation = translation;
+
+        System.out.println(translation);
 
         repaint();
     }

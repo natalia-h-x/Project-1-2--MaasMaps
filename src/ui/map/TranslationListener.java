@@ -8,17 +8,19 @@ import javax.swing.*;
 import ui.map.interfaces.TranslateableComponent;
 
 public class TranslationListener {
-    private static final int ZOOM_LEVEL_BOUND_MIN = -3;
+    //* For zooming out */
+    private static final int ZOOM_LEVEL_BOUND_MIN = -30;
+    //* For zooming in */
     private static final int ZOOM_LEVEL_BOUND_MAX = 10;
 
-    private TranslateableComponent moveable;
+    private TranslateableComponent translateableComponent;
     private Point translation;
     private int zoomLevel;
 
     private boolean useMiddle = false;
 
-    public TranslationListener(TranslateableComponent moveable) {
-        this.moveable = moveable;
+    public TranslationListener(TranslateableComponent translateableComponent) {
+        this.translateableComponent = translateableComponent;
         zoomLevel = 0;
         translation = new Point(0, 0);
 
@@ -36,7 +38,7 @@ public class TranslationListener {
                     translate(pp.x - cp.x, pp.y - cp.y);
                     pp.setLocation(cp);
 
-                    moveable.repaint();
+                    translateableComponent.repaint();
                 }
             }
 
@@ -66,27 +68,27 @@ public class TranslationListener {
                 // Translate the image along the scaling offset
                 translate((int) dx, (int) dy);
 
-                moveable.repaint();
+                translateableComponent.repaint();
             }
         };
 
-        moveable.addMouseMotionListener(ma);
-        moveable.addMouseListener(ma);
-        moveable.addMouseWheelListener(ma);
+        translateableComponent.addMouseMotionListener(ma);
+        translateableComponent.addMouseListener(ma);
+        translateableComponent.addMouseWheelListener(ma);
     }
 
     public void translate(int x, int y) {
         translation.x -= x;
         translation.y -= y;
 
-        moveable.setTranslation(translation);
+        translateableComponent.setTranslation(translation);
     }
 
     public void translateTo(int x, int y) {
         translation.x = x;
         translation.y = y;
 
-        moveable.setTranslation(translation);
+        translateableComponent.setTranslation(translation);
     }
 
     public void setTranslation(Point point) {
@@ -96,7 +98,7 @@ public class TranslationListener {
     public void setScale(int level) {
         zoomLevel = Math.min(Math.max(zoomLevel + level, ZOOM_LEVEL_BOUND_MIN), ZOOM_LEVEL_BOUND_MAX);
 
-        moveable.setScale(getScale());
+        translateableComponent.setScale(getScale());
     }
 
     public double getScale() {

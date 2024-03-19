@@ -21,6 +21,7 @@ import java.awt.TexturePaint;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -32,17 +33,28 @@ import java.util.Map;
 
 import ui.map.interfaces.Translateable;
 
+/**
+ * Proxy for translating a Graphics2D independent from it.
+ * 
+ * @author Sian Lodde
+ */
 public class ProxyTranslateableGraphics2D extends Graphics2D implements Translateable {
     /** Drawing methods will be forwarded to this object */
     private Graphics2D mGraphics;
 
     /** Variables for translating this Graphics2D */
-    private double scale;
+    private double scaleX;
+    private double scaleY;
     private Point translation;
 
     public ProxyTranslateableGraphics2D(Graphics2D g2, double scale, Point translation) {
+        this(g2, scale, scale, translation);
+    }
+
+    public ProxyTranslateableGraphics2D(Graphics2D g2, double scaleX, double scaleY, Point translation) {
         mGraphics = g2;
-        this.scale = scale;
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
         this.translation = translation;
     }
     
@@ -52,6 +64,22 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     public void setDelegate(Graphics2D g2) {
         mGraphics = g2;
+    }
+
+    private int scaleX(double width) {
+        return (int) (width * scaleX);
+    }
+
+    private int scaleY(double height) {
+        return (int) (height * scaleY);
+    }
+    
+    private int translateX(double x) {
+        return scaleX(x) + translation.x;
+    }
+
+    private int translateY(double y) {
+        return scaleY(y) + translation.y;
     }
 
     @Override
@@ -101,12 +129,12 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void clipRect(int x, int y, int width, int height) {
-        mGraphics.clipRect(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale));
+        mGraphics.clipRect(translateX(x), translateY(y), scaleX(width), scaleY(height));
     }
 
     @Override
     public void setClip(int x, int y, int width, int height) {
-        mGraphics.setClip(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale));
+        mGraphics.setClip(translateX(x), translateY(y), scaleX(width), scaleY(height));
     }
 
     @Override
@@ -117,60 +145,62 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public void setClip(Shape clip) {
         if (clip instanceof Rectangle2D rectangle)
-            rectangle.setRect(rectangle.getX() + translation.x, rectangle.getY() + translation.y, rectangle.getWidth() * scale, rectangle.getHeight() * scale);
+            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
 
         mGraphics.setClip(clip);
     }
 
     @Override
     public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-        mGraphics.copyArea(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), dx + translation.x, dy + translation.y);
+        mGraphics.copyArea(translateX(x), translateY(y), scaleX(width), scaleY(height), translateX(dx), translateY(dy));
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-        mGraphics.drawLine(x1 + translation.x, y1 + translation.y, x2 + translation.x, y2 + translation.y);
+        mGraphics.drawLine(translateX(x1), translateY(y1), translateX(x2), translateY(y2));
     }
 
     @Override
     public void fillRect(int x, int y, int width, int height) {
-        mGraphics.fillRect(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale));
+        mGraphics.fillRect(translateX(x), translateY(y), scaleX(width), scaleY(height));
     }
 
     @Override
     public void drawRect(int x, int y, int width, int height) {
-        mGraphics.drawRect(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale));
+        mGraphics.drawRect(translateX(x), translateY(y), scaleX(width), scaleY(height));
     }
 
     @Override
     public void draw3DRect(int x, int y, int width, int height, boolean raised) {
-        mGraphics.draw3DRect(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), raised);
+        mGraphics.draw3DRect(translateX(x), translateY(y), scaleX(width), scaleY(height), raised);
     }
 
     @Override
     public void clearRect(int x, int y, int width, int height) {
-        mGraphics.clearRect(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale));
+        mGraphics.clearRect(translateX(x), translateY(y), scaleX(width), scaleY(height));
     }
 
     @Override
     public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
-        mGraphics.drawRoundRect(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), (int) (arcWidth * scale), (int) (arcHeight * scale));
+        mGraphics.drawRoundRect(translateX(x), translateY(y), scaleX(width), scaleY(height), scaleX(arcWidth), scaleY(arcHeight));
     }
 
     @Override
     public void fill3DRect(int x, int y, int width, int height, boolean raised) {
-        mGraphics.fill3DRect(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), raised);
+        mGraphics.fill3DRect(translateX(x), translateY(y), scaleX(width), scaleY(height), raised);
     }
 
     @Override
     public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
-        mGraphics.fillRoundRect(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), (int) (arcWidth * scale), (int) (arcHeight * scale));
+        mGraphics.fillRoundRect(translateX(x), translateY(y), scaleX(width), scaleY(height), scaleX(arcWidth), scaleY(arcHeight));
     }
 
     @Override
     public void draw(Shape s) {
         if (s instanceof Rectangle2D rectangle)
-            rectangle.setRect(rectangle.getX() + translation.x, rectangle.getY() + translation.y, rectangle.getWidth() * scale, rectangle.getHeight() * scale);
+            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
+        else if (s instanceof Ellipse2D ellipse)
+            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
 
         mGraphics.draw(s);
     }
@@ -178,65 +208,65 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
         xform.translate(translation.x, translation.y);
-        xform.scale(scale, scale);
+        xform.scale(scaleX, scaleY);
 
         return mGraphics.drawImage(img, xform, obs);
     }
 
     @Override
     public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-        mGraphics.drawImage(img, op, x + translation.x, y + translation.y);
+        mGraphics.drawImage(img, op, translateX(x), translateY(y));
     }
 
     @Override
     public void drawOval(int x, int y, int width, int height) {
-        mGraphics.drawOval(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale));
+        mGraphics.drawOval(translateX(x), translateY(y), scaleX(width), scaleY(height));
     }
 
     @Override
     public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
         xform.translate(translation.x, translation.y);
-        xform.scale(scale, scale);
+        xform.scale(scaleX, scaleY);
 
         mGraphics.drawRenderedImage(img, xform);
     }
 
     @Override
     public void fillOval(int x, int y, int width, int height) {
-        mGraphics.fillOval(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale));
+        mGraphics.fillOval(translateX(x), translateY(y), scaleX(width), scaleY(height));
     }
 
     @Override
     public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
         xform.translate(translation.x, translation.y);
-        xform.scale(scale, scale);
+        xform.scale(scaleX, scaleY);
 
         mGraphics.drawRenderableImage(img, xform);
     }
 
     @Override
     public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-        mGraphics.drawArc(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), startAngle, arcAngle);
+        mGraphics.drawArc(translateX(x), translateY(y), scaleX(width), scaleY(height), startAngle, arcAngle);
     }
 
     @Override
     public void drawString(String str, int x, int y) {
-        mGraphics.drawString(str, x + translation.x, y + translation.y);
+        mGraphics.drawString(str, translateX(x), translateY(y));
     }
 
     @Override
     public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-        mGraphics.fillArc(x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), startAngle, arcAngle);
+        mGraphics.fillArc(translateX(x), translateY(y), scaleX(width), scaleY(height), startAngle, arcAngle);
     }
 
     @Override
     public void drawString(String str, float x, float y) {
-        mGraphics.drawString(str, x + translation.x, y + translation.y);
+        mGraphics.drawString(str, translateX(x), translateY(y));
     }
 
     @Override
     public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-        mGraphics.drawString(iterator, x + translation.x, y + translation.y);
+        mGraphics.drawString(iterator, translateX(x), translateY(y));
     }
 
     @Override
@@ -251,7 +281,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-        mGraphics.drawString(iterator, x + translation.x, y + translation.y);
+        mGraphics.drawString(iterator, translateX(x), translateY(y));
     }
 
     @Override
@@ -264,10 +294,10 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
         int[] ypoints = p.ypoints.clone();
         
         for (int i = 0; i < xpoints.length; i++)
-            p.xpoints[i] = (int) (xpoints[i] * scale);
+            p.xpoints[i] = scaleX(xpoints[i]);
         
         for (int i = 0; i < ypoints.length; i++)
-            p.ypoints[i] = (int) (ypoints[i] * scale);
+            p.ypoints[i] = scaleY(ypoints[i]);
 
         // Finally, draw it
         mGraphics.drawPolygon(p);
@@ -275,7 +305,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void drawGlyphVector(GlyphVector g, float x, float y) {
-        mGraphics.drawGlyphVector(g, x + translation.x, y + translation.y);
+        mGraphics.drawGlyphVector(g, translateX(x), translateY(y));
     }
 
     @Override
@@ -286,7 +316,9 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public void fill(Shape s) {
         if (s instanceof Rectangle2D rectangle)
-            rectangle.setRect(rectangle.getX() + translation.x, rectangle.getY() + translation.y, rectangle.getWidth() * scale, rectangle.getHeight() * scale);
+            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
+        else if (s instanceof Ellipse2D ellipse)
+            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
 
         mGraphics.fill(s);
     }
@@ -301,10 +333,10 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
         int[] ypoints = p.ypoints.clone();
         
         for (int i = 0; i < xpoints.length; i++)
-            p.xpoints[i] = (int) (xpoints[i] * scale);
+            p.xpoints[i] = scaleX(xpoints[i]);
         
         for (int i = 0; i < ypoints.length; i++)
-            p.ypoints[i] = (int) (ypoints[i] * scale);
+            p.ypoints[i] = scaleY(ypoints[i]);
 
         // Finally, draw it
         mGraphics.fillPolygon(p);
@@ -313,10 +345,12 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
         if (s instanceof Rectangle2D rectangle)
-            rectangle.setRect(rectangle.getX() + translation.x, rectangle.getY() + translation.y, rectangle.getWidth() * scale, rectangle.getHeight() * scale);
+            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
+        else if (s instanceof Ellipse2D ellipse)
+            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
 
         rect.translate(translation.x, translation.x);
-        rect.setSize((int) (rect.getSize().getWidth() * scale), (int) (rect.getSize().getHeight() * scale));
+        rect.setSize(scaleX(rect.getSize().getWidth()), scaleY(rect.getSize().getHeight()));
         
         return hit(rect, s, onStroke);
     }
@@ -332,12 +366,12 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void drawChars(char[] data, int offset, int length, int x, int y) {
-        mGraphics.drawChars(data, offset, (int) (length * scale), x + translation.x, y + translation.y);
+        mGraphics.drawChars(data, offset, scaleX(length), translateX(x), translateY(y));
     }
 
     @Override
     public void drawBytes(byte[] data, int offset, int length, int x, int y) {
-        mGraphics.drawBytes(data, offset, (int) (length * scale), x + translation.x, y + translation.y);
+        mGraphics.drawBytes(data, offset, scaleX(length), translateX(x), translateY(y));
     }
 
     @Override
@@ -345,7 +379,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
         if (paint instanceof TexturePaint texturePaint) {
             Rectangle2D rect = texturePaint.getAnchorRect();
 
-            rect.setRect(rect.getX() + translation.x, rect.getY() + translation.y, rect.getWidth() * scale, rect.getHeight() * scale);
+            rect.setRect(translateX(rect.getX()), translateY(rect.getY()), scaleX(rect.getWidth()), scaleY(rect.getHeight()));
 
             paint = new TexturePaint(texturePaint.getImage(), rect);
         }
@@ -360,7 +394,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     public void setStroke(Stroke s) {
         BasicStroke bs = (BasicStroke) s;
 
-        bs = new BasicStroke((int) (bs.getLineWidth() * scale), bs.getEndCap(), bs.getLineJoin(), bs.getMiterLimit(), bs.getDashArray(), (int) (bs.getDashPhase() * scale));
+        bs = new BasicStroke(scaleX(bs.getLineWidth()), bs.getEndCap(), bs.getLineJoin(), bs.getMiterLimit(), bs.getDashArray(), scaleX(bs.getDashPhase()));
 
         mGraphics.setStroke(bs);
     }
@@ -372,7 +406,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-        return mGraphics.drawImage(img, x + translation.x, y + translation.y, observer);
+        return mGraphics.drawImage(img, translateX(x), translateY(y), observer);
     }
 
     @Override
@@ -387,7 +421,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
-        return mGraphics.drawImage(img, x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), observer);
+        return mGraphics.drawImage(img, translateX(x), translateY(y), scaleX(width), scaleY(height), observer);
     }
 
     @Override
@@ -402,7 +436,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void translate(int x, int y) {
-        mGraphics.translate(x + translation.x, y + translation.y);
+        mGraphics.translate(translateX(x), translateY(y));
     }
 
     @Override
@@ -412,7 +446,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
-        return mGraphics.drawImage(img, x + translation.x, y + translation.y, bgcolor, observer);
+        return mGraphics.drawImage(img, translateX(x), translateY(y), bgcolor, observer);
     }
 
     @Override
@@ -422,12 +456,12 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public void rotate(double theta, double x, double y) {
-        mGraphics.rotate(theta, x + translation.x, y + translation.y);
+        mGraphics.rotate(theta, translateX(x), translateY(y));
     }
 
     @Override
     public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
-        return mGraphics.drawImage(img, x + translation.x, y + translation.y, (int) (width * scale), (int) (height * scale), bgcolor, observer);
+        return mGraphics.drawImage(img, translateX(x), translateY(y), scaleX(width), scaleY(height), bgcolor, observer);
     }
 
     @Override
@@ -443,7 +477,7 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public void transform(AffineTransform Tx) {
         Tx.translate(translation.x, translation.y);
-        Tx.scale(scale, scale);
+        Tx.scale(scaleX, scaleY);
 
         mGraphics.transform(Tx);
     }
@@ -451,16 +485,16 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
             ImageObserver observer) {
-        return mGraphics.drawImage(img, dx1 + translation.x, dy1 + translation.y,
-                                        dx2 + translation.x, dy2 + translation.y,
-                                        sx1 + translation.x, sy1 + translation.y,
-                                        sx2 + translation.x, sy2 + translation.y, observer);
+        return mGraphics.drawImage(img, translateX(dx1), translateY(dy1),
+                                        translateX(dx2), translateY(dy2),
+                                        translateX(sx1), translateY(sy1),
+                                        translateX(sx2), translateY(sy2), observer);
     }
 
     @Override
     public void setTransform(AffineTransform Tx) {
         Tx.translate(translation.x, translation.y);
-        Tx.scale(scale, scale);
+        Tx.scale(scaleX, scaleY);
 
         mGraphics.setTransform(Tx);
     }
@@ -488,10 +522,10 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
             Color bgcolor, ImageObserver observer) {
-        return mGraphics.drawImage(img, dx1 + translation.x, dy1 + translation.y,
-                                        dx2 + translation.x, dy2 + translation.y,
-                                        sx1 + translation.x, sy1 + translation.y,
-                                        sx2 + translation.x, sy2 + translation.y, bgcolor, observer);
+        return mGraphics.drawImage(img, translateX(dx1), translateY(dy1),
+                                        translateX(dx2), translateY(dy2),
+                                        translateX(sx1), translateY(sy1),
+                                        translateX(sx2), translateY(sy2), bgcolor, observer);
     }
 
     @Override
@@ -507,7 +541,9 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public void clip(Shape s) {
         if (s instanceof Rectangle2D rectangle)
-            rectangle.setRect(rectangle.getX() + translation.x, rectangle.getY() + translation.y, rectangle.getWidth() * scale, rectangle.getHeight() * scale);
+            rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
+        else if (s instanceof Ellipse2D ellipse)
+            ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
 
         mGraphics.clip(s);
     }
@@ -535,14 +571,16 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public Rectangle getClipBounds(Rectangle r) {
         r.translate(translation.x, translation.y);
-        r.setSize((int) (r.getSize().getWidth() * scale), (int) (r.getSize().getHeight() * scale));
+        r.setSize(scaleX(r.getSize().getWidth()), scaleY(r.getSize().getHeight()));
+
 
         return mGraphics.getClipBounds(r);
     }
 
     @Override
     public void setScale(double scale) {
-        this.scale = scale;
+        scaleX = scale;
+        scaleY = scale;
     }
 
     @Override
@@ -552,6 +590,6 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public Graphics create() {
-        return new ProxyTranslateableGraphics2D((Graphics2D) mGraphics.create(), scale, translation);
+        return new ProxyTranslateableGraphics2D((Graphics2D) mGraphics.create(), scaleX, scaleY, translation);
     }
 }
