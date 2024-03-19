@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import algorithms.utils.DistanceCalculator;
+import core.managers.MapManager;
 import models.Location;
-import fileaccess.Converter;
 
 public class Line extends Component{
     private transient List<Location> locations = new ArrayList<>();
@@ -34,8 +34,8 @@ public class Line extends Component{
         BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10);
         g2.setStroke(bs);
         for (int i = 0; i < locations.size() - 1; i++) {
-            Point p1 = Converter.convertedLocation(locations.get(i));
-            Point p2 = Converter.convertedLocation(locations.get(i + 1));
+            Point p1 = MapManager.locationToPoint(locations.get(i));
+            Point p2 = MapManager.locationToPoint(locations.get(i + 1));
             g2.drawLine(p1.x, p1.y, p2.x, p2.y);
             String distance = String.valueOf(DistanceCalculator.haversine(locations.get(i),locations.get(i + 1)));
             g2.drawString(distance, i, i);

@@ -1,11 +1,11 @@
-package fileaccess;
+package core.managers;
 
 import models.Location;
 import java.awt.Point;
 
 import core.Context;
 
-public class Converter {
+public class MapManager {
     private static final int SCALE = 1000;
     private static final Location MAP_TOP_LEFT_LOCATION = new Location(50.90074, 5.64213);
     private static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
@@ -15,10 +15,9 @@ public class Converter {
     private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
 
-    public static Point convertedLocation(Location location) {
-        /* int x =  (int) ((MAP_WIDTH/360.0) * (180 + lon));
-        int y =  (int) ((MAP_HEIGHT/180.0) * (90 - lat)); */
+    public static Point locationToPoint(Location location) {
         Point world = getGlobalXY(location);
+
         int x = ((world.x - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.x - MAP_TOP_LEFT_GLOBAL_XY.x));
         int y = ((world.y - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.y - MAP_TOP_LEFT_GLOBAL_XY.y));
 

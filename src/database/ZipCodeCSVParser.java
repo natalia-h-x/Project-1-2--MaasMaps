@@ -1,9 +1,10 @@
-package fileaccess;
+package database;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import core.managers.FileManager;
 import models.Location;
 
 public class ZipCodeCSVParser implements LocationReader {
@@ -20,10 +21,9 @@ public class ZipCodeCSVParser implements LocationReader {
     }
 
     private void initializeZipCodeMap() {
-        List<String> data = FileManager.convertFileToList();
+        List<String> data = FileManager.getZipcodeLocations();
 
-        for (String line : data)
-        {
+        for (String line : data) {
             String[] parts = line.split(",");
 
             if (parts.length == 3) {
@@ -43,5 +43,4 @@ public class ZipCodeCSVParser implements LocationReader {
     public boolean zipCodeInFile(String zipCode) {
         return zipcodeToLocationMap.containsKey(zipCode);
     }
-
 }
