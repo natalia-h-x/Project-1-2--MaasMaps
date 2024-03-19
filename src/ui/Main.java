@@ -1,8 +1,7 @@
-import Objects.Location;
-import TransportModes.*;
-import Utils.ZipCodeDatabaseInteractor;
-
-
+package ui;
+import database.ZipCodeDatabaseInteractor;
+import models.Location;
+import transport.*;
 
 /*
  *  Location 1: Latitude: 50.8492, Longitude: 5.6889 (This could be near the Maastricht University area)
@@ -31,8 +30,8 @@ public class Main {
         System.out.println("Walking time in mins: " + walk.calculateTravelTime(loc1, loc2));
         System.out.println("Biking time in mins: " + bike.calculateTravelTime(loc1, loc2));
         System.out.println();
-        
-        
+
+
     }
-    
+
 }

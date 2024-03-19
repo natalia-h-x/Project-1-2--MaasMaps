@@ -1,13 +1,16 @@
-package CalculatorFunctions;
-import Objects.Location;
+package algorithms;
+import models.Location;
 
 public class DistanceCalculator {
+    private DistanceCalculator() {}
 
     public static double haversine(Location loc1, Location loc2) {
         return haversine(loc1.getLatitude(), loc1.getLongitude(), loc2.getLatitude(), loc2.getLongitude());
     }
 
-	// https://en.wikipedia.org/wiki/Haversine_formula/
+	/**
+     * @see https://en.wikipedia.org/wiki/Haversine_formula/
+     */
     public static double haversine(double lat1, double lon1, double lat2, double lon2) {
         final int EARTH_RADIUS = 6371000; // radius of the earth in meters (assumes non ellipsoidal sphere-- reduced complexity)
 
@@ -21,8 +24,6 @@ public class DistanceCalculator {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return EARTH_RADIUS * c; // distance in meters
-
 	}
-		
 }
 

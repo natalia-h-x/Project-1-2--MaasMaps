@@ -1,5 +1,5 @@
-package TransportModes;
-import Objects.Location;
+package transport;
+import models.Location;
 
 public interface TransportMode {
 

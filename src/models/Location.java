@@ -1,6 +1,6 @@
-package Objects;
+package models;
 
-import CalculatorFunctions.DistanceCalculator;
+import algorithms.DistanceCalculator;
 
 public class Location {
     private double latitude;
@@ -26,5 +26,4 @@ public class Location {
     public String toString() {
         return "[Latitude: " + getLatitude() + ", " + "Longitude: " + getLongitude() + "]";
     }
-
 }
