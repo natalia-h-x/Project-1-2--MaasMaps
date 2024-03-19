@@ -20,6 +20,7 @@ public class MaasMapsUI extends JFrame {
         add(map = new Map());
         map.addLine(new Line(new Location(50.853617, 5.692009), new Location(50.853037,5.691825), new Location(50.852666,5.692532), 
         new Location(50.90074,5.714544), new Location(50.877296,5.672557)));
+        map.addMarker(new Marker(new Location(50.853617, 5.692009)));
     }
 }
 

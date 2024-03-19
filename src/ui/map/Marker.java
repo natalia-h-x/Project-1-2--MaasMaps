@@ -3,40 +3,29 @@ package ui.map;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.BasicStroke;
 import java.awt.geom.Ellipse2D;
 
+import fileaccess.Converter;
+import models.Location;
+
 
 public class Marker extends Component {
-    private int y = 10;
-    private int x = 10;
+    private Location location;
 
-    public Marker(int y, int x) {
-        this.y = y;
-        this.x = x;
-    }
-    
-    public int getY() {
-        return y;
+    public Marker(Location location) {
+        this.location = location;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
 
     @Override 
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        Ellipse2D ellipse2d = new Ellipse2D.Float(x, y, 10, 10);
+        Point point = Converter.convertedLocation(location);
+        Ellipse2D ellipse2d = new Ellipse2D.Double(point.getX(), point.getY(), 10, 10);
+
         g2.setStroke(new BasicStroke(10.0f));
         g2.draw(ellipse2d);
     }
