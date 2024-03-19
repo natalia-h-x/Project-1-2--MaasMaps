@@ -13,15 +13,17 @@ import models.Location;
 import fileaccess.Converter;
 
 public class Line extends Component{
-    private List<Location> locations = new ArrayList<>(); 
+    private transient List<Location> locations = new ArrayList<>();
+
     //take the locations as parameter
-    public Line(Location...locations){
+    public Line(Location... locations){
         this.locations.addAll(Arrays.asList(locations));
     }
 
     public void addLocation(Location loc) {
         locations.add(loc);
     }
+
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
