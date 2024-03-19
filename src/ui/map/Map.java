@@ -84,10 +84,14 @@ public class Map extends JPanel implements TranslateableComponent {
 
     public void addLine(Line line) {
         lines.add(line);
+
+        repaint();
     }
 
     public void addMarker(Marker marker) {
         markers.add(marker);
+        
+        repaint();
     }
 
     public double getScale() {

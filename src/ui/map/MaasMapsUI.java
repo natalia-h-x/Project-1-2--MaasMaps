@@ -17,7 +17,7 @@ public class MaasMapsUI extends JFrame {
     }
 
     private void initialiseUI() {
-        setSize(500, 300);
+        setSize(500, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
@@ -30,7 +30,7 @@ public class MaasMapsUI extends JFrame {
 
         map.addMarker(new Marker(new Location(50.853617, 5.692009)));
 
-        SwingUtilities.invokeLater(() -> repaint());
+        revalidate();
     }
 }
 
