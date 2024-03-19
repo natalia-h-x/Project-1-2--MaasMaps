@@ -11,9 +11,9 @@ public class Converter {
     public static Point convertedLocation(Location location) {
         /* int x =  (int) ((MAP_WIDTH/360.0) * (180 + lon));
         int y =  (int) ((MAP_HEIGHT/180.0) * (90 - lat)); */
-        int latitude = (int) (map.getWidth()/360.0) * (180 + location.getLongitude());
-        int longitude = (int) (map.getHeight()/180.0) * (90 - location.getLatitude());
-        
+        int latitude = (int) ((map.getWidth()/360.0) * (180 + location.getLongitude()));
+        int longitude = (int) ((map.getHeight()/180.0) * (90 - location.getLatitude()));
+
 
         return new Point(latitude, longitude);
     }
