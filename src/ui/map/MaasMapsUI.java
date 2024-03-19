@@ -1,6 +1,7 @@
 package ui.map;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import models.Location;
@@ -28,6 +29,8 @@ public class MaasMapsUI extends JFrame {
         ));
 
         map.addMarker(new Marker(new Location(50.853617, 5.692009)));
+
+        SwingUtilities.invokeLater(() -> repaint());
     }
 }
 

@@ -19,7 +19,6 @@ public class Map extends JPanel implements TranslateableComponent {
     private transient BufferedImage mapImage;
     private transient int mapWidth;
     private transient int mapHeight;
-    private transient double mapScale;
     @SuppressWarnings("unused")
     private transient TranslationListener translationListener = new TranslationListener(this);
     private ArrayList<Line> lines = new ArrayList<>();
@@ -32,8 +31,7 @@ public class Map extends JPanel implements TranslateableComponent {
     public Map() {
         Context.getContext().setMap(this);
 
-        scale = 0;
-        mapScale = 1.5;
+        scale = 1;
         translation = new Point(0, 0);
 
         try {
