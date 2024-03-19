@@ -1,12 +1,13 @@
 package core.managers;
 
 import models.Location;
+import ui.map.geometry.Marker;
+
 import java.awt.Point;
 
 import core.Context;
 
 public class MapManager {
-    private static final int SCALE = 1000;
     private static final Location MAP_TOP_LEFT_LOCATION = new Location(50.90074, 5.64213);
     private static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
     private static final Location MAP_BOTTOM_RIGHT_LOCATION = new Location(50.815816, 5.753384);
@@ -15,23 +16,30 @@ public class MapManager {
     private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
 
+    // Debugging tests. FIXME Remove in final code submission.
+    static {
+        Context.getContext().getMap().addMarker(new Marker(MAP_TOP_LEFT_LOCATION));
+        Context.getContext().getMap().addMarker(new Marker(MAP_BOTTOM_RIGHT_LOCATION));
+    }
+
     public static Point locationToPoint(Location location) {
         Point world = getGlobalXY(location);
 
-        int x = ((world.x - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.x - MAP_TOP_LEFT_GLOBAL_XY.x));
-        int y = ((world.y - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.y - MAP_TOP_LEFT_GLOBAL_XY.y));
+        double x = ((double) (world.x - MAP_TOP_LEFT_GLOBAL_XY.x) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.x - MAP_TOP_LEFT_GLOBAL_XY.x));
+        double y = ((double) (world.y - MAP_TOP_LEFT_GLOBAL_XY.y) / (MAP_BOTTOM_RIGHT_GLOBAL_XY.y - MAP_TOP_LEFT_GLOBAL_XY.y));
 
-        System.out.println(x + ", " + y);
+        int screenX = (int) (Context.getContext().getMap().getWidth() * x);
+        int screenY = (int) (Context.getContext().getMap().getHeight() * y);
 
-        return new Point(
-            Context.getContext().getMap().getWidth() * x,
-            Context.getContext().getMap().getHeight() * y
-        );
+        System.out.println(screenX + ", " + screenY);
+
+        return new Point(screenX, screenY);
     }
 
     private static Point getGlobalXY(Location location) {
         double x = (RADIUS_MAASTRICHT_EARTH * (location.getLongitude()) * Math.cos(CENTER_LATITUDE_MAASTRICHT));
         double y = (RADIUS_MAASTRICHT_EARTH * (location.getLatitude()));
+        
         return new Point((int) x, (int) y);
     }
 }

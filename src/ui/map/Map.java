@@ -19,6 +19,7 @@ public class Map extends JPanel implements TranslateableComponent {
     private transient BufferedImage mapImage;
     private transient int mapWidth;
     private transient int mapHeight;
+    private transient double mapScale;
     @SuppressWarnings("unused")
     private transient TranslationListener translationListener = new TranslationListener(this);
     private ArrayList<Line> lines = new ArrayList<>();
@@ -32,6 +33,7 @@ public class Map extends JPanel implements TranslateableComponent {
         Context.getContext().setMap(this);
 
         scale = 0;
+        mapScale = 1.5;
         translation = new Point(0, 0);
 
         try {
@@ -51,13 +53,9 @@ public class Map extends JPanel implements TranslateableComponent {
 
         Graphics2D g2 = new ProxyTranslateableGraphics2D((Graphics2D) g, scale, translation);
 
-        TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
+        TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(0, 0, mapWidth * mapScale, mapHeight * mapScale));
         g2.setPaint(paint);
-        g2.fill(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
-
-        g2.setPaint(new Color(0, 0, 0));
-        g2.drawLine(0, 0, 500, 500);
-        g2.drawLine(60, 580, -800, -1600);
+        g2.fill(new Rectangle2D.Double(0, 0, mapWidth * mapScale, mapHeight * mapScale));
 
         LineDraw(g2);
         DrawMarker(g2);
