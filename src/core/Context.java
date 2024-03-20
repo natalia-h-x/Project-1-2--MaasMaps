@@ -1,26 +1,28 @@
 package core;
 
-import ui.map.Map;
+import ui.map.ProxyMap;
 
 public class Context {
     private static Context context;
-    private Map map;
+    private ProxyMap proxyMap;
 
     private Context() {}
 
-    static {
+   /*  static {
         context = new Context();
-    }
+    } */
 
     public static Context getContext() {
+        if (context == null) context = new Context();
+        
         return context;
     }
 
-    public Map getMap() {
-        return map;
+    public ProxyMap getMap() {
+        return proxyMap;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setMap(ProxyMap proxyMap) {
+        this.proxyMap = proxyMap;
     }
 }
