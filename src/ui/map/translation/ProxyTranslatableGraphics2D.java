@@ -33,10 +33,10 @@ import java.util.Map;
 
 /**
  * Proxy for translating a Graphics2D independent from it.
- * 
+ *
  * @author Sian Lodde
  */
-public class ProxyTranslateableGraphics2D extends Graphics2D implements Translateable {
+public class ProxyTranslatableGraphics2D extends Graphics2D implements Translatable {
     /** Drawing methods will be forwarded to this object */
     private Graphics2D mGraphics;
 
@@ -45,17 +45,20 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     private double scaleY;
     private Point translation;
 
-    public ProxyTranslateableGraphics2D(Graphics2D g2, double scale, Point translation) {
+    public ProxyTranslatableGraphics2D(Graphics2D g2, double scale, Point translation) {
         this(g2, scale, scale, translation);
     }
 
-    public ProxyTranslateableGraphics2D(Graphics2D g2, double scaleX, double scaleY, Point translation) {
+    public ProxyTranslatableGraphics2D(Graphics2D g2, double scaleX, double scaleY, Point translation) {
         mGraphics = g2;
         this.scaleX = scaleX;
         this.scaleY = scaleY;
         this.translation = translation;
+
+        // Update font size to scale
+        setFont(mGraphics.getFont());
     }
-    
+
     public Graphics2D getDelegate() {
         return mGraphics;
     }
@@ -68,10 +71,18 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
         return (int) (width * scaleX);
     }
 
+    private int deScaleX(double width) {
+        return (int) (width / scaleX);
+    }
+
     private int scaleY(double height) {
         return (int) (height * scaleY);
     }
-    
+
+    private int deScaleY(double height) {
+        return (int) (height / scaleY);
+    }
+
     private int translateX(double x) {
         return scaleX(x) + translation.x;
     }
@@ -90,14 +101,14 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     private void translatePolygon(Polygon p) {
         // Translate Polygon
         p.translate(translation.x, translation.y);
-        
+
         // Scale Polygon
         int[] xpoints = p.xpoints.clone();
         int[] ypoints = p.ypoints.clone();
-        
+
         for (int i = 0; i < xpoints.length; i++)
             p.xpoints[i] = scaleX(xpoints[i]);
-        
+
         for (int i = 0; i < ypoints.length; i++)
             p.ypoints[i] = scaleY(ypoints[i]);
     }
@@ -110,6 +121,14 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     private void translateRectangle(Rectangle rect) {
         rect.translate(translation.x, translation.x);
         rect.setSize(scaleX(rect.getSize().getWidth()), scaleY(rect.getSize().getHeight()));
+    }
+
+    private Font translateFont(Font font) {
+        return new Font(font.getName(), font.getStyle(), scaleX(font.getSize()));
+    }
+
+    private Font unTranslateFont(Font font) {
+        return new Font(font.getName(), font.getStyle(), deScaleX(font.getSize()));
     }
 
     @Override
@@ -134,12 +153,12 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public Font getFont() {
-        return mGraphics.getFont();
+        return unTranslateFont(mGraphics.getFont());
     }
 
     @Override
     public void setFont(Font font) {
-        mGraphics.setFont(font);
+        mGraphics.setFont(translateFont(font));
     }
 
     @Override
@@ -343,9 +362,8 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
     @Override
     public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
         translateShape(s);
-
         translateRectangle(rect);
-        
+
         return hit(rect, s, onStroke);
     }
 
@@ -577,6 +595,6 @@ public class ProxyTranslateableGraphics2D extends Graphics2D implements Translat
 
     @Override
     public Graphics create() {
-        return new ProxyTranslateableGraphics2D((Graphics2D) mGraphics.create(), scaleX, scaleY, translation);
+        return new ProxyTranslatableGraphics2D((Graphics2D) mGraphics.create(), scaleX, scaleY, translation);
     }
 }
