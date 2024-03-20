@@ -3,23 +3,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class NavigationPanel extends JFrame{
+public class NavigationPanel extends JPanel{
    
     public NavigationPanel() {
-        super("MaasMaps"); // set the title of the JFrame
         initialiseNavigationUI();
     }
 
     private void initialiseNavigationUI(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // set the default close operation
-        setSize(1000, 600); // set the size of the JFrame
-
         
         // create navigation side JPanel
-        JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(new Color(201, 202, 217));
         JPanel navigationButtons = new JPanel();
-
+        navigationButtons.setBackground(new Color(201, 202, 217));
         navigationButtons.setLayout(new BoxLayout(navigationButtons, BoxLayout.Y_AXIS));
 
         // create postal codes' fields
@@ -33,13 +27,13 @@ public class NavigationPanel extends JFrame{
         calculate.setBackground(new Color(119, 150, 203));
         calculate.setForeground(new Color(237, 242, 244));
 
-        JLabel label4 = new JLabel("Maas maps"); 
-        label4.setFont(new Font("Maas Maps", Font.BOLD, 40));
-        label4.setForeground(new Color(87, 100, 144));
+        JLabel title = new JLabel("Maas maps"); 
+        title.setFont(new Font("Maas Maps", Font.BOLD, 40));
+        title.setForeground(new Color(87, 100, 144));
         JLabel label5 = new JLabel("Average time needed for this distance:");
         label5.setFont(new Font(" ",Font.BOLD, 13));
         //for later : JLabel resultLabel = new JLabel();
-//calls calculator methods or whatever to get time result
+        //calls calculator methods or whatever to get time result
 
 
         // create combo box
@@ -52,7 +46,7 @@ public class NavigationPanel extends JFrame{
         
         // add components to the left panel
         //set title
-        leftPanel.add(label4);
+        navigationButtons.add(title);
         // create middlePanel to hold label1 and textField1
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
@@ -81,20 +75,16 @@ public class NavigationPanel extends JFrame{
         bottomPanel.add(calculate);
         navigationButtons.add(bottomPanel);
 
-        leftPanel.add(navigationButtons);
         
-        leftPanel.add(label5);
+        navigationButtons.add(label5);
         // create right panel (empty for now)
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(new Color(216, 226, 220));
 
-        // create split pane with left and right panels
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
-        splitPane.setResizeWeight(0.35); // adjust this value to set left side size 
-        splitPane.setDividerLocation(350);
+       
 
         // add split pane to the frame
-        add(splitPane);
+        add(navigationButtons);
         
         //actions
         calculate.addActionListener(new ActionListener() {
