@@ -1,19 +1,18 @@
-
 package database;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import constants.Constants;
 import models.Location;
 
 public class ZipCodeAPIRequest implements LocationReader {
-    private static final String BASE_URL = "https://computerscience.dacs.unimaas.nl/get_coordinates";
-
     public Location getLocation(String postcode) {
         try {
-            URL url = new URL(BASE_URL);
+            URL url = new URL(Constants.BASE_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");

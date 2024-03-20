@@ -13,7 +13,6 @@ import java.util.List;
 import algorithms.utils.DistanceManager;
 import core.managers.MapManager;
 import models.Location;
-import transport.TransportMode;
 
 public class Line extends Component implements MapIcon {
     private transient List<Location> locations = new ArrayList<>();
@@ -50,8 +49,12 @@ public class Line extends Component implements MapIcon {
 
         for (int i = 0; i < locations.size() - 1; i++) {
             Location loc1 = locations.get(i);
-            Point p1 = MapManager.locationToPoint(loc1);
             Location loc2 = locations.get(i + 1);
+
+            if (loc1 == null || loc2 == null)
+                continue;
+
+            Point p1 = MapManager.locationToPoint(loc1);
             Point p2 = MapManager.locationToPoint(loc2);
 
             // Set paint color to blue for the line
@@ -75,7 +78,6 @@ public class Line extends Component implements MapIcon {
             g2.drawString(distance, center.x, center.y);
             g2.setPaint(new Color(1, 10, 100));
         }
-
     }
 
     private Point getCenter(Point p1, Point p2) {

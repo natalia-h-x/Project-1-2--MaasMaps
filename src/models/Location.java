@@ -1,6 +1,6 @@
 package models;
 
-import algorithms.utils.DistanceCalculator;
+import algorithms.utils.DistanceManager;
 
 public class Location {
     private double latitude;
@@ -20,7 +20,7 @@ public class Location {
     }
 
     public double distanceTo(Location destination) {
-        return DistanceCalculator.haversine(this, destination);
+        return DistanceManager.haversine(this, destination);
     }
 
     public String toString() {

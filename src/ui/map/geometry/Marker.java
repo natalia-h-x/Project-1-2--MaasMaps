@@ -7,11 +7,10 @@ import core.managers.MapManager;
 import models.Location;
 
 public class Marker extends Component implements MapIcon {
-    private final int lengthTriangle = 5;
-    private final int markerOffsetY = 10;
-    private final int innerSize = 7;
-    private Location location;
-    private final int size = 5;
+    private transient int markerOffsetY = 10;
+    private transient int innerSize = 7;
+    private transient Location location;
+    private transient int size = 5;
 
     public Marker(Location location) {
         this.location = location;

@@ -7,4 +7,6 @@ public class Constants { private Constants() {}
         public static final String BUS_STOP_ICON = "resources/BusIcon.png";
         public static final String RANDOM_ICON = "resources/Random.png";
     }
+
+    public static final String BASE_URL = "https://computerscience.dacs.unimaas.nl/get_coordinates";
 }

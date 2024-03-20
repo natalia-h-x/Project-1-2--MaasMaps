@@ -8,13 +8,11 @@ public class Context {
 
     private Context() {}
 
-   /*  static {
+    static {
         context = new Context();
-    } */
+    }
 
     public static Context getContext() {
-        if (context == null) context = new Context();
-        
         return context;
     }
 
