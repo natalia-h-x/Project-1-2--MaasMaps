@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class TranslationListener {
     //* For zooming out */
-    private static final int ZOOM_LEVEL_BOUND_MIN = -30;
+    private static final int ZOOM_LEVEL_BOUND_MIN = -3;
     //* For zooming in */
     private static final int ZOOM_LEVEL_BOUND_MAX = 10;
 
