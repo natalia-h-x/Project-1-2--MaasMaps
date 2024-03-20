@@ -27,14 +27,15 @@ public class MaasMapsUI extends JFrame {
         NavigationPanel navigationPanel = new NavigationPanel();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-
+        JSplitPane splitPane = new JSplitPane();
+        setContentPane(splitPane);
         // create split pane with left and right panels
         navigationPanel.setMinimumSize(new Dimension(300,600));
         map.setMinimumSize(new Dimension(500,600));
         map.setPreferredSize(new Dimension(500,600));
         navigationPanel.setPreferredSize(new Dimension(300,600));
-        add(navigationPanel,BorderLayout.WEST);
-        add(map);
+        splitPane.add(navigationPanel, JSplitPane.LEFT);
+        splitPane.add(map, JSplitPane.RIGHT);
         buildTestMap();
 
         revalidate();
