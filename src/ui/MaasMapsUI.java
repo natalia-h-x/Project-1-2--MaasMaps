@@ -1,6 +1,10 @@
 package ui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
 import models.Location;
@@ -18,13 +22,19 @@ public class MaasMapsUI extends JFrame {
 
     private void initialiseUI() {
         map = new Map();
-
-        setSize(500, 500);
+        setSize(800, 600);
+        setLayout(new BorderLayout());
+        NavigationPanel navigationPanel = new NavigationPanel();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
+        // create split pane with left and right panels
+        navigationPanel.setMinimumSize(new Dimension(300,600));
+        map.setMinimumSize(new Dimension(500,600));
+        map.setPreferredSize(new Dimension(500,600));
+        navigationPanel.setPreferredSize(new Dimension(300,600));
+        add(navigationPanel,BorderLayout.WEST);
         add(map);
-
         buildTestMap();
 
         revalidate();
