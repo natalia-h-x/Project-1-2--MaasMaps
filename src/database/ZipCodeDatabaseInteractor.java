@@ -10,7 +10,7 @@ public class ZipCodeDatabaseInteractor implements LocationReader {
         try {
             if (csvFile.zipCodeInFile(zipcode))
                 return csvFile.getLocation(zipcode);
-            
+
             return new ZipCodeAPIRequest().getLocation(zipcode);
         }
         catch (Exception e) {
