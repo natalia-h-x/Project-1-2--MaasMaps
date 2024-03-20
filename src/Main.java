@@ -16,7 +16,7 @@ public class Main {
         /*
          * Location fetching logic
          */
-        ZipCodeDatabaseInteractor db = new ZipCodeDatabaseInteractor();
+        ZipCodeDatabaseInteractor db = ZipCodeDatabaseInteractor.getZipCodeDatabaseInteractor();
 
         Location loc1 = db.getLocation("6211BE");
         Location loc2 = db.getLocation("6224KB");
