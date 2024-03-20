@@ -1,4 +1,3 @@
-import algorithms.utils.DistanceCalculator;
 import algorithms.utils.DistanceManager;
 import database.ZipCodeDatabaseInteractor;
 import models.Location;
