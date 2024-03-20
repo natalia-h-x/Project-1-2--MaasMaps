@@ -6,7 +6,7 @@ public class ProxyMap {
     private Map map;
 
     public ProxyMap(Map map) {
-        map = this.map;
+        this.map = map;
     }
 
     public void addMapIcon(MapIcon... mapIcons) {

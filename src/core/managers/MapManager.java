@@ -19,10 +19,10 @@ public class MapManager {
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
 
     // Debugging tests. FIXME Remove in final code submission.
-    static {
+   /*  static {
         Context.getContext().getMap().addMapIcon(new Marker(MAP_TOP_LEFT_LOCATION));
         Context.getContext().getMap().addMapIcon(new Marker(MAP_BOTTOM_RIGHT_LOCATION));
-    }
+    } */
 
     public static Point locationToPoint(Location location) {
         Point world = getGlobalXY(location);
