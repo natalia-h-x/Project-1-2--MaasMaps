@@ -1,10 +1,10 @@
 package core;
 
-import ui.map.Map;
+import ui.map.ProxyMap;
 
 public class Context {
     private static Context context;
-    private Map map;
+    private ProxyMap proxyMap;
 
     private Context() {}
 
@@ -16,11 +16,11 @@ public class Context {
         return context;
     }
 
-    public Map getMap() {
-        return map;
+    public ProxyMap getMap() {
+        return proxyMap;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setMap(ProxyMap proxyMap) {
+        this.proxyMap = proxyMap;
     }
 }
