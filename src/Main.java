@@ -1,4 +1,5 @@
 import algorithms.utils.DistanceCalculator;
+import algorithms.utils.DistanceManager;
 import database.ZipCodeDatabaseInteractor;
 import models.Location;
 import transport.Biking;
@@ -28,7 +29,7 @@ public class Main {
         double travelTimeWalking = walk.calculateTravelTime(loc1, loc2);
         double travelTimeBiking = bike.calculateTravelTime(loc1, loc2);
 
-        double travelDistance = DistanceCalculator.haversine(loc1, loc2);
+        double travelDistance = DistanceManager.haversine(loc1, loc2);
 
         System.out.println();
         System.out.println("Start:  " + loc1);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import algorithms.utils.DistanceCalculator;
+import algorithms.utils.DistanceManager;
 import core.managers.MapManager;
 import models.Location;
 import transport.TransportMode;
@@ -33,7 +33,7 @@ public class Line extends Component implements MapIcon {
         for (int i = 0; i < locations.size() - 1; i++) {
             Location loc1 = locations.get(i);
             Location loc2 = locations.get(i + 1);
-            totalDistance += DistanceCalculator.haversine(loc1, loc2);
+            totalDistance += DistanceManager.haversine(loc1, loc2);
         }
 
         return totalDistance;
@@ -59,7 +59,7 @@ public class Line extends Component implements MapIcon {
             g2.drawLine(p1.x, p1.y, p2.x, p2.y);
 
             // Calculate distance and midpoint
-            String distance = String.valueOf(DistanceCalculator.haversine(loc1, loc2));
+            String distance = String.valueOf(DistanceManager.haversine(loc1, loc2));
             Point center = getCenter(p1, p2);
 
             // Create a 'border' effect for the text by drawing it in black first with

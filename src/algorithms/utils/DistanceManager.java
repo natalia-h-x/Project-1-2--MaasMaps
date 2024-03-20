@@ -2,8 +2,8 @@ package algorithms.utils;
 
 import models.Location;
 
-public class DistanceCalculator {
-    private DistanceCalculator() {}
+public class DistanceManager {
+    private DistanceManager() {}
 
     public static double haversine(Location loc1, Location loc2) {
         return haversine(loc1.getLatitude(), loc1.getLongitude(), loc2.getLatitude(), loc2.getLongitude());
