@@ -99,9 +99,6 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
     }
 
     private void translatePolygon(Polygon p) {
-        // Translate Polygon
-        p.translate(translation.x, translation.y);
-
         // Scale Polygon
         transformPointsPolygon(p.xpoints, p.ypoints);
     }
@@ -111,10 +108,10 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
         int[] ypoints = pypoints.clone();
 
         for (int i = 0; i < xpoints.length; i++)
-            pxpoints[i] = scaleX(xpoints[i]);
+            pxpoints[i] = translateX(xpoints[i]);
 
         for (int i = 0; i < ypoints.length; i++)
-            pypoints[i] = scaleY(ypoints[i]);
+            pypoints[i] = translateY(ypoints[i]);
     }
 
     private void translateAffineTransform(AffineTransform xform) {
