@@ -99,18 +99,19 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
     }
 
     private void translatePolygon(Polygon p) {
-        // Translate Polygon
-        p.translate(translation.x, translation.y);
-
         // Scale Polygon
-        int[] xpoints = p.xpoints.clone();
-        int[] ypoints = p.ypoints.clone();
+        transformPointsPolygon(p.xpoints, p.ypoints);
+    }
+
+    private void transformPointsPolygon(int[] pxpoints, int[] pypoints) {
+        int[] xpoints = pxpoints.clone();
+        int[] ypoints = pypoints.clone();
 
         for (int i = 0; i < xpoints.length; i++)
-            p.xpoints[i] = scaleX(xpoints[i]);
+            pxpoints[i] = translateX(xpoints[i]);
 
         for (int i = 0; i < ypoints.length; i++)
-            p.ypoints[i] = scaleY(ypoints[i]);
+            pypoints[i] = translateY(ypoints[i]);
     }
 
     private void translateAffineTransform(AffineTransform xform) {
@@ -313,11 +314,15 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
 
     @Override
     public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
+        transformPointsPolygon(xPoints, yPoints);
+
         mGraphics.drawPolyline(xPoints, yPoints, nPoints);
     }
 
     @Override
     public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
+        transformPointsPolygon(xPoints, yPoints);
+
         mGraphics.drawPolygon(xPoints, yPoints, nPoints);
     }
 
