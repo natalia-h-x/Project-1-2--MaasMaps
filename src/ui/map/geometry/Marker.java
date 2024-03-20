@@ -7,7 +7,11 @@ import core.managers.MapManager;
 import models.Location;
 
 public class Marker extends Component implements MapIcon {
+    private final int lengthTriangle = 5;
+    private final int markerOffsetY = 10;
+    private final int innerSize = 7;
     private Location location;
+    private final int size = 5;
 
     public Marker(Location location) {
         this.location = location;
@@ -16,43 +20,41 @@ public class Marker extends Component implements MapIcon {
     public Location getMarkerLocation(){
         return location;
     }
+
+    public Point getIconLocation(){
+        Point point = MapManager.locationToPoint(location);
+        double redCenterX = point.x;
+        double redCenterY = point.y - markerOffsetY;
+        return new Point((int)redCenterX, (int)redCenterY);
+    }
+
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
         Point point = MapManager.locationToPoint(location);
-        double centerX = point.getX() - 2.5;
-        double centerY = point.getY() - 2.5;
+        Point iconPoint = getIconLocation();
 
-        Ellipse2D redEllipse = new Ellipse2D.Double(centerX, centerY, 5, 5);
-
+        double topLeftX = iconPoint.getX() - size / 2.0;
+        double topLeftY = iconPoint.getY() - size / 2.0;
+        Ellipse2D redEllipse = new Ellipse2D.Double(topLeftX, topLeftY, size, size);
 
         g2.setColor(Color.RED);
-        g2.setStroke(new BasicStroke(5.0f));
+        g2.setStroke(new BasicStroke(size));
         g2.draw(redEllipse);
 
-
-        double redCenterX = centerX + 2.5;
-        double redCenterY = centerY + 2.5;
-
-
-        int[] xPoints = {(int) redCenterX, (int) (redCenterX - 4), (int) (redCenterX + 4)};
-        int[] yPoints = {(int) redCenterY + 9, (int) redCenterY, (int) redCenterY};
+        int[] xPoints = {(int) iconPoint.getX(), (int) (iconPoint.getX() - 4), (int) (iconPoint.getX() + 4)};
+        int[] yPoints = {point.y, (int)  iconPoint.getY(),(int) iconPoint.getY()};
 
         Polygon triangle = new Polygon(xPoints, yPoints, 3);
         g2.setColor(Color.RED);
         g2.fillPolygon(triangle);
 
-
-        double smallEllipseX = redCenterX - 3.5;
-        double smallEllipseY = redCenterY - 3.5;
-
-        Ellipse2D whiteEllipse = new Ellipse2D.Double(smallEllipseX, smallEllipseY, 7, 7);
-
+        double smallEllipseX = iconPoint.getX() - innerSize / 2.0;
+        double smallEllipseY = iconPoint.getY() - innerSize / 2.0;
+        Ellipse2D whiteEllipse = new Ellipse2D.Double(smallEllipseX, smallEllipseY, innerSize, innerSize);
 
         g2.setColor(Color.WHITE);
         g2.fill(whiteEllipse);
-
-
     }
 }
