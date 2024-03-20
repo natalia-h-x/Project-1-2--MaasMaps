@@ -14,7 +14,7 @@ import algorithms.utils.DistanceCalculator;
 import core.managers.MapManager;
 import models.Location;
 
-public class Line extends Component {
+public class Line extends Component implements MapIcon {
     private transient List<Location> locations = new ArrayList<>();
 
     // take the locations as parameter

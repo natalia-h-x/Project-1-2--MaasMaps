@@ -11,6 +11,7 @@ import javax.swing.*;
 import core.Context;
 import core.managers.FileManager;
 import ui.map.geometry.Line;
+import ui.map.geometry.MapIcon;
 import ui.map.geometry.Marker;
 import ui.map.translation.ProxyTranslateableGraphics2D;
 import ui.map.translation.TranslateableComponent;
@@ -22,8 +23,7 @@ public class Map extends JPanel implements TranslateableComponent {
     private transient int mapHeight;
     @SuppressWarnings("unused")
     private transient TranslationListener translationListener = new TranslationListener(this);
-    private ArrayList<Line> lines = new ArrayList<>();
-    private ArrayList<Marker> markers = new ArrayList<>();
+    private ArrayList<MapIcon> icons = new ArrayList<>();
 
     /** Variables for translating this Map */
     private double scale;
@@ -58,8 +58,7 @@ public class Map extends JPanel implements TranslateableComponent {
         g2.setPaint(paint);
         g2.fill(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
 
-        LineDraw(g2);
-        DrawMarker(g2);
+        drawMapIcon(g2);
     }
 
     private void applyRenderingHints(Graphics2D g2) {
@@ -74,17 +73,11 @@ public class Map extends JPanel implements TranslateableComponent {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
     }
 
-    private void LineDraw(Graphics2D g2) {
-        for (Line line : lines) {
-            if (line != null)
-                line.paint(g2);
-        }
-    }
-
-    private void DrawMarker(Graphics2D g2) {
-        for (Marker marker : markers) {
-            if (marker != null)
-                marker.paint(g2);
+    @SuppressWarnings("unchecked")
+    private void drawMapIcon(Graphics2D g2) {
+        for (MapIcon icon : (Iterable<MapIcon>) icons.clone()) {
+            if (icon != null)
+                icon.paint(g2);
         }
     }
 
@@ -97,14 +90,8 @@ public class Map extends JPanel implements TranslateableComponent {
         repaint();
     }
 
-    public void addLine(Line line) {
-        lines.add(line);
-
-        repaint();
-    }
-
-    public void addMarker(Marker marker) {
-        markers.add(marker);
+    public void addMapIcon(MapIcon icon) {
+        icons.add(icon);
 
         repaint();
     }

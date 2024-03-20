@@ -20,8 +20,8 @@ public class MapManager {
 
     // Debugging tests. FIXME Remove in final code submission.
     static {
-        Context.getContext().getMap().addMarker(new Marker(MAP_TOP_LEFT_LOCATION));
-        Context.getContext().getMap().addMarker(new Marker(MAP_BOTTOM_RIGHT_LOCATION));
+        Context.getContext().getMap().addMapIcon(new Marker(MAP_TOP_LEFT_LOCATION));
+        Context.getContext().getMap().addMapIcon(new Marker(MAP_BOTTOM_RIGHT_LOCATION));
     }
 
     public static Point locationToPoint(Location location) {

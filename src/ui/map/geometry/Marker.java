@@ -10,7 +10,7 @@ import java.awt.geom.Ellipse2D;
 import core.managers.MapManager;
 import models.Location;
 
-public class Marker extends Component {
+public class Marker extends Component implements MapIcon {
     private Location location;
 
     public Marker(Location location) {
