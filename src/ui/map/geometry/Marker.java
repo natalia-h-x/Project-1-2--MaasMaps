@@ -13,6 +13,9 @@ public class Marker extends Component implements MapIcon {
         this.location = location;
     }
 
+    public Location getMarkerLocation(){
+        return location;
+    }
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -41,10 +44,10 @@ public class Marker extends Component implements MapIcon {
         g2.fillPolygon(triangle);
 
 
-        double smallEllipseX = redCenterX - 2.5;
-        double smallEllipseY = redCenterY - 2.5;
+        double smallEllipseX = redCenterX - 3.5;
+        double smallEllipseY = redCenterY - 3.5;
 
-        Ellipse2D whiteEllipse = new Ellipse2D.Double(smallEllipseX, smallEllipseY, 5, 5);
+        Ellipse2D whiteEllipse = new Ellipse2D.Double(smallEllipseX, smallEllipseY, 7, 7);
 
 
         g2.setColor(Color.WHITE);

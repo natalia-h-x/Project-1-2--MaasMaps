@@ -8,6 +8,7 @@ import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
 import models.Location;
+import ui.map.geometry.BusMarker;
 import ui.map.geometry.Marker;
 import ui.map.Map;
 import ui.map.geometry.Line;
@@ -46,7 +47,7 @@ public class MaasMapsUI extends JFrame {
                 new Location(50.90074, 5.714544), new Location(50.877296 ,5.672557)
         ));
 
-        map.addMapIcon(new Marker(new Location(50.853617, 5.692009)));
+        map.addMapIcon(new BusMarker(new Location(50.853617, 5.692009)));
     }
 }
 

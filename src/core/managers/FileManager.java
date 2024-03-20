@@ -34,9 +34,13 @@ public class FileManager {
     }
 
     public static BufferedImage getMapImage() throws IOException {
+        return getImage(Paths.RESOURCES_PLACEHOLDER_MAP_PNG);
+    }
+    public static BufferedImage getImage(String path) throws IOException {
         BufferedImage img = null;
-        img = ImageIO.read(new File(Paths.RESOURCES_PLACEHOLDER_MAP_PNG));
-    
+        img = ImageIO.read(new File(path));
+
         return img;
     }
 }
+
