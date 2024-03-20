@@ -10,10 +10,8 @@ import javax.swing.*;
 
 import core.Context;
 import core.managers.FileManager;
-import ui.map.geometry.Line;
 import ui.map.geometry.MapIcon;
-import ui.map.geometry.Marker;
-import ui.map.translation.ProxyTranslateableGraphics2D;
+import ui.map.translation.ProxyTranslatableGraphics2D;
 import ui.map.translation.TranslateableComponent;
 import ui.map.translation.TranslationListener;
 
@@ -23,7 +21,7 @@ public class Map extends JPanel implements TranslateableComponent {
     private transient int mapHeight;
     @SuppressWarnings("unused")
     private transient TranslationListener translationListener = new TranslationListener(this);
-    private ArrayList<MapIcon> icons = new ArrayList<>();
+    private transient ArrayList<MapIcon> icons = new ArrayList<>();
 
     /** Variables for translating this Map */
     private double scale;
@@ -51,7 +49,7 @@ public class Map extends JPanel implements TranslateableComponent {
         if (mapImage == null)
             return;
 
-        Graphics2D g2 = new ProxyTranslateableGraphics2D((Graphics2D) g, scale, translation);
+        Graphics2D g2 = new ProxyTranslatableGraphics2D((Graphics2D) g, scale, translation);
 
         applyRenderingHints(g2);
 
