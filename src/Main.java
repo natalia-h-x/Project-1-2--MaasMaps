@@ -1,3 +1,4 @@
+import algorithms.utils.DistanceCalculator;
 import database.ZipCodeDatabaseInteractor;
 import models.Location;
 import transport.Biking;
@@ -18,8 +19,8 @@ public class Main {
          */
         ZipCodeDatabaseInteractor db = new ZipCodeDatabaseInteractor();
 
-        Location loc1 = db.getLocation("6211BE");
-        Location loc2 = db.getLocation("6224KB");
+        Location loc1 = db.getLocation("6229EN");
+        Location loc2 = db.getLocation("6211LC");
 
         TransportMode bike = new Biking();
         TransportMode walk = new Walking();
@@ -27,12 +28,15 @@ public class Main {
         double travelTimeWalking = walk.calculateTravelTime(loc1, loc2);
         double travelTimeBiking = bike.calculateTravelTime(loc1, loc2);
 
+        double travelDistance = DistanceCalculator.haversine(loc1, loc2);
+
         System.out.println();
         System.out.println("Start:  " + loc1);
         System.out.println("Finish: " + loc2);
         System.out.println();
         System.out.println("Walking time in mins: " + travelTimeWalking);
         System.out.println("Biking time in mins: " + travelTimeBiking);
+        System.out.println("Distance in km: " + travelDistance);
         System.out.println();
     }
 }
