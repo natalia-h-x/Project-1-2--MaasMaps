@@ -10,18 +10,22 @@ public class NavigationPanel extends JPanel{
     }
 
     private void initialiseNavigationUI(){
-        
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.setForeground(new Color(201, 202, 217));
+
         // create navigation side JPanel
         JPanel navigationButtons = new JPanel();
         navigationButtons.setBackground(new Color(201, 202, 217));
-        navigationButtons.setLayout(new BoxLayout(navigationButtons, BoxLayout.Y_AXIS));
+        navigationButtons.setLayout(new GridLayout(5, 0));
 
         // create postal codes' fields
-        JLabel label1 = new JLabel("From: ");
-        label1.setFont(new Font("From: ", Font.BOLD, 15));
+        JLabel location1 = new JLabel("From: ");
+        location1.setFont(new Font("From: ", Font.BOLD, 15));
+
         JTextField textField1 = new JTextField("Enter postal code",8);
-        JLabel label2 = new JLabel("To: ");
-        label2.setFont(new Font("To: ", Font.BOLD, 15));
+        JLabel location2 = new JLabel("To: ");
+        location2.setFont(new Font("To: ", Font.BOLD, 15));
+
         JTextField textField2 = new JTextField("Enter postal code",8);
         JButton calculate = new JButton("Calculate");
         calculate.setBackground(new Color(119, 150, 203));
@@ -30,15 +34,15 @@ public class NavigationPanel extends JPanel{
         JLabel title = new JLabel("Maas maps"); 
         title.setFont(new Font("Maas Maps", Font.BOLD, 40));
         title.setForeground(new Color(87, 100, 144));
-        JLabel label5 = new JLabel("Average time needed for this distance:");
-        label5.setFont(new Font(" ",Font.BOLD, 13));
+
+        JLabel timeLabel = new JLabel("Average time needed for this distance:");
+        timeLabel.setFont(new Font(" ",Font.BOLD, 13));
         //for later : JLabel resultLabel = new JLabel();
         //calls calculator methods or whatever to get time result
 
-
         // create combo box
-        JLabel label3 = new JLabel("Select means of transport: ");
-        label3.setFont(new Font("Select means of transport: ", Font.BOLD, 13));
+        JLabel transportType = new JLabel("Select means of transport: ");
+        transportType.setFont(new Font("Select means of transport: ", Font.BOLD, 13));
         String[] options = {"Walking", "Biking"};
         JComboBox<String> selection = new JComboBox<>(options);
         selection.setBackground(new Color(53, 80, 112));
@@ -47,45 +51,42 @@ public class NavigationPanel extends JPanel{
         // add components to the left panel
         //set title
         navigationButtons.add(title);
+
         // create middlePanel to hold label1 and textField1
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
-        topPanel.add(label1);
-        topPanel.add(Box.createHorizontalGlue());
+        topPanel.add(location1);
         topPanel.add(textField1);
         navigationButtons.add(topPanel);
-        navigationButtons.add(Box.createVerticalGlue());
         
         // create middlePanel to hold label2 and textField2
         JPanel middlePanel = new JPanel();
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
-        middlePanel.add(label2);
-        middlePanel.add(Box.createHorizontalGlue());
+        middlePanel.add(location2);
         middlePanel.add(textField2);
         navigationButtons.add(middlePanel);
-        navigationButtons.add(Box.createVerticalGlue());
         
         // create bottomPanel to hold label3, selection, and calculate button
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
-        bottomPanel.add(label3);
-        bottomPanel.add(Box.createHorizontalGlue());
+        bottomPanel.add(transportType);
         bottomPanel.add(selection);
-        bottomPanel.add(Box.createHorizontalGlue());
         bottomPanel.add(calculate);
         navigationButtons.add(bottomPanel);
-
-        
-        navigationButtons.add(label5);
-        // create right panel (empty for now)
-        JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(new Color(216, 226, 220));
-
-       
+        navigationButtons.add(timeLabel);
 
         // add split pane to the frame
-        add(navigationButtons);
+        contentPanel.add(navigationButtons, BorderLayout.NORTH);
+        add(contentPanel);
         
+        addActionListeners(textField1, textField2, calculate, selection);
+
+        //set visible
+        setVisible(true);
+    }
+
+    private void addActionListeners(JTextField textField1, JTextField textField2, JButton calculate,
+            JComboBox<String> selection) {
         //actions
         calculate.addActionListener(new ActionListener() {
             @Override
@@ -116,9 +117,6 @@ public class NavigationPanel extends JPanel{
               System.out.println(point2);
             }
         });
-
-        //set visible
-        setVisible(true);
     }
 
    
