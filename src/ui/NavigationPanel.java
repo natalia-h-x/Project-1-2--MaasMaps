@@ -79,11 +79,18 @@ public class NavigationPanel extends JPanel {
 
         // create bottomPanel to hold label3, selection, and calculate button
         JPanel bottomPanel = new JPanel(new BorderLayout());
+        JPanel selectionPanel = new JPanel(new BorderLayout());
+        JButton clearButton = new JButton("Clear Map");
+        clearButton.setBackground(UIConstants.GUI_TITLE_COLOR);
+        clearButton.setForeground(Color.WHITE);
+        selectionPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         bottomPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-        bottomPanel.add(transportType, BorderLayout.WEST);
-        bottomPanel.add(selection, BorderLayout.CENTER);
-        bottomPanel.add(calculate, BorderLayout.EAST);
-        bottomPanel.add(timeLabel, BorderLayout.SOUTH);
+        selectionPanel.add(transportType, BorderLayout.WEST);
+        selectionPanel.add(selection, BorderLayout.CENTER);
+        selectionPanel.add(calculate, BorderLayout.EAST);
+        bottomPanel.add(timeLabel, BorderLayout.CENTER);
+        bottomPanel.add(clearButton, BorderLayout.SOUTH);
+        bottomPanel.add(selectionPanel, BorderLayout.NORTH);
 
         JPanel zipCodeSelectionPanel = new JPanel(new BorderLayout());
         zipCodeSelectionPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
@@ -99,6 +106,7 @@ public class NavigationPanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
 
         addActionListeners(textField1, textField2, calculate, selection);
+        addClearActionListener(clearButton);
 
         //set visible
         setVisible(true);
@@ -126,8 +134,17 @@ public class NavigationPanel extends JPanel {
 
             Context.getContext().getMap().addMapIcon(line);
 
-            double time = transportMode.getAverageSpeed() * line.getTotalDistance();
-            timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + String.valueOf(time));
+
+
+            double time = transportMode.calculateTravelTime(db.getLocation(textField1.getText()), db.getLocation(textField2.getText()));
+            double seconds = ((time - (int)(time)))*60;
+            timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + (int) (time) + " min " + Math.round(seconds) + " seconds");
+        });
+    }
+    private void addClearActionListener(JButton clearButton){
+        clearButton.addActionListener(e -> {
+            Context.getContext().getMap().clearIcons();
+            timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT);
         });
     }
 }

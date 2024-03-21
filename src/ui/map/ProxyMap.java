@@ -22,4 +22,7 @@ public class ProxyMap {
     public int getMapWidth(){
         return map.getMapWidth();
     }
+    public void clearIcons(){
+        map.clearIcons();
+    }
 }

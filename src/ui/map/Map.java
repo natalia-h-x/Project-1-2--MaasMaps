@@ -107,6 +107,12 @@ public class Map extends JPanel implements TranslateableComponent {
         repaint();
     }
 
+    public void clearIcons(){
+        icons.clear();
+
+        repaint();
+    }
+
     public double getScale() {
         return scale;
     }
