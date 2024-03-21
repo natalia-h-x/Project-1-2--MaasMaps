@@ -133,14 +133,13 @@ public class NavigationPanel extends JPanel {
 
             Context.getContext().getMap().clearIcons();
 
-            Context.getContext().getMap().addMapIcon(
-                line = new Line(
+            line = new Line(
                     db.getLocation(textField1.getText()),
                     db.getLocation(textField2.getText())
-                ),
-                startPoint = ImageMarker.createAImageMarker(db.getLocation(textField1.getText())), 
-                endPoint = ImageMarker.createBImageMarker(db.getLocation(textField2.getText()))
-            );
+                );
+            startPoint = ImageMarker.createAImageMarker(db.getLocation(textField1.getText()));
+            endPoint = ImageMarker.createBImageMarker(db.getLocation(textField2.getText()));
+            Context.getContext().getMap().addMapIcon(line, startPoint, endPoint);
 
 
             double time = transportMode.calculateTravelTime(db.getLocation(textField1.getText()), db.getLocation(textField2.getText()));
