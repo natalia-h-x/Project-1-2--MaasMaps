@@ -1,10 +1,8 @@
 package core.managers;
 
-import models.Location;
-import ui.map.geometry.Marker;
-
 import java.awt.Point;
 
+import models.Location;
 import core.Context;
 
 public class MapManager {
@@ -17,12 +15,6 @@ public class MapManager {
 
     private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
-
-    // Debugging tests. FIXME Remove in final code submission.
-   /*  static {
-        Context.getContext().getMap().addMapIcon(new Marker(MAP_TOP_LEFT_LOCATION));
-        Context.getContext().getMap().addMapIcon(new Marker(MAP_BOTTOM_RIGHT_LOCATION));
-    } */
 
     public static Point locationToPoint(Location location) {
         Point world = getGlobalXY(location);
@@ -41,7 +33,7 @@ public class MapManager {
     private static Point getGlobalXY(Location location) {
         double x = (RADIUS_MAASTRICHT_EARTH * (location.getLongitude()) * Math.cos(CENTER_LATITUDE_MAASTRICHT));
         double y = (RADIUS_MAASTRICHT_EARTH * (location.getLatitude()));
-        
+
         return new Point((int) x, (int) y);
     }
 }

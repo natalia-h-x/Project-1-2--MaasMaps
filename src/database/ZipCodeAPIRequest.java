@@ -2,15 +2,19 @@ package database;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import constants.Constants;
+import constants.Constants.Paths;
+import core.managers.FileManager;
 import models.Location;
 
 public class ZipCodeAPIRequest implements LocationReader {
-    public Location getLocation(String postcode) {
+    public Location getLocation(String zipCode) throws IllegalStateException {
         try {
             URL url = new URL(Constants.BASE_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -22,7 +26,7 @@ public class ZipCodeAPIRequest implements LocationReader {
             connection.setConnectTimeout(5000); // 5 seconds for connection timeout
             connection.setReadTimeout(5000); // 5 seconds for read timeout
 
-            String jsonInputString = "{\"postcode\": \"" + postcode + "\"}";
+            String jsonInputString = "{\"postcode\": \"" + zipCode + "\"}";
 
             try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
                 wr.writeBytes(jsonInputString);
@@ -39,30 +43,34 @@ public class ZipCodeAPIRequest implements LocationReader {
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
+
                 in.close();
 
                 // Parse the JSON response
                 double latitude = extractValue(response.toString(), "latitude");
                 double longitude = extractValue(response.toString(), "longitude");
 
+                // Cache the result so that we do not have to ask the API for this zipcode again
+                FileManager.appendToFile(Paths.MAAS_ZIP_LATLON_PATH, "%s,%s,%s".formatted(zipCode, latitude, longitude));
+
                 return new Location(latitude, longitude);
             }
             else {
-                System.out.println("Error: Received HTTP response code " + responseCode);
+                throw new IllegalStateException("Error: Received HTTP response code " + responseCode);
             }
         }
         catch (java.net.SocketTimeoutException e) {
-            System.out.println("Error: Timeout while connecting to the API. Please check your network connection.");
+            throw new IllegalArgumentException("Valid postal code but timeout occurs while connecting to the API. Please check your network connection.", e);
         }
         catch (java.net.UnknownHostException e) {
-            System.out.println("Error: Unable to reach the API. Please check if you are connected to the university network or VPN.");
+            throw new IllegalArgumentException("Valid postal code but unable to reach the API. Please check if you are connected to the university network or VPN.", e);
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("An error occurred while fetching the coordinates.");
+        catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Valid postal code but not valid link: %s.".formatted(Constants.BASE_URL), e);
         }
-
-        return null; // no location
+        catch (IOException e) {
+            throw new IllegalArgumentException("Valid postal code but an IOException occurred", e);
+        }
     }
 
     // Extract value from JSON string

@@ -1,24 +1,24 @@
 package database;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import core.managers.FileManager;
 import models.Location;
+import models.ZipCode;
 
 public class ZipCodeCSVParser implements LocationReader {
-    private Map<String, Location> zipcodeToLocationMap;
+    private List<ZipCode> zipCodeList;
 
     public ZipCodeCSVParser() {
-        this.zipcodeToLocationMap = new HashMap<>();
+        this.zipCodeList = new ArrayList<>();
 
         initializeZipCodeMap();
     }
 
     @Override
     public Location getLocation(String zipCode) {
-        return zipcodeToLocationMap.get(zipCode);
+        return zipCodeList.get(zipCodeList.indexOf(new ZipCode(zipCode, null))).getLocation();
     }
 
     private void initializeZipCodeMap() {
@@ -29,10 +29,10 @@ public class ZipCodeCSVParser implements LocationReader {
 
             if (parts.length == 3) {
                 try {
-                    String zipCode = parts[0];
                     double lat = Double.parseDouble(parts[1]);
                     double lon = Double.parseDouble(parts[2]);
-                    zipcodeToLocationMap.put(zipCode, new Location(lat, lon));
+                    ZipCode zipCode = new ZipCode(parts[0], new Location(lat, lon));
+                    zipCodeList.add(zipCode);
                 }
                 catch (NumberFormatException e) {
                     System.err.println("Skipping invalid line: " + line);
@@ -42,6 +42,6 @@ public class ZipCodeCSVParser implements LocationReader {
     }
 
     public boolean zipCodeInFile(String zipCode) {
-        return zipcodeToLocationMap.containsKey(zipCode);
+        return zipCodeList.contains(new ZipCode(zipCode, null));
     }
 }

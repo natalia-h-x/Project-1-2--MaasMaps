@@ -13,6 +13,7 @@ import models.Location;
 import ui.map.geometry.ImageMarker;
 import ui.map.Map;
 import ui.map.geometry.Line;
+import ui.map.geometry.MarkerFactory;
 
 public class MaasMapsUI extends JFrame {
     private Map map;
@@ -38,7 +39,7 @@ public class MaasMapsUI extends JFrame {
         // create split pane with left and right panels
         map.setMinimumSize(new Dimension(500, 600));
         map.setPreferredSize(new Dimension(500, 600));
-        navigationPanel.setMinimumSize(new Dimension(400, 600));
+        navigationPanel.setMinimumSize(new Dimension(450, 600));
         navigationPanel.setPreferredSize(new Dimension(500, 600));
 
         splitPane.add(navigationPanel, JSplitPane.LEFT);
@@ -54,7 +55,7 @@ public class MaasMapsUI extends JFrame {
             new Location(50.90074, 5.714544), new Location(50.877296 ,5.672557)
         ));
 
-        map.addMapIcon(ImageMarker.createBusImageMarker(new Location(50.853617, 5.692009)));
+        map.addMapIcon(MarkerFactory.createBusImageMarker(new Location(50.853617, 5.692009)));
     }
 }
 

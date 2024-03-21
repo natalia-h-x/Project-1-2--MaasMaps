@@ -5,12 +5,14 @@ import javax.swing.*;
 import constants.Constants.UIConstants;
 import core.Context;
 import database.ZipCodeDatabaseInteractor;
+import models.Location;
 import transport.Biking;
 import transport.TransportMode;
 import transport.Walking;
 import ui.map.geometry.ImageMarker;
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
+import ui.map.geometry.MarkerFactory;
 
 import java.awt.*;
 
@@ -133,20 +135,30 @@ public class NavigationPanel extends JPanel {
 
             Context.getContext().getMap().clearIcons();
 
-            line = new Line(
-                    db.getLocation(textField1.getText()),
-                    db.getLocation(textField2.getText())
-                );
-            startPoint = ImageMarker.createAImageMarker(db.getLocation(textField1.getText()));
-            endPoint = ImageMarker.createBImageMarker(db.getLocation(textField2.getText()));
-            Context.getContext().getMap().addMapIcon(line, startPoint, endPoint);
+            try {
+                Location locationA = db.getLocation(textField1.getText());
+                Location locationB = db.getLocation(textField2.getText());
 
+                line = new Line(
+                        locationA,
+                        locationB
+                    );
 
-            double time = transportMode.calculateTravelTime(db.getLocation(textField1.getText()), db.getLocation(textField2.getText()));
-            double seconds = ((time - (int)(time)))*60;
-            timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + (int) (time) + " min " + Math.round(seconds) + " seconds");
+                startPoint = MarkerFactory.createAImageMarker(locationA);
+                endPoint = MarkerFactory.createBImageMarker(locationB);
+
+                Context.getContext().getMap().addMapIcon(line, startPoint, endPoint);
+
+                double time = transportMode.calculateTravelTime(locationA, locationB);
+                double seconds = ((time - (int)(time)))*60;
+                timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + (int) (time) + " min " + Math.round(seconds) + " seconds");
+            }
+            catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
+
     private void addClearActionListener(JButton clearButton){
         clearButton.addActionListener(e -> {
             Context.getContext().getMap().clearIcons();
