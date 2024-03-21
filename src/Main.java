@@ -17,7 +17,7 @@ public class Main {
         /*
          * Location fetching logic
          */
-        ZipCodeDatabaseInteractor db = ZipCodeDatabaseInteractor.getZipCodeDatabaseInteractor();
+       /*  ZipCodeDatabaseInteractor db = ZipCodeDatabaseInteractor.getZipCodeDatabaseInteractor();
 
         Location loc1 = db.getLocation("6229EN");
         Location loc2 = db.getLocation("6211LC");
@@ -37,6 +37,6 @@ public class Main {
         System.out.println("Walking time in mins: " + travelTimeWalking);
         System.out.println("Biking time in mins: " + travelTimeBiking);
         System.out.println("Distance in km: " + travelDistance);
-        System.out.println();
+        System.out.println(); */
     }
 }
