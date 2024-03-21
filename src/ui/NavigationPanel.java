@@ -2,6 +2,7 @@ package ui;
 
 import javax.swing.*;
 
+import constants.Constants.UIConstants;
 import core.Context;
 import database.ZipCodeDatabaseInteractor;
 import transport.Biking;
@@ -14,17 +15,6 @@ import ui.map.geometry.Marker;
 import java.awt.*;
 
 public class NavigationPanel extends JPanel {
-    private static final int GUI_BORDER_SIZE = 25;
-    private static final String GUI_FONT_FAMILY = "Arial";
-    private static final String GUI_TIME_LABEL_TEXT = "Average time needed for this distance: ";
-    private static final int GUI_TITLE_FONT_SIZE      = 40;
-    private static final int GUI_TEXT_FIELD_FONT_SIZE = 15;
-    private static final int GUI_INFO_FONT_SIZE       = 13;
-    private static final Color GUI_TITLE_COLOR                = new Color(87 , 100 , 144);
-    private static final Color GUI_ACCENT_COLOR               = new Color(53 , 80  , 112);
-    private static final Color GUI_HIGHLIGHT_COLOR            = new Color(237, 242 , 244);
-    private static final Color GUI_HIGHLIGHT_BACKGROUND_COLOR = new Color(119, 150 , 203);
-    private static final Color GUI_BACKGROUND_COLOR           = new Color(201, 202 , 217);
     private JLabel timeLabel;
 
     public NavigationPanel() {
@@ -33,85 +23,85 @@ public class NavigationPanel extends JPanel {
 
     private void initialiseNavigationUI() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createMatteBorder(GUI_BORDER_SIZE, GUI_BORDER_SIZE, GUI_BORDER_SIZE, GUI_BORDER_SIZE, GUI_BACKGROUND_COLOR));
-        setForeground(GUI_BACKGROUND_COLOR);
-        setBackground(GUI_BACKGROUND_COLOR);
+        setBorder(BorderFactory.createMatteBorder(UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BACKGROUND_COLOR));
+        setForeground(UIConstants.GUI_BACKGROUND_COLOR);
+        setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
         // create navigation side JPanel
         JPanel navigationButtons = new JPanel();
-        navigationButtons.setBackground(GUI_BACKGROUND_COLOR);
-        navigationButtons.setLayout(new GridLayout(5, 0, 0, GUI_BORDER_SIZE));
+        navigationButtons.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+        navigationButtons.setLayout(new GridLayout(2, 0, 0, UIConstants.GUI_BORDER_SIZE));
 
         // create postal codes' fields
         JLabel location1 = new JLabel("From: ");
-        location1.setFont(new Font(GUI_FONT_FAMILY, Font.BOLD, GUI_TEXT_FIELD_FONT_SIZE));
+        location1.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
 
         JTextField textField1 = new JTextField("Enter postal code", 8);
         JLabel location2 = new JLabel("To: ");
-        location2.setFont(new Font(GUI_FONT_FAMILY, Font.BOLD, GUI_TEXT_FIELD_FONT_SIZE));
+        location2.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
+
 
         JTextField textField2 = new JTextField("Enter postal code", 8);
         JButton calculate = new JButton("Calculate");
-        calculate.setBackground(GUI_HIGHLIGHT_BACKGROUND_COLOR);
-        calculate.setForeground(GUI_HIGHLIGHT_COLOR);
+        calculate.setBackground(UIConstants.GUI_HIGHLIGHT_BACKGROUND_COLOR);
+        calculate.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+
+        //arrange text fields to jpanels
+        JPanel panel1= new JPanel();
+        JPanel panel2= new JPanel();
+        panel1.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+        panel2.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+
+        panel1.setLayout(new GridLayout(2, 0, 0, UIConstants.GUI_BORDER_SIZE / 2));
+        panel2.setLayout(new GridLayout(2, 0, 0, UIConstants.GUI_BORDER_SIZE / 2));
+        panel1.add(location1);
+        panel1.add(location2);
+        panel2.add(textField1);
+        panel2.add(textField2);
 
         JLabel title = new JLabel("Maas maps");
-        title.setForeground(GUI_TITLE_COLOR);
-        title.setFont(new Font(GUI_FONT_FAMILY, Font.BOLD, GUI_TITLE_FONT_SIZE));
+        title.setForeground(UIConstants.GUI_TITLE_COLOR);
+        title.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TITLE_FONT_SIZE));
         title.setHorizontalAlignment(SwingConstants.CENTER);
 
-        timeLabel = new JLabel(GUI_TIME_LABEL_TEXT);
-        timeLabel.setFont(new Font(" ", Font.BOLD, GUI_INFO_FONT_SIZE));
+        timeLabel = new JLabel(UIConstants.GUI_TIME_LABEL_TEXT);
+        timeLabel.setFont(new Font(" ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
         // for later : JLabel resultLabel = new JLabel()
         // calls calculator methods or whatever to get time result
 
         // Create Combo Box header
         JLabel transportType = new JLabel("Select means of transport: ");
-        transportType.setFont(new Font("Select means of transport: ", Font.BOLD, GUI_INFO_FONT_SIZE));
+        transportType.setFont(new Font("Select means of transport: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // create combo box
         String[] options = {"Walking", "Biking"};
         JComboBox<String> selection = new JComboBox<>(options);
-        selection.setBackground(GUI_ACCENT_COLOR);
-        selection.setForeground(GUI_HIGHLIGHT_COLOR);
-
-        // create middlePanel to hold label1 and textField1
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(GUI_BACKGROUND_COLOR);
-        topPanel.add(location1, BorderLayout.WEST);
-        topPanel.add(textField1, BorderLayout.CENTER);
-
-        // create middlePanel to hold label2 and textField2
-        JPanel middlePanel = new JPanel(new BorderLayout());
-        middlePanel.setBackground(GUI_BACKGROUND_COLOR);
-        middlePanel.add(location2, BorderLayout.WEST);
-        middlePanel.add(textField2, BorderLayout.CENTER);
+        selection.setBackground(UIConstants.GUI_ACCENT_COLOR);
+        selection.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
 
         // create bottomPanel to hold label3, selection, and calculate button
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JPanel selectionPanel = new JPanel(new BorderLayout());
         JButton clearButton = new JButton("Clear Map");
-        clearButton.setBackground(GUI_TITLE_COLOR);
+        clearButton.setBackground(UIConstants.GUI_TITLE_COLOR);
         clearButton.setForeground(Color.WHITE);
-        selectionPanel.setBackground(GUI_BACKGROUND_COLOR);
-        bottomPanel.setBackground(GUI_BACKGROUND_COLOR);
+        selectionPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+        bottomPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         selectionPanel.add(transportType, BorderLayout.WEST);
         selectionPanel.add(selection, BorderLayout.CENTER);
         selectionPanel.add(calculate, BorderLayout.EAST);
         bottomPanel.add(timeLabel, BorderLayout.CENTER);
-        bottomPanel.add(clearButton,BorderLayout.SOUTH);
-        bottomPanel.add(selectionPanel,BorderLayout.NORTH);
-        
+        bottomPanel.add(clearButton, BorderLayout.SOUTH);
+        bottomPanel.add(selectionPanel, BorderLayout.NORTH);
 
-        JPanel zipCodeSelectionPanel = new JPanel(new GridLayout(2, 0, 0, GUI_BORDER_SIZE / 2));
-        zipCodeSelectionPanel.setBackground(GUI_BACKGROUND_COLOR);
-        zipCodeSelectionPanel.add(topPanel);
-        zipCodeSelectionPanel.add(middlePanel);
+        JPanel zipCodeSelectionPanel = new JPanel(new BorderLayout());
+        zipCodeSelectionPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+        zipCodeSelectionPanel.add(panel1, BorderLayout.WEST);
+        zipCodeSelectionPanel.add(panel2, BorderLayout.CENTER);
 
         // add components to the navigation panel
         navigationButtons.add(title);
         navigationButtons.add(zipCodeSelectionPanel);
-
 
         // add split pane to the frame
         add(navigationButtons, BorderLayout.NORTH);
@@ -152,18 +142,16 @@ public class NavigationPanel extends JPanel {
                 endPoint = ImageMarker.createBImageMarker(db.getLocation(textField2.getText()))
             );
 
-            
 
             double time = transportMode.calculateTravelTime(db.getLocation(textField1.getText()), db.getLocation(textField2.getText()));
             double seconds = ((time - (int)(time)))*60;
-            timeLabel.setText(GUI_TIME_LABEL_TEXT + String.valueOf((int)(time)) + " min " + String.valueOf(Math.round(seconds)) + " seconds");
+            timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + (int) (time) + " min " + Math.round(seconds) + " seconds");
         });
     }
     private void addClearActionListener(JButton clearButton){
         clearButton.addActionListener(e -> {
             Context.getContext().getMap().clearIcons();
-            timeLabel.setText(GUI_TIME_LABEL_TEXT);
-            
+            timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT);
         });
     }
 }
