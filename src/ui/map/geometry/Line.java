@@ -44,7 +44,7 @@ public class Line extends Component implements MapIcon {
         int offset = 1;
         // Get the each location to draw the lines
         g2.setPaint(new Color(001, 010, 100));
-        BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10);
+        BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
         g2.setStroke(bs);
 
         for (int i = 0; i < locations.size() - 1; i++) {
@@ -70,9 +70,13 @@ public class Line extends Component implements MapIcon {
             // slight offsets
             g2.setPaint(Color.BLACK);
             g2.drawString(distance, center.x - offset, center.y - offset);
+            g2.drawString(distance, center.x - offset, center.y);
             g2.drawString(distance, center.x - offset, center.y + offset);
+            g2.drawString(distance, center.x + offset, center.y);
             g2.drawString(distance, center.x + offset, center.y - offset);
+            g2.drawString(distance, center.x, center.y - offset);
             g2.drawString(distance, center.x + offset, center.y + offset);
+            g2.drawString(distance, center.x, center.y + offset);
 
             // Then draw the text in white at the original position
             g2.setPaint(Color.WHITE);

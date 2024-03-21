@@ -54,9 +54,9 @@ public class NavigationPanel extends JPanel {
         calculate.setForeground(GUI_HIGHLIGHT_COLOR);
 
         JLabel title = new JLabel("Maas maps");
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setFont(new Font(GUI_FONT_FAMILY, Font.BOLD, GUI_TITLE_FONT_SIZE));
         title.setForeground(GUI_TITLE_COLOR);
+        title.setFont(new Font(GUI_FONT_FAMILY, Font.BOLD, GUI_TITLE_FONT_SIZE));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
 
         timeLabel = new JLabel(GUI_TIME_LABEL_TEXT);
         timeLabel.setFont(new Font(" ", Font.BOLD, GUI_INFO_FONT_SIZE));
@@ -125,7 +125,7 @@ public class NavigationPanel extends JPanel {
             switch ((String) selection.getSelectedItem()) {
                 case "Walking": transportMode = new Walking(); break;
                 case "Biking": transportMode = new Biking(); break;
-                default: throw new IllegalArgumentException("The Transport Mode %s is not valid!".formatted(selection.getSelectedItem()));
+                default: throw new IllegalArgumentException("The Transport Mode %s is not supported!".formatted(selection.getSelectedItem()));
             }
 
             Context.getContext().getMap().addMapIcon(
