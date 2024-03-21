@@ -125,7 +125,7 @@ public class NavigationPanel extends JPanel {
             switch ((String) selection.getSelectedItem()) {
                 case "Walking": transportMode = new Walking(); break;
                 case "Biking": transportMode = new Biking(); break;
-                default: throw new IllegalArgumentException("The Transport Mode %s is not valid!".formatted(selection.getSelectedItem()));
+                default: throw new IllegalArgumentException("The Transport Mode %s is not supported!".formatted(selection.getSelectedItem()));
             }
 
             Context.getContext().getMap().addMapIcon(
