@@ -7,7 +7,9 @@ import database.ZipCodeDatabaseInteractor;
 import transport.Biking;
 import transport.TransportMode;
 import transport.Walking;
+import ui.map.geometry.ImageMarker;
 import ui.map.geometry.Line;
+import ui.map.geometry.Marker;
 
 import java.awt.*;
 
@@ -130,6 +132,8 @@ public class NavigationPanel extends JPanel {
         calculate.addActionListener(e -> {
             TransportMode transportMode;
             Line line;
+            Marker startPoint;
+            Marker endPoint;
 
             switch ((String) selection.getSelectedItem()) {
                 case "Walking": transportMode = new Walking(); break;
@@ -137,11 +141,15 @@ public class NavigationPanel extends JPanel {
                 default: throw new IllegalArgumentException("The Transport Mode %s is not supported!".formatted(selection.getSelectedItem()));
             }
 
+            Context.getContext().getMap().clearIcons();
+
             Context.getContext().getMap().addMapIcon(
                 line = new Line(
                     db.getLocation(textField1.getText()),
                     db.getLocation(textField2.getText())
-                )
+                ),
+                startPoint = ImageMarker.createAImageMarker(db.getLocation(textField1.getText())), 
+                endPoint = ImageMarker.createBImageMarker(db.getLocation(textField2.getText()))
             );
 
             
@@ -155,6 +163,7 @@ public class NavigationPanel extends JPanel {
         clearButton.addActionListener(e -> {
             Context.getContext().getMap().clearIcons();
             timeLabel.setText(GUI_TIME_LABEL_TEXT);
+            
         });
     }
 }

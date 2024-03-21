@@ -6,6 +6,8 @@ public class Constants { private Constants() {}
         public static final String MAAS_ZIP_LATLON_PATH = "resources/MassZipLatLon.csv";
         public static final String BUS_STOP_ICON = "resources/BusIcon.png";
         public static final String RANDOM_ICON = "resources/Random.png";
+        public static final String A_IMAGE = "resources/AIcon.png";
+        public static final String B_IMAGE = "resources/BIcon.png";
     }
 
     public static final String BASE_URL = "https://computerscience.dacs.unimaas.nl/get_coordinates";
