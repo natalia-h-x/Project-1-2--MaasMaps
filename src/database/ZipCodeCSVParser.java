@@ -9,7 +9,7 @@ import models.ZipCode;
 
 /**
  * This class reads and parses the zipcode data from the csv file.
- * 
+ *
  * @author Kimon Navridis
  * @author Natalia Hadjisoteriou
  * @author Sian Lodde
@@ -20,15 +20,18 @@ public class ZipCodeCSVParser implements LocationReader {
     public ZipCodeCSVParser() {
         this.zipCodeList = new ArrayList<>();
 
-        initializeZipCodeMap();
+        initializeZipCodeList();
     }
 
+    /**
+     * Check if the zipCode String is already present in the list.
+     */
     @Override
     public Location getLocation(String zipCode) {
         return zipCodeList.get(zipCodeList.indexOf(new ZipCode(zipCode, null))).getLocation();
     }
 
-    private void initializeZipCodeMap() {
+    private void initializeZipCodeList() {
         List<String> data = FileManager.getZipCodeLocations();
 
         for (String line : data) {
@@ -48,7 +51,7 @@ public class ZipCodeCSVParser implements LocationReader {
         }
     }
 
-    public boolean zipCodeInFile(String zipCode) {
+    public boolean containsZipCode(String zipCode) {
         return zipCodeList.contains(new ZipCode(zipCode, null));
     }
 }

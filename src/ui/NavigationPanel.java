@@ -17,7 +17,7 @@ import java.awt.*;
 
 /**
  * This class represents the side navigation panel in the UI
- * 
+ *
  * @author Natalia Hadjisoteriou
  */
 public class NavigationPanel extends JPanel {
@@ -115,9 +115,6 @@ public class NavigationPanel extends JPanel {
 
         addActionListeners(textField1, textField2, calculate, selection);
         addClearActionListener(clearButton);
-
-        //set visible
-        setVisible(true);
     }
 
     private void addActionListeners(JTextField textField1, JTextField textField2, JButton calculate,

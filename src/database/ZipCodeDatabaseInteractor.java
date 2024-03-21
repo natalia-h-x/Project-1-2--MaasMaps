@@ -5,7 +5,7 @@ import models.ZipCode;
 
 /**
  * Singleton database for only loading the zip codes once.
- * 
+ *
  * @author Kimon Navridis
  * @author Sian Lodde
  */
@@ -32,7 +32,7 @@ public class ZipCodeDatabaseInteractor implements LocationReader {
             throw new IllegalArgumentException(zipcode + " not a valid postal code.");
         }
 
-        if (csvParser.zipCodeInFile(zipcode))
+        if (csvParser.containsZipCode(zipcode))
             return csvParser.getLocation(zipcode);
 
         return apiRequest.getLocation(zipcode);

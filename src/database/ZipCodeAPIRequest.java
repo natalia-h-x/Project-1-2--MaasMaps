@@ -11,11 +11,12 @@ import java.net.URL;
 import constants.Constants;
 import constants.Constants.Paths;
 import core.managers.FileManager;
+import core.managers.JSONManager;
 import models.Location;
 
 /**
  * This class gets zipcode data by requesting it from an API.
- * 
+ *
  * @author Kimon Navridis
  * @author Sian Lodde
  * @author Natalia Hadjisoteriou
@@ -54,8 +55,8 @@ public class ZipCodeAPIRequest implements LocationReader {
                 in.close();
 
                 // Parse the JSON response
-                double latitude = extractValue(response.toString(), "latitude");
-                double longitude = extractValue(response.toString(), "longitude");
+                double latitude = JSONManager.extractValue(response.toString(), "latitude");
+                double longitude = JSONManager.extractValue(response.toString(), "longitude");
 
                 // Cache the result so that we do not have to ask the API for this zipcode again
                 FileManager.appendToFile(Paths.MAAS_ZIP_LATLON_PATH, "%s,%s,%s".formatted(zipCode, latitude, longitude));
@@ -78,33 +79,5 @@ public class ZipCodeAPIRequest implements LocationReader {
         catch (IOException e) {
             throw new IllegalArgumentException("Valid postal code but an IOException occurred", e);
         }
-    }
-
-    // Extract value from JSON string
-    private static double extractValue(String json, String key) {
-        String keyWithQuotes = "\"" + key + "\":";
-        int startIndex = json.indexOf(keyWithQuotes) + keyWithQuotes.length();
-
-        if (startIndex == -1) {
-            // key not found
-            return Double.NaN; // TODO (maybe) throw error
-        }
-
-        int endIndex = json.indexOf(",", startIndex);
-
-        if (endIndex == -1) { // If it's the last element, there might not be a comma
-            endIndex = json.indexOf("}", startIndex);
-        }
-
-        if (endIndex == -1) {
-            // Proper JSON closure not found
-            return Double.NaN; // TODO (maybe) throw error
-        }
-
-        String value = json.substring(startIndex, endIndex).trim();
-
-        // remove porential quotes
-        value = value.replaceAll("^\"|\"$", "");
-        return Double.parseDouble(value);
     }
 }

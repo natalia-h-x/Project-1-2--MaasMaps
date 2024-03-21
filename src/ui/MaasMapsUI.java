@@ -10,7 +10,7 @@ import ui.map.Map;
 
 /**
  * This class represents the app UI showing the map and the navigation panel
- * 
+ *
  * @author Sheena Gallagher
  */
 public class MaasMapsUI extends JFrame {
@@ -27,7 +27,6 @@ public class MaasMapsUI extends JFrame {
         setSize(800, 600);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
 
         JSplitPane splitPane = new JSplitPane();
         setContentPane(splitPane);
@@ -43,6 +42,7 @@ public class MaasMapsUI extends JFrame {
         splitPane.add(navigationPanel, JSplitPane.LEFT);
         splitPane.add(map, JSplitPane.RIGHT);
 
+        setVisible(true);
         revalidate();
     }
 }
