@@ -1,5 +1,10 @@
 package transport;
 
+/**
+ * This class represents the transport mode biking.
+ * 
+ * @author Kimon Navridis
+ */
 public class Biking implements TransportMode {
     final double AVERAGE_SPEED = 291.66666;
 

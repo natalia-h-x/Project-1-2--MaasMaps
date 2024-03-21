@@ -2,6 +2,12 @@ package ui.map;
 
 import ui.map.geometry.MapIcon;
 
+/**
+ * This class represents a proxy to interact with the map
+ * 
+ * @author Alexandra Plishkin Islamgulova
+ * @author Sheena Gallagher
+ */
 public class ProxyMap {
     private Map map;
 

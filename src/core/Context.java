@@ -6,7 +6,7 @@ import ui.map.ProxyMap;
  * This class represents the Context singleton that harbour all share objets amoungst classes.
  *
  * @author Sian Lodde
- * @author Alexandra
+ * @author Alexandra Plishkin Islamgulova
  */
 public class Context {
     private static Context context;

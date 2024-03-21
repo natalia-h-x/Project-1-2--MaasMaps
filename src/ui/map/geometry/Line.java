@@ -14,6 +14,10 @@ import algorithms.utils.DistanceManager;
 import core.managers.MapManager;
 import models.Location;
 
+/**
+ * This class represents a line connecting two points in the map.
+ * @author Arda Ayyildizbayraktar
+ */
 public class Line extends Component implements MapIcon {
     private transient List<Location> locations = new ArrayList<>();
 

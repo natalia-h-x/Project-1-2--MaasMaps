@@ -2,6 +2,16 @@ package constants;
 
 import java.awt.Color;
 
+/**
+ * This class represents contant paths and general constants.
+ * 
+ * @author Natalia Hadjisoteriou
+ * @author Arda Ayyildizbayraktar
+ * @author Sheena Gallagher
+ * @author Sian Lodde
+ * @author Alexandra Plishkin Islamgulova
+ * @author Meriç Uruş
+ */
 public class Constants { private Constants() {}
     public static class Paths {
         public static final String RESOURCES_PLACEHOLDER_MAP_PNG = "resources/MaastrichtOpenStreetMap.png";

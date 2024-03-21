@@ -5,6 +5,12 @@ import java.awt.Point;
 import models.Location;
 import core.Context;
 
+/**
+ * This class represents the map manager that converts real world coordinates to x/y points in the map image.
+ * 
+ * @author Sian Lodde
+ * @author Alexandra Plishkin Islamgulova
+ */
 public class MapManager {
     private MapManager() {}
 

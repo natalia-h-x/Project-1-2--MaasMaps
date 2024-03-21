@@ -6,6 +6,11 @@ import java.awt.geom.Ellipse2D;
 import core.managers.MapManager;
 import models.Location;
 
+/**
+ * This class represents icons that are different types of markers in the map.
+ * @author Alexandra Plishkin Islamgulova
+ * @author Meriç Uruş
+ */
 public class Marker extends Component implements MapIcon {
     private transient int markerOffsetY = 10;
     private transient int innerSize = 7;

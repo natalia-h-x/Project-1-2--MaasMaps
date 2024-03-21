@@ -2,6 +2,11 @@ package algorithms.utils;
 
 import models.Location;
 
+/**
+ * This class represents the distance manager to calculate the distance in kilometers between two locations using the haversine function.
+ * 
+ * @author Kimon Navridis
+ */
 public class DistanceManager {
     private DistanceManager() {}
 

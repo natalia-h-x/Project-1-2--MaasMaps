@@ -7,6 +7,13 @@ import core.managers.FileManager;
 import models.Location;
 import models.ZipCode;
 
+/**
+ * This class reads and parses the zipcode data from the csv file.
+ * 
+ * @author Kimon Navridis
+ * @author Natalia Hadjisoteriou
+ * @author Sian Lodde
+ */
 public class ZipCodeCSVParser implements LocationReader {
     private List<ZipCode> zipCodeList;
 

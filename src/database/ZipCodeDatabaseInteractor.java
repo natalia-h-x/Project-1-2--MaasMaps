@@ -1,12 +1,13 @@
 package database;
 
-import javax.swing.JOptionPane;
-
 import models.Location;
 import models.ZipCode;
 
 /**
  * Singleton database for only loading the zip codes once.
+ * 
+ * @author Kimon Navridis
+ * @author Sian Lodde
  */
 public class ZipCodeDatabaseInteractor implements LocationReader {
     private static ZipCodeDatabaseInteractor zipCodeDatabaseInteractor;

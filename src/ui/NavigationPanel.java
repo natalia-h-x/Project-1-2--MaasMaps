@@ -9,13 +9,17 @@ import models.Location;
 import transport.Biking;
 import transport.TransportMode;
 import transport.Walking;
-import ui.map.geometry.ImageMarker;
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
 import ui.map.geometry.MarkerFactory;
 
 import java.awt.*;
 
+/**
+ * This class represents the side navigation panel in the UI
+ * 
+ * @author Natalia Hadjisoteriou
+ */
 public class NavigationPanel extends JPanel {
     private JLabel timeLabel;
 

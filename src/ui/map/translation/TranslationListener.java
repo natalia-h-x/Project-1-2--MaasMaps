@@ -5,6 +5,11 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+/**
+ * This class translates a translatable component
+ * 
+ * @author Sian Lodde
+ */
 public class TranslationListener {
     //* For zooming out */
     private static final int ZOOM_LEVEL_BOUND_MIN = -3;

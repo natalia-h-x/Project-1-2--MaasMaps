@@ -2,19 +2,17 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
-import javax.swing.border.BevelBorder;
 
-import models.Location;
-import ui.map.geometry.ImageMarker;
 import ui.map.Map;
-import ui.map.geometry.Line;
-import ui.map.geometry.MarkerFactory;
 
+/**
+ * This class represents the app UI showing the map and the navigation panel
+ * 
+ * @author Sheena Gallagher
+ */
 public class MaasMapsUI extends JFrame {
     private Map map;
 
@@ -45,17 +43,7 @@ public class MaasMapsUI extends JFrame {
         splitPane.add(navigationPanel, JSplitPane.LEFT);
         splitPane.add(map, JSplitPane.RIGHT);
 
-        // buildTestMap();
         revalidate();
-    }
-
-    private void buildTestMap() {
-        map.addMapIcon(new Line(
-            new Location(50.853617, 5.692009),
-            new Location(50.90074, 5.714544), new Location(50.877296 ,5.672557)
-        ));
-
-        map.addMapIcon(MarkerFactory.createBusImageMarker(new Location(50.853617, 5.692009)));
     }
 }
 

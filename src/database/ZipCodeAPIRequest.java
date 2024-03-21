@@ -13,6 +13,13 @@ import constants.Constants.Paths;
 import core.managers.FileManager;
 import models.Location;
 
+/**
+ * This class gets zipcode data by requesting it from an API.
+ * 
+ * @author Kimon Navridis
+ * @author Sian Lodde
+ * @author Natalia Hadjisoteriou
+ */
 public class ZipCodeAPIRequest implements LocationReader {
     public Location getLocation(String zipCode) throws IllegalStateException {
         try {

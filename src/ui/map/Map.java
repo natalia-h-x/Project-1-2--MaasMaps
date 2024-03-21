@@ -15,6 +15,14 @@ import ui.map.translation.ProxyTranslatableGraphics2D;
 import ui.map.translation.TranslateableComponent;
 import ui.map.translation.TranslationListener;
 
+/**
+ * This class represents the map shown in the GUI
+ * 
+ * @author Sheena Gallagher
+ * @author Sian Lodde
+ * @author Alexandra Plishkin Islamgulova
+ * @author Arda Ayyildizbayraktar
+ */
 public class Map extends JPanel implements TranslateableComponent {
     private transient BufferedImage mapImage;
     private transient int mapWidth;

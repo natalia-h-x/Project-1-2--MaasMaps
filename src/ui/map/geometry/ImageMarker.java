@@ -1,11 +1,15 @@
 package ui.map.geometry;
 
-import core.managers.FileManager;
 import models.Location;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+/**
+ * This class represents an icon in the map.
+ * @author Meriç Uruş
+ */
 public class ImageMarker extends Marker {
     private transient BufferedImage image;
     private int imageWidth;

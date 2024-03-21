@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * This class represents a zipcode.
+ * 
+ * @author Natalia Hadjisoteriou
+ */
 public class ZipCode {
     private String code;
     private Location location;

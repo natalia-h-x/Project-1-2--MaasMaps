@@ -2,6 +2,11 @@ package models;
 
 import algorithms.utils.DistanceManager;
 
+/**
+ * This class represents a location in the map, based on latitude and longitude.
+ * 
+ * @author Kimon Navridis
+ */
 public class Location {
     private double latitude;
     private double longitude;

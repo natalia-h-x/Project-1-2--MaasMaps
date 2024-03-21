@@ -1,6 +1,11 @@
 package transport;
 import models.Location;
 
+/**
+ * Interface that gets implemented but all different means of transport.
+ * 
+ * @author Kimon Navridis
+ */
 public interface TransportMode {
 
     default double calculateTravelTime(Location loc1, Location loc2) {

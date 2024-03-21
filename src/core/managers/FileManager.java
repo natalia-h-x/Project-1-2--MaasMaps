@@ -15,6 +15,11 @@ import javax.imageio.ImageIO;
 import constants.Constants;
 import constants.Constants.Paths;
 
+/**
+ * This class represents the file manager to read the contents from the csv file.
+ * 
+ * @author Alexandra Plishkin Islamgulova
+ */
 public class FileManager {
     private FileManager() {}
 

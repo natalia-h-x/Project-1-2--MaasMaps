@@ -14,6 +14,13 @@ import static constants.Constants.Paths.RANDOM_ICON;
 import static constants.Constants.Paths.A_IMAGE;
 import static constants.Constants.Paths.B_IMAGE;
 
+/**
+ * This class is a marker factory to create different markers in the map.
+ * @author Sheena Gallagher
+ * @author Sian Lodde
+ * @author Alexandra Plishkin Islamgulova
+ * @author Meriç Uruş
+ */
 public class MarkerFactory {
     private MarkerFactory() {}
 
