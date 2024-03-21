@@ -69,9 +69,13 @@ public class Line extends Component implements MapIcon {
             // slight offsets
             g2.setPaint(Color.BLACK);
             g2.drawString(distance, center.x - offset, center.y - offset);
+            g2.drawString(distance, center.x - offset, center.y);
             g2.drawString(distance, center.x - offset, center.y + offset);
+            g2.drawString(distance, center.x + offset, center.y);
             g2.drawString(distance, center.x + offset, center.y - offset);
+            g2.drawString(distance, center.x, center.y - offset);
             g2.drawString(distance, center.x + offset, center.y + offset);
+            g2.drawString(distance, center.x, center.y + offset);
 
             // Then draw the text in white at the original position
             g2.setPaint(Color.WHITE);

@@ -54,9 +54,9 @@ public class NavigationPanel extends JPanel {
         calculate.setForeground(GUI_HIGHLIGHT_COLOR);
 
         JLabel title = new JLabel("Maas maps");
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setFont(new Font(GUI_FONT_FAMILY, Font.BOLD, GUI_TITLE_FONT_SIZE));
         title.setForeground(GUI_TITLE_COLOR);
+        title.setFont(new Font(GUI_FONT_FAMILY, Font.BOLD, GUI_TITLE_FONT_SIZE));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
 
         timeLabel = new JLabel(GUI_TIME_LABEL_TEXT);
         timeLabel.setFont(new Font(" ", Font.BOLD, GUI_INFO_FONT_SIZE));
