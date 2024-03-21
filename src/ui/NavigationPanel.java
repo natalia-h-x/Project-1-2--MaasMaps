@@ -135,8 +135,11 @@ public class NavigationPanel extends JPanel {
                 )
             );
 
-            double time = transportMode.getAverageSpeed() * line.getTotalDistance();
-            timeLabel.setText(GUI_TIME_LABEL_TEXT + String.valueOf(time));
+            
+
+            double time = transportMode.calculateTravelTime(db.getLocation(textField1.getText()), db.getLocation(textField2.getText()));
+            double seconds = ((time - (int)(time)))*60;
+            timeLabel.setText(GUI_TIME_LABEL_TEXT + String.valueOf((int)(time)) + " min " + String.valueOf(Math.round(seconds)) + " seconds");
         });
     }
 }

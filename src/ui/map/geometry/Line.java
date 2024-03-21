@@ -62,7 +62,8 @@ public class Line extends Component implements MapIcon {
             g2.drawLine(p1.x, p1.y, p2.x, p2.y);
 
             // Calculate distance and midpoint
-            String distance = String.valueOf(DistanceManager.haversine(loc1, loc2));
+            String distance = String.valueOf((double)Math.round(DistanceManager.haversine(loc1, loc2) * 100.0)/100.0) + " km";
+            //String distance = String.valueOf(DistanceManager.haversine(loc1, loc2));
             Point center = getCenter(p1, p2);
 
             // Create a 'border' effect for the text by drawing it in black first with
