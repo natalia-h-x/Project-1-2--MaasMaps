@@ -87,11 +87,19 @@ public class NavigationPanel extends JPanel {
 
         // create bottomPanel to hold label3, selection, and calculate button
         JPanel bottomPanel = new JPanel(new BorderLayout());
+        JPanel selectionPanel = new JPanel(new BorderLayout());
+        JButton clearButton = new JButton("Clear Map");
+        clearButton.setBackground(GUI_TITLE_COLOR);
+        clearButton.setForeground(Color.WHITE);
+        selectionPanel.setBackground(GUI_BACKGROUND_COLOR);
         bottomPanel.setBackground(GUI_BACKGROUND_COLOR);
-        bottomPanel.add(transportType, BorderLayout.WEST);
-        bottomPanel.add(selection, BorderLayout.CENTER);
-        bottomPanel.add(calculate, BorderLayout.EAST);
-        bottomPanel.add(timeLabel, BorderLayout.SOUTH);
+        selectionPanel.add(transportType, BorderLayout.WEST);
+        selectionPanel.add(selection, BorderLayout.CENTER);
+        selectionPanel.add(calculate, BorderLayout.EAST);
+        bottomPanel.add(timeLabel, BorderLayout.CENTER);
+        bottomPanel.add(clearButton,BorderLayout.SOUTH);
+        bottomPanel.add(selectionPanel,BorderLayout.NORTH);
+        
 
         JPanel zipCodeSelectionPanel = new JPanel(new GridLayout(2, 0, 0, GUI_BORDER_SIZE / 2));
         zipCodeSelectionPanel.setBackground(GUI_BACKGROUND_COLOR);
@@ -108,6 +116,7 @@ public class NavigationPanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
 
         addActionListeners(textField1, textField2, calculate, selection);
+        addClearActionListener(clearButton);
 
         //set visible
         setVisible(true);
@@ -140,6 +149,12 @@ public class NavigationPanel extends JPanel {
             double time = transportMode.calculateTravelTime(db.getLocation(textField1.getText()), db.getLocation(textField2.getText()));
             double seconds = ((time - (int)(time)))*60;
             timeLabel.setText(GUI_TIME_LABEL_TEXT + String.valueOf((int)(time)) + " min " + String.valueOf(Math.round(seconds)) + " seconds");
+        });
+    }
+    private void addClearActionListener(JButton clearButton){
+        clearButton.addActionListener(e -> {
+            Context.getContext().getMap().clearIcons();
+            timeLabel.setText(GUI_TIME_LABEL_TEXT);
         });
     }
 }
