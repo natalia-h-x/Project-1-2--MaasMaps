@@ -17,7 +17,7 @@ import constants.Constants.Paths;
 
 /**
  * This class represents the file manager to read the contents from the csv file.
- * 
+ *
  * @author Alexandra Plishkin Islamgulova
  */
 public class FileManager {
@@ -52,7 +52,7 @@ public class FileManager {
     }
 
     public static void appendToFile(String path, String content) throws IOException {
-        Files.write(java.nio.file.Paths.get(path), content.getBytes(), StandardOpenOption.APPEND);
+        Files.write(java.nio.file.Paths.get(path), ("\n" + content).getBytes(), StandardOpenOption.APPEND);
     }
 }
 
