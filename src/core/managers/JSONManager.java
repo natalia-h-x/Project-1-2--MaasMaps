@@ -4,7 +4,7 @@ package core.managers;
  * Manager for common JSON manipulations and JSON data extraction.
  *
  * @author Sian Lodde
- * @author Kimon Nabvridies
+ * @author Kimon Navridis
  */
 public class JSONManager {
     /**
