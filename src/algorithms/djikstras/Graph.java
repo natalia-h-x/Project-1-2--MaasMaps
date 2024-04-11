@@ -1,21 +1,56 @@
-package algorithms.djikstras;
-import models.Location;
+package W5.GraphImplementations;
 
-import java.util.*;
+import java.util.List;
 
-public class Graph {
-    private Map<Location, List<Edge>> adjacencyList;
+public interface Graph<T> {
+    /**
+     * Checks whether there’s an edge from the node x to the node y
+     * 
+     * @param x
+     * @param y
+     * @return true if a node from x to y is present, false otherwise
+     */
+    public boolean adjacent(T x, T y);
 
-    public Graph() {
-        adjacencyList = new HashMap<>();
-    }
+    /**
+     * Returns the list of all vertices y s.t. there’s an edge from x to y
+     * 
+     * @param x
+     * @return
+     */
+    public List<T> neighbors(T x);
 
-    public void addEdge(Location source, Location destination) {
-        adjacencyList.putIfAbsent(source, new ArrayList<>());
-        adjacencyList.putIfAbsent(destination, new ArrayList<>());
-        double weight = source.distanceTo(destination);
-        adjacencyList.get(source).add(new Edge(destination, weight));
-    }
+    /**
+     * Adds the vertex x to the graph
+     * 
+     * @param x
+     */
+    public void addVertex(T x);
 
+    /**
+     * Removes the vertex x from the graph
+     * 
+     * @param x
+     */
+    public void removeVertex(T x);
 
+    /**
+     * Adds an edge from the vertices x to y
+     * 
+     * @param x
+     * @param y
+     */
+    public void addEdge(T x, T y);
+
+    /**
+     * Removes the edge from the vertices x to y
+     * 
+     * @param x
+     * @param y
+     */
+    public void removeEdge(T x, T y);
+
+    public Graph<T> clone();
+
+    public List<T> getVertecesList();
 }
