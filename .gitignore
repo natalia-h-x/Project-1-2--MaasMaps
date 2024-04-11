@@ -1,2 +1,11 @@
 
 bin/
+resources/gtfs/agency.txt
+resources/gtfs/calendar_dates.txt
+resources/gtfs/feed_info.txt
+resources/gtfs/routes.txt
+resources/gtfs/shapes.txt
+resources/gtfs/stop_times.txt
+resources/gtfs/stops.txt
+resources/gtfs/transfers.txt
+resources/gtfs/trips.txt

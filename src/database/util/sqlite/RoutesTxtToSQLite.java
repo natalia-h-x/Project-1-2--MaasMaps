@@ -9,15 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 public class RoutesTxtToSQLite {
-
     public static void main(String[] args) {
-        String txtFilePath = "resources/routes.txt";
+        String txtFilePath = "resources/gtfs/routes.txt";
         String jdbcUrl = "jdbc:sqlite:transport.db";
         String line;
-        String delimiter = ","; 
+        String delimiter = ",";
 
         try (Connection conn = DriverManager.getConnection(jdbcUrl)) {
-
             String createTableSQL = "CREATE TABLE IF NOT EXISTS routes (" +
                                     "route_id TEXT, " +
                                     "agency_id TEXT, " +
@@ -29,6 +27,7 @@ public class RoutesTxtToSQLite {
                                     "route_text_color TEXT, " +
                                     "route_url TEXT" +
                                     ");";
+
             try (Statement stmt = conn.createStatement()) {
                 stmt.execute(createTableSQL);
                 System.out.println("Table created.");
@@ -38,9 +37,8 @@ public class RoutesTxtToSQLite {
             PreparedStatement pstmt = conn.prepareStatement(insertSQL);
 
             try (BufferedReader br = new BufferedReader(new FileReader(txtFilePath))) {
-                
                 br.readLine();
-                
+
                 while ((line = br.readLine()) != null) {
                     String[] data = line.split(delimiter, -1); // -1 to include trailing empty strings
 
@@ -49,12 +47,14 @@ public class RoutesTxtToSQLite {
                     }
                     pstmt.executeUpdate();
                 }
+
                 System.out.println("Data inserted.");
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
