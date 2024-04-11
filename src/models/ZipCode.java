@@ -58,11 +58,11 @@ public class ZipCode {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof ZipCode zipCode){
-            return zipCode.getCode().equals(code);
+        if (o instanceof ZipCode) {
+            return ((ZipCode) o).getCode().equals(code);
         }
-        if (o instanceof String code){
-            return code.equals(this.code);
+        if (o instanceof String) {
+            return ((String) o).equals(code);
         }
 
         return false;
