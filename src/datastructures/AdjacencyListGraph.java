@@ -98,7 +98,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
             result.append(vertex + " neighbors: ->");
 
             for (EdgeNode<T> edge : neighbours) {
-                result += edge.getElement() + "->";
+                result.append(edge.getElement() + "->");
             }
 
             result.append("null\n");
