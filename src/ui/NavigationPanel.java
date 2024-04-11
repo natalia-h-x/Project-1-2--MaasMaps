@@ -4,7 +4,7 @@ import javax.swing.*;
 
 import constants.Constants.UIConstants;
 import core.Context;
-import database.ZipCodeDatabaseInteractor;
+import database.util.fileaccess.ZipCodeDatabaseInteractor;
 import models.Location;
 import transport.Biking;
 import transport.TransportMode;
