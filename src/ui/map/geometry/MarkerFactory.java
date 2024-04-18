@@ -25,14 +25,12 @@ public class MarkerFactory {
     private MarkerFactory() {}
 
     private static BufferedImage busStopImage;
-    private static BufferedImage randomImage;
     private static BufferedImage aImage;
     private static BufferedImage bImage;
 
     static {
         try {
             busStopImage = FileManager.getImage(BUS_STOP_ICON);
-            randomImage = FileManager.getImage(RANDOM_ICON);
             aImage = FileManager.getImage(A_IMAGE);
             bImage = FileManager.getImage(B_IMAGE);
         }
@@ -43,10 +41,6 @@ public class MarkerFactory {
 
     public static ImageMarker createBusImageMarker(Location location){
         return new ImageMarker(location, busStopImage);
-    }
-
-    public static ImageMarker createRandomImageMarker(Location location){
-        return new ImageMarker(location, randomImage);
     }
 
     public static ImageMarker createAImageMarker(Location location){

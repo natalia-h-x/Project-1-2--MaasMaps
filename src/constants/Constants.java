@@ -4,7 +4,7 @@ import java.awt.Color;
 
 /**
  * This class represents contant paths and general constants.
- * 
+ *
  * @author Natalia Hadjisoteriou
  * @author Arda Ayyildizbayraktar
  * @author Sheena Gallagher
@@ -14,12 +14,12 @@ import java.awt.Color;
  */
 public class Constants { private Constants() {}
     public static class Paths {
-        public static final String RESOURCES_PLACEHOLDER_MAP_PNG = "resources/MaastrichtOpenStreetMap.png";
         public static final String MAAS_ZIP_LATLON_PATH = "resources/MassZipLatLon.csv";
-        public static final String BUS_STOP_ICON = "resources/BusIcon.png";
-        public static final String RANDOM_ICON = "resources/Random.png";
-        public static final String A_IMAGE = "resources/AIcon.png";
-        public static final String B_IMAGE = "resources/BIcon.png";
+        public static final String RESOURCES_PLACEHOLDER_MAP_PNG = "resources/visuals/MaastrichtOpenStreetMap.png";
+        public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.png";
+        public static final String RANDOM_ICON = "resources/visuals/icons/Random.png";
+        public static final String A_IMAGE = "resources/visuals/icons/AIcon.png";
+        public static final String B_IMAGE = "resources/visuals/icons/BIcon.png";
 
         private Paths() {}
     }
