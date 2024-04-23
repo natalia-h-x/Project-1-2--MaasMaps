@@ -14,10 +14,10 @@ import core.Context;
 public class MapManager {
     private MapManager() {}
 
-    private static final Location MAP_TOP_LEFT_LOCATION = new Location(50.90074, 5.64213);
-    private static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
-    private static final Location MAP_BOTTOM_RIGHT_LOCATION = new Location(50.815816, 5.753384);
-    private static final Point MAP_BOTTOM_RIGHT_GLOBAL_XY = getGlobalXY(MAP_BOTTOM_RIGHT_LOCATION);
+    public static final Location MAP_TOP_LEFT_LOCATION = new Location(50.90074, 5.64213);
+    public static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
+    public static final Location MAP_BOTTOM_RIGHT_LOCATION = new Location(50.815816, 5.753384);
+    public static final Point MAP_BOTTOM_RIGHT_GLOBAL_XY = getGlobalXY(MAP_BOTTOM_RIGHT_LOCATION);
 
     private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
@@ -41,5 +41,13 @@ public class MapManager {
         double y = (RADIUS_MAASTRICHT_EARTH * (location.getLatitude()));
 
         return new Point((int) x, (int) y);
+    }
+
+    public static Location pointToLocation(Point point){
+        double x = point.getX(), y = point.getY();
+        Location location = new Location(0,0);
+        location.setLongitude(Math.atan(y/x));
+        location.setLatitude(Math.acos(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))/RADIUS_MAASTRICHT_EARTH));
+        return location;
     }
 }

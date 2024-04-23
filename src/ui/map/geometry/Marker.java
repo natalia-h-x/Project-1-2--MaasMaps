@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
 import core.managers.MapManager;
+import lombok.Getter;
+import lombok.Setter;
 import models.Location;
+import ui.map.translation.ProxyTranslatableGraphics2D;
 
 /**
  * This class represents icons that are different types of markers in the map.
@@ -16,9 +19,18 @@ public class Marker extends Component implements MapIcon {
     private transient int innerSize = 7;
     private transient Location location;
     private transient int size = 5;
+    private transient Point offset = new Point(0, 0);
 
     public Marker(Location location) {
         this.location = location;
+    }
+
+    public Point getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Point offset) {
+        this.offset = offset;
     }
 
     public Location getMarkerLocation(){
@@ -34,7 +46,7 @@ public class Marker extends Component implements MapIcon {
 
     @Override
     public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = new ProxyTranslatableGraphics2D((Graphics2D) g, 1, offset);
 
         Point point = MapManager.locationToPoint(location);
         Point iconPoint = getIconLocation();

@@ -12,14 +12,18 @@ import java.util.List;
 
 import algorithms.utils.DistanceManager;
 import core.managers.MapManager;
+import lombok.Data;
 import models.Location;
 
 /**
  * This class represents a line connecting two points in the map.
  * @author Arda Ayyildizbayraktar
  */
+@Data
 public class Line extends Component implements MapIcon {
     private transient List<Location> locations = new ArrayList<>();
+
+    private Point offset;
 
     // take the locations as parameter
     public Line(Location... locations) {
@@ -28,6 +32,10 @@ public class Line extends Component implements MapIcon {
 
     public void addLocation(Location loc) {
         locations.add(loc);
+    }
+
+    public void addRelativeLocation(Location loc) {
+        addLocation(loc.translate(locations.get(locations.size() - 1)));
     }
 
     public double getTotalDistance() {
@@ -60,6 +68,9 @@ public class Line extends Component implements MapIcon {
 
             Point p1 = MapManager.locationToPoint(loc1);
             Point p2 = MapManager.locationToPoint(loc2);
+
+            p1.translate((int) this.offset.getX(), (int) this.offset.getY());        
+            p2.translate((int) this.offset.getX(), (int) this.offset.getY());        
 
             // Set paint color to blue for the line
             g2.setPaint(new Color(1, 10, 100));
