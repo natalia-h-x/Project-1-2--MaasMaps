@@ -11,6 +11,7 @@ import javax.swing.WindowConstants;
 
 import constants.Constants.UIConstants;
 import ui.map.Map;
+import ui.resultsui.Results;
 
 /**
  * This class represents the app UI showing the map and the navigation panel
@@ -36,11 +37,11 @@ public class MaasMapsUI extends JFrame {
         setContentPane(splitPane);
 
         NavigationPanel navigationPanel = new NavigationPanel();
-
         JPanel resultsContainer = new JPanel();
+
         map = new Map();
         resultsContainer.setBorder(BorderFactory.createMatteBorder(UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BACKGROUND_COLOR));
-        ResultsPanel resultsPanel = new ResultsPanel();
+        Results resultsPanel = new Results();
         resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         JSplitPane splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         map.setMinimumSize(new Dimension(800, 500));
@@ -53,7 +54,6 @@ public class MaasMapsUI extends JFrame {
 
         resultsContainer.add(splitPane2);
 
-
         // create split pane with left and right panels
         resultsContainer.setMinimumSize(new Dimension(800, 600));
         resultsContainer.setPreferredSize(new Dimension(800, 600));
@@ -62,7 +62,6 @@ public class MaasMapsUI extends JFrame {
 
         splitPane.add(navigationPanel, JSplitPane.LEFT);
         splitPane.add(resultsContainer, JSplitPane.RIGHT);
-
 
         setVisible(true);
         revalidate();

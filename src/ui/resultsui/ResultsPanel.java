@@ -1,4 +1,4 @@
-package ui;
+package ui.resultsui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,13 +17,12 @@ import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
 import ui.map.geometry.MarkerFactory;
 
-public class ResultsPanel extends JPanel {
+public class ResultsPanel extends JPanel implements ResultDisplay {
     private Line line;
     public ResultsPanel(){
         line = new Line();
         setLine(new Line(new Location(50.854581,5.690199), new Location(50.85291,5.692407), new Location(50.853228,5.690603)));
     }
-    
 
     public void setLine(Line line){
         this.line = new Line();
