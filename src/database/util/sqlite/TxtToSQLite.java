@@ -56,18 +56,17 @@ public class TxtToSQLite {
 
     private static void createTable(File file, Connection connection) throws SQLException {
         String tableName = file.getName().replaceFirst("[.][^.]+$", "");
-        String tableNameInParentheses = "(" + tableName + ")";
         String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
         String insertSQL = "INSERT INTO " + tableName + " (";
         List<String> columns = new ArrayList<>();
         List<String> values = new ArrayList<>();
-
+    
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine(); // read the first line to get headers
             if (line != null) {
-                String[] headers = line.split(",");
+                String[] headers = parseCSV(line);
                 for (int i = 0; i < headers.length; i++) {
-                    String header = headers[i];
+                    String header = headers[i].trim();
                     columns.add(header);
                     createTableSQL += header + " TEXT";
                     insertSQL += header;
@@ -80,19 +79,19 @@ public class TxtToSQLite {
             }
             createTableSQL += ")";
             insertSQL += ") VALUES (" + String.join(", ", values) + ")";
-
-            System.out.println("Creating table " + tableNameInParentheses);
+    
+            System.out.println("Creating table " + tableName);
             try (Statement stmt = connection.createStatement()) {
                 stmt.execute(createTableSQL);
             }
-            System.out.println("-- Successful --");
-
-            System.out.println("Inserting data into " + tableNameInParentheses);
+            System.out.println("-- Table creation successful --");
+    
+            System.out.println("Inserting data into " + tableName);
             connection.setAutoCommit(false); // start transaction
             try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
                 int count = 0;
                 while ((line = br.readLine()) != null) {
-                    String[] data = line.split(",");
+                    String[] data = parseCSV(line);
                     for (int i = 0; i < data.length; i++) {
                         pstmt.setString(i + 1, data[i]);
                     }
@@ -110,4 +109,10 @@ public class TxtToSQLite {
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
+    
+    private static String[] parseCSV(String csvLine) {
+        String regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        return csvLine.split(regex);
+    }
+    
 }
