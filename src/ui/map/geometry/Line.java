@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import algorithms.util.DistanceManager;
+import core.managers.DistanceManager;
 import core.managers.MapManager;
+import core.models.Location;
 import lombok.Data;
-import models.Location;
 
 /**
  * This class represents a line connecting two points in the map.
@@ -23,7 +23,7 @@ import models.Location;
 public class Line extends Component implements MapIcon {
     private transient List<Location> locations = new ArrayList<>();
 
-    private Point offset;
+    private Point offset = new Point();
 
     // take the locations as parameter
     public Line(Location... locations) {

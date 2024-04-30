@@ -1,4 +1,3 @@
-import core.managers.DatabaseManager;
 import ui.MaasMapsUI;
 
 /**
@@ -9,7 +8,5 @@ import ui.MaasMapsUI;
 public class Main {
     public static void main(String[] args) {
         new MaasMapsUI();
-        DatabaseManager.connect();
-        DatabaseManager.executeQuery();
     }
 }

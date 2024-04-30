@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.Test;
 
-import algorithms.FloydWarshall;
-import ourGraphAPI.AdjacencyMatrixGraph;
+import core.algorithms.FloydWarshall;
+import core.algorithms.datastructures.AdjacencyMatrixGraph;
 
 public class FloydWarshallTest {
     private FloydWarshall floydWarshall;

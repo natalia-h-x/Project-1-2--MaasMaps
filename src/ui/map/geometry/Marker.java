@@ -4,9 +4,7 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
 import core.managers.MapManager;
-import lombok.Getter;
-import lombok.Setter;
-import models.Location;
+import core.models.Location;
 import ui.map.translation.ProxyTranslatableGraphics2D;
 
 /**
@@ -39,9 +37,9 @@ public class Marker extends Component implements MapIcon {
 
     public Point getIconLocation(){
         Point point = MapManager.locationToPoint(location);
-        double redCenterX = point.x;
-        double redCenterY = point.y - markerOffsetY;
-        return new Point((int)redCenterX, (int)redCenterY);
+        int redCenterX = point.x;
+        int redCenterY = point.y - markerOffsetY;
+        return new Point(redCenterX, redCenterY);
     }
 
     @Override

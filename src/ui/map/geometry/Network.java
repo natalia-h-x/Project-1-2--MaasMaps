@@ -7,11 +7,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import core.algorithms.datastructures.AdjacencyListGraph;
 import core.managers.MapManager;
-import models.Location;
-import ourGraphAPI.AdjacencyListGraph;
+import core.models.Location;
 
-public class Network<T> extends Component implements MapIcon {
+public class Network extends Component implements MapIcon {
     private AdjacencyListGraph<Location> graph;
 
     public Network(AdjacencyListGraph<Location> graph){
@@ -19,9 +19,8 @@ public class Network<T> extends Component implements MapIcon {
     }
 
     public void paint(Graphics g) {
-        
         Graphics2D g2 = (Graphics2D) g;
-        int offset = 1;
+        
         // Get the each location to draw the lines
         g2.setPaint(new Color(001, 010, 100));
         BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);

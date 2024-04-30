@@ -2,13 +2,14 @@ package ui;
 
 import javax.swing.*;
 
-import constants.Constants.UIConstants;
 import core.Context;
-import database.util.fileaccess.ZipCodeDatabaseInteractor;
-import models.Location;
-import transport.Biking;
-import transport.TransportMode;
-import transport.Walking;
+import core.Constants.UIConstants;
+import core.database.ZipCodeDatabase;
+import core.managers.ExceptionManager;
+import core.models.Location;
+import core.models.transport.Biking;
+import core.models.transport.TransportMode;
+import core.models.transport.Walking;
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
 import ui.map.geometry.MarkerFactory;
@@ -29,7 +30,8 @@ public class NavigationPanel extends JPanel {
 
     private void initialiseNavigationUI() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createMatteBorder(UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BACKGROUND_COLOR));
+        setBorder(BorderFactory.createMatteBorder(UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE,
+                                                  UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BACKGROUND_COLOR));
         setForeground(UIConstants.GUI_BACKGROUND_COLOR);
         setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
@@ -45,7 +47,6 @@ public class NavigationPanel extends JPanel {
         JTextField textField1 = new JTextField("Enter postal code", 8);
         JLabel location2 = new JLabel("To: ");
         location2.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
-
 
         JTextField textField2 = new JTextField("Enter postal code", 8);
         JButton calculate = new JButton("Calculate");
@@ -120,7 +121,7 @@ public class NavigationPanel extends JPanel {
     private void addActionListeners(JTextField textField1, JTextField textField2, JButton calculate,
             JComboBox<String> selection) {
 
-        ZipCodeDatabaseInteractor db = ZipCodeDatabaseInteractor.getZipCodeDatabaseInteractor();
+        ZipCodeDatabase db = Context.getContext().getZipCodeDatabase();
 
         calculate.addActionListener(e -> {
             TransportMode transportMode;
@@ -151,7 +152,7 @@ public class NavigationPanel extends JPanel {
                 Context.getContext().getMap().addMapIcon(line, startPoint, endPoint);
 
                 double time = transportMode.calculateTravelTime(locationA, locationB);
-                double seconds = ((time - (int)(time)))*60;
+                double seconds = (time - (int) (time))*60;
                 timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + (int) (time) + " min " + Math.round(seconds) + " seconds");
             }
             catch (Exception ex) {

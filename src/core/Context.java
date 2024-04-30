@@ -1,5 +1,8 @@
 package core;
 
+import core.database.ZipCodeDatabase;
+import lombok.Getter;
+import lombok.Setter;
 import ui.map.ProxyMap;
 
 /**
@@ -8,9 +11,12 @@ import ui.map.ProxyMap;
  * @author Sian Lodde
  * @author Alexandra Plishkin Islamgulova
  */
+@Getter
+@Setter
 public class Context {
     private static Context context;
-    private ProxyMap proxyMap;
+    private ProxyMap map;
+    private ZipCodeDatabase zipCodeDatabase;
 
     private Context() {}
 
@@ -23,11 +29,10 @@ public class Context {
         return context;
     }
 
-    public ProxyMap getMap() {
-        return proxyMap;
-    }
+    public ZipCodeDatabase getZipCodeDatabase() {
+        if (zipCodeDatabase == null)
+            zipCodeDatabase = new ZipCodeDatabase();
 
-    public void setMap(ProxyMap proxyMap) {
-        this.proxyMap = proxyMap;
+        return zipCodeDatabase;
     }
 }

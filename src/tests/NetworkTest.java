@@ -3,8 +3,8 @@ package tests;
 import org.junit.Test;
 
 import core.Context;
-import models.Location;
-import ourGraphAPI.AdjacencyListGraph;
+import core.algorithms.datastructures.AdjacencyListGraph;
+import core.models.Location;
 import ui.MaasMapsUI;
 import ui.map.geometry.Network;
 
@@ -12,7 +12,7 @@ public class NetworkTest {
     private AdjacencyListGraph<Location> adjacencyListGraph;
     
     public NetworkTest() {
-        adjacencyListGraph = new AdjacencyListGraph<Location>();
+        adjacencyListGraph = new AdjacencyListGraph<>();
     }
     
     public static void main(String[] args) {
@@ -43,6 +43,6 @@ public class NetworkTest {
         
         new MaasMapsUI();
 
-        Context.getContext().getMap().addMapIcon(new Network<Location>(adjacencyListGraph));
+        Context.getContext().getMap().addMapIcon(new Network(adjacencyListGraph));
     }
 }

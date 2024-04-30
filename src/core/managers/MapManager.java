@@ -2,8 +2,8 @@ package core.managers;
 
 import java.awt.Point;
 
-import models.Location;
 import core.Context;
+import core.models.Location;
 
 /**
  * This class represents the map manager that converts real world coordinates to x/y points in the map image.

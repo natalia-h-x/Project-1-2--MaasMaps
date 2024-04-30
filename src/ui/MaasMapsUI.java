@@ -9,9 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
-import constants.Constants.UIConstants;
+import core.Constants.UIConstants;
 import ui.map.Map;
-import ui.resultsui.Results;
+import ui.results.Results;
 
 /**
  * This class represents the app UI showing the map and the navigation panel

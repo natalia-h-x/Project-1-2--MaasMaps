@@ -12,8 +12,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import constants.Constants;
-import constants.Constants.Paths;
+import core.Constants;
+import core.Constants.Paths;
 
 /**
  * This class represents the file manager to read the contents from the csv file.
@@ -23,19 +23,16 @@ import constants.Constants.Paths;
 public class FileManager {
     private FileManager() {}
 
-    public static List<String> getZipCodeLocations() {
+    public static List<String> getZipCodeLocations() throws IOException {
         List<String> locations = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(Constants.Paths.MAAS_ZIP_LATLON_PATH));
+        String line = br.readLine(); // Skip header line
 
-        try (BufferedReader br = new BufferedReader(new FileReader(Constants.Paths.MAAS_ZIP_LATLON_PATH))) {
-            String line = br.readLine(); // Skip header line
+        while ((line = br.readLine()) != null) {
+            locations.add(line);
+        }
 
-            while ((line = br.readLine()) != null) {
-                locations.add(line);
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        br.close();
 
         return locations;
     }

@@ -1,10 +1,10 @@
 package ui.map.geometry;
 
-import models.Location;
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import core.models.Location;
 
 /**
  * This class represents an icon in the map.
