@@ -14,6 +14,8 @@ import java.awt.Color;
  */
 public class Constants { private Constants() {}
     public static class Paths {
+        public static final String DATABASE_URL = "jdbc:sqlite:resources/routing.db";
+        public static final String DATABASE_FILEPATH = "resources/routing.db";
         public static final String MAAS_ZIP_LATLON_PATH = "resources/MassZipLatLon.csv";
         public static final String RESOURCES_PLACEHOLDER_MAP_PNG = "resources/visuals/MaastrichtOpenStreetMap.png";
         public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.png";
@@ -37,6 +39,13 @@ public class Constants { private Constants() {}
         public static final int GUI_BORDER_SIZE = 25;
 
         private UIConstants() {}
+    }
+    public static class ANSI {
+        public static final String GREEN = "\u001B[32m";
+        public static final String YELLOW = "\u001B[33m";
+        public static final String RESET = "\u001B[0m";
+
+        private ANSI() {}
     }
 
     public static final String BASE_URL = "https://computerscience.dacs.unimaas.nl/get_coordinates";
