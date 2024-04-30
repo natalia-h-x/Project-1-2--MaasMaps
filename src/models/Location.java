@@ -1,6 +1,6 @@
 package models;
 
-import algorithms.utils.DistanceManager;
+import algorithms.util.DistanceManager;
 import lombok.Data;
 
 import java.util.HashMap;

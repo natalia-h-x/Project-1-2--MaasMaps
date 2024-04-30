@@ -1,27 +1,14 @@
-<<<<<<<< HEAD:src/algorithms/util/DistanceManager.java
-package algorithms.utils;
-========
 package algorithms.util;
->>>>>>>> main:src/algorithms/util/DistanceCalculator.java
 
 import models.Location;
 
 /**
-<<<<<<<< HEAD:src/algorithms/util/DistanceManager.java
- * This class represents the distance manager to calculate the distance in kilometers between two locations using the haversine function.
+ * This class represents the distance calculator to calculate the distance in kilometers between two locations using the haversine function.
  * 
  * @author Kimon Navridis
  */
 public class DistanceManager {
     private DistanceManager() {}
-========
- * This class represents the distance calculator to calculate the distance in kilometers between two locations using the haversine function.
- * 
- * @author Kimon Navridis
- */
-public class DistanceCalculator {
-    private DistanceCalculator() {}
->>>>>>>> main:src/algorithms/util/DistanceCalculator.java
 
     public static double haversine(Location loc1, Location loc2) {
         return haversine(loc1.getLatitude(), loc1.getLongitude(), loc2.getLatitude(), loc2.getLongitude());

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import algorithms.utils.DistanceManager;
+import algorithms.util.DistanceManager;
 import core.managers.MapManager;
 import lombok.Data;
 import models.Location;
