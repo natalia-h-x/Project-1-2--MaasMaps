@@ -10,16 +10,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import algorithms.util.DistanceCalculator;
+import algorithms.util.DistanceManager;
 import core.managers.MapManager;
+import lombok.Data;
 import models.Location;
 
 /**
  * This class represents a line connecting two points in the map.
  * @author Arda Ayyildizbayraktar
  */
+@Data
 public class Line extends Component implements MapIcon {
     private transient List<Location> locations = new ArrayList<>();
+
+    private Point offset;
 
     // take the locations as parameter
     public Line(Location... locations) {
@@ -30,13 +34,17 @@ public class Line extends Component implements MapIcon {
         locations.add(loc);
     }
 
+    public void addRelativeLocation(Location loc) {
+        addLocation(loc.translate(locations.get(locations.size() - 1)));
+    }
+
     public double getTotalDistance() {
         double totalDistance = 0;
 
         for (int i = 0; i < locations.size() - 1; i++) {
             Location loc1 = locations.get(i);
             Location loc2 = locations.get(i + 1);
-            totalDistance += DistanceCalculator.haversine(loc1, loc2);
+            totalDistance += DistanceManager.haversine(loc1, loc2);
         }
 
         return totalDistance;
@@ -61,13 +69,16 @@ public class Line extends Component implements MapIcon {
             Point p1 = MapManager.locationToPoint(loc1);
             Point p2 = MapManager.locationToPoint(loc2);
 
+            p1.translate((int) this.offset.getX(), (int) this.offset.getY());        
+            p2.translate((int) this.offset.getX(), (int) this.offset.getY());        
+
             // Set paint color to blue for the line
             g2.setPaint(new Color(1, 10, 100));
             g2.drawLine(p1.x, p1.y, p2.x, p2.y);
 
             // Calculate distance and midpoint
-            String distance = String.valueOf((double)Math.round(DistanceCalculator.haversine(loc1, loc2) * 100.0)/100.0) + " km";
-            //String distance = String.valueOf(DistanceCalculator.haversine(loc1, loc2));
+            String distance = String.valueOf((double)Math.round(DistanceManager.haversine(loc1, loc2) * 100.0)/100.0) + " km";
+            //String distance = String.valueOf(DistanceManager.haversine(loc1, loc2));
             Point center = getCenter(p1, p2);
 
             // Create a 'border' effect for the text by drawing it in black first with

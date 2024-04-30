@@ -1,11 +1,9 @@
 {
-    "java.project.referencedLibraries": {
-        "include": [
-            "lib/**/*.jar"
-        ],
-        "exclude": [
-            "lib/slf4j-api-1.7.36.jar",
-            "lib/slf4j-simple-1.7.36.jar"
-        ]
-    }
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ]
 }
