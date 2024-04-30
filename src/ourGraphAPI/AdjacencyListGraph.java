@@ -1,10 +1,11 @@
 package ourGraphAPI;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AdjacencyListGraph<T> implements Graph<T> {
+public class AdjacencyListGraph<T> implements Graph<T>, Iterable<T>{
     private HashMap<T, List<EdgeNode<T>>> vertices;
 
     public AdjacencyListGraph() {
@@ -127,5 +128,11 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         }
 
         return copy;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        Iterator<T> iterator = new GraphIterator<T>(vertices.keySet());
+        return iterator;
     }
 }
