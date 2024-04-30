@@ -9,3 +9,5 @@ bin/datastructures/AdjacencyListGraph.class
 bin/datastructures/EdgeNode.class
 bin/datastructures/Graph.class
 bin/ourGraphAPI/AdjacencyMatrixGraph.class
+bin/algorithms/util/DistanceCalculator.class
+/bin
