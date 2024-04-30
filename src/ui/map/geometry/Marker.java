@@ -11,7 +11,7 @@ import models.Location;
  * @author Alexandra Plishkin Islamgulova
  * @author Meriç Uruş
  */
-public class Marker extends Component implements MapIcon {
+public class Marker extends Component implements MapGraphics {
     private transient int markerOffsetY = 10;
     private transient int innerSize = 7;
     private transient Location location;

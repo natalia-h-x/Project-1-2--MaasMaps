@@ -13,86 +13,50 @@ import java.util.List;
 import algorithms.util.DistanceCalculator;
 import core.managers.MapManager;
 import models.Location;
+import ui.map.geometry.interfaces.Locateable;
+import ui.map.geometry.interfaces.MapGraphics;
 
 /**
  * This class represents a line connecting two points in the map.
  * @author Arda Ayyildizbayraktar
  */
-public class Line extends Component implements MapIcon {
-    private transient List<Location> locations = new ArrayList<>();
+public class Line extends Component implements MapGraphics {
+    private transient List<Locateable> points = new ArrayList<>();
 
     // take the locations as parameter
-    public Line(Location... locations) {
-        this.locations.addAll(Arrays.asList(locations));
+    public Line(Locateable... points) {
+        this.points.addAll(Arrays.asList(points));
     }
 
-    public void addLocation(Location loc) {
-        locations.add(loc);
+    public void addLocation(Locateable point) {
+        points.add(point);
     }
 
-    public double getTotalDistance() {
-        double totalDistance = 0;
-
-        for (int i = 0; i < locations.size() - 1; i++) {
-            Location loc1 = locations.get(i);
-            Location loc2 = locations.get(i + 1);
-            totalDistance += DistanceCalculator.haversine(loc1, loc2);
-        }
-
-        return totalDistance;
+    public void drawLineSegment(Graphics2D g2, Locateable p1, Locateable p2) {
+        Point location1 = p1.getLocation();
+        Point location2 = p2.getLocation();
+        g2.drawLine(location1.x, location1.y, location2.x, location2.y);
     }
 
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        int offset = 1;
+
         // Get the each location to draw the lines
         g2.setPaint(new Color(001, 010, 100));
         BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
         g2.setStroke(bs);
 
-        for (int i = 0; i < locations.size() - 1; i++) {
-            Location loc1 = locations.get(i);
-            Location loc2 = locations.get(i + 1);
+        for (int i = 0; i < points.size() - 1; i++) {
+            T p1 = points.get(i);
+            T p2 = points.get(i + 1);
 
-            if (loc1 == null || loc2 == null)
+            if (p1 == null || p2 == null)
                 continue;
-
-            Point p1 = MapManager.locationToPoint(loc1);
-            Point p2 = MapManager.locationToPoint(loc2);
 
             // Set paint color to blue for the line
             g2.setPaint(new Color(1, 10, 100));
-            g2.drawLine(p1.x, p1.y, p2.x, p2.y);
-
-            // Calculate distance and midpoint
-            String distance = String.valueOf((double)Math.round(DistanceCalculator.haversine(loc1, loc2) * 100.0)/100.0) + " km";
-            //String distance = String.valueOf(DistanceCalculator.haversine(loc1, loc2));
-            Point center = getCenter(p1, p2);
-
-            // Create a 'border' effect for the text by drawing it in black first with
-            // slight offsets
-            g2.setPaint(Color.BLACK);
-            g2.drawString(distance, center.x - offset, center.y - offset);
-            g2.drawString(distance, center.x - offset, center.y);
-            g2.drawString(distance, center.x - offset, center.y + offset);
-            g2.drawString(distance, center.x + offset, center.y);
-            g2.drawString(distance, center.x + offset, center.y - offset);
-            g2.drawString(distance, center.x, center.y - offset);
-            g2.drawString(distance, center.x + offset, center.y + offset);
-            g2.drawString(distance, center.x, center.y + offset);
-
-            // Then draw the text in white at the original position
-            g2.setPaint(Color.WHITE);
-            g2.drawString(distance, center.x, center.y);
-            g2.setPaint(new Color(1, 10, 100));
+            drawLineSegment(g2, p1, p2);
         }
-    }
-
-    private Point getCenter(Point p1, Point p2) {
-        int x = (p1.x + p2.x) / 2;
-        int y = (p1.y + p2.y) / 2;
-
-        return new Point(x, y);
     }
 }

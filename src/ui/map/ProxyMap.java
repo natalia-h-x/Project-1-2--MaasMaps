@@ -1,10 +1,10 @@
 package ui.map;
 
-import ui.map.geometry.MapIcon;
+import ui.map.geometry.MapGraphics;
 
 /**
  * This class represents a proxy to interact with the map
- * 
+ *
  * @author Alexandra Plishkin Islamgulova
  * @author Sheena Gallagher
  */
@@ -15,8 +15,8 @@ public class ProxyMap {
         this.map = map;
     }
 
-    public void addMapIcon(MapIcon... mapIcons) {
-        for (MapIcon mapIcon : mapIcons) {
+    public void addMapIcon(MapGraphics... mapIcons) {
+        for (MapGraphics mapIcon : mapIcons) {
             map.addMapIcon(mapIcon);
         }
     }
