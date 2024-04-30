@@ -7,6 +7,8 @@ package core.managers;
  * @author Kimon Navridis
  */
 public class JSONManager {
+    private JSONManager() {}
+    
     /**
      * Extract value from JSON string
      *
@@ -19,8 +21,7 @@ public class JSONManager {
         int startIndex = json.indexOf(keyWithQuotes) + keyWithQuotes.length();
 
         if (startIndex == -1) {
-            // key not found
-            return Double.NaN; // TODO (maybe) throw error
+            throw new IllegalArgumentException("key not found");
         }
 
         int endIndex = json.indexOf(",", startIndex);
@@ -30,14 +31,14 @@ public class JSONManager {
         }
 
         if (endIndex == -1) {
-            // Proper JSON closure not found
-            return Double.NaN; // TODO (maybe) throw error
+            throw new IllegalArgumentException("Proper JSON closure not found");
         }
 
         String value = json.substring(startIndex, endIndex).trim();
 
         // remove porential quotes
         value = value.replaceAll("^\"|\"$", "");
+        
         return Double.parseDouble(value);
     }
 

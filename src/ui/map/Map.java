@@ -9,6 +9,7 @@ import java.io.*;
 import javax.swing.*;
 
 import core.Context;
+import core.managers.ExceptionManager;
 import core.managers.FileManager;
 import ui.map.geometry.MapIcon;
 import ui.map.translation.ProxyTranslatableGraphics2D;
@@ -46,7 +47,7 @@ public class Map extends JPanel implements TranslateableComponent {
             loadMap(FileManager.getMapImage());
         }
         catch (IOException e) {
-            e.printStackTrace();
+            ExceptionManager.handle(this, e);
         }
     }
 

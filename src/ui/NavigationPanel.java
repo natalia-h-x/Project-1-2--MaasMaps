@@ -155,7 +155,7 @@ public class NavigationPanel extends JPanel {
                 timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + (int) (time) + " min " + Math.round(seconds) + " seconds");
             }
             catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                ExceptionManager.handle(this, ex);
             }
         });
     }

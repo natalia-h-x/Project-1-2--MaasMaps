@@ -1,18 +1,15 @@
 package ui.map.geometry;
 
+import static core.Constants.Paths.A_IMAGE;
+import static core.Constants.Paths.BUS_STOP_ICON;
+import static core.Constants.Paths.B_IMAGE;
+
 import java.awt.image.BufferedImage;
-
-import core.managers.FileManager;
-import models.Location;
-
 import java.io.IOException;
 
-import org.w3c.dom.DOMException;
-
-import static constants.Constants.Paths.BUS_STOP_ICON;
-import static constants.Constants.Paths.RANDOM_ICON;
-import static constants.Constants.Paths.A_IMAGE;
-import static constants.Constants.Paths.B_IMAGE;
+import core.managers.ExceptionManager;
+import core.managers.FileManager;
+import core.models.Location;
 
 /**
  * This class is a marker factory to create different markers in the map.
@@ -35,7 +32,7 @@ public class MarkerFactory {
             bImage = FileManager.getImage(B_IMAGE);
         }
         catch (IOException e) {
-            throw new DOMException((short) 0, "Could not find icon.");
+            ExceptionManager.handle(new IllegalArgumentException("Could not find icon.", e));
         }
     }
 
