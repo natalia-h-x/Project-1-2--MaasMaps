@@ -3,6 +3,7 @@ package core.managers;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -50,6 +51,17 @@ public class FileManager {
 
     public static void appendToFile(String path, String content) throws IOException {
         Files.write(java.nio.file.Paths.get(path), content.getBytes(), StandardOpenOption.APPEND);
+    }
+
+    public static String[] readLines(File file) throws IOException {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line = br.readLine();
+            if (line != null) {
+                lines.add(line);
+            }
+        }
+        return lines.toArray(String[]::new);
     }
 }
 

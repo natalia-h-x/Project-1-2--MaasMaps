@@ -1,5 +1,7 @@
 package tools.generator;
 
+import java.io.IOException;
+
 import tools.generator.sqlite.*;
 import tools.generator.sqlite.db_helpers.DBPreparation;
 
@@ -18,8 +20,8 @@ import tools.generator.sqlite.db_helpers.DBPreparation;
  * in batches. It's an alternative solution to not hosting it, because it's 1GB in size and impossible to easily share.
  */
 public class CreateDatabase {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new DBPreparation();
-        new TxtToSQLite("resources/gtfs");
+        TxtToSQLite.txtToSQLite("resources/gtfs");
     }
 }
