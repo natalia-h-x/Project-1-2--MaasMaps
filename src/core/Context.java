@@ -21,11 +21,10 @@ public class Context {
     private Context() {}
 
     /** Lazily create an object of this singleton when any interation happens with this class. */
-    static {
-        context = new Context();
-    }
-
     public static Context getContext() {
+        if (context == null)
+            context = new Context();
+
         return context;
     }
 

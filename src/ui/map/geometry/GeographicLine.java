@@ -3,9 +3,9 @@ package ui.map.geometry;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
-import algorithms.util.DistanceManager;
+import core.managers.DistanceManager;
 import core.managers.MapManager;
-import models.Location;
+import core.models.Location;
 import ui.map.geometry.interfaces.GeographicMapGraphics;
 
 public class GeographicLine extends Line implements GeographicMapGraphics {
