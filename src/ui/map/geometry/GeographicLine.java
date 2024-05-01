@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 import algorithms.util.DistanceCalculator;
+import core.managers.MapManager;
 import models.Location;
 import ui.map.geometry.interfaces.GeographicMapGraphics;
 
@@ -50,20 +51,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
 
         // Create a 'border' effect for the text by drawing it in black first with
         // slight offsets
-        int offset = 1;
-        g2.setPaint(Color.BLACK);
-        g2.drawString(distance, (int) center.getX() - offset, (int) center.getY() - offset);
-        g2.drawString(distance, (int) center.getX() - offset, (int) center.getY()         );
-        g2.drawString(distance, (int) center.getX() - offset, (int) center.getY() + offset);
-        g2.drawString(distance, (int) center.getX() + offset, (int) center.getY()         );
-        g2.drawString(distance, (int) center.getX() + offset, (int) center.getY() - offset);
-        g2.drawString(distance, (int) center.getX()         , (int) center.getY() - offset);
-        g2.drawString(distance, (int) center.getX() + offset, (int) center.getY() + offset);
-        g2.drawString(distance, (int) center.getX()         , (int) center.getY() + offset);
-
-        // Then draw the text in white at the original position
-        g2.setPaint(Color.WHITE);
-        g2.drawString(distance, (int) center.getX(), (int) center.getY());
+        MapManager.drawString(g2, distance, center);
     }
 
     private Point2D getCenter(Point2D p1, Point2D p2) {
