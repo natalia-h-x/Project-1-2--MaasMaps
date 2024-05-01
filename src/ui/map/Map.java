@@ -10,7 +10,7 @@ import javax.swing.*;
 
 import core.Context;
 import core.managers.FileManager;
-import ui.map.geometry.MapGraphics;
+import ui.map.geometry.interfaces.MapGraphics;
 import ui.map.translation.ProxyTranslatableGraphics2D;
 import ui.map.translation.TranslateableComponent;
 import ui.map.translation.TranslationListener;
@@ -100,7 +100,7 @@ public class Map extends JPanel implements TranslateableComponent {
         }
     }
 
-    private void loadMap(BufferedImage image){
+    private void loadMap(BufferedImage image) {
         mapImage = image;
 
         mapWidth = image.getWidth();
@@ -115,7 +115,7 @@ public class Map extends JPanel implements TranslateableComponent {
         repaint();
     }
 
-    public void clearIcons(){
+    public void clearIcons() {
         icons.clear();
 
         repaint();

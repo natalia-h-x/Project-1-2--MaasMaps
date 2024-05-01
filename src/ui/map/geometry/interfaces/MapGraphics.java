@@ -1,4 +1,4 @@
-package ui.map.geometry;
+package ui.map.geometry.interfaces;
 
 import java.awt.Graphics;
 

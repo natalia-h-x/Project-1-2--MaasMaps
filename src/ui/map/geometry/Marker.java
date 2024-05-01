@@ -2,9 +2,9 @@ package ui.map.geometry;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 
-import core.managers.MapManager;
-import models.Location;
+import ui.map.geometry.interfaces.MapGraphics;
 
 /**
  * This class represents icons that are different types of markers in the map.
@@ -14,21 +14,20 @@ import models.Location;
 public class Marker extends Component implements MapGraphics {
     private transient int markerOffsetY = 10;
     private transient int innerSize = 7;
-    private transient Location location;
+    private transient Point2D location;
     private transient int size = 5;
 
-    public Marker(Location location) {
+    public Marker(Point2D location) {
         this.location = location;
     }
 
-    public Location getMarkerLocation(){
+    public Point2D getMarkerLocation() {
         return location;
     }
 
-    public Point getIconLocation(){
-        Point point = MapManager.locationToPoint(location);
-        double redCenterX = point.x;
-        double redCenterY = point.y - markerOffsetY;
+    public Point getIconLocation() {
+        double redCenterX = location.getX();
+        double redCenterY = location.getY() - markerOffsetY;
         return new Point((int)redCenterX, (int)redCenterY);
     }
 
@@ -36,7 +35,6 @@ public class Marker extends Component implements MapGraphics {
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        Point point = MapManager.locationToPoint(location);
         Point iconPoint = getIconLocation();
 
         double topLeftX = iconPoint.getX() - size / 2.0;
@@ -48,7 +46,7 @@ public class Marker extends Component implements MapGraphics {
         g2.draw(redEllipse);
 
         int[] xPoints = {(int) iconPoint.getX(), (int) (iconPoint.getX() - 4), (int) (iconPoint.getX() + 4)};
-        int[] yPoints = {point.y, (int)  iconPoint.getY(),(int) iconPoint.getY()};
+        int[] yPoints = {(int) location.getY(), (int) iconPoint.getY(), (int) iconPoint.getY()};
 
         Polygon triangle = new Polygon(xPoints, yPoints, 3);
         g2.setColor(Color.RED);

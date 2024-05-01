@@ -1,9 +1,9 @@
 package ui.map.geometry;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 import core.managers.FileManager;
-import models.Location;
 
 import java.io.IOException;
 
@@ -39,15 +39,15 @@ public class MarkerFactory {
         }
     }
 
-    public static ImageMarker createBusImageMarker(Location location){
+    public static ImageMarker createBusImageMarker(Point2D location) {
         return new ImageMarker(location, busStopImage);
     }
 
-    public static ImageMarker createAImageMarker(Location location){
+    public static ImageMarker createAImageMarker(Point2D location) {
         return new ImageMarker(location, aImage);
     }
 
-    public static ImageMarker createBImageMarker(Location location){
+    public static ImageMarker createBImageMarker(Point2D location) {
         return new ImageMarker(location, bImage);
     }
 }

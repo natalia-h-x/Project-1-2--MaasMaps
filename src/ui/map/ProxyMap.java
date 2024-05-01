@@ -1,6 +1,6 @@
 package ui.map;
 
-import ui.map.geometry.MapGraphics;
+import ui.map.geometry.interfaces.MapGraphics;
 
 /**
  * This class represents a proxy to interact with the map
@@ -21,14 +21,14 @@ public class ProxyMap {
         }
     }
 
-    public int getMapHeight(){
+    public int getMapHeight() {
         return map.getMapHeight();
     }
 
-    public int getMapWidth(){
+    public int getMapWidth() {
         return map.getMapWidth();
     }
-    public void clearIcons(){
+    public void clearIcons() {
         map.clearIcons();
     }
 }
