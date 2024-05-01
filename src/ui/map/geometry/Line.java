@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +33,12 @@ public class Line extends Component implements MapGraphics {
 
     public void addLocation(Point2D point) {
         locations.add(point);
+    }
+
+    public void addRelativeLocation(Point2D loc) {
+        Point2D p = locations.get(locations.size() - 1);
+        loc.setLocation(p.getX() + loc.getX(), p.getY() + loc.getY());
+        addLocation(loc);
     }
 
     public void drawLineSegment(Graphics2D g2, Point2D p1, Point2D p2) {

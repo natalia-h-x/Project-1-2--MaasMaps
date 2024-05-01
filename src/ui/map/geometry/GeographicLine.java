@@ -1,15 +1,18 @@
 package ui.map.geometry;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
-import algorithms.util.DistanceCalculator;
+import algorithms.util.DistanceManager;
 import core.managers.MapManager;
 import models.Location;
 import ui.map.geometry.interfaces.GeographicMapGraphics;
 
 public class GeographicLine extends Line implements GeographicMapGraphics {
+    public GeographicLine(Location... locations) {
+        super(locations);
+    }
+
     @Override
     public double getTotalDistance() {
         double totalDistance = 0;
@@ -18,7 +21,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
             for (int i = 0; i < getLocations().size() - 1; i++) {
                 Location loc1 = (Location) getLocations().get(i);
                 Location loc2 = (Location) getLocations().get(i + 1);
-                totalDistance += DistanceCalculator.haversine(loc1, loc2);
+                totalDistance += DistanceManager.haversine(loc1, loc2);
             }
         }
         catch (ClassCastException e) {
@@ -46,7 +49,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
 
     @Override
     public void drawDistance(Graphics2D g2, Location loc1, Location loc2) {
-        String distance = String.valueOf(Math.round(DistanceCalculator.haversine(loc1, loc2) * 100.0) / 100.0) + " km";
+        String distance = String.valueOf(Math.round(DistanceManager.haversine(loc1, loc2) * 100.0) / 100.0) + " km";
         Point2D center = getCenter(loc1, loc2);
 
         // Create a 'border' effect for the text by drawing it in black first with
