@@ -7,13 +7,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
-import core.algorithms.datastructures.AdjacencyListGraph;
+import core.algorithms.datastructures.Graph;
 import ui.map.geometry.interfaces.MapGraphics;
 
 public class Network extends Component implements MapGraphics {
-    private AdjacencyListGraph<Point2D> graph;
+    private Graph<Point2D> graph;
 
-    public Network(AdjacencyListGraph<Point2D> graph){
+    public Network(Graph<Point2D> graph){
         this.graph = graph;
     }
 

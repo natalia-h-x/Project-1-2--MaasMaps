@@ -6,23 +6,21 @@ import org.junit.Test;
 
 import core.Context;
 import core.algorithms.datastructures.AdjacencyListGraph;
+import core.algorithms.datastructures.Graph;
 import core.models.Location;
 import ui.MaasMapsUI;
 import ui.map.geometry.Network;
 
 public class NetworkTest {
-    private AdjacencyListGraph<Point2D> adjacencyListGraph;
+    private Graph<Point2D> adjacencyListGraph;
+
+    public NetworkTest(Graph<Point2D> adjacencyListGraph) {
+        this.adjacencyListGraph = adjacencyListGraph;
+    }
 
     public NetworkTest() {
         adjacencyListGraph = new AdjacencyListGraph<>();
-    }
 
-    public static void main(String[] args) {
-        new NetworkTest().test1();
-    }
-
-    @Test
-    public void test1() {
         Location loc1 = new Location(50.855233, 5.692237);
         Location loc2 = new Location(50.853608, 5.691958);
         Location loc3 = new Location(50.853617, 5.692009);
@@ -43,7 +41,10 @@ public class NetworkTest {
         adjacencyListGraph.addEdge(loc4, loc5);
         adjacencyListGraph.addEdge(loc5, loc6);
         adjacencyListGraph.addEdge(loc6, loc1);
+    }
 
+    @Test
+    public void test1() {
         new MaasMapsUI();
 
         Context.getContext().getMap().addMapIcon(new Network(adjacencyListGraph));

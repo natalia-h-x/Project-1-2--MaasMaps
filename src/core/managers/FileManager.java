@@ -51,5 +51,9 @@ public class FileManager {
     public static void appendToFile(String path, String content) throws IOException {
         Files.write(java.nio.file.Paths.get(path), content.getBytes(), StandardOpenOption.APPEND);
     }
+
+    public static boolean fileExists(String path) {
+        return new File(path).isFile();
+    }
 }
 

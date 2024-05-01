@@ -2,7 +2,7 @@ package core.algorithms.datastructures;
 
 import java.util.List;
 
-public interface Graph<T> {
+public interface Graph<T> extends Iterable<T> {
     /**
      * Returns the list of all vertices y s.t. there’s an edge from x to y
      *

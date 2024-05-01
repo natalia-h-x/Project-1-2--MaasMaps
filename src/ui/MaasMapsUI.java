@@ -28,7 +28,7 @@ public class MaasMapsUI extends JFrame {
 
     private void initialiseUI() {
         setSize(800, 600);
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout()); // Use borderlayout to completely fill the child panel in this panel
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
         // Creating all components
@@ -48,6 +48,8 @@ public class MaasMapsUI extends JFrame {
         resultsContainer.setMinimumSize(new Dimension(800, 600));
         resultsContainer.setPreferredSize(new Dimension(800, 600));
         
+        // Adding our custom panels here
+        // Use minimum and preferred size to always see the map and navigation panel
         NavigationPanel navigationPanel = new NavigationPanel();
         navigationPanel.setMinimumSize(new Dimension(450, 600));
         navigationPanel.setPreferredSize(new Dimension(500, 600));
