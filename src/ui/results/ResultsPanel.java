@@ -2,30 +2,31 @@ package ui.results;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import javax.swing.JPanel;
 
 import core.models.Location;
+import ui.map.geometry.GeographicLine;
 import ui.map.geometry.ImageMarker;
-import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
 import ui.map.geometry.MarkerFactory;
 
 public class ResultsPanel extends JPanel implements ResultDisplay {
-    private Line line;
+    private GeographicLine line;
     public ResultsPanel(){
-        line = new Line();
-        setLine(new Line(new Location(50.854581,5.690199), new Location(50.85291,5.692407), new Location(50.853228,5.690603)));
+        line = new GeographicLine();
+        setLine(new GeographicLine(new Location(50.854581,5.690199), new Location(50.85291,5.692407), new Location(50.853228,5.690603)));
     }
 
-    public void setLine(Line line){
-        this.line = new Line();
-        List<Location> locations = line.getLocations();
+    public void setLine(GeographicLine line){
+        this.line = new GeographicLine();
+        List<Point2D> locations = line.getLocations();
         Location previousLoc = null;
         this.line.addLocation(core.managers.MapManager.MAP_TOP_LEFT_LOCATION);
         for (int i = 0; i < locations.size(); i++){
-            Location location = locations.get(i);
+            Location location = (Location) locations.get(i);
             if (previousLoc != null) {
                 double distance = previousLoc.distanceTo(location);
                 double scaledDistance = distance / line.getTotalDistance() / 20;
@@ -39,7 +40,7 @@ public class ResultsPanel extends JPanel implements ResultDisplay {
     public ImageMarker resultMarker(Location location){
         return MarkerFactory.createBusImageMarker(location);
     }
-    
+
     @Override
     public void paint(Graphics graphics){
         super.paint(graphics);
@@ -48,9 +49,9 @@ public class ResultsPanel extends JPanel implements ResultDisplay {
             Point offset = new Point(getWidth()/7, getHeight()/2);
             line.setOffset(offset);
             line.paint(graphics);
-            
-            for (Location location : line.getLocations()){
-                Marker resultMarker = resultMarker(location);
+
+            for (Point2D location : line.getLocations()) {
+                Marker resultMarker = resultMarker((Location) location);
                 resultMarker.setOffset(offset);
                 resultMarker.paint(graphics);
             }

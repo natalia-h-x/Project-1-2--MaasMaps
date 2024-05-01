@@ -1,6 +1,7 @@
 package ui.map.geometry;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -16,12 +17,12 @@ public class ImageMarker extends Marker {
     private int imageHeight;
     private double scaler = 0.01;
 
-    public ImageMarker(Location location, BufferedImage image) {
+    public ImageMarker(Point2D location, BufferedImage image) {
         super(location);
         setImage(image);
     }
 
-    public void setImage(BufferedImage image){
+    public void setImage(BufferedImage image) {
         this.image = image;
         imageWidth = image.getWidth();
         imageHeight = image.getHeight();

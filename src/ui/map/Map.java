@@ -11,14 +11,14 @@ import javax.swing.*;
 import core.Context;
 import core.managers.ExceptionManager;
 import core.managers.FileManager;
-import ui.map.geometry.MapIcon;
+import ui.map.geometry.interfaces.MapGraphics;
 import ui.map.translation.ProxyTranslatableGraphics2D;
 import ui.map.translation.TranslateableComponent;
 import ui.map.translation.TranslationListener;
 
 /**
  * This class represents the map shown in the GUI
- * 
+ *
  * @author Sheena Gallagher
  * @author Sian Lodde
  * @author Alexandra Plishkin Islamgulova
@@ -30,7 +30,7 @@ public class Map extends JPanel implements TranslateableComponent {
     private transient int mapHeight;
     @SuppressWarnings("unused")
     private transient TranslationListener translationListener = new TranslationListener(this);
-    private transient ArrayList<MapIcon> icons = new ArrayList<>();
+    private transient ArrayList<MapGraphics> icons = new ArrayList<>();
 
     /** Variables for translating this Map */
     private double scale;
@@ -95,13 +95,13 @@ public class Map extends JPanel implements TranslateableComponent {
 
     @SuppressWarnings("unchecked")
     private void drawMapIcon(Graphics2D g2) {
-        for (MapIcon icon : (Iterable<MapIcon>) icons.clone()) {
+        for (MapGraphics icon : (Iterable<MapGraphics>) icons.clone()) {
             if (icon != null)
                 icon.paint(g2);
         }
     }
 
-    private void loadMap(BufferedImage image){
+    private void loadMap(BufferedImage image) {
         mapImage = image;
 
         mapWidth = image.getWidth();
@@ -110,13 +110,13 @@ public class Map extends JPanel implements TranslateableComponent {
         repaint();
     }
 
-    public void addMapIcon(MapIcon icon) {
+    public void addMapIcon(MapGraphics icon) {
         icons.add(icon);
 
         repaint();
     }
 
-    public void clearIcons(){
+    public void clearIcons() {
         icons.clear();
 
         repaint();

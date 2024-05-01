@@ -10,11 +10,11 @@ import ui.map.geometry.Network;
 
 public class NetworkTest {
     private AdjacencyListGraph<Location> adjacencyListGraph;
-    
+
     public NetworkTest() {
         adjacencyListGraph = new AdjacencyListGraph<>();
     }
-    
+
     public static void main(String[] args) {
         new NetworkTest().test1();
     }
@@ -33,14 +33,14 @@ public class NetworkTest {
         adjacencyListGraph.addVertex(loc4);
         adjacencyListGraph.addVertex(loc5);
         adjacencyListGraph.addVertex(loc6);
-        
+
         adjacencyListGraph.addEdge(loc1, loc2);
         adjacencyListGraph.addEdge(loc2, loc3);
         adjacencyListGraph.addEdge(loc3, loc4);
         adjacencyListGraph.addEdge(loc4, loc5);
         adjacencyListGraph.addEdge(loc5, loc6);
         adjacencyListGraph.addEdge(loc6, loc1);
-        
+
         new MaasMapsUI();
 
         Context.getContext().getMap().addMapIcon(new Network(adjacencyListGraph));

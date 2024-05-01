@@ -6,104 +6,64 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import core.managers.DistanceManager;
-import core.managers.MapManager;
-import core.models.Location;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ui.map.geometry.interfaces.MapGraphics;
 
 /**
  * This class represents a line connecting two points in the map.
  * @author Arda Ayyildizbayraktar
  */
 @Data
-public class Line extends Component implements MapIcon {
-    private transient List<Location> locations = new ArrayList<>();
+@EqualsAndHashCode(callSuper=false)
+public class Line extends Component implements MapGraphics {
+    private transient List<Point2D> locations = new ArrayList<>();
 
     private Point offset = new Point();
 
     // take the locations as parameter
-    public Line(Location... locations) {
-        this.locations.addAll(Arrays.asList(locations));
+    public Line(Point2D... points) {
+        this.locations.addAll(Arrays.asList(points));
     }
 
-    public void addLocation(Location loc) {
-        locations.add(loc);
+    public void addLocation(Point2D point) {
+        locations.add(point);
     }
 
-    public void addRelativeLocation(Location loc) {
-        addLocation(loc.translate(locations.get(locations.size() - 1)));
+    public void addRelativeLocation(Point2D loc) {
+        Point2D p = locations.get(locations.size() - 1);
+        loc.setLocation(p.getX() + loc.getX(), p.getY() + loc.getY());
+        addLocation(loc);
     }
 
-    public double getTotalDistance() {
-        double totalDistance = 0;
-
-        for (int i = 0; i < locations.size() - 1; i++) {
-            Location loc1 = locations.get(i);
-            Location loc2 = locations.get(i + 1);
-            totalDistance += DistanceManager.haversine(loc1, loc2);
-        }
-
-        return totalDistance;
+    public void drawLineSegment(Graphics2D g2, Point2D p1, Point2D p2) {
+        g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
     }
 
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        int offset = 1;
+
         // Get the each location to draw the lines
         g2.setPaint(new Color(001, 010, 100));
         BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
         g2.setStroke(bs);
 
         for (int i = 0; i < locations.size() - 1; i++) {
-            Location loc1 = locations.get(i);
-            Location loc2 = locations.get(i + 1);
+            Point2D p1 = locations.get(i);
+            Point2D p2 = locations.get(i + 1);
 
-            if (loc1 == null || loc2 == null)
+            if (p1 == null || p2 == null)
                 continue;
-
-            Point p1 = MapManager.locationToPoint(loc1);
-            Point p2 = MapManager.locationToPoint(loc2);
-
-            p1.translate((int) this.offset.getX(), (int) this.offset.getY());        
-            p2.translate((int) this.offset.getX(), (int) this.offset.getY());        
 
             // Set paint color to blue for the line
             g2.setPaint(new Color(1, 10, 100));
-            g2.drawLine(p1.x, p1.y, p2.x, p2.y);
-
-            // Calculate distance and midpoint
-            String distance = String.valueOf((double)Math.round(DistanceManager.haversine(loc1, loc2) * 100.0)/100.0) + " km";
-            //String distance = String.valueOf(DistanceManager.haversine(loc1, loc2));
-            Point center = getCenter(p1, p2);
-
-            // Create a 'border' effect for the text by drawing it in black first with
-            // slight offsets
-            g2.setPaint(Color.BLACK);
-            g2.drawString(distance, center.x - offset, center.y - offset);
-            g2.drawString(distance, center.x - offset, center.y);
-            g2.drawString(distance, center.x - offset, center.y + offset);
-            g2.drawString(distance, center.x + offset, center.y);
-            g2.drawString(distance, center.x + offset, center.y - offset);
-            g2.drawString(distance, center.x, center.y - offset);
-            g2.drawString(distance, center.x + offset, center.y + offset);
-            g2.drawString(distance, center.x, center.y + offset);
-
-            // Then draw the text in white at the original position
-            g2.setPaint(Color.WHITE);
-            g2.drawString(distance, center.x, center.y);
-            g2.setPaint(new Color(1, 10, 100));
+            drawLineSegment(g2, p1, p2);
         }
-    }
-
-    private Point getCenter(Point p1, Point p2) {
-        int x = (p1.x + p2.x) / 2;
-        int y = (p1.y + p2.y) / 2;
-
-        return new Point(x, y);
     }
 }

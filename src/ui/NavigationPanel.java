@@ -161,7 +161,7 @@ public class NavigationPanel extends JPanel {
         });
     }
 
-    private void addClearActionListener(JButton clearButton){
+    private void addClearActionListener(JButton clearButton) {
         clearButton.addActionListener(e -> {
             Context.getContext().getMap().clearIcons();
             timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT);

@@ -4,12 +4,12 @@ import static core.Constants.Paths.A_IMAGE;
 import static core.Constants.Paths.BUS_STOP_ICON;
 import static core.Constants.Paths.B_IMAGE;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import core.managers.ExceptionManager;
 import core.managers.FileManager;
-import core.models.Location;
 
 /**
  * This class is a marker factory to create different markers in the map.
@@ -36,15 +36,15 @@ public class MarkerFactory {
         }
     }
 
-    public static ImageMarker createBusImageMarker(Location location){
+    public static ImageMarker createBusImageMarker(Point2D location) {
         return new ImageMarker(location, busStopImage);
     }
 
-    public static ImageMarker createAImageMarker(Location location){
+    public static ImageMarker createAImageMarker(Point2D location) {
         return new ImageMarker(location, aImage);
     }
 
-    public static ImageMarker createBImageMarker(Location location){
+    public static ImageMarker createBImageMarker(Point2D location) {
         return new ImageMarker(location, bImage);
     }
 }

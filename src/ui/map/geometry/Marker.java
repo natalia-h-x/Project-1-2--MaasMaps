@@ -1,10 +1,17 @@
 package ui.map.geometry;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 
-import core.managers.MapManager;
-import core.models.Location;
+import lombok.Setter;
+import ui.map.geometry.interfaces.MapGraphics;
 import ui.map.translation.ProxyTranslatableGraphics2D;
 
 /**
@@ -12,41 +19,32 @@ import ui.map.translation.ProxyTranslatableGraphics2D;
  * @author Alexandra Plishkin Islamgulova
  * @author Meriç Uruş
  */
-public class Marker extends Component implements MapIcon {
+@Setter
+public class Marker extends Component implements MapGraphics {
     private transient int markerOffsetY = 10;
     private transient int innerSize = 7;
-    private transient Location location;
+    private transient Point2D location;
     private transient int size = 5;
     private transient Point offset = new Point(0, 0);
 
-    public Marker(Location location) {
+    public Marker(Point2D location) {
         this.location = location;
     }
 
-    public Point getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Point offset) {
-        this.offset = offset;
-    }
-
-    public Location getMarkerLocation(){
+    public Point2D getMarkerLocation() {
         return location;
     }
 
-    public Point getIconLocation(){
-        Point point = MapManager.locationToPoint(location);
-        int redCenterX = point.x;
-        int redCenterY = point.y - markerOffsetY;
-        return new Point(redCenterX, redCenterY);
+    public Point getIconLocation() {
+        double redCenterX = location.getX();
+        double redCenterY = location.getY() - markerOffsetY;
+        return new Point((int)redCenterX, (int)redCenterY);
     }
 
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = new ProxyTranslatableGraphics2D((Graphics2D) g, 1, offset);
 
-        Point point = MapManager.locationToPoint(location);
         Point iconPoint = getIconLocation();
 
         double topLeftX = iconPoint.getX() - size / 2.0;
@@ -58,7 +56,7 @@ public class Marker extends Component implements MapIcon {
         g2.draw(redEllipse);
 
         int[] xPoints = {(int) iconPoint.getX(), (int) (iconPoint.getX() - 4), (int) (iconPoint.getX() + 4)};
-        int[] yPoints = {point.y, (int)  iconPoint.getY(),(int) iconPoint.getY()};
+        int[] yPoints = {(int) location.getY(), (int) iconPoint.getY(), (int) iconPoint.getY()};
 
         Polygon triangle = new Polygon(xPoints, yPoints, 3);
         g2.setColor(Color.RED);
