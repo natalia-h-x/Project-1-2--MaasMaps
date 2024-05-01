@@ -6,43 +6,43 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import core.managers.MapManager;
-import models.Location;
 import ourGraphAPI.AdjacencyListGraph;
+import ui.map.geometry.interfaces.MapGraphics;
 
-public class Network<T> extends Component implements MapIcon {
-    private AdjacencyListGraph<Location> graph;
+public class Network<T> extends Component implements MapGraphics {
+    private AdjacencyListGraph<Point2D> graph;
 
-    public Network(AdjacencyListGraph<Location> graph){
+    public Network(AdjacencyListGraph<Point2D> graph){
         this.graph = graph;
     }
 
     public void paint(Graphics g) {
-        
+
         Graphics2D g2 = (Graphics2D) g;
         int offset = 1;
-        // Get the each location to draw the lines
+        // Get the each Point2D to draw the lines
         g2.setPaint(new Color(001, 010, 100));
         BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
         g2.setStroke(bs);
 
-        for (Location loc1: graph) {
-            if (loc1 == null) continue;
-            for (Location loc2 : graph.neighbors(loc1)) {
-                if (loc2 == null) continue;
-    
-                Point p1 = MapManager.locationToPoint(loc1);
-                Point p2 = MapManager.locationToPoint(loc2);
-    
+        for (Point2D p1 : graph) {
+            if (p1 == null) continue;
+
+            for (Point2D p2 : graph.neighbors(p1)) {
+                if (p2 == null) continue;
+
                 // Set paint color to blue for the line
                 g2.setPaint(new Color(1, 10, 100));
-                g2.drawLine(p1.x, p1.y, p2.x, p2.y);
+                g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
             }
         }
-        for (Location loc1:graph){
-            if (loc1 == null) continue;
-            MarkerFactory.createBusImageMarker(loc1).paint(g2);
+
+        for (Point2D p1 : graph){
+            if (p1 == null) continue;
+            MarkerFactory.createBusImageMarker(p1).paint(g2);
         }
     }
 }

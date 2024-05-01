@@ -15,8 +15,8 @@ import java.awt.Color;
 public class Constants { private Constants() {}
     public static class Paths {
         public static final String MAAS_ZIP_LATLON_PATH = "resources/MassZipLatLon.csv";
-        public static final String DATABASE_URL = "jdbc:sqlite:C://Users//alexa//University//Project 1-2 Repository//project1-2//resources//gtfs//gtfs";
-        public static final String DATABASE_FILEPATH = "resources/routing.db";
+        public static final String DATABASE_URL = "jdbc:sqlite:resources//gtfs//gtfs";
+        public static final String DATABASE_FILEPATH = "/resources/routing.db";
         public static final String RESOURCES_PLACEHOLDER_MAP_PNG = "resources/visuals/MaastrichtOpenStreetMap.png";
         public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.png";
         public static final String RANDOM_ICON = "resources/visuals/icons/Random.png";

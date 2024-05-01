@@ -15,13 +15,13 @@ public class ZipCode {
     }
 
     public static boolean isValid(String code) {
-        if (code.length() != 6){
+        if (code.length() != 6) {
             return false;
         }
 
         code = code.toUpperCase();
 
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 4; i++) {
             int currentChar = code.charAt(i);
 
             if (currentChar < 48 || currentChar > 57) {
@@ -29,10 +29,10 @@ public class ZipCode {
             }
         }
 
-        for(int i = 4; i < 6; i++){
+        for(int i = 4; i < 6; i++) {
             int currentChar = code.charAt(i);
 
-            if (currentChar < 65 || currentChar > 90){
+            if (currentChar < 65 || currentChar > 90) {
                 return false;
             }
         }

@@ -9,7 +9,7 @@ public class GraphIterator<T> implements Iterator<T>{
     int currentIndex = 0;
     int i = -1;
 
-    public GraphIterator(Set<T> graph){
+    public GraphIterator(Set<T> graph) {
         int j = 0;
         iterateArray = (T[]) new Object[graph.size()];
         for (T element : graph) {
@@ -20,7 +20,7 @@ public class GraphIterator<T> implements Iterator<T>{
 
     @Override
     public boolean hasNext() {
-        if (i+1 >= iterateArray.length) 
+        if (i+1 >= iterateArray.length)
         return false;
         return true;
     }
