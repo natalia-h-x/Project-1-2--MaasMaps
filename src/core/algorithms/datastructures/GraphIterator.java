@@ -8,6 +8,7 @@ public class GraphIterator<T> implements Iterator<T>{
     int currentIndex = 0;
     int i = -1;
 
+    @SuppressWarnings("unchecked")
     public GraphIterator(Set<T> graph) {
         int j = 0;
         iterateArray = (T[]) new Object[graph.size()];

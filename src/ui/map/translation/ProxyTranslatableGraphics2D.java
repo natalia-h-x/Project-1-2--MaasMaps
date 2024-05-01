@@ -79,6 +79,7 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
         return (int) (height * scaleY);
     }
 
+    @SuppressWarnings("unused")
     private int deScaleY(double height) {
         return (int) (height / scaleY);
     }

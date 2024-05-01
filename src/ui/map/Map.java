@@ -1,12 +1,16 @@
 package ui.map;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-import java.io.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.TexturePaint;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import core.Context;
 import core.managers.ExceptionManager;
@@ -69,6 +73,7 @@ public class Map extends JPanel implements TranslateableComponent {
         drawMapIcon(g2);
     }
 
+    @SuppressWarnings("unused")
     private void applyHDRenderingHints(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
