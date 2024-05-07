@@ -13,7 +13,7 @@ import core.models.transport.Walking;
 import core.models.transport.Bus;
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
-import ui.map.geometry.MarkerFactory;
+import ui.map.geometry.ImageMarkerFactory;
 
 import java.awt.*;
 
@@ -148,8 +148,8 @@ public class NavigationPanel extends JPanel {
                         locationB
                     );
 
-                startPoint = MarkerFactory.createAImageMarker(locationA);
-                endPoint = MarkerFactory.createBImageMarker(locationB);
+                startPoint = ImageMarkerFactory.createAImageMarker(locationA);
+                endPoint = ImageMarkerFactory.createBImageMarker(locationB);
 
                 Context.getContext().getMap().addMapIcon(line, startPoint, endPoint);
 

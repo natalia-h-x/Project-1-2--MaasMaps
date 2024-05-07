@@ -11,21 +11,22 @@ import core.models.Location;
 import ui.map.geometry.GeographicLine;
 import ui.map.geometry.ImageMarker;
 import ui.map.geometry.Marker;
-import ui.map.geometry.MarkerFactory;
+import ui.map.geometry.ImageMarkerFactory;
 
 public class ResultsPanel extends JPanel implements ResultDisplay {
     private GeographicLine line;
-    public ResultsPanel(){
+
+    public ResultsPanel() {
         line = new GeographicLine();
-        setLine(new GeographicLine(new Location(50.854581,5.690199), new Location(50.85291,5.692407), new Location(50.853228,5.690603)));
+        setLine(new GeographicLine(new Location(50.854581, 5.690199), new Location(50.85291, 5.692407), new Location(50.853228, 5.690603)));
     }
 
-    public void setLine(GeographicLine line){
+    public void setLine(GeographicLine line) {
         this.line = new GeographicLine();
         List<Point2D> locations = line.getLocations();
         Location previousLoc = null;
         this.line.addLocation(core.managers.MapManager.MAP_TOP_LEFT_LOCATION);
-        for (int i = 0; i < locations.size(); i++){
+        for (int i = 0; i < locations.size(); i++) {
             Location location = (Location) locations.get(i);
             if (previousLoc != null) {
                 double distance = previousLoc.distanceTo(location);
@@ -37,15 +38,15 @@ public class ResultsPanel extends JPanel implements ResultDisplay {
         }
     }
 
-    public ImageMarker resultMarker(Location location){
-        return MarkerFactory.createBusImageMarker(location);
+    public ImageMarker resultMarker(Location location) {
+        return ImageMarkerFactory.createBusImageMarker(location);
     }
 
     @Override
-    public void paint(Graphics graphics){
+    public void paint(Graphics graphics) {
         super.paint(graphics);
 
-        if (line != null){
+        if (line != null) {
             Point offset = new Point(getWidth()/7, getHeight()/2);
             line.setOffset(offset);
             line.paint(graphics);
