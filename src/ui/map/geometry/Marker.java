@@ -10,7 +10,6 @@ import java.awt.Polygon;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
-import lombok.Setter;
 import ui.map.geometry.interfaces.MapGraphics;
 import ui.map.translation.ProxyTranslatableGraphics2D;
 
@@ -19,13 +18,16 @@ import ui.map.translation.ProxyTranslatableGraphics2D;
  * @author Alexandra Plishkin Islamgulova
  * @author Meriç Uruş
  */
-@Setter
 public class Marker extends Component implements MapGraphics {
     private transient int markerOffsetY = 10;
     private transient int innerSize = 7;
     private transient Point2D location;
     private transient int size = 5;
     private transient Point offset = new Point(0, 0);
+
+    public void setOffset(Point offset) {
+        this.offset = offset;
+    }
 
     public Marker(Point2D location) {
         this.location = location;
