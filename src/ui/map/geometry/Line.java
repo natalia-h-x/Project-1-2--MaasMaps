@@ -1,11 +1,6 @@
 package ui.map.geometry;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,10 +15,34 @@ import models.Location;
  */
 public class Line extends Component implements MapIcon {
     private transient List<Location> locations = new ArrayList<>();
+    private Paint paint = new Color(001, 010, 100);
+    private Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);;
 
     // take the locations as parameter
     public Line(Location... locations) {
         this.locations.addAll(Arrays.asList(locations));
+    }
+
+    public Line(Paint paint, Stroke stroke, Location... locations) {
+        this.locations.addAll(Arrays.asList(locations));
+        this.paint = paint;
+        this.stroke = stroke;
+    }
+
+    public Paint getPaint(){
+        return paint;
+    }
+
+    public void setPaint(Paint paint){
+        this.paint = paint;
+    }
+
+    public Stroke getStroke(){
+        return stroke;
+    }
+
+    public void setStroke(Stroke stroke){
+        this.stroke = stroke;
     }
 
     public void addLocation(Location loc) {
@@ -47,9 +66,8 @@ public class Line extends Component implements MapIcon {
         Graphics2D g2 = (Graphics2D) g;
         int offset = 1;
         // Get the each location to draw the lines
-        g2.setPaint(new Color(001, 010, 100));
-        BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
-        g2.setStroke(bs);
+        g2.setPaint(paint);
+        g2.setStroke(stroke);
 
         for (int i = 0; i < locations.size() - 1; i++) {
             Location loc1 = locations.get(i);
@@ -62,7 +80,7 @@ public class Line extends Component implements MapIcon {
             Point p2 = MapManager.locationToPoint(loc2);
 
             // Set paint color to blue for the line
-            g2.setPaint(new Color(1, 10, 100));
+            g2.setPaint(paint);
             g2.drawLine(p1.x, p1.y, p2.x, p2.y);
 
             // Calculate distance and midpoint
@@ -85,7 +103,6 @@ public class Line extends Component implements MapIcon {
             // Then draw the text in white at the original position
             g2.setPaint(Color.WHITE);
             g2.drawString(distance, center.x, center.y);
-            g2.setPaint(new Color(1, 10, 100));
         }
     }
 
@@ -95,4 +112,5 @@ public class Line extends Component implements MapIcon {
 
         return new Point(x, y);
     }
+
 }
