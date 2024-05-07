@@ -9,7 +9,7 @@ public interface Graph<T> extends Iterable<T> {
      * @param x
      * @return
      */
-    public List<T> neighbors(T x);
+    public List<EdgeNode<T>> neighbors(T x);
 
     /**
      * Adds the vertex x to the graph
@@ -31,7 +31,7 @@ public interface Graph<T> extends Iterable<T> {
      * @param x
      * @param y
      */
-    public void addEdge(T x, T y);
+    public void addEdge(T x, T y, int weight);
 
     /**
      * Removes the edge from the vertices x to y
@@ -40,6 +40,8 @@ public interface Graph<T> extends Iterable<T> {
      * @param y
      */
     public void removeEdge(T x, T y);
+
+
 
     public Graph<T> clone();
 
