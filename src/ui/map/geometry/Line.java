@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,12 +25,35 @@ import ui.map.geometry.interfaces.MapGraphics;
 @EqualsAndHashCode(callSuper=false)
 public class Line extends Component implements MapGraphics {
     private transient List<Point2D> locations = new ArrayList<>();
-
+    private transient Paint paint = new Color(001, 010, 100);
+    private transient Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);;
     private Point offset = new Point();
 
     // take the locations as parameter
     public Line(Point2D... points) {
         this.locations.addAll(Arrays.asList(points));
+    }
+
+    public Line(Paint paint, Stroke stroke, Point2D... locations) {
+        this.locations.addAll(Arrays.asList(locations));
+        this.paint = paint;
+        this.stroke = stroke;
+    }
+
+    public Paint getPaint() {
+        return paint;
+    }
+
+    public void setPaint(Paint paint) {
+        this.paint = paint;
+    }
+
+    public Stroke getStroke() {
+        return stroke;
+    }
+
+    public void setStroke(Stroke stroke) {
+        this.stroke = stroke;
     }
 
     public void addLocation(Point2D point) {
@@ -50,9 +75,8 @@ public class Line extends Component implements MapGraphics {
         Graphics2D g2 = (Graphics2D) g;
 
         // Get the each location to draw the lines
-        g2.setPaint(new Color(001, 010, 100));
-        BasicStroke bs = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
-        g2.setStroke(bs);
+        g2.setPaint(paint);
+        g2.setStroke(stroke);
 
         for (int i = 0; i < locations.size() - 1; i++) {
             Point2D p1 = locations.get(i);
@@ -62,7 +86,7 @@ public class Line extends Component implements MapGraphics {
                 continue;
 
             // Set paint color to blue for the line
-            g2.setPaint(new Color(1, 10, 100));
+            g2.setPaint(paint);
             drawLineSegment(g2, p1, p2);
         }
     }
