@@ -2,14 +2,11 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import core.Constants.UIConstants;
@@ -51,10 +48,6 @@ public class MaasMapsUI extends JFrame {
         resultsContainer.setMinimumSize(new Dimension(800, 600));
         resultsContainer.setPreferredSize(new Dimension(800, 600));
 
-        JLabel routeTitle = new JLabel("Travel route");
-        routeTitle.setForeground(UIConstants.GUI_TITLE_COLOR);
-        routeTitle.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TITLE_FONT_SIZE));
-        routeTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Adding our custom panels here
         // Use minimum and preferred size to always see the map and navigation panel
@@ -66,7 +59,6 @@ public class MaasMapsUI extends JFrame {
         resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         resultsPanel.setMinimumSize(new Dimension(500,150));
         resultsPanel.setPreferredSize(new Dimension(500,150));
-        resultsPanel.add(routeTitle);
 
         // Adding all components
         verticalSplitPane.add(map, JSplitPane.TOP);

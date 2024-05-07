@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import core.Constants.UIConstants;
 import core.models.Location;
 import ui.map.geometry.GeographicLine;
 import ui.map.geometry.ImageMarker;
