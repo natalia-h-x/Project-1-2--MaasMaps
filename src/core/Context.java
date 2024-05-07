@@ -7,7 +7,7 @@ import ui.map.ProxyMap;
 import ui.results.ResultsProxy;
 
 /**
- * This class represents the Context singleton that harbour all share objets amoungst classes.
+ * This class is the Context singleton of our program that harbour all share objects amoungst classes.
  *
  * @author Sian Lodde
  * @author Alexandra Plishkin Islamgulova
