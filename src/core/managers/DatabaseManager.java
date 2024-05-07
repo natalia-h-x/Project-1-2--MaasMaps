@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class DatabaseManager {
     private DatabaseManager() {}
@@ -18,13 +19,19 @@ public class DatabaseManager {
         return DriverManager.getConnection(DATABASE_URL);
     }
 
-    public static ResultSet executeQuery(String query) throws IllegalArgumentException {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static List<?>[] executeQuery(String query, List<?>... list) throws IllegalArgumentException {
         try (
-            Connection conn = connect();
-            Statement stmt  = conn.createStatement();
-            ResultSet rs    = stmt.executeQuery(query)
-            ) {
-            return rs;
+            Statement stmt  = connect().createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+        ) {
+            while (rs.next()) {
+                for (int i = 1; i < list.length + 1; i++) {
+                    ((List) list[i - 1]).add(rs.getObject(i));
+                }
+            }
+
+            return list;
         }
         catch (SQLException e) {
             throw new IllegalArgumentException("Error on executing query \"%s\"".formatted(query), e);
@@ -94,14 +101,9 @@ public class DatabaseManager {
             bld.append(createTableSQL);
 
             for (int i = 0; i < headers.length; i++) {
-                if (!types[i].toUpperCase().contains("DROP") && !headers[i].toUpperCase().contains("DROP")) {
-                    bld.append(headers[i] + " " + types[i]);
-                    if (i < headers.length-1) {
-                        bld.append(", ");
-                    }
-                }
-                else {
-                    System.out.println("Why do you want to drop my table? :/");
+                bld.append(headers[i] + " " + types[i]);
+                if (i < headers.length-1) {
+                    bld.append(", ");
                 }
             }
 
