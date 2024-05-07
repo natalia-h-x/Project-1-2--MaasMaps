@@ -10,6 +10,7 @@ import core.models.Location;
 import core.models.transport.Biking;
 import core.models.transport.TransportMode;
 import core.models.transport.Walking;
+import core.models.transport.Bus;
 import ui.map.geometry.Line;
 import ui.map.geometry.Marker;
 import ui.map.geometry.MarkerFactory;
@@ -81,7 +82,7 @@ public class NavigationPanel extends JPanel {
         transportType.setFont(new Font("Select means of transport: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // create combo box
-        String[] options = {"Walking", "Biking"};
+        String[] options = {"Walking", "Biking", "Take Bus"};
         JComboBox<String> selection = new JComboBox<>(options);
         selection.setBackground(UIConstants.GUI_ACCENT_COLOR);
         selection.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
@@ -132,6 +133,7 @@ public class NavigationPanel extends JPanel {
             switch ((String) selection.getSelectedItem()) {
                 case "Walking": transportMode = new Walking(); break;
                 case "Biking": transportMode = new Biking(); break;
+                case "Take Bus": transportMode = new Bus(); break;
                 default: throw new IllegalArgumentException("The Transport Mode %s is not supported!".formatted(selection.getSelectedItem()));
             }
 
