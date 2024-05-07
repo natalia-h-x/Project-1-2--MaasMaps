@@ -33,7 +33,7 @@ public class MaasMapsUI extends JFrame {
         setSize(800, 600);
         setLayout(new BorderLayout()); // Use borderlayout to completely fill the child panel in this panel
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        
+
         // Creating all components
         map = new Map();
         map.setMinimumSize(new Dimension(800, 500));
@@ -43,14 +43,14 @@ public class MaasMapsUI extends JFrame {
         JSplitPane verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         JSplitPane horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         setContentPane(horizontalSplitPane);
-        
+
         // create split pane with top and bottom panels
         JPanel resultsContainer = new JPanel(new BorderLayout());
         resultsContainer.setBorder(BorderFactory.createMatteBorder(UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE,
                                                                    UIConstants.GUI_BACKGROUND_COLOR));
         resultsContainer.setMinimumSize(new Dimension(800, 600));
         resultsContainer.setPreferredSize(new Dimension(800, 600));
-        
+
         JLabel routeTitle = new JLabel("Travel route");
         routeTitle.setForeground(UIConstants.GUI_TITLE_COLOR);
         routeTitle.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TITLE_FONT_SIZE));
@@ -67,11 +67,11 @@ public class MaasMapsUI extends JFrame {
         resultsPanel.setMinimumSize(new Dimension(500,150));
         resultsPanel.setPreferredSize(new Dimension(500,150));
         resultsPanel.add(routeTitle);
-        
+
         // Adding all components
         verticalSplitPane.add(map, JSplitPane.TOP);
         verticalSplitPane.add(resultsPanel, JSplitPane.BOTTOM);
-        
+
         resultsContainer.add(verticalSplitPane);
 
         horizontalSplitPane.add(navigationPanel, JSplitPane.LEFT);
