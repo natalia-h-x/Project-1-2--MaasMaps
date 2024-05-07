@@ -8,3 +8,6 @@ resources/gtfs/stops.txt
 resources/gtfs/transfers.txt
 resources/gtfs/trips.txt
 bin/
+/.idea
+/out
+project1-2.iml
