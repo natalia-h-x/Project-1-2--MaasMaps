@@ -20,7 +20,7 @@ public class Results extends JPanel {
 
         ResultsPanel resultsPanel = new ResultsPanel();
         Context.getContext().setResultsPanel(new ResultsProxy(resultsPanel));
-        
+
         resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         JLabel routeTitle = new JLabel("Travel route");
         routeTitle.setForeground(UIConstants.GUI_TITLE_COLOR);

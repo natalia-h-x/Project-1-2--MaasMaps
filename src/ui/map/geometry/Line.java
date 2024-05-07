@@ -26,7 +26,7 @@ import ui.map.geometry.interfaces.MapGraphics;
 public class Line extends Component implements MapGraphics {
     private transient List<Point2D> locations = new ArrayList<>();
     private transient Paint paint = new Color(001, 010, 100);
-    private transient Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);;
+    private transient Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
     private Point offset = new Point();
 
     // take the locations as parameter
