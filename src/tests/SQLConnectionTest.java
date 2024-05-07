@@ -11,7 +11,7 @@ import core.managers.ExceptionManager;
 public class SQLConnectionTest {
     @Test
     public void test1() {
-        ResultSet rs = DatabaseManager.executeQuery("SELECT stop_id, stop_lat FROM stops");
+        ResultSet rs = DatabaseManager.executeQuery("SELECT `stop_id`, `stop_lat` FROM `stops`");
         
         // loop through the result set
         try {

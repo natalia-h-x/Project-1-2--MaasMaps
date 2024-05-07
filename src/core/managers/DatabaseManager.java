@@ -31,17 +31,45 @@ public class DatabaseManager {
         }
     }
 
-    public static void insertInTable(String tableName, String[][] data) throws IllegalArgumentException {
+    private static String insertString(String tableName,  String[] attributes, String[][] data) {
+        String insertSQL = "INSERT INTO `%s` (%s";
+    
+        StringBuilder bd = new StringBuilder();
+        for (int i = 0; i < attributes.length; i++) {
+            bd.append("`" + attributes[i] + "`");
+            if (i < attributes.length - 1) {
+                bd.append(", ");
+            }
+        }
+        bd.append(") VALUES ");
+    
+        for (int attribute = 0; attribute < data.length; attribute++) {
+            bd.append("(");
+            for (int i = 0; i < data[0].length; i++) {
+                bd.append("?");
+                if (i < data[0].length - 1) {
+                    bd.append(", ");
+                }
+            }
+            bd.append(")");
+            if (attribute < data.length - 1)
+                bd.append(", ");
+        }
+        bd.append(";");
+        insertSQL = String.format(insertSQL, tableName, bd.toString());
+        return insertSQL;
+    }
+
+    public static void insertInTable(String tableName, String[] attributes, String[][] data) throws IllegalArgumentException {
         try {
             Connection conn = connect();
-            String insertSQL = "INSERT INTO " + tableName + " VALUES (";
             System.out.println("Inserting data into " + tableName);
             conn.setAutoCommit(false); // start transaction
-            try (PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            try (PreparedStatement pstmt = conn.prepareStatement(insertString(tableName, attributes, data))) {
                 int count = 0;
                 for (int tupleIndex = 0; tupleIndex < data.length; tupleIndex++) {
                     for (int attIndex = 0; attIndex < data[0].length; attIndex++) {
-                        pstmt.setString(attIndex + 1, data[tupleIndex][attIndex]);
+                        pstmt.setString(tupleIndex * data[0].length + (attIndex + 1), data[tupleIndex][attIndex]);
                     }
                 }
                 pstmt.addBatch();
@@ -66,8 +94,12 @@ public class DatabaseManager {
             bld.append(createTableSQL);
 
             for (int i = 0; i < headers.length; i++) {
-                if (!types[i].toUpperCase().contains("DROP") && !headers[i].toUpperCase().contains("DROP"))
+                if (!types[i].toUpperCase().contains("DROP") && !headers[i].toUpperCase().contains("DROP")) {
                     bld.append(headers[i] + " " + types[i]);
+                    if (i < headers.length-1) {
+                        bld.append(", ");
+                    }
+                }
                 else {
                     System.out.println("Why do you want to drop my table? :/");
                 }

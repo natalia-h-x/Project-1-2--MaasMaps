@@ -3,7 +3,6 @@ package core.managers;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -57,8 +56,9 @@ public class FileManager {
         List<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine();
-            if (line != null) {
+            while (line != null) {
                 lines.add(line);
+                line = br.readLine();
             }
         }
         return lines.toArray(String[]::new);

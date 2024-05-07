@@ -7,6 +7,7 @@ import static core.Constants.ANSI.YELLOW;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import core.managers.DatabaseManager;
 import core.managers.FileManager;
@@ -48,18 +49,39 @@ public class TxtToSQLite {
         String[] types = new String[headers.length];
         
         for (int j = 0; j < types.length; j++) {
-            types[j] = "TEXT"; //FIXME change to actual type
+            types[j] = "TEXT(100000)"; //FIXME change to actual type
         }
 
         DatabaseManager.createTable(tableName, headers, types);
 
         String[][] data = new String[lines.length - 1][headers.length];
-        
-        for (int i = 1; i < data.length; i++) {
-            data[i] = parseCSV(lines[i].trim());
-        }
 
-        DatabaseManager.insertInTable(tableName, data);
+        for (int i = 1; i < data.length + 1; i++) {
+            while ((parseCSV(lines[i].trim())).length < headers.length) {
+                lines[i] = lines[i].trim() + "null";
+            }
+            data[i - 1] = parseCSV(lines[i].trim());
+        }
+        
+        int maxLines = 10000;
+        int current = data.length;
+        while (current > 10000) {
+            String[][] smallerData = new String[maxLines][headers.length];
+            for (int i = 0; i < divideData(data.length, maxLines); i++) {
+                System.arraycopy(data, i*10000, smallerData, 0, maxLines);
+                DatabaseManager.insertInTable(tableName, headers, smallerData);
+                current = current - 10000;
+            }
+        }
+        if (current > 0) {
+            String[][] smallerData = new String[current][headers.length];
+            System.arraycopy(data, data.length - current, smallerData, 0, current);
+            DatabaseManager.insertInTable(tableName, headers, smallerData);
+        }
+    }
+
+    private static int divideData(int n, int m) {
+        return (int) n/m;
     }
     
     private static String[] parseCSV(String csvLine) {
