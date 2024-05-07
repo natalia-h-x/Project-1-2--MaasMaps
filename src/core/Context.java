@@ -4,6 +4,7 @@ import core.database.ZipCodeDatabase;
 import lombok.Getter;
 import lombok.Setter;
 import ui.map.ProxyMap;
+import ui.results.ResultsProxy;
 
 /**
  * This class represents the Context singleton that harbour all share objets amoungst classes.
@@ -17,6 +18,7 @@ public class Context {
     private static Context context;
     private ProxyMap map;
     private ZipCodeDatabase zipCodeDatabase;
+    private ResultsProxy resultsPanel;
 
     private Context() {}
 
