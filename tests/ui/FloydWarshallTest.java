@@ -1,5 +1,3 @@
-package tests;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,14 +15,14 @@ public class FloydWarshallTest {
         floydWarshall = new FloydWarshall();
         adjacencyMatrixGraph = new AdjacencyMatrixGraph(7);
     }
-    
+
     @Test
     public void test1() {
         adjacencyMatrixGraph.addEdge(0, 1, 2);
         adjacencyMatrixGraph.addEdge(1, 2, 1);
         adjacencyMatrixGraph.addEdge(0, 2, 5);
         adjacencyMatrixGraph = floydWarshall.floydWarshall(adjacencyMatrixGraph);
-        assertAll("Shortest Distance", 
+        assertAll("Shortest Distance",
             () -> assertEquals(3, adjacencyMatrixGraph.getAdjMatrix()[0][2])
         );
     }
@@ -39,7 +37,7 @@ public class FloydWarshallTest {
         adjacencyMatrixGraph.addEdge(1, 3, 2);
         adjacencyMatrixGraph.addEdge(4, 6, 5);
         adjacencyMatrixGraph = floydWarshall.floydWarshall(adjacencyMatrixGraph);
-        assertAll("Shortest Distance", 
+        assertAll("Shortest Distance",
             () -> assertEquals(5, adjacencyMatrixGraph.getAdjMatrix()[0][2]),
             () -> assertEquals(1, adjacencyMatrixGraph.getAdjMatrix()[1][2]),
             () -> assertEquals(20, adjacencyMatrixGraph.getAdjMatrix()[0][6]),

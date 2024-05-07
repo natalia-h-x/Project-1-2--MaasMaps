@@ -1,4 +1,4 @@
-package tests.database;
+package database;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,13 +9,14 @@ import org.junit.Test;
 
 import core.algorithms.datastructures.Graph;
 import core.managers.DatabaseManager;
-import tests.NetworkTest;
+import core.models.BusStop;
+import ui.NetworkTest;
 
 public class LoadGraphTest {
     @Test
     public void test1() {
         try {
-            Graph<Point2D> graph = DatabaseManager.loadGraph();
+            Graph<BusStop> graph = DatabaseManager.loadGraph();
             new NetworkTest(graph).test1();
         }
         catch (SQLException e) {
