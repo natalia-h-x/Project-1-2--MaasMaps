@@ -2,7 +2,6 @@ package ui.map.geometry;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -18,12 +17,12 @@ import ui.map.translation.ProxyTranslatableGraphics2D;
  * @author Alexandra Plishkin Islamgulova
  * @author Meriç Uruş
  */
-public class Marker extends Component implements MapGraphics {
-    private transient int markerOffsetY = 10;
-    private transient int innerSize = 7;
-    private transient Point2D location;
-    private transient int size = 5;
-    private transient Point offset = new Point(0, 0);
+public class Marker implements MapGraphics {
+    private int markerOffsetY = 10;
+    private int innerSize = 7;
+    private Point2D location;
+    private int size = 5;
+    private Point offset = new Point(0, 0);
 
     public void setOffset(Point offset) {
         this.offset = offset;

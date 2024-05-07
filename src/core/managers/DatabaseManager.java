@@ -12,6 +12,7 @@ import java.sql.Statement;
 
 import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.Graph;
+import core.models.BusStop;
 import core.models.Location;
 import tools.generator.sqlite.TxtToSQLite;
 import tools.generator.sqlite.db_helpers.DBPreparation;
@@ -51,8 +52,8 @@ public class DatabaseManager {
         }
     }
 
-    public static Graph<Point2D> loadGraph() throws SQLException {
-        Graph<Point2D> graph = new AdjacencyListGraph<>();
+    public static Graph<BusStop> loadGraph() throws SQLException {
+        Graph<BusStop> graph = new AdjacencyListGraph<>();
         ResultSet rs = executeQuery("select a.stop_lon as from_stop_lon, a.stop_lat as from_stop_lat, b.stop_lon as to_stop_lon, b.stop_lat as to_stop_lat\r\n" + //
                         "from stops a\r\n" + //
                         "left join transfers on a.stop_id = transfers.from_stop_id \r\n" + //
@@ -61,8 +62,8 @@ public class DatabaseManager {
                         "  and b.stop_lat < 50.90074 and b.stop_lat > 50.815816 and b.stop_lon < 5.753384 and b.stop_lon > 5.64213");
 
         while (rs.next()) {
-            Location fromLocation = new Location(rs.getDouble(1), rs.getDouble(2));
-            Location toLocation = new Location(rs.getDouble(3), rs.getDouble(4));
+            BusStop fromLocation = new BusStop(rs.getDouble(1), rs.getDouble(2));
+            BusStop toLocation = new BusStop(rs.getDouble(3), rs.getDouble(4));
             int weight = (int) (1000 * rs.getDouble(5));
 
             if (!graph.getVertecesList().contains(fromLocation))

@@ -1,8 +1,8 @@
+package ui;
 import org.junit.Test;
 
 import core.Context;
 import core.models.Location;
-import ui.MaasMapsUI;
 import ui.map.geometry.GeographicLine;
 
 public class ResultsTest {

@@ -20,7 +20,7 @@ public class TxtToSQLite {
         long startTime = System.currentTimeMillis(); // Start timer
 
         System.out.println("\n" + GREEN + "[CONNECTING TO DATABASE]" + RESET);
-        
+
         try (Connection connection = DriverManager.getConnection(DATABASE_URL)) {
             if (connection != null) {
                 optimizeDatabaseForBulkInsert(connection);
@@ -63,7 +63,7 @@ public class TxtToSQLite {
         String insertSQL = "INSERT INTO " + tableName + " (";
         List<String> columns = new ArrayList<>();
         List<String> values = new ArrayList<>();
-    
+
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine(); // read the first line to get headers
             if (line != null) {
@@ -82,13 +82,13 @@ public class TxtToSQLite {
             }
             createTableSQL += ")";
             insertSQL += ") VALUES (" + String.join(", ", values) + ")";
-    
+
             System.out.println("Creating table " + tableName);
             try (Statement stmt = connection.createStatement()) {
                 stmt.execute(createTableSQL);
             }
             System.out.println("-- Table creation successful --");
-    
+
             System.out.println("Inserting data into " + tableName);
             connection.setAutoCommit(false); // start transaction
             try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
@@ -113,7 +113,7 @@ public class TxtToSQLite {
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
-    
+
     private static String[] parseCSV(String csvLine) {
         String regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         return csvLine.split(regex);

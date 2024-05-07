@@ -7,18 +7,16 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import core.Constants.UIConstants;
 import core.models.Location;
 import ui.map.geometry.GeographicLine;
 import ui.map.geometry.ImageMarker;
-import ui.map.geometry.Marker;
 import ui.map.geometry.ImageMarkerFactory;
+import ui.map.geometry.Marker;
 
 public class ResultsPanel extends JPanel implements ResultDisplay {
     private GeographicLine line;
 
     public ResultsPanel() {
-        line = new GeographicLine();
         setLine(new GeographicLine(new Location(50.854581, 5.690199), new Location(50.85291, 5.692407), new Location(50.853228, 5.690603)));
     }
 

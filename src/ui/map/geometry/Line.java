@@ -2,7 +2,6 @@ package ui.map.geometry;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -23,10 +22,10 @@ import ui.map.geometry.interfaces.MapGraphics;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class Line extends Component implements MapGraphics {
-    private transient List<Point2D> locations = new ArrayList<>();
-    private transient Paint paint = new Color(001, 010, 100);
-    private transient Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
+public class Line implements MapGraphics {
+    private List<Point2D> locations = new ArrayList<>();
+    private Paint paint = new Color(001, 010, 100);
+    private Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
     private Point offset = new Point();
 
     // take the locations as parameter
@@ -74,8 +73,6 @@ public class Line extends Component implements MapGraphics {
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        // Get the each location to draw the lines
-        g2.setPaint(paint);
         g2.setStroke(stroke);
 
         for (int i = 0; i < locations.size() - 1; i++) {
@@ -85,7 +82,7 @@ public class Line extends Component implements MapGraphics {
             if (p1 == null || p2 == null)
                 continue;
 
-            // Set paint color to blue for the line
+            // Set paint color for the line
             g2.setPaint(paint);
             drawLineSegment(g2, p1, p2);
         }

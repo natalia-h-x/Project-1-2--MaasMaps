@@ -1,11 +1,11 @@
 package core.models;
 
-import core.managers.DistanceManager;
-import core.managers.MapManager;
-
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
+
+import core.managers.DistanceManager;
+import core.managers.MapManager;
 
 /**
  * This class represents a location in the map, based on latitude and longitude.

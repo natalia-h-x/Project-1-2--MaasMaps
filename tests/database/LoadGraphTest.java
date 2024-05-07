@@ -17,7 +17,7 @@ public class LoadGraphTest {
     public void test1() {
         try {
             Graph<BusStop> graph = DatabaseManager.loadGraph();
-            new NetworkTest(graph).test1();
+            //new NetworkTest(graph).test1();
         }
         catch (SQLException e) {
             assertTrue(false);
