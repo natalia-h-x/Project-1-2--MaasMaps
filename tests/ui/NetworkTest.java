@@ -7,6 +7,7 @@ import core.Context;
 import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
+import core.models.Route;
 import ui.map.geometry.AbstractedBusNetwork;
 import ui.map.geometry.BusNetwork;
 
@@ -16,12 +17,12 @@ public class NetworkTest {
     public NetworkTest() {
         adjacencyListGraph = new AdjacencyListGraph<>();
 
-        BusStop loc1 = new BusStop(50.855233, 5.692237, Color.gray);
-        BusStop loc2 = new BusStop(50.853608, 5.691958, Color.gray);
-        BusStop loc3 = new BusStop(50.853617, 5.692009, Color.gray);
-        BusStop loc4 = new BusStop(50.853037, 5.691825, Color.gray);
-        BusStop loc5 = new BusStop(50.854993, 5.692294, Color.gray);
-        BusStop loc6 = new BusStop(50.854581, 5.690199, Color.gray);
+        BusStop loc1 = new BusStop(50.855233, 5.692237, "Maastricht Bus Stop nr. 1", new Route(Color.gray));
+        BusStop loc2 = new BusStop(50.853608, 5.691958, "Maastricht Bus Stop nr. 2", new Route(Color.gray));
+        BusStop loc3 = new BusStop(50.853617, 5.692009, "Maastricht Bus Stop nr. 3", new Route(Color.gray));
+        BusStop loc4 = new BusStop(50.853037, 5.691825, "Maastricht Bus Stop nr. 4", new Route(Color.gray));
+        BusStop loc5 = new BusStop(50.854993, 5.692294, "Maastricht Bus Stop nr. 5", new Route(Color.gray));
+        BusStop loc6 = new BusStop(50.854581, 5.690199, "Maastricht Bus Stop nr. 6", new Route(Color.gray));
 
         adjacencyListGraph.addVertex(loc1);
         adjacencyListGraph.addVertex(loc2);
