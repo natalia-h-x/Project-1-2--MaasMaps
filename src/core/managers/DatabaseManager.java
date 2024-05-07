@@ -63,14 +63,15 @@ public class DatabaseManager {
         while (rs.next()) {
             Location fromLocation = new Location(rs.getDouble(1), rs.getDouble(2));
             Location toLocation = new Location(rs.getDouble(3), rs.getDouble(4));
+            int weight = (int) (1000 * rs.getDouble(5));
 
             if (!graph.getVertecesList().contains(fromLocation))
                 graph.addVertex(fromLocation);
-            
+
             if (!graph.getVertecesList().contains(toLocation))
                 graph.addVertex(toLocation);
-            
-            graph.addEdge(fromLocation, toLocation);
+
+            graph.addEdge(fromLocation, toLocation, weight);
         }
 
         return graph;

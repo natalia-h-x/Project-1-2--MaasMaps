@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AdjacencyListGraph<T> implements Graph<T>, Iterable<T>{
+public class AdjacencyListGraph<T> implements Graph<T> {
     private HashMap<T, List<EdgeNode<T>>> vertices;
 
     public AdjacencyListGraph() {
@@ -13,21 +13,12 @@ public class AdjacencyListGraph<T> implements Graph<T>, Iterable<T>{
     }
 
     @Override
-    public List<T> neighbors(T x) {
-        List<T> neighboursElements = new LinkedList<>();
-
+    public List<EdgeNode<T>> neighbors(T x) {
         if (!vertices.containsKey(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
         }
-        else {
-            List<EdgeNode<T>> adjList = vertices.get(x);
-
-            for (EdgeNode<T> edge : adjList) {
-                neighboursElements.add(edge.getElement());
-            }
-        }
-
-        return neighboursElements;
+        // return new linked list to avoid possible conflicts
+        return new LinkedList<>(vertices.get(x));
     }
 
     @Override
@@ -35,39 +26,38 @@ public class AdjacencyListGraph<T> implements Graph<T>, Iterable<T>{
         if (vertices.containsKey(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is already in the Graph.");
         }
-        else {
-            List<EdgeNode<T>> newList = new LinkedList<>();
-            vertices.put(x, newList);
-        }
+        vertices.put(x, new LinkedList<>());
     }
 
     @Override
     public void removeVertex(T x) {
+        // check if the vertex exists in the graph
         if (!vertices.containsKey(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
         }
 
+        // Remove all issuing edges from vertex x
         vertices.remove(x);
+
+        // Iterate all vertices in the graph
+        for (T vertex : vertices.keySet()) {
+            // remove the edge if it points to x
+            vertices.get(vertex).removeIf(edge -> edge.getElement().equals(x));
+        }
     }
 
     @Override
-    public void addEdge(T x, T y) {
-        if (!vertices.containsKey(x)) {
-            throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
+    public void addEdge(T x, T y, int weight) {
+        if (!vertices.containsKey(x) || !vertices.containsKey(y)) {
+            throw new IllegalArgumentException("One or both vertices are not in the Graph.");
         }
-        else if (!vertices.containsKey(y)) {
-            throw new IllegalArgumentException("The vertex " + y + " is not in the Graph.");
-        }
-        else {
-            List<EdgeNode<T>> adjList = vertices.get(x);
-
-            if (adjList.contains(new EdgeNode<T>(y, 0))) {
-                throw new IllegalArgumentException("The edge from " + x + " to " + y + " is already in the graph");
-            }
-            else {
-                adjList.add(new EdgeNode<T>(y, 0));
+        List<EdgeNode<T>> adjList = vertices.get(x);
+        for (EdgeNode<T> edge : adjList) {
+            if (edge.getElement().equals(y)) {
+                throw new IllegalArgumentException("An edge from " + x + " to " + y + " already exists");
             }
         }
+        adjList.add(new EdgeNode<>(y, weight));
     }
 
     @Override
@@ -75,36 +65,21 @@ public class AdjacencyListGraph<T> implements Graph<T>, Iterable<T>{
         if (!vertices.containsKey(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
         }
-        else if (!vertices.containsKey(y)) {
-            throw new IllegalArgumentException("The vertex " + y + " is not in the Graph.");
-        }
-        else {
-            List <EdgeNode<T>> adjList = vertices.get(x);
-
-            if (!adjList.contains(new EdgeNode<T>(y, 0))) {
-                throw new IllegalArgumentException("The edge from " + x + " to " + y + " is not in the graph and cannot be removed.");
-            }
-            else {
-                adjList.remove(new EdgeNode<T>(y, 0));
-            }
-        }
+        List<EdgeNode<T>> adjList = vertices.get(x);
+        adjList.removeIf(edge -> edge.getElement().equals(y));
     }
 
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-
         for (T vertex : vertices.keySet()) {
             List<EdgeNode<T>> neighbours = vertices.get(vertex);
-            result.append(vertex + " neighbors: ->");
-
+            result.append(vertex).append(" neighbors: -> ");
             for (EdgeNode<T> edge : neighbours) {
-                result.append(edge.getElement() + "->");
+                result.append(edge.getElement()).append(" (").append(edge.getWeight()).append(") -> ");
             }
-
             result.append("null\n");
         }
-
         return result.toString();
     }
 
@@ -116,17 +91,12 @@ public class AdjacencyListGraph<T> implements Graph<T>, Iterable<T>{
     @Override
     public Graph<T> clone() {
         AdjacencyListGraph<T> copy = new AdjacencyListGraph<>();
-
         for (T vertex : vertices.keySet()) {
             copy.addVertex(vertex);
-        }
-
-        for (T vertex : vertices.keySet()) {
             for (EdgeNode<T> edge : vertices.get(vertex)) {
-                copy.addEdge(vertex, edge.getElement());
+                copy.addEdge(vertex, edge.getElement(), edge.getWeight());
             }
         }
-
         return copy;
     }
 
@@ -136,3 +106,4 @@ public class AdjacencyListGraph<T> implements Graph<T>, Iterable<T>{
         return iterator;
     }
 }
+
