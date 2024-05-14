@@ -1,80 +1,127 @@
 package core.managers;
 
+import static core.Constants.Paths.DATABASE_FILEPATH;
 import static core.Constants.Paths.DATABASE_URL;
 
-import java.awt.geom.Point2D;
-import java.nio.file.FileSystemNotFoundException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import core.algorithms.datastructures.AdjacencyListGraph;
-import core.algorithms.datastructures.Graph;
-import core.models.BusStop;
-import core.models.Location;
-import tools.generator.sqlite.TxtToSQLite;
-import tools.generator.sqlite.db_helpers.DBPreparation;
+import java.util.List;
 
 public class DatabaseManager {
     private DatabaseManager() {}
 
     private static Connection connect() throws SQLException {
-        try {
-            if (!FileManager.fileExists(DATABASE_URL.replace("jdbc:sqlite:", ""))) {
-                // Create the database and try to connect. If this fails, throw the exception.
-                createDatabase();
+        return DriverManager.getConnection(DATABASE_URL);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static List<?>[] executeQuery(String query, List<?>... list) throws IllegalArgumentException {
+        try (
+            Statement stmt  = connect().createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+        ) {
+            while (rs.next()) {
+                for (int i = 1; i < list.length + 1; i++) {
+                    ((List) list[i - 1]).add(rs.getObject(i));
+                }
             }
 
-            return DriverManager.getConnection(DATABASE_URL);
-        }
-        catch (SQLException e) {
-            throw new FileSystemNotFoundException("Could not connect to the SQL database at path \"%s\"".formatted(DATABASE_URL));
-        }
-    }
-
-    private static void createDatabase() {
-        new DBPreparation();
-        new TxtToSQLite("resources/gtfs");
-    }
-
-    public static ResultSet executeQuery(String query) throws IllegalArgumentException {
-        try (
-            Connection conn = connect();
-            Statement stmt  = conn.createStatement();
-            ResultSet rs    = stmt.executeQuery(query)
-            ) {
-            return rs;
+            return list;
         }
         catch (SQLException e) {
             throw new IllegalArgumentException("Error on executing query \"%s\"".formatted(query), e);
         }
     }
 
-    public static Graph<BusStop> loadGraph() throws SQLException {
-        Graph<BusStop> graph = new AdjacencyListGraph<>();
-        ResultSet rs = executeQuery("select a.stop_lon as from_stop_lon, a.stop_lat as from_stop_lat, b.stop_lon as to_stop_lon, b.stop_lat as to_stop_lat\r\n" + //
-                        "from stops a\r\n" + //
-                        "left join transfers on a.stop_id = transfers.from_stop_id \r\n" + //
-                        "left join stops b on b.stop_id = transfers.to_stop_id \r\n" + //
-                        "where a.stop_lat < 50.90074 and a.stop_lat > 50.815816 and a.stop_lon < 5.753384 and a.stop_lon > 5.64213\r\n" + //
-                        "  and b.stop_lat < 50.90074 and b.stop_lat > 50.815816 and b.stop_lon < 5.753384 and b.stop_lon > 5.64213");
-
-        while (rs.next()) {
-            BusStop fromLocation = new BusStop(rs.getDouble(1), rs.getDouble(2));
-            BusStop toLocation = new BusStop(rs.getDouble(3), rs.getDouble(4));
-            int weight = (int) (1000 * rs.getDouble(5));
-
-            if (!graph.getVertecesList().contains(fromLocation))
-                graph.addVertex(fromLocation);
-
-            if (!graph.getVertecesList().contains(toLocation))
-                graph.addVertex(toLocation);
-
-            graph.addEdge(fromLocation, toLocation, weight);
+    private static String insertString(String tableName,  String[] attributes, String[][] data) {
+        String insertSQL = "INSERT INTO `%s` (%s";
+    
+        StringBuilder bd = new StringBuilder();
+        for (int i = 0; i < attributes.length; i++) {
+            bd.append("`" + attributes[i] + "`");
+            if (i < attributes.length - 1) {
+                bd.append(", ");
+            }
         }
+        bd.append(") VALUES ");
+    
+        for (int attribute = 0; attribute < data.length; attribute++) {
+            bd.append("(");
+            for (int i = 0; i < data[0].length; i++) {
+                bd.append("?");
+                if (i < data[0].length - 1) {
+                    bd.append(", ");
+                }
+            }
+            bd.append(")");
+            if (attribute < data.length - 1)
+                bd.append(", ");
+        }
+        bd.append(";");
+        insertSQL = String.format(insertSQL, tableName, bd.toString());
+        return insertSQL;
+    }
 
-        return graph;
+    public static void insertInTable(String tableName, String[] attributes, String[][] data) throws IllegalArgumentException {
+        try {
+            Connection conn = connect();
+            System.out.println("Inserting data into " + tableName);
+            conn.setAutoCommit(false); // start transaction
+            try (PreparedStatement pstmt = conn.prepareStatement(insertString(tableName, attributes, data))) {
+                int count = 0;
+                for (int tupleIndex = 0; tupleIndex < data.length; tupleIndex++) {
+                    for (int attIndex = 0; attIndex < data[0].length; attIndex++) {
+                        pstmt.setString(tupleIndex * data[0].length + (attIndex + 1), data[tupleIndex][attIndex]);
+                    }
+                }
+                pstmt.addBatch();
+                if (++count % 100 == 0) {
+                    pstmt.executeBatch();
+                    pstmt.clearBatch();
+                }
+                pstmt.executeBatch(); // final batch
+                conn.commit(); // commit transaction
+                System.out.println("-- Insertion complete --");
+            }
+        }
+        catch (SQLException e) {
+            throw new IllegalArgumentException("Error on inserting in the table \"%s\"".formatted(tableName), e);
+        }
+    }
+
+    public static void createTable(String tableName, String[] headers, String[] types) throws IllegalArgumentException {
+        try (Statement stmt = optimizeDatabaseForBulkInsert(connect()).createStatement()) {
+            StringBuilder bld = new StringBuilder();
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
+            bld.append(createTableSQL);
+
+            for (int i = 0; i < headers.length; i++) {
+                bld.append(headers[i] + " " + types[i]);
+                if (i < headers.length-1) {
+                    bld.append(", ");
+                }
+            }
+
+            bld.append(");");
+            System.out.println("Creating table " + tableName);
+            stmt.execute(bld.toString());
+            System.out.println("-- Table creation successful --");     
+
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Error on creating table \"%s\"".formatted(tableName), e);
+        }
+    }
+
+    private static Connection optimizeDatabaseForBulkInsert(Connection connection) throws SQLException {
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute("PRAGMA synchronous = OFF");
+            stmt.execute("PRAGMA journal_mode = MEMORY");
+            return connection;
+        }
     }
 }
