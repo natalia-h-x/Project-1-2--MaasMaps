@@ -6,9 +6,7 @@ import static core.Constants.ANSI.YELLOW;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import core.managers.DatabaseManager;

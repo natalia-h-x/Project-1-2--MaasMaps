@@ -24,12 +24,18 @@ public class Marker implements MapGraphics {
     private int size = 5;
     private Point offset = new Point(0, 0);
 
-    public void setOffset(Point offset) {
-        this.offset = offset;
-    }
-
     public Marker(Point2D location) {
         this.location = location;
+    }
+
+    public void setText(String text) {
+        // TODO Meric
+    }
+
+    // TODO Meric: Add getText() method
+
+    public void setOffset(Point offset) {
+        this.offset = offset;
     }
 
     public Point2D getMarkerLocation() {
@@ -69,5 +75,7 @@ public class Marker implements MapGraphics {
 
         g2.setColor(Color.WHITE);
         g2.fill(whiteEllipse);
+
+        // TODO Meric: Draw text here somewhere
     }
 }

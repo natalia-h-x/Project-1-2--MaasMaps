@@ -59,18 +59,20 @@ public class Map extends JPanel implements TranslateableComponent {
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (mapImage == null)
-            return;
-
         Graphics2D g2 = new ProxyTranslatableGraphics2D((Graphics2D) g, scale, translation);
 
         applyFastRenderingHints(g2);
+        //drawMapImage(g2);
+        drawMapIcon(g2);
+    }
+
+    private void drawMapImage(Graphics2D g2) {
+        if (mapImage == null)
+            return;
 
         TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
         g2.setPaint(paint);
         g2.fill(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
-
-        drawMapIcon(g2);
     }
 
     @SuppressWarnings("unused")

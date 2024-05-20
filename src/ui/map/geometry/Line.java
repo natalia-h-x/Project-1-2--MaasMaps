@@ -10,8 +10,11 @@ import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ui.map.geometry.interfaces.MapGraphics;
@@ -22,7 +25,7 @@ import ui.map.geometry.interfaces.MapGraphics;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class Line implements MapGraphics {
+public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment> {
     private List<Point2D> locations = new ArrayList<>();
     private Paint paint = new Color(001, 010, 100);
     private Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
@@ -33,8 +36,18 @@ public class Line implements MapGraphics {
         this.locations.addAll(Arrays.asList(points));
     }
 
-    public Line(Paint paint, Stroke stroke, Point2D... locations) {
-        this.locations.addAll(Arrays.asList(locations));
+    public Line(Paint paint, Point2D... points) {
+        this(points);
+        this.paint = paint;
+    }
+
+    public Line(Stroke stroke, Point2D... points) {
+        this(points);
+        this.stroke = stroke;
+    }
+
+    public Line(Paint paint, Stroke stroke, Point2D... points) {
+        this(points);
         this.paint = paint;
         this.stroke = stroke;
     }
@@ -69,11 +82,8 @@ public class Line implements MapGraphics {
         g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
     }
 
-    @Override
-    public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-
-        g2.setStroke(stroke);
+    public Segment[] getLineIterator() {
+        ArrayList<Segment> segments = new ArrayList<>();
 
         for (int i = 0; i < locations.size() - 1; i++) {
             Point2D p1 = locations.get(i);
@@ -82,9 +92,50 @@ public class Line implements MapGraphics {
             if (p1 == null || p2 == null)
                 continue;
 
+            segments.add(new Segment(p1, p2));
+        }
+
+        return segments.toArray(Segment[]::new);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.setStroke(stroke);
+
+        for (Segment segment : getLineIterator()) {
             // Set paint color for the line
             g2.setPaint(paint);
-            drawLineSegment(g2, p1, p2);
+            drawLineSegment(g2, segment.getStart(), segment.getEnd());
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class Segment {
+        private Point2D start;
+        private Point2D end;
+    }
+
+    @Override
+    public Iterator<Segment> iterator() {
+        return new Iterator<Segment>() {
+            private Segment[] segments = getLineIterator();
+            private int position = -1;
+
+            @Override
+            public boolean hasNext() {
+                return position < segments.length - 1;
+            }
+
+            @Override
+            public Segment next() {
+                if (!hasNext())
+                    throw new NoSuchElementException("Iterator has no next elements.");
+
+                return segments[++position];
+            }
+        };
     }
 }

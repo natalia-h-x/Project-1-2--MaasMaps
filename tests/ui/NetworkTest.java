@@ -2,14 +2,16 @@ package ui;
 import java.awt.Color;
 
 import org.junit.Test;
+import org.slf4j.MarkerFactory;
 
 import core.Context;
 import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
-import core.models.Route;
 import ui.map.geometry.AbstractedBusNetwork;
 import ui.map.geometry.BusNetwork;
+import ui.map.geometry.ImageMarkerFactory;
+import ui.map.geometry.Marker;
 
 public class NetworkTest {
     private Graph<BusStop> adjacencyListGraph;
@@ -17,12 +19,12 @@ public class NetworkTest {
     public NetworkTest() {
         adjacencyListGraph = new AdjacencyListGraph<>();
 
-        BusStop loc1 = new BusStop(50.855233, 5.692237, "Maastricht Bus Stop nr. 1", new Route(Color.gray));
-        BusStop loc2 = new BusStop(50.853608, 5.691958, "Maastricht Bus Stop nr. 2", new Route(Color.gray));
-        BusStop loc3 = new BusStop(50.853617, 5.692009, "Maastricht Bus Stop nr. 3", new Route(Color.gray));
-        BusStop loc4 = new BusStop(50.853037, 5.691825, "Maastricht Bus Stop nr. 4", new Route(Color.gray));
-        BusStop loc5 = new BusStop(50.854993, 5.692294, "Maastricht Bus Stop nr. 5", new Route(Color.gray));
-        BusStop loc6 = new BusStop(50.854581, 5.690199, "Maastricht Bus Stop nr. 6", new Route(Color.gray));
+        BusStop loc1 = new BusStop(50.855233, 5.692237, "Maastricht Bus Stop nr. 1");
+        BusStop loc2 = new BusStop(50.853608, 5.691958, "Maastricht Bus Stop nr. 2");
+        BusStop loc3 = new BusStop(50.853617, 5.692009, "Maastricht Bus Stop nr. 3");
+        BusStop loc4 = new BusStop(50.853037, 5.691825, "Maastricht Bus Stop nr. 4");
+        BusStop loc5 = new BusStop(50.854993, 5.692294, "Maastricht Bus Stop nr. 5");
+        BusStop loc6 = new BusStop(50.854581, 5.690199, "Maastricht Bus Stop nr. 6");
 
         adjacencyListGraph.addVertex(loc1);
         adjacencyListGraph.addVertex(loc2);
@@ -41,13 +43,19 @@ public class NetworkTest {
 
     @Test
     public void test1() {
+        makeAbstractedBusNetwork(adjacencyListGraph);
+    }
+
+    public static void makeAbstractedBusNetwork(Graph<BusStop> adjacencyListGraph) {
         new MaasMapsUI();
 
-        BusNetwork busNetwork = new BusNetwork(adjacencyListGraph);
-        busNetwork.setPaint(Color.gray);
+        // BusNetwork busNetwork = new BusNetwork(adjacencyListGraph);
+        // busNetwork.setPaint(Color.gray);
+        // Context.getContext().getMap().addMapGraphics(busNetwork);
+
         AbstractedBusNetwork abstractedBusNetwork = new AbstractedBusNetwork(adjacencyListGraph);
         abstractedBusNetwork.setPaint(Color.green);
-        Context.getContext().getMap().addMapIcon(busNetwork);
-        Context.getContext().getMap().addMapIcon(abstractedBusNetwork);
+
+        Context.getContext().getMap().addMapGraphics(abstractedBusNetwork);
     }
 }

@@ -1,22 +1,31 @@
 package ui.map.geometry;
 
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.util.function.DoubleFunction;
+import java.util.function.UnaryOperator;
 
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
+import ui.map.geometry.Line.Segment;
 
 public class AbstractedBusNetwork extends BusNetwork {
-    private static final DoubleFunction<Double> abstractingFunction = i -> stepify(i, 32);
+    private static final AbstractorMap map = new AbstractorMap(
+        new Line(Color.CYAN, new Point(500, 500), new Point(1280, 800)),
+        new Line(Color.GREEN, new Point(500, 500), new Point (600, 800)),
+        new Line(Color.YELLOW, new Point(500, 500), new Point(1600, 2000))
+    );
+    private static final UnaryOperator<Point2D> abstractingFunction = map::map;
 
     public AbstractedBusNetwork(Graph<BusStop> graph) {
         super(graph);
     }
 
     @Override
-    public Line createLineSegment(Point2D from, Point2D to) {
-        return super.createLineSegment(new Point2DImpostor(from, abstractingFunction),
-                                       new Point2DImpostor(to  , abstractingFunction));
+    public <P extends Point2D> void createLines(Graph<P> graph) {
+        for (Line line : map.getLines()) {
+            addGraphic(line);
+        }
     }
 
     @Override
@@ -24,7 +33,78 @@ public class AbstractedBusNetwork extends BusNetwork {
         return super.createMarker(new Point2DImpostor(point, abstractingFunction));
     }
 
-    private static double stepify(double i, double step) {
-        return (int) (i / step) * step;
+    private static final class AbstractorMap {
+        private Line[] lines;
+
+        private AbstractorMap(Line... lines) {
+            this.lines = lines;
+        }
+
+        public Line[] getLines() {
+            return lines;
+        }
+
+        public Point2D map(Point2D point) {
+            if (lines.length <= 0)
+                return point;
+
+            Point2D closestPoint = null;
+            double dist = 0;
+
+            for (Line line : lines) {
+                Point2D clampedPoint = nearestPointOnLine(line, point);
+
+                if (clampedPoint == null)
+                    continue;
+
+                double distanceSq = clampedPoint.distanceSq(point);
+
+                if (closestPoint == null || distanceSq < dist) {
+                    dist = distanceSq;
+                    closestPoint = clampedPoint;
+                }
+            }
+
+            return closestPoint;
+        }
+
+        private static Point2D nearestPointOnLine(Line line, Point2D point) {
+            Point2D closestPoint = null;
+            double dist = 0;
+
+            for (Segment segment : line) {
+                Point2D clampedPoint = nearestPointOnLine(segment.getStart().getX(), segment.getStart().getY(), segment.getEnd().getX(), segment.getEnd().getY(), point, true);
+                double distanceSq = clampedPoint.distanceSq(point);
+
+                if (closestPoint == null || distanceSq < dist) {
+                    dist = distanceSq;
+                    closestPoint = clampedPoint;
+                }
+            }
+
+            return closestPoint;
+        }
+
+        private static Point2D nearestPointOnLine(double ax, double ay, double bx, double by, Point2D point,
+                boolean clampToSegment) {
+            double apx = point.getX() - ax;
+            double apy = point.getY() - ay;
+            double abx = bx - ax;
+            double aby = by - ay;
+
+            double ab2 = abx * abx + aby * aby;
+            double apAb = apx * abx + apy * aby;
+            double t = apAb / ab2;
+
+            if (clampToSegment) {
+                if (t < 0) {
+                    t = 0;
+                } else if (t > 1) {
+                    t = 1;
+                }
+            }
+
+            return new Point.Double(ax + abx * t, ay + aby * t);
+        }
     }
 }

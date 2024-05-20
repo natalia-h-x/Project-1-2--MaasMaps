@@ -14,4 +14,8 @@ public class ExceptionManager {
     public static void handle(Exception ex) {
         ex.printStackTrace();
     }
+
+    public static void warn(Exception ex) {
+        System.out.println("WARN: " + ex.getMessage());
+    }
 }

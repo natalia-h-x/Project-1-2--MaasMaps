@@ -46,18 +46,27 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         }
     }
 
+    public boolean containsVertex(T x) {
+        return vertices.containsKey(x);
+    }
+
     @Override
     public void addEdge(T x, T y, int weight) {
         if (!vertices.containsKey(x) || !vertices.containsKey(y)) {
             throw new IllegalArgumentException("One or both vertices are not in the Graph.");
         }
+
         List<EdgeNode<T>> adjList = vertices.get(x);
-        for (EdgeNode<T> edge : adjList) {
-            if (edge.getElement().equals(y)) {
-                throw new IllegalArgumentException("An edge from " + x + " to " + y + " already exists");
-            }
-        }
         adjList.add(new EdgeNode<>(y, weight));
+    }
+
+    @Override
+    public void addEdge(EdgeNode<T> edge, T x) {
+        if (!vertices.containsKey(x) || !vertices.containsKey(edge.getElement())) {
+            throw new IllegalArgumentException("One or both vertices are not in the Graph.");
+        }
+
+        vertices.get(x).add(edge);
     }
 
     @Override
@@ -65,8 +74,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         if (!vertices.containsKey(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
         }
-        List<EdgeNode<T>> adjList = vertices.get(x);
-        adjList.removeIf(edge -> edge.getElement().equals(y));
+        vertices.get(x).removeIf(edge -> edge.getElement().equals(y));
     }
 
     @Override

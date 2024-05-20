@@ -26,6 +26,13 @@ public interface Graph<T> extends Iterable<T> {
     public void removeVertex(T x);
 
     /**
+     * Returns if the vertex x is in the graph
+     *
+     * @param x
+     */
+    public boolean containsVertex(T x);
+
+    /**
      * Adds an edge from the vertices x to y
      *
      * @param x
@@ -34,14 +41,20 @@ public interface Graph<T> extends Iterable<T> {
     public void addEdge(T x, T y, int weight);
 
     /**
+     * Inserts an edge in the vertex x
+     *
+     * @param x
+     * @param y
+     */
+    public void addEdge(EdgeNode<T> edge, T x);
+
+    /**
      * Removes the edge from the vertices x to y
      *
      * @param x
      * @param y
      */
     public void removeEdge(T x, T y);
-
-
 
     public Graph<T> clone();
 

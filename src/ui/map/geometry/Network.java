@@ -14,6 +14,7 @@ import core.algorithms.datastructures.EdgeNode;
 import core.algorithms.datastructures.Graph;
 import lombok.Getter;
 import lombok.Setter;
+import ui.map.geometry.factories.MarkerFactory;
 import ui.map.geometry.interfaces.AbstractMarkerFactory;
 import ui.map.geometry.interfaces.MapGraphics;
 
@@ -23,7 +24,7 @@ public class Network implements MapGraphics {
     private AbstractMarkerFactory factory = new MarkerFactory();
     private List<MapGraphics> mapGraphics = new ArrayList<>();
     private Paint paint = new Color(001, 010, 100);
-    private Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
+    private Stroke stroke = new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
 
     public <P extends Point2D> Network(Graph<P> graph, AbstractMarkerFactory factory) {
         this(graph);
@@ -31,6 +32,17 @@ public class Network implements MapGraphics {
     }
 
     public <P extends Point2D> Network(Graph<P> graph) {
+        createLines(graph);
+
+        for (P p1 : graph) {
+            if (p1 == null)
+                continue;
+
+            addGraphic(createMarker(p1));
+        }
+    }
+
+    public <P extends Point2D> void createLines(Graph<P> graph) {
         for (P p1 : graph) {
             if (p1 == null)
                 continue;
@@ -41,28 +53,24 @@ public class Network implements MapGraphics {
                 if (p2 == null)
                     continue;
 
-                addGraphic(createLineSegment(p1, p2));
+                Line lineSegment = createLineSegment(p1, p2);
+
+                if (lineSegment != null)
+                    addGraphic(lineSegment);
             }
-        }
-
-        for (P p1 : graph) {
-            if (p1 == null)
-                continue;
-
-            addGraphic(createMarker(p1));
         }
     }
 
-    private void addGraphic(MapGraphics lineSegment) {
-        mapGraphics.add(lineSegment);
+    protected void addGraphic(MapGraphics graphic) {
+        mapGraphics.add(graphic);
     }
 
     public Marker createMarker(Point2D p1) {
         return factory.createMarker(p1);
     }
 
-    public Line createLineSegment(Point2D p1, Point2D p2) {
-        Line segment = new Line(p1, p2);
+    public Line createLineSegment(Point2D... points) {
+        Line segment = new Line(points);
         segment.setPaint(paint);
         segment.setStroke(stroke);
 

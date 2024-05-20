@@ -1,7 +1,9 @@
 package ui.map.geometry;
 
 import java.awt.geom.Point2D;
-import java.util.function.DoubleFunction;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.UnaryOperator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,18 +14,19 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Point2DImpostor extends Point2D {
+    private static Map<Point2D, Point2D> calculatedPoints = new HashMap<>();
     @NonNull
     private Point2D imposedPoint;
-    private DoubleFunction<java.lang.Double> impostorFunction = i -> i;
+    private UnaryOperator<Point2D> impostorFunction = p -> p;
 
     @Override
     public double getX() {
-        return impostorFunction.apply(imposedPoint.getX());
+        return calculatedPoints.computeIfAbsent(imposedPoint, p -> impostorFunction.apply(p)).getX();
     }
 
     @Override
     public double getY() {
-        return impostorFunction.apply(imposedPoint.getY());
+        return calculatedPoints.computeIfAbsent(imposedPoint, p -> impostorFunction.apply(p)).getY();
     }
 
     @Override

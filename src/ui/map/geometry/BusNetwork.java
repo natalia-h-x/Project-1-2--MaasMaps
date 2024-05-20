@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
+import ui.map.geometry.factories.BusMarkerFactory;
 
 public class BusNetwork extends Network {
     public BusNetwork(Graph<BusStop> graph) {
@@ -11,19 +12,26 @@ public class BusNetwork extends Network {
     }
 
     @Override
-    public Line createLineSegment(Point2D from, Point2D to) {
+    public Line createLineSegment(Point2D... points) {
+        Line segment = new Line(points);
+        segment.setStroke(getStroke());
+
+        return segment;
+    }
+
+    @Override
+    public Marker createMarker(Point2D point) {
         BusStop bTo;
 
-        if (to instanceof Point2DImpostor impostor) {
+        if (point instanceof Point2DImpostor impostor) {
             bTo = (BusStop) impostor.getImposedPoint();
         }
         else {
-            bTo = (BusStop) to;
+            bTo = (BusStop) point;
         }
 
-        Line segment = new Line(from, to);
-        segment.setPaint(bTo.getRoute().getColor());
-
-        return segment;
+        Marker marker = super.createMarker(point);
+        marker.setText(bTo.getStopName());
+        return marker;
     }
 }

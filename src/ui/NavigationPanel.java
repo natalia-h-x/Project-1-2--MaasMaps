@@ -151,7 +151,7 @@ public class NavigationPanel extends JPanel {
                 startPoint = ImageMarkerFactory.createAImageMarker(locationA);
                 endPoint = ImageMarkerFactory.createBImageMarker(locationB);
 
-                Context.getContext().getMap().addMapIcon(line, startPoint, endPoint);
+                Context.getContext().getMap().addMapGraphics(line, startPoint, endPoint);
 
                 double time = transportMode.calculateTravelTime(locationA, locationB);
                 double seconds = (time - (int) (time))*60;

@@ -1,9 +1,6 @@
 package database;
 
-import static org.junit.Assert.assertTrue;
-
-import java.awt.geom.Point2D;
-import java.sql.SQLException;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.Test;
 
@@ -13,14 +10,19 @@ import core.models.BusStop;
 import ui.NetworkTest;
 
 public class LoadGraphTest {
+    public static void main(String[] args) {
+        Graph<BusStop> graph = DatabaseManager.loadGraph();
+        NetworkTest.makeAbstractedBusNetwork(graph);
+    }
+
     @Test
     public void test1() {
         try {
             Graph<BusStop> graph = DatabaseManager.loadGraph();
-            //new NetworkTest(graph).test1();
+            NetworkTest.makeAbstractedBusNetwork(graph);
         }
-        catch (SQLException e) {
-            assertTrue(false);
+        catch (Exception e) {
+            fail(e);
         }
     }
 }

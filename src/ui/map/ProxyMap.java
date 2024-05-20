@@ -15,7 +15,7 @@ public class ProxyMap {
         this.map = map;
     }
 
-    public void addMapIcon(MapGraphics... mapIcons) {
+    public void addMapGraphics(MapGraphics... mapIcons) {
         for (MapGraphics mapIcon : mapIcons) {
             map.addMapIcon(mapIcon);
         }
@@ -28,6 +28,7 @@ public class ProxyMap {
     public int getMapWidth() {
         return map.getMapWidth();
     }
+
     public void clearIcons() {
         map.clearIcons();
     }
