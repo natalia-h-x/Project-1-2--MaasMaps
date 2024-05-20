@@ -47,9 +47,19 @@ public class TxtToSQLite {
         List<File> sortedFiles = new ArrayList<>();
 
         for (File file : listOfFiles) {
-            if(file.getName().equals("stops.txt") || file.getName().equals("routes.txt")) {
+            if(file.getName().equals("stops.txt")) {
                 sortedFiles.add(file);
             }
+        }
+
+        for (File file : listOfFiles) {
+            if (file.getName().equals("stop_times.txt"))
+                sortedFiles.add(file);
+        }
+
+        for (File file : listOfFiles) {
+            if (file.getName().equals("trips.txt"))
+                sortedFiles.add(file);
         }
 
         for (File file : listOfFiles) {
@@ -90,28 +100,51 @@ public class TxtToSQLite {
 
     @SuppressWarnings("unchecked")
     private static void createPruneConditions(String tableName, String[] lines, String[] headers) {
-        if (tableName.equals("stops") || tableName.equals("routes") || tableName.equals("trips"))
+        if (tableName.equals("stops"))
             lines = pruneLines(lines);
 
-        if (tableName.equals("stop_times") || tableName.equals("transfers")) { //TODO add pruning to shapes too and decide if it's better to prune trips or do it based on route_ids
-            List<Integer> indexes = new ArrayList<>();
-            List<String> IDs = new ArrayList<>();
+
+        if (tableName.equals("stop_times") || tableName.equals("transfers")) {
             List<String> stopIDs = (List<String>) DatabaseManager.executeQuery("SELECT `stop_id` FROM stops", new ArrayList<String>())[0];
-            List<String> routeIDs = (List<String>) DatabaseManager.executeQuery("SELECT `route_id` FROM routes", new ArrayList<String>())[0];
+            List<Integer> indexes = getIndexes(headers, "stop_id");
 
-            IDs.addAll(stopIDs);
-            IDs.addAll(routeIDs);
+            lines = pruneLines(lines, stopIDs, indexes);
+        }
 
-            for (int i = 0; i < headers.length; i++) {
-                if (headers[i].contains("stop_id") || headers[i].contains("route_id"))
-                    indexes.add(i);
-            }
+        if (tableName.equals("trips")) {
+            List<String> routeIDs = (List<String>) DatabaseManager.executeQuery("SELECT `trip_id` FROM stop_times", new ArrayList<String>())[0];
+            List<Integer> indexes = getIndexes(headers, "trip_id");
 
-            lines = pruneLines(lines, IDs, indexes);
+            lines = pruneLines(lines, routeIDs, indexes);
+        }
+
+        if (tableName.equals("shapes")) {
+            List<String> shapeIDs = (List<String>) DatabaseManager.executeQuery("SELECT `shape_id` FROM trips", new ArrayList<String>())[0];
+            List<Integer> indexes = getIndexes(headers, "shape_id");
+
+            lines = pruneLines(lines, shapeIDs, indexes);
+        }
+
+        if (tableName.equals("routes")) {
+            List<String> shapeIDs = (List<String>) DatabaseManager.executeQuery("SELECT `route_id` FROM trips", new ArrayList<String>())[0];
+            List<Integer> indexes = getIndexes(headers, "route_id");
+
+            lines = pruneLines(lines, shapeIDs, indexes);
         }
 
         if (lines.length != 0)
             insertData(tableName, lines, headers);
+    }
+
+    private static List<Integer> getIndexes(String[] headers, String attributeName) {
+        List<Integer> indexes = new ArrayList<>();
+
+        for (int i = 0; i < headers.length; i++) {
+            if (headers[i].contains(attributeName))
+                indexes.add(i);
+        }
+
+        return indexes;
     }
 
     private static void insertData(String tableName, String[] lines, String[] headers) {
@@ -158,7 +191,7 @@ public class TxtToSQLite {
         List<String> prunedLines = new ArrayList<>();
 
         for (int i = 0; i < lines.length; i++) {
-            for (int index : indexes) { //added arraylist to account for cases where there is no return (i don't think it will happen tho)
+            for (int index : indexes) {
                 String[] current = parseCSV(lines[i].trim());
 
                 for (String ID : IDs) {
