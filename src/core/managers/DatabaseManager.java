@@ -237,22 +237,27 @@ public class DatabaseManager {
         BusStop previousBusStop = null;
 
         for (int i = 0; i < attributes[0].size(); i++) {
-            int tripId = Integer.parseInt((String) attributes[0].get(i));
-            BusStop busStop = busStopMap.get(Integer.parseInt((String) attributes[1].get(i)));
-            String[] parts = ((String) attributes[2].get(i)).split(":");
-            int time = 3600 * Integer.parseInt(parts[0]) + 60 * Integer.parseInt(parts[1]) + Integer.parseInt(parts[2]);
+            try {
+                int tripId = Integer.parseInt((String) attributes[0].get(i));
+                BusStop busStop = busStopMap.get(Integer.parseInt((String) attributes[1].get(i)));
+                String[] parts = ((String) attributes[2].get(i)).split(":");
+                int time = 3600 * Integer.parseInt(parts[0]) + 60 * Integer.parseInt(parts[1]) + Integer.parseInt(parts[2]);
 
-            if (!graph.containsVertex(busStop))
-                graph.addVertex(busStop);
+                if (!graph.containsVertex(busStop))
+                    graph.addVertex(busStop);
 
-            if (tripId == previousTripId)
-                graph.addEdge(new EdgeNode<>(busStop, time - previousTime), previousBusStop);
+                if (tripId == previousTripId)
+                    graph.addEdge(new EdgeNode<>(busStop, time - previousTime), previousBusStop);
 
-            busStop.setTrip(getTrip(tripId));
+                busStop.setTrip(getTrip(tripId));
 
-            previousTripId = tripId;
-            previousBusStop = busStop;
-            previousTime = time;
+                previousTripId = tripId;
+                previousBusStop = busStop;
+                previousTime = time;
+            }
+            catch (IllegalArgumentException e) {
+
+            }
         }
 
         System.out.println("Generated graph.");
