@@ -41,7 +41,7 @@ public class Map extends JPanel implements TranslateableComponent {
     private Point translation;
 
     public Map() {
-        ProxyMap proxyMap= new ProxyMap(this);
+        ProxyMap proxyMap = new ProxyMap(this);
         Context.getContext().setMap(proxyMap);
 
         scale = 1;
@@ -62,7 +62,7 @@ public class Map extends JPanel implements TranslateableComponent {
         Graphics2D g2 = new ProxyTranslatableGraphics2D((Graphics2D) g, scale, translation);
 
         applyFastRenderingHints(g2);
-        //drawMapImage(g2);
+        drawMapImage(g2);
         drawMapIcon(g2);
     }
 
