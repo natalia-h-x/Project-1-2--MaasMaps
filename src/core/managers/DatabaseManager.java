@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import tools.generator.sqlite.TxtToSQLite;
 public class DatabaseManager {
     private DatabaseManager() {}
 
-    private static Connection connection = connect();
+    private static final Connection connection = connect();
 
     private static Connection connect() {
         try {
@@ -93,7 +94,7 @@ public class DatabaseManager {
     public static void insertInTable(String tableName, String[] attributes, String[][] data) throws IllegalArgumentException {
         try {
             Connection conn = getConnection();
-            System.out.println("Inserting data into " + tableName);
+            // System.out.println("Inserting data into " + tableName);
             conn.setAutoCommit(false); // start transaction
             try (PreparedStatement pstmt = conn.prepareStatement(insertString(tableName, attributes, data))) {
                 int count = 0;
@@ -107,7 +108,7 @@ public class DatabaseManager {
                     pstmt.executeBatch();
                     pstmt.clearBatch();
                 }
-                System.out.println("-- Insertion complete --");
+                // System.out.println("-- Insertion complete --");
                 pstmt.executeBatch(); // final batch
                 conn.commit(); // commit transaction
             }
@@ -125,15 +126,16 @@ public class DatabaseManager {
 
             for (int i = 0; i < headers.length; i++) {
                 bld.append(headers[i] + " " + types[i]);
+
                 if (i < headers.length-1) {
                     bld.append(", ");
                 }
             }
 
             bld.append(");");
-            System.out.println("Creating table " + tableName);
+            // System.out.println("Creating table " + tableName);
             stmt.execute(bld.toString());
-            System.out.println("-- Table creation successful --");
+            // System.out.println("-- Table creation successful --");
         }
         catch (SQLException e) {
             throw new IllegalArgumentException("Error on creating table \"%s\"".formatted(tableName), e);
@@ -180,7 +182,7 @@ public class DatabaseManager {
         for (int i = 0; i < attributes[0].size(); i++) {
             try {
                 int tripId = Integer.parseInt((String) attributes[0].get(i));
-                Trip trip = new Trip(tripId, Integer.parseInt((String) attributes[1].get(i)), Integer.parseInt((String) attributes[2].get(i)), (String) attributes[3].get(i));
+                Trip trip = new Trip(tripId, Integer.parseInt((String) attributes[1].get(i)), Integer.parseInt((String) attributes[2].get(i)), (String) attributes[3].get(i), new LinkedList<>());
 
                 busStopMap.put(tripId, trip);
             }
@@ -192,43 +194,48 @@ public class DatabaseManager {
         return busStopMap;
     }
 
-    public static Map<Integer, Shape> getShapes() {
-        Map<Integer, Shape> shapeMap = new HashMap<>();
+    public static Shape getShape(int shape_id) {
         List<?>[] attributes = executeQuery("select shape_pt_sequence, shape_pt_lat, shape_pt_lon\r\n" + //
-            "from shapes;\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
+            "from shapes\r\n" + //
+            "where shape_id = '%s'".formatted(shape_id), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         int previousShapeId;
 
-        for (int i = 0; i < attributes[0].size();) {
-            try {
-                int shapeId = Integer.parseInt((String) attributes[0].get(i));
-                previousShapeId = shapeId;
-                List<Location> locations = new ArrayList<>();
+        try {
+            int shapeId = Integer.parseInt((String) attributes[0].get(0));
+            previousShapeId = shapeId;
+            List<Location> locations = new ArrayList<>();
 
-                while (previousShapeId == shapeId && i < attributes[0].size()) {
-                    locations.add(new Location(Double.parseDouble((String) attributes[1].get(i)),
-                                               Double.parseDouble((String) attributes[2].get(i))));
-                    i += 1;
-                    shapeId = Integer.parseInt((String) attributes[0].get(i));
-                }
+            int i = 0;
 
-                Shape shape = new Shape(null, 0, Color.gray, locations.toArray(Location[]::new));
+            while (previousShapeId == shapeId && i < attributes[0].size()) {
+                locations.add(new Location(Double.parseDouble((String) attributes[1].get(i)),
+                                            Double.parseDouble((String) attributes[2].get(i))));
 
-                shapeMap.put(shapeId, shape);
+                shapeId = Integer.parseInt((String) attributes[0].get(++i));
             }
-            catch (NumberFormatException e) {
-                ExceptionManager.warn(e);
-            }
+
+            return new Shape(null, 0, Color.gray, locations.toArray(Location[]::new));
         }
+        catch (NumberFormatException e) {
+            ExceptionManager.warn(e);
 
-        return shapeMap;
+            throw new IllegalAccessError("Could not make a shape from shape_id '%s'".formatted(shape_id));
+        }
+        catch (IndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("Could find a shape with shape_id '%s'".formatted(shape_id));
+        }
+    }
+
+    private static Map<Integer, BusStop> busStopMap = getBusStops();
+    private static Map<Integer, Trip> tripMap = getTrips();
+
+    private static Trip getTrip(int index) {
+        return tripMap.get(index);
     }
 
     public static Graph<BusStop> loadGraph() {
         Graph<BusStop> graph = new AdjacencyListGraph<>();
-        Map<Integer, BusStop> busStopMap = getBusStops();
-        Map<Integer, Trip> tripMap = getTrips();
-        //Map<Integer, Shape> shapeMap = getShapes();
 
         List<?>[] attributes = executeQuery("select trip_id, stop_id, arrival_time\r\n" + //
             "from stop_times ORDER BY trip_id;\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
@@ -246,17 +253,10 @@ public class DatabaseManager {
             if (!graph.containsVertex(busStop))
                 graph.addVertex(busStop);
 
-            if (tripId == previousTripId) {
-                EdgeNode<BusStop> shape = new EdgeNode<>(busStop, time - previousTime);
+            if (tripId == previousTripId)
+                graph.addEdge(new EdgeNode<>(busStop, time - previousTime), previousBusStop);
 
-                // if (tripMap.containsKey(tripId)) {
-                //     shape = shapeMap.get(tripMap.get(tripId).getShapeId());
-                //     shape.setElement(busStop);
-                //     shape.setWeight(time - previousTime);
-                // }
-
-                graph.addEdge(shape, previousBusStop);
-            }
+            busStop.setTrip(getTrip(tripId));
 
             previousTripId = tripId;
             previousBusStop = busStop;

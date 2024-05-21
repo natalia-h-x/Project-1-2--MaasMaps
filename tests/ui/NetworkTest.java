@@ -2,16 +2,12 @@ package ui;
 import java.awt.Color;
 
 import org.junit.Test;
-import org.slf4j.MarkerFactory;
 
 import core.Context;
 import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
 import ui.map.geometry.AbstractedBusNetwork;
-import ui.map.geometry.BusNetwork;
-import ui.map.geometry.ImageMarkerFactory;
-import ui.map.geometry.Marker;
 
 public class NetworkTest {
     private Graph<BusStop> adjacencyListGraph;

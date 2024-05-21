@@ -19,6 +19,7 @@ public class DijkstraAlgorithm {
         for (T vertex : graph.getVertecesList()) {
             shortestDistances.put(vertex, Integer.MAX_VALUE);
         }
+
         shortestDistances.put(source, 0);
         priorityQueue.add(new EdgeNode<>(source, 0));
 
@@ -54,4 +55,3 @@ public class DijkstraAlgorithm {
         return new Line(shortestDistances.keySet().toArray(Location[]::new));
     }
 }
-

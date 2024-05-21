@@ -1,5 +1,7 @@
 package core.models;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,4 +12,5 @@ public class Trip {
     private int shapeId;
     private int routeId;
     private String tripHeadsign;
+    private List<BusStop> busStops;
 }
