@@ -194,25 +194,17 @@ public class DatabaseManager {
         return busStopMap;
     }
 
-    public static Shape getShape(int shape_id) {
+    public static Shape getShape(int shapeId) {
         List<?>[] attributes = executeQuery("select shape_pt_sequence, shape_pt_lat, shape_pt_lon\r\n" + //
             "from shapes\r\n" + //
-            "where shape_id = '%s'".formatted(shape_id), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
-
-        int previousShapeId;
+            "where shape_id = '%s'".formatted(shapeId), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         try {
-            int shapeId = Integer.parseInt((String) attributes[0].get(0));
-            previousShapeId = shapeId;
             List<Location> locations = new ArrayList<>();
 
-            int i = 0;
-
-            while (previousShapeId == shapeId && i < attributes[0].size()) {
+            for (int i = 0; i < attributes[0].size(); i++) {
                 locations.add(new Location(Double.parseDouble((String) attributes[1].get(i)),
-                                            Double.parseDouble((String) attributes[2].get(i))));
-
-                shapeId = Integer.parseInt((String) attributes[0].get(++i));
+                                           Double.parseDouble((String) attributes[2].get(i))));
             }
 
             return new Shape(null, 0, Color.gray, locations.toArray(Location[]::new));
@@ -220,18 +212,18 @@ public class DatabaseManager {
         catch (NumberFormatException e) {
             ExceptionManager.warn(e);
 
-            throw new IllegalAccessError("Could not make a shape from shape_id '%s'".formatted(shape_id));
+            throw new IllegalAccessError("Could not make a shape from shape_id '%s'".formatted(shapeId));
         }
         catch (IndexOutOfBoundsException e) {
-            throw new IllegalArgumentException("Could find a shape with shape_id '%s'".formatted(shape_id));
+            throw new IllegalArgumentException("Could find a shape with shape_id '%s'".formatted(shapeId));
         }
     }
 
     private static Map<Integer, BusStop> busStopMap = getBusStops();
     private static Map<Integer, Trip> tripMap = getTrips();
 
-    private static Trip getTrip(int index) {
-        return tripMap.get(index);
+    private static Trip getTrip(int tripId) {
+        return tripMap.get(tripId);
     }
 
     public static Graph<BusStop> loadGraph() {
