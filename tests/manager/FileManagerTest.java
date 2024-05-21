@@ -1,4 +1,4 @@
-package ui;
+package manager;
 
 
 import static org.junit.jupiter.api.Assertions.fail;
