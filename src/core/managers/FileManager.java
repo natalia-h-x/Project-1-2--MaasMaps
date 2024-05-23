@@ -17,7 +17,7 @@ import core.Constants.Paths;
 
 /**
  * This class represents the file manager to read the contents from the csv file.
- * 
+ *
  * @author Alexandra Plishkin Islamgulova
  */
 public class FileManager {
@@ -25,7 +25,7 @@ public class FileManager {
 
     public static List<String> getZipCodeLocations() throws IOException {
         List<String> locations = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(Constants.Paths.MAAS_ZIP_LATLON_PATH));
+        BufferedReader br = new BufferedReader(new FileReader(Constants.Paths.POSTAL_COORDS_FILE));
         String line = br.readLine(); // Skip header line
 
         while ((line = br.readLine()) != null) {
@@ -38,7 +38,7 @@ public class FileManager {
     }
 
     public static BufferedImage getMapImage() throws IOException {
-        return getImage(Paths.RESOURCES_PLACEHOLDER_MAP_PNG);
+        return getImage(Paths.MAP_IMAGE);
     }
 
     public static BufferedImage getImage(String path) throws IOException {

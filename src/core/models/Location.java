@@ -66,16 +66,7 @@ public class Location extends Point2D {
     }
 
     public double distanceTo(Location destination) {
-
-        if (distanceToLocationMap.containsKey(destination)) {
-            return distanceToLocationMap.get(destination);
-        }
-
-        double distance = DistanceManager.haversine(this, destination);
-
-        distanceToLocationMap.put(destination, distance);
-
-        return distance;
+        return DistanceManager.haversine(this, destination) * 1000;
     }
 
     public String toString() {

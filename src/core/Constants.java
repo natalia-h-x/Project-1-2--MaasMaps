@@ -2,6 +2,9 @@ package core;
 
 import java.awt.Color;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+
 /**
  * This class represents contant paths and general constants.
  *
@@ -12,20 +15,27 @@ import java.awt.Color;
  * @author Alexandra Plishkin Islamgulova
  * @author Meriç Uruş
  */
-public class Constants { private Constants() {}
-    public static class Paths {
-        public static final String MAAS_ZIP_LATLON_PATH = "resources/MassZipLatLon.csv";
-        public static final String DATABASE_URL = "jdbc:sqlite:resources/gtfs/gtfs";
-        public static final String DATABASE_FILEPATH = "resources/routing.db";
-        public static final String RESOURCES_PLACEHOLDER_MAP_PNG = "resources/visuals/MaastrichtOpenStreetMap.png";
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Constants {
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Map {
+        public static final int POSTAL_CODE_MAX_SEARCH_RADIUS = 50;
+        public static final int POSTAL_CODE_MAX_BUS_OPTIONS = 5;
+    }
+
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Paths {
+        public static final String POSTAL_COORDS_API_URL = "https://computerscience.dacs.unimaas.nl/get_coordinates";
+        public static final String POSTAL_COORDS_FILE = "resources/MassZipLatLon.csv";
+        public static final String DATABASE_PATH = "jdbc:sqlite:resources/gtfs/gtfs";
+        public static final String MAP_IMAGE = "resources/visuals/MaastrichtOpenStreetMap.png";
         public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.png";
-        public static final String RANDOM_ICON = "resources/visuals/icons/Random.png";
         public static final String A_IMAGE = "resources/visuals/icons/AIcon.png";
         public static final String B_IMAGE = "resources/visuals/icons/BIcon.png";
-
-        private Paths() {}
     }
-    public static class UIConstants {
+
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class UIConstants {
         public static final Color GUI_BACKGROUND_COLOR           = new Color(201, 202 , 217);
         public static final Color GUI_HIGHLIGHT_BACKGROUND_COLOR = new Color(119, 150 , 203);
         public static final Color GUI_HIGHLIGHT_COLOR            = new Color(237, 242 , 244);
@@ -34,19 +44,15 @@ public class Constants { private Constants() {}
         public static final int GUI_INFO_FONT_SIZE       = 13;
         public static final int GUI_TEXT_FIELD_FONT_SIZE = 15;
         public static final int GUI_TITLE_FONT_SIZE      = 40;
-        public static final String GUI_TIME_LABEL_TEXT = "Average time needed for this distance: ";
+        public static final String GUI_TIME_LABEL_TEXT = "Average duration: ";
         public static final String GUI_FONT_FAMILY = "Arial";
         public static final int GUI_BORDER_SIZE = 25;
-
-        private UIConstants() {}
     }
-    public static class ANSI {
+
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ANSI {
         public static final String GREEN = "\u001B[32m";
         public static final String YELLOW = "\u001B[33m";
         public static final String RESET = "\u001B[0m";
-
-        private ANSI() {}
     }
-
-    public static final String BASE_URL = "https://computerscience.dacs.unimaas.nl/get_coordinates";
 }

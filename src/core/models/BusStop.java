@@ -6,12 +6,14 @@ import java.util.Map;
 import core.managers.DatabaseManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode.Exclude;
 
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class BusStop extends Location {
     private static Map<Integer, Shape> shapeMap = new HashMap<>();
     private String stopName;
+    @Exclude
     private Trip trip;
 
     public BusStop(double latitude, double longitude) {

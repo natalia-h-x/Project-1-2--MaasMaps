@@ -1,10 +1,9 @@
-package core.database.zipcode;
+package core.zipcode;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import core.database.LocationReader;
 import core.managers.ExceptionManager;
 import core.managers.FileManager;
 import core.models.Location;
@@ -37,10 +36,10 @@ public class CSVParser implements LocationReader {
     private void initializeZipCodeList() {
         try {
             List<String> data = FileManager.getZipCodeLocations();
-            
+
             for (String line : data) {
                 String[] parts = line.split(",");
-                
+
                 if (parts.length == 3) {
                     try {
                         double lat = Double.parseDouble(parts[1]);

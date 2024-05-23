@@ -6,7 +6,6 @@ import java.awt.geom.Point2D;
 import java.util.function.UnaryOperator;
 
 import core.algorithms.datastructures.Graph;
-import core.models.BusStop;
 import ui.map.geometry.Line.Segment;
 
 public class AbstractedBusNetwork extends BusNetwork {
@@ -17,7 +16,7 @@ public class AbstractedBusNetwork extends BusNetwork {
     );
     private static final UnaryOperator<Point2D> abstractingFunction = map::map;
 
-    public AbstractedBusNetwork(Graph<BusStop> graph) {
+    public <P extends Point2D> AbstractedBusNetwork(Graph<P> graph) {
         super(graph);
     }
 

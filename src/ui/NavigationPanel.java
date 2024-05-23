@@ -1,21 +1,26 @@
 package ui;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 
-import core.Context;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import core.Constants.UIConstants;
-import core.database.ZipCodeDatabase;
+import core.Context;
 import core.managers.ExceptionManager;
-import core.models.Location;
 import core.models.transport.Biking;
+import core.models.transport.Bus;
 import core.models.transport.TransportMode;
 import core.models.transport.Walking;
-import core.models.transport.Bus;
-import ui.map.geometry.Line;
-import ui.map.geometry.Marker;
-import ui.map.geometry.ImageMarkerFactory;
-
-import java.awt.*;
+import core.zipcode.ZipCodeDatabase;
 
 /**
  * This class represents the side navigation panel in the UI
@@ -74,16 +79,14 @@ public class NavigationPanel extends JPanel {
 
         timeLabel = new JLabel(UIConstants.GUI_TIME_LABEL_TEXT);
         timeLabel.setFont(new Font(" ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
-        // for later : JLabel resultLabel = new JLabel()
-        // calls calculator methods or whatever to get time result
 
         // Create Combo Box header
         JLabel transportType = new JLabel("Select means of transport: ");
         transportType.setFont(new Font("Select means of transport: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // create combo box
-        String[] options = {"Walking", "Biking", "Take Bus"};
-        JComboBox<String> selection = new JComboBox<>(options);
+        TransportMode[] options = {new Walking(), new Biking(), new Bus()};
+        JComboBox<TransportMode> selection = new JComboBox<>(options);
         selection.setBackground(UIConstants.GUI_ACCENT_COLOR);
         selection.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
 
@@ -120,42 +123,21 @@ public class NavigationPanel extends JPanel {
     }
 
     private void addActionListeners(JTextField textField1, JTextField textField2, JButton calculate,
-            JComboBox<String> selection) {
+            JComboBox<TransportMode> selection) {
 
-        ZipCodeDatabase db = Context.getContext().getZipCodeDatabase();
+        final ZipCodeDatabase db = Context.getContext().getZipCodeDatabase();
 
         calculate.addActionListener(e -> {
-            TransportMode transportMode;
-            Line line;
-            Marker startPoint;
-            Marker endPoint;
-
-            switch ((String) selection.getSelectedItem()) {
-                case "Walking": transportMode = new Walking(); break;
-                case "Biking": transportMode = new Biking(); break;
-                case "Take Bus": transportMode = new Bus(); break;
-                default: throw new IllegalArgumentException("The Transport Mode %s is not supported!".formatted(selection.getSelectedItem()));
-            }
-
-            Context.getContext().getMap().clearIcons();
-
             try {
-                Location locationA = db.getLocation(textField1.getText());
-                Location locationB = db.getLocation(textField2.getText());
+                TransportMode transportMode = (TransportMode) selection.getSelectedItem();
+                transportMode.dispose();
+                transportMode.setStart(db.getLocation(textField1.getText()));
+                transportMode.setDestination(db.getLocation(textField2.getText()));
 
-                line = new Line(
-                        locationA,
-                        locationB
-                    );
+                Context.getContext().getMap().clearIcons();
+                Context.getContext().getMap().addMapGraphics(transportMode.getGraphics());
 
-                startPoint = ImageMarkerFactory.createAImageMarker(locationA);
-                endPoint = ImageMarkerFactory.createBImageMarker(locationB);
-
-                Context.getContext().getMap().addMapGraphics(line, startPoint, endPoint);
-
-                double time = transportMode.calculateTravelTime(locationA, locationB);
-                double seconds = (time - (int) (time))*60;
-                timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + (int) (time) + " min " + Math.round(seconds) + " seconds");
+                timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + transportMode.getTravelTime().toString());
             }
             catch (Exception ex) {
                 ExceptionManager.handle(this, ex);

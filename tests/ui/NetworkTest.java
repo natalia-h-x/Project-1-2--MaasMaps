@@ -1,5 +1,6 @@
 package ui;
 import java.awt.Color;
+import java.awt.geom.Point2D;
 
 import org.junit.Test;
 
@@ -42,7 +43,7 @@ public class NetworkTest {
         makeAbstractedBusNetwork(adjacencyListGraph);
     }
 
-    public static void makeAbstractedBusNetwork(Graph<BusStop> adjacencyListGraph) {
+    public static <P extends Point2D> void makeAbstractedBusNetwork(Graph<P> adjacencyListGraph) {
         new MaasMapsUI();
 
         // BusNetwork busNetwork = new BusNetwork(adjacencyListGraph);

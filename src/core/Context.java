@@ -1,6 +1,6 @@
 package core;
 
-import core.database.ZipCodeDatabase;
+import core.zipcode.ZipCodeDatabase;
 import lombok.Getter;
 import lombok.Setter;
 import ui.map.ProxyMap;

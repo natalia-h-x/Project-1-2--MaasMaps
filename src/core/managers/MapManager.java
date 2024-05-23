@@ -4,8 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 import core.Context;
+import core.algorithms.datastructures.Graph;
 import core.models.Location;
 
 /**
@@ -63,4 +69,49 @@ public class MapManager {
         g2.drawString(distance, (int) center.getX(), (int) center.getY());
     }
 
+    public static Location getClosestPoint(Location to) {
+        try {
+            return getClosestPoint(to, 1)[0];
+        }
+        catch (IndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("Location %s is not in the graph".formatted(to), e);
+        }
+    }
+
+    public static Location[] getClosestPoint(Location to, int n) {
+        Map<Location, Double> distances = new HashMap<>();
+        PriorityQueue<Location> closestSet = new PriorityQueue<>((a, b) -> distances.get(b).compareTo(distances.get(a)));
+        double worstDist = Double.NEGATIVE_INFINITY;
+
+        for (Point2D vertex : getBusGraph()) {
+            Location location = ((Location) vertex);
+            double dist = location.distanceTo(to);
+
+            distances.put(location, dist);
+
+            if (closestSet.size() < n) {
+                closestSet.add(location);
+                worstDist = Math.max(dist, worstDist);
+
+                continue;
+            }
+
+            if (dist < worstDist) {
+                closestSet.poll();
+                closestSet.add(location);
+
+                worstDist = dist;
+
+                for (Location l : closestSet) {
+                    worstDist = Math.max(distances.get(l), worstDist);
+                }
+            }
+        }
+
+        return closestSet.toArray(Location[]::new);
+    }
+
+    public static Graph<Point2D> getBusGraph() {
+        return DatabaseManager.getBusGraph();
+    }
 }

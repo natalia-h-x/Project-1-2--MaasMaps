@@ -1,12 +1,11 @@
 package manager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-import core.database.ZipCodeDatabase;
 import core.models.Location;
+import core.zipcode.ZipCodeDatabase;
 
 public class ZipcodeTest {
     ZipCodeDatabase db;

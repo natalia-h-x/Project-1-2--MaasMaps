@@ -3,19 +3,15 @@ package core.models;
 import java.awt.Color;
 import java.util.Arrays;
 
-import core.algorithms.datastructures.EdgeNode;
 import core.managers.DistanceManager;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class Shape extends EdgeNode<BusStop> {
+public class Shape {
     private Color color;
     private Location[] locations;
 
-    public Shape(BusStop y, int weight, Color color, Location... locations) {
-        super(y, weight);
+    public Shape(Color color, Location... locations) {
         this.color = color;
         this.locations = locations;
     }
@@ -26,7 +22,7 @@ public class Shape extends EdgeNode<BusStop> {
 
         Location[] prunedLocations = Arrays.copyOfRange(locations, Math.min(ca, cb), Math.max(ca, cb));
 
-        return new Shape(getElement(), getWeight(), color, prunedLocations);
+        return new Shape(color, prunedLocations);
     }
 
     private int closestLocationIndex(Location loc) {

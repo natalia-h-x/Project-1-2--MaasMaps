@@ -1,4 +1,4 @@
-package core.database.zipcode;
+package core.zipcode;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,9 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import core.Constants;
 import core.Constants.Paths;
-import core.database.LocationReader;
 import core.managers.FileManager;
 import core.managers.JSONManager;
 import core.models.Location;
@@ -25,7 +23,7 @@ import core.models.Location;
 public class APIRequest implements LocationReader {
     public Location getLocation(String zipCode) throws IllegalStateException {
         try {
-            URL url = new URL(Constants.BASE_URL);
+            URL url = new URL(Paths.POSTAL_COORDS_API_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");
@@ -60,7 +58,7 @@ public class APIRequest implements LocationReader {
                 double longitude = JSONManager.extractValue(response.toString(), "longitude");
 
                 // Cache the result so that we do not have to ask the API for this zipcode again
-                FileManager.appendToFile(Paths.MAAS_ZIP_LATLON_PATH, "%s,%s,%s".formatted(zipCode, latitude, longitude));
+                FileManager.appendToFile(Paths.POSTAL_COORDS_FILE, "%s,%s,%s".formatted(zipCode, latitude, longitude));
 
                 return new Location(latitude, longitude);
             }
@@ -75,7 +73,7 @@ public class APIRequest implements LocationReader {
             throw new IllegalArgumentException("Valid postal code but unable to reach the API. Please check if you are connected to the university network or VPN.", e);
         }
         catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Valid postal code but not valid link: %s.".formatted(Constants.BASE_URL), e);
+            throw new IllegalArgumentException("Valid postal code but not valid link: %s.".formatted(Paths.POSTAL_COORDS_API_URL), e);
         }
         catch (IOException e) {
             throw new IllegalArgumentException("Valid postal code but an IOException occurred", e);

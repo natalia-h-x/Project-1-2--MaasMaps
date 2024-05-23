@@ -1,19 +1,32 @@
 package core.models.transport;
 
+import core.models.GTFSTime;
 import core.models.Location;
+import lombok.Data;
+import ui.map.geometry.interfaces.MapGraphics;
 
 /**
  * Interface that gets implemented but all different means of transport.
- * 
+ *
  * @author Kimon Navridis
  */
-public interface TransportMode {
-    default double calculateTravelTime(Location loc1, Location loc2) {
-        double distance = loc1.distanceTo(loc2);
+@Data
+public abstract class TransportMode {
+    private Location start;
+    private Location destination;
 
-        return (distance*1000) / getAverageSpeed();
+    protected TransportMode() {}
+    protected TransportMode(Location start, Location destination) {
+        this.start = start;
+        this.destination = destination;
     }
 
-    abstract String toString();
-    abstract double getAverageSpeed();
+    public GTFSTime getTravelTime() {
+        return GTFSTime.of((int) ((start.distanceTo(destination) / getAverageSpeed()) * 60.0));
+    }
+
+    public abstract String toString();
+    public abstract double getAverageSpeed();
+    public void dispose() {}
+    public abstract MapGraphics[] getGraphics();
 }

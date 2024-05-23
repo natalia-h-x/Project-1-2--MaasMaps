@@ -1,7 +1,5 @@
-package core.database;
+package core.zipcode;
 
-import core.database.zipcode.APIRequest;
-import core.database.zipcode.CSVParser;
 import core.models.Location;
 import core.models.ZipCode;
 

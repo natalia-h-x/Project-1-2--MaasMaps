@@ -7,7 +7,7 @@ import core.models.BusStop;
 import ui.map.geometry.factories.BusMarkerFactory;
 
 public class BusNetwork extends Network {
-    public BusNetwork(Graph<BusStop> graph) {
+    public <P extends Point2D> BusNetwork(Graph<P> graph) {
         super(graph, new BusMarkerFactory());
     }
 

@@ -2,6 +2,8 @@ package core.algorithms.datastructures;
 
 import java.util.List;
 
+import core.models.GTFSTime;
+
 public interface Graph<T> extends Iterable<T> {
     /**
      * Returns the list of all vertices y s.t. there’s an edge from x to y
@@ -39,6 +41,14 @@ public interface Graph<T> extends Iterable<T> {
      * @param y
      */
     public void addEdge(T x, T y, int weight);
+
+    /**
+     * Adds an edge from the vertices x to y
+     *
+     * @param x
+     * @param y
+     */
+    public void addEdge(T x, T y, int weight, GTFSTime time);
 
     /**
      * Inserts an edge in the vertex x

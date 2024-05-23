@@ -15,7 +15,7 @@ import core.models.Location;
 import core.models.ZipCode;
 
 public class FileManagerTest {
-    
+
     @Test
     public void testGettingZipCodeLocations() {
         List<String> data;
@@ -23,7 +23,7 @@ public class FileManagerTest {
             data = FileManager.getZipCodeLocations();
             for (String line : data) {
                 String[] parts = line.split(",");
-                
+
                 if (parts.length == 3) {
                     double lat = Double.parseDouble(parts[1]);
                     double lon = Double.parseDouble(parts[2]);
@@ -40,7 +40,7 @@ public class FileManagerTest {
     public void getImageTest() {
         try {
             FileManager.getMapImage();
-            FileManager.getImage(Paths.RESOURCES_PLACEHOLDER_MAP_PNG);
+            FileManager.getImage(Paths.MAP_IMAGE);
         } catch (IOException e) {
             fail(e);
         }

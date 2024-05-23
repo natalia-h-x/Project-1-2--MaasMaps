@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import core.models.GTFSTime;
+
 public class AdjacencyListGraph<T> implements Graph<T> {
     private HashMap<T, List<EdgeNode<T>>> vertices;
 
@@ -14,7 +16,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
 
     @Override
     public List<EdgeNode<T>> neighbors(T x) {
-        if (!vertices.containsKey(x)) {
+        if (!containsVertex(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
         }
         // return new linked list to avoid possible conflicts
@@ -23,16 +25,17 @@ public class AdjacencyListGraph<T> implements Graph<T> {
 
     @Override
     public void addVertex(T x) {
-        if (vertices.containsKey(x)) {
+        if (containsVertex(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is already in the Graph.");
         }
+
         vertices.put(x, new LinkedList<>());
     }
 
     @Override
     public void removeVertex(T x) {
         // check if the vertex exists in the graph
-        if (!vertices.containsKey(x)) {
+        if (!containsVertex(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
         }
 
@@ -52,17 +55,40 @@ public class AdjacencyListGraph<T> implements Graph<T> {
 
     @Override
     public void addEdge(T x, T y, int weight) {
-        if (!vertices.containsKey(x) || !vertices.containsKey(y)) {
+        addEdge(x, y, weight, null);
+    }
+
+    @Override
+    public void addEdge(T x, T y, int weight, GTFSTime time) {
+        if (!containsVertex(x) || !containsVertex(y)) {
             throw new IllegalArgumentException("One or both vertices are not in the Graph.");
         }
 
-        List<EdgeNode<T>> adjList = vertices.get(x);
-        adjList.add(new EdgeNode<>(y, weight));
+        List<EdgeNode<T>> edges = vertices.get(x);
+
+        if (time != null)
+            for (EdgeNode<T> edge : edges) {
+                if (edge.getElement().equals(y)) {
+                    if (edge.getDepartureTimes().contains(time))
+                        return; //throw new IllegalArgumentException("Time is already contained in departure times");
+
+                    edge.addDepartureTime(time);
+
+                    return;
+                }
+            }
+
+        LinkedList<GTFSTime> times = new LinkedList<>();
+
+        if (time != null)
+            times.add(time);
+
+        edges.add(new EdgeNode<>(y, weight, times));
     }
 
     @Override
     public void addEdge(EdgeNode<T> edge, T x) {
-        if (!vertices.containsKey(x) || !vertices.containsKey(edge.getElement())) {
+        if (!containsVertex(x) || !containsVertex(edge.getElement())) {
             throw new IllegalArgumentException("One or both vertices are not in the Graph.");
         }
 
@@ -71,7 +97,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
 
     @Override
     public void removeEdge(T x, T y) {
-        if (!vertices.containsKey(x)) {
+        if (!containsVertex(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
         }
         vertices.get(x).removeIf(edge -> edge.getElement().equals(y));

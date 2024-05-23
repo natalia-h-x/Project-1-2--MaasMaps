@@ -1,31 +1,43 @@
 package core.algorithms.datastructures;
 
+import java.util.List;
+import java.util.Optional;
+
+import core.models.GTFSTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /**
  * EdgeNode that can be a route.
  */
+@Data
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class EdgeNode<T> {
     private T element;
     private int weight;
+    private List<GTFSTime> departureTimes;
 
-    public EdgeNode(T element, int weight) {
-        this.element = element;
-        this.weight = weight;
+    public void addDepartureTime(GTFSTime time) {
+        departureTimes.add(time);
     }
 
-    public T getElement() {
-        return element;
-    }
+    /**
+     * Get the time that this edge takes to walk across.
+     *
+     * @return
+     */
+    public int getWeight(GTFSTime currentTime) {
+        GTFSTime closestTime = departureTimes.get(0);
 
-    public void setElement(T element) {
-        this.element = element;
-    }
+        for (GTFSTime time : departureTimes) {
+            if (time.toSeconds() > currentTime.toSeconds())
+                break;
 
-    public int getWeight() {
-        return weight;
-    }
+            closestTime = time;
+        }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+        return Optional.ofNullable(closestTime).orElse(GTFSTime.of("Infinity")).toSeconds() - currentTime.toSeconds();
     }
 
     @Override

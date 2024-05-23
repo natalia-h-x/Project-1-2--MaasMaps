@@ -1,8 +1,9 @@
 package core.managers;
 
-import static core.Constants.Paths.DATABASE_URL;
+import static core.Constants.Paths.DATABASE_PATH;
 
 import java.awt.Color;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,15 +12,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.EdgeNode;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
+import core.models.GTFSTime;
 import core.models.Location;
 import core.models.Shape;
 import core.models.Trip;
@@ -32,7 +36,7 @@ public class DatabaseManager {
 
     private static Connection connect() {
         try {
-            return DriverManager.getConnection(DATABASE_URL);
+            return DriverManager.getConnection(DATABASE_PATH);
         }
         catch (SQLException e) {
             throw new IllegalAccessError("Could not access database.");
@@ -167,7 +171,7 @@ public class DatabaseManager {
                 busStopMap.put(stopId, busStop);
             }
             catch (NumberFormatException e) {
-                ExceptionManager.warn(e);
+                ExceptionManager.warn(new IllegalStateException("Could not parse row from stops table", e));
             }
         }
 
@@ -187,7 +191,7 @@ public class DatabaseManager {
                 busStopMap.put(tripId, trip);
             }
             catch (NumberFormatException e) {
-                ExceptionManager.warn(e);
+                ExceptionManager.warn(new IllegalStateException("Could not parse row from trips table", e));
             }
         }
 
@@ -207,11 +211,9 @@ public class DatabaseManager {
                                            Double.parseDouble((String) attributes[2].get(i))));
             }
 
-            return new Shape(null, 0, Color.gray, locations.toArray(Location[]::new));
+            return new Shape(Color.gray, locations.toArray(Location[]::new));
         }
         catch (NumberFormatException e) {
-            ExceptionManager.warn(e);
-
             throw new IllegalAccessError("Could not make a shape from shape_id '%s'".formatted(shapeId));
         }
         catch (IndexOutOfBoundsException e) {
@@ -219,6 +221,7 @@ public class DatabaseManager {
         }
     }
 
+    private static Graph<Point2D> busGraph;
     private static Map<Integer, BusStop> busStopMap = getBusStops();
     private static Map<Integer, Trip> tripMap = getTrips();
 
@@ -226,42 +229,65 @@ public class DatabaseManager {
         return tripMap.get(tripId);
     }
 
-    public static Graph<BusStop> loadGraph() {
-        Graph<BusStop> graph = new AdjacencyListGraph<>();
+    protected static Graph<Point2D> getBusGraph() {
+        if (busGraph == null)
+            loadBusGraph();
 
-        List<?>[] attributes = executeQuery("select trip_id, stop_id, arrival_time\r\n" + //
-            "from stop_times ORDER BY trip_id;\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
+        return busGraph;
+    }
+
+    /**
+     * This function generates a graph from the GTFS Dataset. It calculates the weight of a connection
+     * from the arrivalTime of the destination stop minus the departing time of the departing stop.
+     * As such, all departing times have to be stored in the edge. The weight will then work as a
+     * duration to travel the trip from this bus stop to the next bus stop.
+     *
+     * @return a graph of the GTFS Dataset.
+     */
+    public static void loadBusGraph() {
+        busGraph = new AdjacencyListGraph<>();
+
+        // Order by tripId AND stop_sequence to insert the correct connections in the graph.
+        // Take for example A -> B -> C, that cannot be A -> C -> B. This will not have correct weights because
+        // the times are also not chonological.
+        List<?>[] attributes = executeQuery("select trip_id, stop_id, arrival_time, departure_time\r\n" + //
+            "from stop_times ORDER BY trip_id, stop_sequence;\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         int previousTripId = -1;
-        int previousTime = 0;
+        GTFSTime departureTime = null;
         BusStop previousBusStop = null;
 
         for (int i = 0; i < attributes[0].size(); i++) {
-            try {
-                int tripId = Integer.parseInt((String) attributes[0].get(i));
-                BusStop busStop = busStopMap.get(Integer.parseInt((String) attributes[1].get(i)));
-                String[] parts = ((String) attributes[2].get(i)).split(":");
-                int time = 3600 * Integer.parseInt(parts[0]) + 60 * Integer.parseInt(parts[1]) + Integer.parseInt(parts[2]);
+            int tripId = Integer.parseInt((String) attributes[0].get(i));
+            int stopId = Integer.parseInt((String) attributes[1].get(i));
+            BusStop busStop = busStopMap.get(stopId);
+            GTFSTime arrivalTime = GTFSTime.of((String) attributes[2].get(i));
 
-                if (!graph.containsVertex(busStop))
-                    graph.addVertex(busStop);
+            busStop.setTrip(Optional.ofNullable(getTrip(tripId)).orElse(busStop.getTrip()));
 
-                if (tripId == previousTripId)
-                    graph.addEdge(new EdgeNode<>(busStop, time - previousTime), previousBusStop);
+            // We have this following if statement to check if there are at least two stops in a trip.
+            // If there is only one, we do not need to connect / add vertices.
+            if (tripId == previousTripId) {
+                if (!busGraph.containsVertex(busStop))
+                    busGraph.addVertex(busStop);
 
-                busStop.setTrip(getTrip(tripId));
+                if (!busGraph.containsVertex(Optional.ofNullable(previousBusStop).orElseThrow()))
+                    busGraph.addVertex(previousBusStop);
 
-                previousTripId = tripId;
-                previousBusStop = busStop;
-                previousTime = time;
+                busGraph.addEdge(previousBusStop, busStop, arrivalTime.minus(Optional.ofNullable(departureTime).orElseThrow()).toSeconds(), departureTime);
             }
-            catch (IllegalArgumentException e) {
 
+            previousTripId = tripId;
+            previousBusStop = busStop;
+            departureTime = GTFSTime.of((String) attributes[3].get(i));
+        }
+
+        for (Point2D stop : busGraph.getVertecesList()) {
+            for (EdgeNode<Point2D> neighbor : busGraph.neighbors(stop)) {
+                Collections.sort(neighbor.getDepartureTimes());
             }
         }
 
         System.out.println("Generated graph.");
-
-        return graph;
     }
 }

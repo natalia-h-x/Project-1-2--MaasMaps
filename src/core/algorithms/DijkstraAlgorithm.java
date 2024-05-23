@@ -1,18 +1,37 @@
 package core.algorithms;
 
-import core.algorithms.datastructures.AdjacencyListGraph;
+import java.awt.geom.Point2D;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
+
 import core.algorithms.datastructures.EdgeNode;
+import core.algorithms.datastructures.Graph;
 import core.models.GTFSTime;
 import core.models.Location;
-import ui.map.geometry.Line;
-
-import java.util.*;
+import core.models.transport.Route;
+import ui.map.geometry.GeographicLine;
 
 public class DijkstraAlgorithm {
     private DijkstraAlgorithm() {}
 
-    public static <T> List<T> shortestPath(AdjacencyListGraph<T> graph, T source, T end, GTFSTime startTime) {
+    public static <T extends Point2D> Route shortestPath(Graph<T> graph, T source, T end, GTFSTime startTime) {
+        GTFSTime duration = GTFSTime.of(0);
+        return toRoute(shortestPath(graph, source, end, startTime, duration), duration);
+    }
+
+    // Boy do I hope java has objInserting.equals(objInList) instead of the other way around. Why?
+    public static <T> List<T> shortestPath(Graph<T> graph, T source, T end, GTFSTime startTime, GTFSTime endTime) {
+        if (source.equals(end))
+            throw new IllegalArgumentException("Start is destination");
+
         Map<T, List<T>> paths = new HashMap<>();
+        Map<T, GTFSTime> times = new HashMap<>();
         Map<T, Integer> shortestDistances = new HashMap<>();
         PriorityQueue<T> unsettledNodes = new PriorityQueue<>(Comparator.comparingInt(shortestDistances::get));
         Set<T> settledNodes = new HashSet<>();
@@ -26,14 +45,20 @@ public class DijkstraAlgorithm {
 
         // Create an edge with departing time and source
         LinkedList<GTFSTime> departureTimes = new LinkedList<>();
-        departureTimes.add(startTime);
+        departureTimes.add(startTime.add(1000000));
         unsettledNodes.add(source);
+        times.put(source, startTime);
+        LinkedList<T> originPath = new LinkedList<>();
+        originPath.add(source);
+        paths.put(source, originPath);
 
         while (!unsettledNodes.isEmpty()) {
             // Removing the minimum distance node from the priority process
             T currentVertex = unsettledNodes.poll();
+            GTFSTime currentTime = times.get(currentVertex);
 
             if (currentVertex.equals(end)) {
+                endTime.update(shortestDistances.get(currentVertex));
                 return paths.get(currentVertex);
             }
 
@@ -45,17 +70,18 @@ public class DijkstraAlgorithm {
             List<EdgeNode<T>> adjacentNodes = graph.neighbors(currentVertex);
             for (EdgeNode<T> edge : adjacentNodes) {
                 T adjacentVertex = edge.getElement();
-                int edgeWeight = edge.getWeight();
+                int edgeWeight = edge.getWeight(currentTime);
 
                 if (!settledNodes.contains(adjacentVertex)) {
                     int newDist = shortestDistances.get(currentVertex) + edgeWeight;
 
                     if (newDist < shortestDistances.get(adjacentVertex)) {
                         shortestDistances.put(adjacentVertex, newDist);
+                        times.put(adjacentVertex, currentTime.add(edgeWeight));
                         unsettledNodes.add(adjacentVertex);
 
                         // Add vertex to path and then to paths
-                        LinkedList<T> path = new LinkedList<>(paths.getOrDefault(paths, new LinkedList<>()));
+                        LinkedList<T> path = new LinkedList<>(paths.get(currentVertex));
                         path.add(adjacentVertex);
                         paths.put(adjacentVertex, path);
                     }
@@ -63,10 +89,10 @@ public class DijkstraAlgorithm {
             }
         }
 
-        return new LinkedList<>();
+        return originPath;
     }
 
-    public static Line toLine(List<Location> shortestDistances) {
-        return new Line(shortestDistances.toArray(Location[]::new));
+    private static <T extends Point2D> Route toRoute(List<T> shortestDistances, GTFSTime duration) {
+        return Route.ofWalking(new GeographicLine(shortestDistances.toArray(Location[]::new)), duration);
     }
 }
