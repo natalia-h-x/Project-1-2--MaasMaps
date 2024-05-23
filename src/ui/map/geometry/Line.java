@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.swing.Timer;
+
+import core.Context;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,10 +30,14 @@ import ui.map.geometry.interfaces.MapGraphics;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment> {
+    private static final int ANIMATION_SPEED = 1000;
     private List<Point2D> locations = new ArrayList<>();
     private Paint paint = new Color(001, 010, 100);
     private Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
     private Point offset = new Point();
+    private Timer animatorTimer = new Timer(ANIMATION_SPEED, e -> advanceLineDrawIterator(e));
+    private Segment[] lineIterator;
+    private int animatedSegments = 0;
 
     // take the locations as parameter
     public Line(Point2D... points) {
@@ -104,11 +112,25 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
 
         g2.setStroke(stroke);
 
-        for (Segment segment : getLineIterator()) {
+        if (animatedSegments == 0)
+            animatorTimer.start();
+
+        lineIterator = getLineIterator();
+
+        for (int i = 0; i < animatedSegments; i++) {
             // Set paint color for the line
             g2.setPaint(paint);
-            drawLineSegment(g2, segment.getStart(), segment.getEnd());
+            drawLineSegment(g2, lineIterator[i].getStart(), lineIterator[i].getEnd());
         }
+    }
+
+    public void advanceLineDrawIterator(ActionEvent e) {
+        animatedSegments++;
+
+        if (animatedSegments >= lineIterator.length)
+            animatorTimer.stop();
+        else
+            Context.getContext().getMap().repaint();
     }
 
     @Data

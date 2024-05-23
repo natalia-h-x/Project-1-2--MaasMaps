@@ -50,12 +50,12 @@ public class GTFSTime implements Comparable<GTFSTime> {
         if (hours == Integer.MAX_VALUE || minutes == Integer.MAX_VALUE || seconds == Integer.MAX_VALUE)
             return Integer.MAX_VALUE;
 
-        return 3600 * hours + 60 * minutes + seconds;
+        return (3600 * hours) + (60 * minutes) + seconds;
     }
 
     @Override
     public int compareTo(GTFSTime o) {
-        return Integer.compare(toSeconds(), o.toSeconds());
+        return Integer.compare(o.toSeconds(), toSeconds());
     }
 
     @Override

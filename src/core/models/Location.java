@@ -14,7 +14,6 @@ import core.managers.MapManager;
  */
 public class Location extends Point2D {
     private static HashMap<Location, Point> convertedPoints = new HashMap<>();
-    private static HashMap<Location, java.lang.Double> distanceToLocationMap = new HashMap<>();
 
     private double latitude;
     private double longitude;

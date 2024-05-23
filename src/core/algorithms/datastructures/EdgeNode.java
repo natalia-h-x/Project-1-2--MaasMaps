@@ -25,19 +25,22 @@ public class EdgeNode<T> {
     /**
      * Get the time that this edge takes to walk across.
      *
+     * @param arrivalTime the time you arrive at the bus stop, where you want to look for departing buses to take.
      * @return
      */
-    public int getWeight(GTFSTime currentTime) {
-        GTFSTime closestTime = departureTimes.get(0);
+    public static boolean pleaseForgiveMe = false;
+    public int getWeight(GTFSTime arrivalTime) {
+        GTFSTime closestDepartureTime = departureTimes.get(0);
 
-        for (GTFSTime time : departureTimes) {
-            if (time.toSeconds() > currentTime.toSeconds())
+        for (GTFSTime departureTime : departureTimes) {
+            if (departureTime.toSeconds() < arrivalTime.toSeconds())
                 break;
 
-            closestTime = time;
+            closestDepartureTime = departureTime;
         }
 
-        return weight + (Optional.ofNullable(closestTime).orElse(GTFSTime.of("Infinity")).toSeconds() - currentTime.toSeconds());
+
+        return weight + closestDepartureTime.toSeconds() - arrivalTime.toSeconds();
     }
 
     @Override

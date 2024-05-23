@@ -1,6 +1,8 @@
 package ui.map.geometry;
 
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Stroke;
 import java.awt.geom.Point2D;
 
 import core.managers.DistanceManager;
@@ -10,6 +12,18 @@ import ui.map.geometry.interfaces.GeographicMapGraphics;
 
 public class GeographicLine extends Line implements GeographicMapGraphics {
     public GeographicLine(Location... locations) {
+        super(locations);
+    }
+
+    public GeographicLine(Paint paint, Location... locations) {
+        super(locations);
+    }
+
+    public GeographicLine(Stroke stroke, Location... locations) {
+        super(locations);
+    }
+
+    public GeographicLine(Paint paint, Stroke stroke, Location... locations) {
         super(locations);
     }
 

@@ -2,6 +2,7 @@ package core.models.transport;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import core.Constants;
@@ -69,8 +70,8 @@ public class Bus extends TransportMode {
         Location[] closestStarts = MapManager.getClosestPoint(getStart(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
         Location[] closestDestinations = MapManager.getClosestPoint(getDestination(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
 
-        for (int i = 0; i < Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS; i++) {
-            for (int j = 0; j < Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS; j++) {
+        for (int i = 0; i < closestStarts.length; i++) {
+            for (int j = 0; j < closestDestinations.length; j++) {
                 Route route = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], getDepartingTime().clone().add((int) (60 * getStart().distanceTo(closestStarts[i]))));
                 route.getManualTransportModeA().setStart(getStart());
                 route.getManualTransportModeA().setDestination(closestStarts[i]);
@@ -112,11 +113,18 @@ public class Bus extends TransportMode {
                 shortestVehicleRoute = Optional.of(route);
             }
         }
+
+        System.out.println();
     }
 
     @Override
     public GTFSTime getTravelTime() {
-        return getShortestRoute().getTime().add(getShortestRoute().getManualTransportModeA().getTravelTime()).add(getShortestRoute().getManualTransportModeB().getTravelTime());
+        try {
+            return getChosenRoute().getTime().add(getChosenRoute().getManualTransportModeA().getTravelTime()).add(getChosenRoute().getManualTransportModeB().getTravelTime());
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalAccessError("Cannot find a connection between these postal codes.");
+        }
     }
 
     @Override

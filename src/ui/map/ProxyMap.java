@@ -32,4 +32,8 @@ public class ProxyMap {
     public void clearIcons() {
         map.clearIcons();
     }
+
+    public void repaint() {
+        map.repaint();
+    }
 }
