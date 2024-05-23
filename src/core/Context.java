@@ -1,5 +1,7 @@
 package core;
 
+import java.util.Random;
+
 import core.zipcode.ZipCodeDatabase;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +21,7 @@ public class Context {
     private ProxyMap map;
     private ZipCodeDatabase zipCodeDatabase;
     private ResultsProxy resultsPanel;
+    private Random random;
 
     private Context() {}
 
@@ -35,5 +38,12 @@ public class Context {
             zipCodeDatabase = new ZipCodeDatabase();
 
         return zipCodeDatabase;
+    }
+
+    public Random getRandom() {
+        if (random == null)
+            random = new Random();
+
+        return random;
     }
 }

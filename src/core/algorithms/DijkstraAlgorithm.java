@@ -1,7 +1,6 @@
 package core.algorithms;
 
 import java.awt.geom.Point2D;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -10,32 +9,30 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import core.Context;
 import core.algorithms.datastructures.EdgeNode;
 import core.algorithms.datastructures.Graph;
-import core.models.GTFSTime;
+import core.models.Time;
 import core.models.Location;
 import core.models.transport.Route;
-import ui.map.geometry.GeographicLine;
 import ui.map.geometry.factories.LineFactory;
 
 public class DijkstraAlgorithm {
     private DijkstraAlgorithm() {}
 
-    public static <T extends Point2D> Route shortestPath(Graph<T> graph, T source, T end, GTFSTime startTime) {
-        GTFSTime duration = GTFSTime.of(0);
+    public static <T extends Point2D> Route shortestPath(Graph<T> graph, T source, T end, Time startTime) {
+        Time duration = Time.of(0);
         return toRoute(shortestPath(graph, source, end, startTime, duration), duration);
     }
 
     // Boy do I hope java has objInserting.equals(objInList) instead of the other way around. Why?
-    public static <T> List<T> shortestPath(Graph<T> graph, T source, T end, GTFSTime startTime, GTFSTime endTime) {
+    public static <T> List<T> shortestPath(Graph<T> graph, T source, T end, Time startTime, Time endTime) {
         EdgeNode.pleaseForgiveMe = false;
 
         if (source.equals(end))
             throw new IllegalArgumentException("Start is destination");
 
         Map<T, List<T>> paths = new HashMap<>();
-        Map<T, GTFSTime> times = new HashMap<>();
+        Map<T, Time> times = new HashMap<>();
         Map<T, Integer> shortestDistances = new HashMap<>();
         PriorityQueue<T> unsettledNodes = new PriorityQueue<>((a, b) -> shortestDistances.get(b).compareTo(shortestDistances.get(a)));
         Set<T> settledNodes = new HashSet<>();
@@ -57,7 +54,7 @@ public class DijkstraAlgorithm {
         while (!unsettledNodes.isEmpty()) {
             // Removing the minimum distance node from the priority process
             T currentVertex = unsettledNodes.poll();
-            GTFSTime currentTime = times.get(currentVertex);
+            Time currentTime = times.get(currentVertex);
 
             for (T l : unsettledNodes) {
                 System.out.println(shortestDistances.get(l));
@@ -107,7 +104,7 @@ public class DijkstraAlgorithm {
         return originPath;
     }
 
-    private static <T extends Point2D> Route toRoute(List<T> shortestDistances, GTFSTime duration) {
+    private static <T extends Point2D> Route toRoute(List<T> shortestDistances, Time duration) {
         return Route.ofWalking(LineFactory.createGeographicArrowLine(shortestDistances.toArray(Location[]::new)), duration);
     }
 }

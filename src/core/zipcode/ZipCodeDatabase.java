@@ -1,5 +1,7 @@
 package core.zipcode;
 
+import java.util.List;
+
 import core.models.Location;
 import core.models.ZipCode;
 
@@ -23,5 +25,9 @@ public class ZipCodeDatabase implements LocationReader {
             return csvParser.getLocation(zipcode);
 
         return apiRequest.getLocation(zipcode);
+    }
+
+    public List<ZipCode> getZipCodes() {
+        return csvParser.getZipCodeList();
     }
 }

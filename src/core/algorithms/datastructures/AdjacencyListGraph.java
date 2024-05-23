@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import core.models.GTFSTime;
+import core.models.Time;
 
 public class AdjacencyListGraph<T> implements Graph<T> {
     private HashMap<T, List<EdgeNode<T>>> vertices;
@@ -59,7 +59,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     }
 
     @Override
-    public void addEdge(T x, T y, int weight, GTFSTime time) {
+    public void addEdge(T x, T y, int weight, Time time) {
         if (!containsVertex(x) || !containsVertex(y)) {
             throw new IllegalArgumentException("One or both vertices are not in the Graph.");
         }
@@ -69,8 +69,9 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         if (time != null)
             for (EdgeNode<T> edge : edges) {
                 if (edge.getElement().equals(y)) {
-                    if (edge.getDepartureTimes().contains(time))
-                        return; //throw new IllegalArgumentException("Time is already contained in departure times");
+                    if (edge.getDepartureTimes().contains(time)) {
+                        
+                    }
 
                     edge.addDepartureTime(time);
 
@@ -78,7 +79,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
                 }
             }
 
-        LinkedList<GTFSTime> times = new LinkedList<>();
+        LinkedList<Time> times = new LinkedList<>();
 
         if (time != null)
             times.add(time);

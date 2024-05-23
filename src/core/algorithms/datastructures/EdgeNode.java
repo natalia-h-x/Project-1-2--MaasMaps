@@ -1,9 +1,8 @@
 package core.algorithms.datastructures;
 
 import java.util.List;
-import java.util.Optional;
 
-import core.models.GTFSTime;
+import core.models.Time;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,9 +15,9 @@ import lombok.Data;
 public class EdgeNode<T> {
     private T element;
     private int weight;
-    private List<GTFSTime> departureTimes;
+    private List<Time> departureTimes;
 
-    public void addDepartureTime(GTFSTime time) {
+    public void addDepartureTime(Time time) {
         departureTimes.add(time);
     }
 
@@ -29,10 +28,10 @@ public class EdgeNode<T> {
      * @return
      */
     public static boolean pleaseForgiveMe = false;
-    public int getWeight(GTFSTime arrivalTime) {
-        GTFSTime closestDepartureTime = departureTimes.get(0);
+    public int getWeight(Time arrivalTime) {
+        Time closestDepartureTime = departureTimes.get(0);
 
-        for (GTFSTime departureTime : departureTimes) {
+        for (Time departureTime : departureTimes) {
             if (departureTime.toSeconds() < arrivalTime.toSeconds())
                 break;
 

@@ -3,30 +3,30 @@ package core.models;
 import lombok.Data;
 
 @Data
-public class GTFSTime implements Comparable<GTFSTime> {
+public class Time implements Comparable<Time> {
     private int hours;
     private int minutes;
     private int seconds;
 
-    private GTFSTime(int hours, int minutes, int seconds) {
+    private Time(int hours, int minutes, int seconds) {
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;
     }
 
-    public static GTFSTime of(String string) {
+    public static Time of(String string) {
         if (string.contains("Infinity"))
-            return new GTFSTime(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+            return new Time(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
         String[] parts = string.split(":");
-        return new GTFSTime(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+        return new Time(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
     }
 
-    public static GTFSTime of(int seconds) {
-        return new GTFSTime(0, 0, 0).update(seconds);
+    public static Time of(int seconds) {
+        return new Time(0, 0, 0).update(seconds);
     }
 
-    public GTFSTime update(int seconds) {
+    public Time update(int seconds) {
         this.hours = seconds / 3600; seconds %= 3600;
         this.minutes = seconds / 60; seconds %= 60;
         this.seconds = seconds;
@@ -34,16 +34,16 @@ public class GTFSTime implements Comparable<GTFSTime> {
         return this;
     }
 
-    public GTFSTime minus(GTFSTime time) {
-        return GTFSTime.of(toSeconds() - time.toSeconds());
+    public Time minus(Time time) {
+        return Time.of(toSeconds() - time.toSeconds());
     }
 
-    public GTFSTime add(GTFSTime time) {
-        return GTFSTime.of(toSeconds() + time.toSeconds());
+    public Time add(Time time) {
+        return Time.of(toSeconds() + time.toSeconds());
     }
 
-    public GTFSTime add(int seconds) {
-        return GTFSTime.of(toSeconds() + seconds);
+    public Time add(int seconds) {
+        return Time.of(toSeconds() + seconds);
     }
 
     public int toSeconds() {
@@ -54,7 +54,7 @@ public class GTFSTime implements Comparable<GTFSTime> {
     }
 
     @Override
-    public int compareTo(GTFSTime o) {
+    public int compareTo(Time o) {
         return Integer.compare(o.toSeconds(), toSeconds());
     }
 
@@ -66,7 +66,7 @@ public class GTFSTime implements Comparable<GTFSTime> {
              + (seconds > 0 ? clock[2] + (seconds > 1 ? "s" : "")                                                                                  : "") + ".";
     }
 
-    public GTFSTime clone() {
-        return GTFSTime.of(toSeconds());
+    public Time clone() {
+        return Time.of(toSeconds());
     }
 }

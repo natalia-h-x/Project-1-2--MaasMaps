@@ -1,6 +1,6 @@
 package core.models.transport;
 
-import core.models.GTFSTime;
+import core.models.Time;
 import core.models.Location;
 import lombok.Data;
 import ui.map.geometry.interfaces.MapGraphics;
@@ -21,8 +21,8 @@ public abstract class TransportMode {
         this.destination = destination;
     }
 
-    public GTFSTime getTravelTime() {
-        return GTFSTime.of((int) ((start.distanceTo(destination) / getAverageSpeed()) * 60.0));
+    public Time getTravelTime() {
+        return Time.of((int) ((start.distanceTo(destination) / getAverageSpeed()) * 60.0));
     }
 
     public abstract String toString();

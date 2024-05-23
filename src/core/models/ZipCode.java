@@ -78,4 +78,9 @@ public class ZipCode {
 
         return result;
     }
+
+    @Override
+    public String toString() {
+        return getCode();
+    }
 }

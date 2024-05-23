@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import core.Constants.UIConstants;
 import core.Context;
 import core.managers.ExceptionManager;
+import core.managers.MapManager;
 import core.models.transport.Biking;
 import core.models.transport.Bus;
 import core.models.transport.TransportMode;
@@ -50,11 +51,11 @@ public class NavigationPanel extends JPanel {
         JLabel location1 = new JLabel("From: ");
         location1.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
 
-        JTextField textField1 = new JTextField("Enter postal code", 8);
+        JTextField textField1 = new JTextField(MapManager.getRandomPostalCode(), 8);
         JLabel location2 = new JLabel("To: ");
         location2.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
 
-        JTextField textField2 = new JTextField("Enter postal code", 8);
+        JTextField textField2 = new JTextField(MapManager.getRandomPostalCode(), 8);
         JButton calculate = new JButton("Calculate");
         calculate.setBackground(UIConstants.GUI_HIGHLIGHT_BACKGROUND_COLOR);
         calculate.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);

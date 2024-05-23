@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.PriorityQueue;
@@ -13,6 +14,8 @@ import java.util.Set;
 import core.Context;
 import core.algorithms.datastructures.Graph;
 import core.models.Location;
+import core.models.ZipCode;
+import core.zipcode.ZipCodeDatabase;
 
 /**
  * This class represents the map manager that converts real world coordinates to x/y points in the map image.
@@ -113,5 +116,10 @@ public class MapManager {
 
     public static Graph<Point2D> getBusGraph() {
         return DatabaseManager.getBusGraph();
+    }
+
+    public static String getRandomPostalCode() {
+        List<ZipCode> zipCodes = Context.getContext().getZipCodeDatabase().getZipCodes();
+        return zipCodes.get((int) (zipCodes.size() * Context.getContext().getRandom().nextDouble())).getCode();
     }
 }

@@ -8,6 +8,7 @@ import core.managers.ExceptionManager;
 import core.managers.FileManager;
 import core.models.Location;
 import core.models.ZipCode;
+import lombok.Getter;
 
 /**
  * This class reads and parses the zipcode data from the csv file.
@@ -16,6 +17,7 @@ import core.models.ZipCode;
  * @author Natalia Hadjisoteriou
  * @author Sian Lodde
  */
+@Getter
 public class CSVParser implements LocationReader {
     private List<ZipCode> zipCodeList;
 

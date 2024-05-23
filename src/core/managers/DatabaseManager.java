@@ -23,7 +23,7 @@ import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.EdgeNode;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
-import core.models.GTFSTime;
+import core.models.Time;
 import core.models.Location;
 import core.models.Shape;
 import core.models.Trip;
@@ -98,7 +98,7 @@ public class DatabaseManager {
     public static void insertInTable(String tableName, String[] attributes, String[][] data) throws IllegalArgumentException {
         try {
             Connection conn = getConnection();
-            // System.out.println("Inserting data into " + tableName);
+
             conn.setAutoCommit(false); // start transaction
             try (PreparedStatement pstmt = conn.prepareStatement(insertString(tableName, attributes, data))) {
                 int count = 0;
@@ -112,7 +112,7 @@ public class DatabaseManager {
                     pstmt.executeBatch();
                     pstmt.clearBatch();
                 }
-                // System.out.println("-- Insertion complete --");
+
                 pstmt.executeBatch(); // final batch
                 conn.commit(); // commit transaction
             }
@@ -137,9 +137,7 @@ public class DatabaseManager {
             }
 
             bld.append(");");
-            // System.out.println("Creating table " + tableName);
             stmt.execute(bld.toString());
-            // System.out.println("-- Table creation successful --");
         }
         catch (SQLException e) {
             throw new IllegalArgumentException("Error on creating table \"%s\"".formatted(tableName), e);
@@ -254,14 +252,14 @@ public class DatabaseManager {
             "from stop_times ORDER BY trip_id, stop_sequence;\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         int previousTripId = -1;
-        GTFSTime departureTime = null;
+        Time departureTime = null;
         BusStop previousBusStop = null;
 
         for (int i = 0; i < attributes[0].size(); i++) {
             int tripId = Integer.parseInt((String) attributes[0].get(i));
             int stopId = Integer.parseInt((String) attributes[1].get(i));
             BusStop busStop = busStopMap.get(stopId);
-            GTFSTime arrivalTime = GTFSTime.of((String) attributes[2].get(i));
+            Time arrivalTime = Time.of((String) attributes[2].get(i));
 
             busStop.setTrip(Optional.ofNullable(getTrip(tripId)).orElse(busStop.getTrip()));
 
@@ -279,7 +277,7 @@ public class DatabaseManager {
 
             previousTripId = tripId;
             previousBusStop = busStop;
-            departureTime = GTFSTime.of((String) attributes[3].get(i));
+            departureTime = Time.of((String) attributes[3].get(i));
         }
 
         for (Point2D stop : busGraph.getVertecesList()) {

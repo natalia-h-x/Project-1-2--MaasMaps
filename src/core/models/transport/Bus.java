@@ -8,7 +8,7 @@ import java.util.Optional;
 import core.Constants;
 import core.algorithms.DijkstraAlgorithm;
 import core.managers.MapManager;
-import core.models.GTFSTime;
+import core.models.Time;
 import core.models.Location;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ import ui.map.geometry.interfaces.MapGraphics;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Bus extends TransportMode {
-    private GTFSTime departingTime = GTFSTime.of(0);
+    private Time departingTime = Time.of(0);
     private Optional<Route> shortestRoute = Optional.empty();
     private Optional<Route> shortestManualRoute = Optional.empty();
     private Optional<Route> shortestVehicleRoute = Optional.empty();
@@ -118,7 +118,7 @@ public class Bus extends TransportMode {
     }
 
     @Override
-    public GTFSTime getTravelTime() {
+    public Time getTravelTime() {
         try {
             return getChosenRoute().getTime().add(getChosenRoute().getManualTransportModeA().getTravelTime()).add(getChosenRoute().getManualTransportModeB().getTravelTime());
         }
