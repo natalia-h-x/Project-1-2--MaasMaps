@@ -21,7 +21,7 @@ public class DijkstraAlgorithm {
     private DijkstraAlgorithm() {}
 
     public static <T extends Point2D> Route shortestPath(Graph<T> graph, T source, T end, GTFSTime startTime) {
-        GTFSTime duration = GTFSTime.of(0);
+        GTFSTime duration = GTFSTime.of(54000);
         return toRoute(shortestPath(graph, source, end, startTime, duration), duration);
     }
 
