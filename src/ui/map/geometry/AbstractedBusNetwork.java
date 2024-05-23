@@ -6,17 +6,25 @@ import java.awt.geom.Point2D;
 import java.util.function.UnaryOperator;
 
 import core.algorithms.datastructures.Graph;
+import core.models.BusStop;
 import ui.map.geometry.Line.Segment;
 
 public class AbstractedBusNetwork extends BusNetwork {
     private static final AbstractorMap map = new AbstractorMap(
-        new Line(Color.CYAN, new Point(500, 500), new Point(1280, 800)),
-        new Line(Color.GREEN, new Point(500, 500), new Point (600, 800)),
-        new Line(Color.YELLOW, new Point(500, 500), new Point(1600, 2000))
+        new Line(Color.GREEN, new Point(745, 942), new Point(1300, 0)),
+        new Line(Color.BLUE, new Point(745, 942), new Point (1300, 500)),
+        new Line(Color.PINK, new Point(745, 942), new Point(1000, 1500)),
+        new Line(Color.RED, new Point(745, 942), new Point(1000, 150)),
+        new Line(Color.YELLOW, new Point(745, 942), new Point(100, 500)),
+        new Line(Color.PINK, new Point(745, 942), new Point(100, 0)),
+        new Line(Color.BLUE, new Point(745, 942), new Point(100,1000)),
+        new Line(Color.YELLOW, new Point(745, 942), new Point(1192, 1035)),
+        new Line(Color.GREEN, new Point(745, 942), new Point(487, 1300)),
+        new Line(Color.RED, new Point(745, 945), new Point(1031, 1215))    
     );
     private static final UnaryOperator<Point2D> abstractingFunction = map::map;
 
-    public <P extends Point2D> AbstractedBusNetwork(Graph<P> graph) {
+    public AbstractedBusNetwork(Graph<BusStop> graph) {
         super(graph);
     }
 
