@@ -37,7 +37,7 @@ public class EdgeNode<T> {
             closestTime = time;
         }
 
-        return Optional.ofNullable(closestTime).orElse(GTFSTime.of("Infinity")).toSeconds() - currentTime.toSeconds();
+        return weight + (Optional.ofNullable(closestTime).orElse(GTFSTime.of("Infinity")).toSeconds() - currentTime.toSeconds());
     }
 
     @Override
