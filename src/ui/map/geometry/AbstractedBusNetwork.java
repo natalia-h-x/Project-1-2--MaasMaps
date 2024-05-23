@@ -20,11 +20,11 @@ public class AbstractedBusNetwork extends BusNetwork {
         new Line(Color.BLUE, new Point(745, 942), new Point(100,1000)),
         new Line(Color.YELLOW, new Point(745, 942), new Point(1192, 1035)),
         new Line(Color.GREEN, new Point(745, 942), new Point(487, 1300)),
-        new Line(Color.RED, new Point(745, 945), new Point(1031, 1215))    
+        new Line(Color.RED, new Point(745, 945), new Point(1031, 1215))
     );
     private static final UnaryOperator<Point2D> abstractingFunction = map::map;
 
-    public AbstractedBusNetwork(Graph<BusStop> graph) {
+    public <P extends Point2D> AbstractedBusNetwork(Graph<P> graph) {
         super(graph);
     }
 
