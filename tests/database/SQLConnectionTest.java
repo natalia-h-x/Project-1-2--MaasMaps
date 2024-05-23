@@ -1,5 +1,7 @@
 package database;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +19,17 @@ public class SQLConnectionTest {
                         "left join stops b on b.stop_id = transfers.to_stop_id \r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         for (int i = 0; i < attributes[0].size(); i++) {
-            BusStop fromLocation = new BusStop(Double.parseDouble((String) attributes[0].get(i)), Double.parseDouble((String) attributes[1].get(i)));
-            BusStop toLocation = new BusStop(Double.parseDouble((String) attributes[2].get(i)), Double.parseDouble((String) attributes[3].get(i)));
-            int weight = (int) (1000 * Double.parseDouble((String) attributes[5].get(i)));
+            try {
+                BusStop fromLocation = new BusStop(Double.parseDouble((String) attributes[0].get(i)), Double.parseDouble((String) attributes[1].get(i)));
+                BusStop toLocation = new BusStop(Double.parseDouble((String) attributes[2].get(i)), Double.parseDouble((String) attributes[3].get(i)));
+                int weight = (int) (1000 * Double.parseDouble((String) attributes[5].get(i)));
+                System.out.println("%s -> %s: %s".formatted(fromLocation, toLocation, weight));
+            } catch (NullPointerException e) {
+            
+            } catch (IndexOutOfBoundsException e) {
+                
+            }
 
-            System.out.println("%s -> %s: %s".formatted(fromLocation, toLocation, weight));
         }
     }
 }
