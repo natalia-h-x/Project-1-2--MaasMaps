@@ -30,7 +30,7 @@ import ui.map.geometry.interfaces.MapGraphics;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment> {
-    private static final int ANIMATION_SPEED = 1000;
+    private static final int ANIMATION_SPEED = 100;
     private List<Point2D> locations = new ArrayList<>();
     private Paint paint = new Color(001, 010, 100);
     private Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
@@ -117,7 +117,7 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
 
         lineIterator = getLineIterator();
 
-        for (int i = 0; i < animatedSegments; i++) {
+        for (int i = 0; i < Math.min(animatedSegments, lineIterator.length); i++) {
             // Set paint color for the line
             g2.setPaint(paint);
             drawLineSegment(g2, lineIterator[i].getStart(), lineIterator[i].getEnd());
@@ -125,12 +125,12 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
     }
 
     public void advanceLineDrawIterator(ActionEvent e) {
-        animatedSegments++;
-
         if (animatedSegments >= lineIterator.length)
             animatorTimer.stop();
-        else
-            Context.getContext().getMap().repaint();
+        
+        animatedSegments++;
+        
+        Context.getContext().getMap().repaint();
     }
 
     @Data

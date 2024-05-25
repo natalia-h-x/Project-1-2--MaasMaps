@@ -8,8 +8,8 @@ import java.util.Optional;
 import core.Constants;
 import core.algorithms.DijkstraAlgorithm;
 import core.managers.MapManager;
-import core.models.Time;
 import core.models.Location;
+import core.models.Time;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ui.map.geometry.ImageMarkerFactory;
@@ -19,7 +19,7 @@ import ui.map.geometry.interfaces.MapGraphics;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Bus extends TransportMode {
-    private Time departingTime = Time.of(0);
+    private Time departingTime = Time.of(25200);
     private Optional<Route> shortestRoute = Optional.empty();
     private Optional<Route> shortestManualRoute = Optional.empty();
     private Optional<Route> shortestVehicleRoute = Optional.empty();
@@ -40,7 +40,12 @@ public class Bus extends TransportMode {
     }
 
     public Route getChosenRoute() {
-        return getShortestRoute();
+        try {
+            return getShortestRoute();
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("Cannot find a connection between these postal codes.");
+        }
     }
 
     // Je kan die bus pakken en die bus pakken, je kan dan kiezen welke bus je neemt. een aantal opties
@@ -72,12 +77,17 @@ public class Bus extends TransportMode {
 
         for (int i = 0; i < closestStarts.length; i++) {
             for (int j = 0; j < closestDestinations.length; j++) {
-                Route route = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], getDepartingTime().clone().add((int) (60 * getStart().distanceTo(closestStarts[i]))));
+                Time duration = Time.of(0);
+                Route route = Route.ofWalking();
                 route.getManualTransportModeA().setStart(getStart());
                 route.getManualTransportModeA().setDestination(closestStarts[i]);
                 route.getManualTransportModeB().setStart(closestDestinations[j]);
                 route.getManualTransportModeB().setDestination(getDestination());
-                routes.add(route);
+                route.setLine(DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(route.getManualTransportModeA().getTravelTime()), duration));
+                route.setTime(duration);
+
+                if (duration.toSeconds() < 32400000)
+                    routes.add(route);
             }
         }
 
@@ -90,16 +100,17 @@ public class Bus extends TransportMode {
         double shortestVehicleDistance = Double.POSITIVE_INFINITY;
 
         for (Route route : routes) {
-            double distance = shortestVehicleRoute.orElse(route).getTime().toSeconds();
-            double manualDistance  = shortestManualRoute.orElse(route).getManualTransportModeA().getTravelTime().toSeconds();
-                   manualDistance += shortestManualRoute.orElse(route).getManualTransportModeB().getTravelTime().toSeconds();
-            double vehicleDistance = shortestVehicleRoute.orElse(route).getTime().toSeconds();
+            double manualDistanceA = route.getManualTransportModeA().getTravelTime().toSeconds();
+            double manualDistanceB = route.getManualTransportModeB().getTravelTime().toSeconds();
+            double manualDistance = manualDistanceA + manualDistanceB;
+            double vehicleDistance = route.getTime().toSeconds() - manualDistanceA;
+            double distance = vehicleDistance + manualDistance;
 
-            if (distance == 0)
+            if (vehicleDistance == 0)
                 continue;
 
             if (distance < shortestDistance) {
-                shortestDistance = manualDistance;
+                shortestDistance = distance;
                 shortestRoute = Optional.of(route);
             }
 
@@ -113,18 +124,14 @@ public class Bus extends TransportMode {
                 shortestVehicleRoute = Optional.of(route);
             }
         }
-
-        System.out.println();
     }
 
     @Override
     public Time getTravelTime() {
-        try {
-            return getChosenRoute().getTime().add(getChosenRoute().getManualTransportModeA().getTravelTime()).add(getChosenRoute().getManualTransportModeB().getTravelTime());
-        }
-        catch (NoSuchElementException e) {
-            throw new IllegalAccessError("Cannot find a connection between these postal codes.");
-        }
+        Route chosenRoute = getChosenRoute();
+        return chosenRoute.getTime()
+                          .add(chosenRoute.getManualTransportModeA().getTravelTime())
+                          .add(chosenRoute.getManualTransportModeB().getTravelTime());
     }
 
     @Override

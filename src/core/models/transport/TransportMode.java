@@ -22,7 +22,7 @@ public abstract class TransportMode {
     }
 
     public Time getTravelTime() {
-        return Time.of((int) ((start.distanceTo(destination) / getAverageSpeed()) * 60.0));
+        return Time.of((int) ((start.distance(destination) / getAverageSpeed()) * 60.0));
     }
 
     public abstract String toString();

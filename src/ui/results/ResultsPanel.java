@@ -28,7 +28,7 @@ public class ResultsPanel extends JPanel implements ResultDisplay {
         for (int i = 0; i < locations.size(); i++) {
             Location location = (Location) locations.get(i);
             if (previousLoc != null) {
-                double distance = previousLoc.distanceTo(location);
+                double distance = previousLoc.distance(location);
                 double scaledDistance = distance / line.getTotalDistance() / 20;
                 Location linePart = new Location(0,scaledDistance);
                 this.line.addRelativeLocation(linePart);

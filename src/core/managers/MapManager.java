@@ -88,7 +88,7 @@ public class MapManager {
 
         for (Point2D vertex : getBusGraph()) {
             Location location = ((Location) vertex);
-            double dist = location.distanceTo(to);
+            double dist = location.distance(to);
 
             distances.put(location, dist);
 

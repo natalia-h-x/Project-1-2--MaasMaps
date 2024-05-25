@@ -25,6 +25,7 @@ import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
 import core.models.Time;
 import core.models.Location;
+import core.models.Route;
 import core.models.Shape;
 import core.models.Trip;
 import tools.generator.sqlite.TxtToSQLite;
@@ -157,43 +158,63 @@ public class DatabaseManager {
     }
 
     public static Map<Integer, BusStop> getBusStops() {
-        Map<Integer, BusStop> busStopMap = new HashMap<>();
+        Map<Integer, BusStop> map = new HashMap<>();
         List<?>[] attributes = executeQuery("select stop_id, stop_lat, stop_lon, stop_name\r\n" + //
             "from stops;\r\n", new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>());
 
         for (int i = 0; i < attributes[0].size(); i++) {
             try {
-                Integer stopId = Integer.parseInt((String) attributes[0].get(i));
+                Integer id = Integer.parseInt((String) attributes[0].get(i));
                 BusStop busStop = new BusStop(Double.parseDouble((String) attributes[1].get(i)), Double.parseDouble((String) attributes[2].get(i)), (String) attributes[3].get(i));
 
-                busStopMap.put(stopId, busStop);
+                map.put(id, busStop);
             }
             catch (NumberFormatException e) {
                 ExceptionManager.warn(new IllegalStateException("Could not parse row from stops table", e));
             }
         }
 
-        return busStopMap;
+        return map;
     }
 
     public static Map<Integer, Trip> getTrips() {
-        Map<Integer, Trip> busStopMap = new HashMap<>();
+        Map<Integer, Trip> map = new HashMap<>();
         List<?>[] attributes = executeQuery("select trip_id, shape_id, route_id, trip_headsign\r\n" + //
             "from trips;\r\n", new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>());
 
         for (int i = 0; i < attributes[0].size(); i++) {
             try {
-                int tripId = Integer.parseInt((String) attributes[0].get(i));
-                Trip trip = new Trip(tripId, Integer.parseInt((String) attributes[1].get(i)), Integer.parseInt((String) attributes[2].get(i)), (String) attributes[3].get(i), new LinkedList<>());
+                int id = Integer.parseInt((String) attributes[0].get(i));
+                Trip trip = new Trip(id, Integer.parseInt((String) attributes[1].get(i)), Integer.parseInt((String) attributes[2].get(i)), (String) attributes[3].get(i));
 
-                busStopMap.put(tripId, trip);
+                map.put(id, trip);
             }
             catch (NumberFormatException e) {
                 ExceptionManager.warn(new IllegalStateException("Could not parse row from trips table", e));
             }
         }
 
-        return busStopMap;
+        return map;
+    }
+
+    public static Map<Integer, Route> getRoutes() {
+        Map<Integer, Route> map = new HashMap<>();
+        List<?>[] attributes = executeQuery("select route_id, route_long_name, route_color\r\n" + //
+            "from routes;\r\n", new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>());
+
+        for (int i = 0; i < attributes[0].size(); i++) {
+            try {
+                int id = Integer.parseInt((String) attributes[0].get(i));
+                Route trip = new Route(id, (String) attributes[1].get(i), Color.decode((String) attributes[2].get(i)));
+
+                map.put(id, trip);
+            }
+            catch (NumberFormatException e) {
+                ExceptionManager.warn(new IllegalStateException("Could not parse row from trips table", e));
+            }
+        }
+
+        return map;
     }
 
     public static Shape getShape(int shapeId) {
@@ -222,9 +243,14 @@ public class DatabaseManager {
     private static Graph<Point2D> busGraph;
     private static Map<Integer, BusStop> busStopMap = getBusStops();
     private static Map<Integer, Trip> tripMap = getTrips();
+    private static Map<Integer, Route> routeMap = getRoutes();
 
-    private static Trip getTrip(int tripId) {
-        return tripMap.get(tripId);
+    private static Trip getTrip(int id) {
+        return tripMap.get(id);
+    }
+
+    private static Route getRoute(int id) {
+        return routeMap.get(id);
     }
 
     protected static Graph<Point2D> getBusGraph() {
@@ -249,7 +275,7 @@ public class DatabaseManager {
         // Take for example A -> B -> C, that cannot be A -> C -> B. This will not have correct weights because
         // the times are also not chonological.
         List<?>[] attributes = executeQuery("select trip_id, stop_id, arrival_time, departure_time\r\n" + //
-            "from stop_times ORDER BY trip_id, stop_sequence;\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
+            "from stop_times ORDER BY CAST(trip_id AS INT), CAST(stop_sequence AS INT);\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         int previousTripId = -1;
         Time departureTime = null;
@@ -259,9 +285,11 @@ public class DatabaseManager {
             int tripId = Integer.parseInt((String) attributes[0].get(i));
             int stopId = Integer.parseInt((String) attributes[1].get(i));
             BusStop busStop = busStopMap.get(stopId);
+            Trip trip = getTrip(tripId);
+            Route route = Optional.ofNullable(getRoute(Optional.ofNullable(trip).orElse(Trip.empty()).getRouteId())).orElse(Route.empty());
             Time arrivalTime = Time.of((String) attributes[2].get(i));
 
-            busStop.setTrip(Optional.ofNullable(getTrip(tripId)).orElse(busStop.getTrip()));
+            busStop.setTrip(Optional.ofNullable(trip).orElse(busStop.getTrip()));
 
             // We have this following if statement to check if there are at least two stops in a trip.
             // If there is only one, we do not need to connect / add vertices.
@@ -272,18 +300,12 @@ public class DatabaseManager {
                 if (!busGraph.containsVertex(Optional.ofNullable(previousBusStop).orElseThrow()))
                     busGraph.addVertex(previousBusStop);
 
-                busGraph.addEdge(previousBusStop, busStop, arrivalTime.minus(Optional.ofNullable(departureTime).orElseThrow()).toSeconds(), departureTime);
+                busGraph.addEdge(previousBusStop, busStop, arrivalTime.minus(Optional.ofNullable(departureTime).orElseThrow()).toSeconds(), route, departureTime);
             }
 
             previousTripId = tripId;
             previousBusStop = busStop;
             departureTime = Time.of((String) attributes[3].get(i));
-        }
-
-        for (Point2D stop : busGraph.getVertecesList()) {
-            for (EdgeNode<Point2D> neighbor : busGraph.neighbors(stop)) {
-                Collections.sort(neighbor.getDepartureTimes());
-            }
         }
 
         System.out.println("Generated graph.");

@@ -64,8 +64,12 @@ public class Location extends Point2D {
         return (java.lang.Double.doubleToLongBits(longitude) != java.lang.Double.doubleToLongBits(other.longitude));
     }
 
-    public double distanceTo(Location destination) {
-        return DistanceManager.haversine(this, destination) * 1000;
+    @Override
+    public double distance(Point2D destination) {
+        if (destination instanceof Location l)
+            return DistanceManager.haversine(this, l) * 1000;
+        
+        return super.distance(destination);
     }
 
     public String toString() {

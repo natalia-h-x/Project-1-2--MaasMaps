@@ -15,12 +15,20 @@ public class Route {
     private TransportMode manualTransportModeA;
     private TransportMode manualTransportModeB;
 
+    public static Route ofWalking() {
+        return ofWalking(null, null);
+    }
+
     public static Route ofWalking(Location start, Location startingStop, GeographicLine line, Time time) {
         return new Route(line, time, new Walking(start, startingStop), new Walking(start, startingStop));
     }
 
     public static Route ofWalking(GeographicLine line, Time time) {
         return new Route(line, time, new Walking(new Location(0, 0), new Location(0, 0)), new Walking(new Location(0, 0), new Location(0, 0)));
+    }
+
+    public static Route ofBiking() {
+        return ofBiking(null, null);
     }
 
     public static Route ofBiking(Location start, Location startingStop, GeographicLine line, Time time) {
