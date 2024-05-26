@@ -238,9 +238,30 @@ public class DatabaseManager {
     }
 
     private static Graph<Point2D> busGraph;
-    private static Map<Integer, BusStop> busStopMap = getBusStops();
-    private static Map<Integer, Trip> tripMap = getTrips();
-    private static Map<Integer, Route> routeMap = getRoutes();
+    private static Map<Integer, BusStop> busStopMap;
+    private static Map<Integer, Trip> tripMap;
+    private static Map<Integer, Route> routeMap;
+
+    public static Map<Integer, BusStop> getBusStopMap() {
+        if (busStopMap == null)
+            busStopMap = getBusStops();
+
+        return busStopMap;
+    }
+
+    public static Map<Integer, Trip> getTripMap() {
+        if (tripMap == null)
+            tripMap = getTrips();
+
+        return tripMap;
+    }
+
+    public static Map<Integer, Route> getRouteMap() {
+        if (routeMap == null)
+            routeMap = getRoutes();
+
+        return routeMap;
+    }
 
     private static Trip getTrip(int id) {
         return tripMap.get(id);
