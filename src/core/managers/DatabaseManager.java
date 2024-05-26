@@ -34,7 +34,7 @@ public class DatabaseManager {
 
     private static Connection connect() {
         try {
-            return DriverManager.getConnection(DATABASE_PATH);
+            return optimizeDatabaseForBulkInsert(DriverManager.getConnection(DATABASE_PATH));
         }
         catch (SQLException e) {
             throw new IllegalAccessError("Could not access database.");
@@ -121,7 +121,7 @@ public class DatabaseManager {
     }
 
     public static void createTable(String tableName, String[] headers, String[] types) throws IllegalArgumentException {
-        try (Statement stmt = optimizeDatabaseForBulkInsert(getConnection()).createStatement()) {
+        try (Statement stmt = getConnection().createStatement()) {
             StringBuilder bld = new StringBuilder();
             String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
             bld.append(createTableSQL);
