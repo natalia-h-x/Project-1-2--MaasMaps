@@ -93,9 +93,7 @@ public class DijkstraAlgorithm {
             EdgeNode.pleaseForgiveMe = true;
         }
 
-        duration.update(Integer.MAX_VALUE);
-        return toGeographicLine(originPath);
-        //throw new IllegalArgumentException("Could not find a route between these two bus stops.");
+        throw new IllegalArgumentException("Could not find a route between these two bus stops.");
     }
 
     private static <T extends Point2D> GeographicLine toGeographicLine(List<T> shortestDistances) {

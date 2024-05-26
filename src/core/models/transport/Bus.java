@@ -77,17 +77,21 @@ public class Bus extends TransportMode {
 
         for (int i = 0; i < closestStarts.length; i++) {
             for (int j = 0; j < closestDestinations.length; j++) {
-                Time duration = Time.of(0);
-                Route route = Route.ofWalking();
-                route.getManualTransportModeA().setStart(getStart());
-                route.getManualTransportModeA().setDestination(closestStarts[i]);
-                route.getManualTransportModeB().setStart(closestDestinations[j]);
-                route.getManualTransportModeB().setDestination(getDestination());
-                route.setLine(DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(route.getManualTransportModeA().getTravelTime()), duration));
-                route.setTime(duration);
+                try {
+                    Time duration = Time.of(0);
+                    Route route = Route.ofWalking();
+                    route.getManualTransportModeA().setStart(getStart());
+                    route.getManualTransportModeA().setDestination(closestStarts[i]);
+                    route.getManualTransportModeB().setStart(closestDestinations[j]);
+                    route.getManualTransportModeB().setDestination(getDestination());
+                    route.setLine(DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(route.getManualTransportModeA().getTravelTime()), duration));
+                    route.setTime(duration);
 
-                if (duration.toSeconds() < 32400000)
                     routes.add(route);
+                }
+                catch (IllegalArgumentException e) {
+
+                }
             }
         }
 
