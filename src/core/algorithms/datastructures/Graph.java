@@ -4,7 +4,6 @@ import java.util.List;
 
 import core.models.Route;
 import core.models.Time;
-import core.models.Trip;
 
 public interface Graph<T> extends Iterable<T> {
     /**

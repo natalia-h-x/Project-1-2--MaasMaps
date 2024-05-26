@@ -7,8 +7,6 @@ import java.util.List;
 
 import core.models.Route;
 import core.models.Time;
-import core.models.Time;
-import core.models.Trip;
 
 public class AdjacencyListGraph<T> implements Graph<T> {
     private HashMap<T, List<EdgeNode<T>>> vertices;

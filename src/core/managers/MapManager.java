@@ -7,15 +7,12 @@ import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.PriorityQueue;
-import java.util.Set;
 
 import core.Context;
 import core.algorithms.datastructures.Graph;
 import core.models.Location;
 import core.models.ZipCode;
-import core.zipcode.ZipCodeDatabase;
 
 /**
  * This class represents the map manager that converts real world coordinates to x/y points in the map image.
