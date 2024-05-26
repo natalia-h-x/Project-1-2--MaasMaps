@@ -63,5 +63,9 @@ public class FileManager {
         }
         return lines.toArray(String[]::new);
     }
+
+    public static boolean fileExists(String path) {
+        return new File(path).exists();
+    }
 }
 
