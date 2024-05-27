@@ -1,11 +1,12 @@
 package core.algorithms.datastructures;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import core.models.Time;
-import core.models.Trip;
+import core.models.Route;
 import lombok.Data;
 
 /**
@@ -15,16 +16,16 @@ import lombok.Data;
 public class EdgeNode<T> {
     private T element;
     private int weight;
-    private SortedMap<Time, Trip> departureTimes;
+    private Map<Route, SortedSet<Time>> departureTimes;
 
     public EdgeNode(T element, int weight) {
         this.element = element;
         this.weight = weight;
-        departureTimes = new TreeMap<>();
+        departureTimes = new HashMap<>();
     }
 
-    public void addTrip(Trip trip, Time departingTime) {
-        departureTimes.put(departingTime, trip);
+    public void addDepartureTime(Route route, Time time) {
+        departureTimes.computeIfAbsent(route, t -> new TreeSet<>()).add(time);
             //throw new IllegalArgumentException("Time is already contained in departure times");
     }
 
@@ -35,29 +36,45 @@ public class EdgeNode<T> {
      * @param arrivalTime the time you arrive at the bus stop, where you want to look for departing buses to take.
      * @return
      */
-    public int getWeight(Time arrivalTime, Trip transfer) {
-        Trip trip = departureTimes.get(arrivalTime);
+    public int getWeight(Time arrivalTime, Route route, Route transfer) {
+        SortedSet<Time> times = departureTimes.get(route);
+        int bestTime = times != null ? getClosestDeparture(arrivalTime, times) : Integer.MAX_VALUE;
+        
+        if (bestTime != Integer.MAX_VALUE)
+            return bestTime;
 
-        if (trip != null) {
-            transfer.copyInto(trip);
-            return weight;
+        for (Map.Entry<Route, SortedSet<Time>> entry : departureTimes.entrySet()) {
+            if (entry.getKey() == route)
+                continue;
+
+            int time = getClosestDeparture(arrivalTime, entry.getValue());
+
+            if (time < bestTime) {
+                transfer.copyInto(entry.getKey());
+                bestTime = time;
+            }
         }
 
-        int arrival = arrivalTime.toSeconds();
+        return bestTime;
+    }
+
+    public static boolean pleaseForgiveMe = false;
+    private int getClosestDeparture(Time arrivalTime, SortedSet<Time> times) {
         int closestDepartureTime = Integer.MAX_VALUE;
+        int arrival = arrivalTime.toSeconds();
 
-        for (Map.Entry<Time, Trip> entry : departureTimes.entrySet()) {
-            Time departureTime = entry.getKey();
-
+        for (Time departureTime : times) {
             if (departureTime.toSeconds() < arrival)
                 break;
 
-            transfer.copyInto(entry.getValue());
             closestDepartureTime = departureTime.toSeconds();
         }
 
         if (closestDepartureTime == Integer.MAX_VALUE)
             return Integer.MAX_VALUE;
+        
+        // if (closestDepartureTime - arrival != 0 && pleaseForgiveMe)
+        //     return Integer.MAX_VALUE;
 
         return weight + closestDepartureTime - arrival;
     }

@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.util.function.UnaryOperator;
 
 import core.algorithms.datastructures.Graph;
+import core.models.BusStop;
 import ui.map.geometry.Line.Segment;
 
 public class AbstractedBusNetwork extends BusNetwork {

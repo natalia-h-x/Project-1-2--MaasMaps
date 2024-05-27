@@ -12,9 +12,8 @@ import java.util.Set;
 import core.algorithms.datastructures.EdgeNode;
 import core.algorithms.datastructures.Graph;
 import core.models.Location;
+import core.models.Route;
 import core.models.Time;
-import core.models.Trip;
-import core.models.transport.Transport;
 import ui.map.geometry.GeographicLine;
 import ui.map.geometry.factories.LineFactory;
 
@@ -22,68 +21,76 @@ public class DijkstraAlgorithm {
     private DijkstraAlgorithm() {}
 
     // Boy do I hope java has objInserting.equals(objInList) instead of the other way around. Why?
-    public static <T extends Point2D> Transport shortestPath(Graph<T> graph, T source, T end, Time startTime) throws IllegalArgumentException {
+    public static <T extends Point2D> GeographicLine shortestPath(Graph<T> graph, T source, T end, Time startTime, Time duration) throws IllegalArgumentException {
         if (source.equals(end))
             throw new IllegalArgumentException("Start is destination");
 
-        Map<T, List<T>> paths = new HashMap<>();
-        Map<T, List<Trip>> transfers = new HashMap<>();
-        Map<T, Time> times = new HashMap<>();
-        Map<T, Integer> weights = new HashMap<>();
-        PriorityQueue<T> unsettled = new PriorityQueue<>((a, b) -> weights.get(b).compareTo(weights.get(a)));
-        Set<T> settled = new HashSet<>();
+        EdgeNode.pleaseForgiveMe = false;
 
-        weights.put(source, 0);
+        Map<T, List<T>> paths = new HashMap<>();
+        Map<T, Time> times = new HashMap<>();
+        Map<T, Route> trips = new HashMap<>();
+        Map<T, Double> shortestDistances = new HashMap<>();
+        PriorityQueue<T> unsettledNodes = new PriorityQueue<>((a, b) -> shortestDistances.get(b).compareTo(shortestDistances.get(a)));
+        Set<T> settledNodes = new HashSet<>();
+
+        // Give infinity to flag unreachable
+        for (T vertex : graph.getVertecesList()) {
+            shortestDistances.put(vertex, Double.POSITIVE_INFINITY);
+        }
+
+        shortestDistances.put(source, 0.0);
 
         // Create an edge with departing time and source
-        unsettled.add(source);
+        unsettledNodes.add(source);
         times.put(source, startTime);
-        transfers.put(source, new LinkedList<>());
-        paths.computeIfAbsent(source, v -> new LinkedList<>()).add(source);
+        LinkedList<T> originPath = new LinkedList<>();
+        originPath.add(source);
+        paths.put(source, originPath);
 
-        while (!unsettled.isEmpty()) {
+        while (!unsettledNodes.isEmpty()) {
             // Removing the minimum distance node from the priority process
-            T vertex = unsettled.poll();
-            Time time = times.get(vertex);
-            List<T> path = paths.get(vertex);
-            List<Trip> trips = transfers.get(vertex);
-            Trip trip = trips.isEmpty() ? null : trips.get(trips.size() - 1);
+            T currentVertex = unsettledNodes.poll();
+            Time currentTime = times.get(currentVertex);
+            Route currentRoute = trips.get(currentVertex);
 
-            if (vertex.equals(end))
-                return Transport.ofWalking(toGeographicLine(paths.get(vertex)), times.get(vertex).minus(startTime), transfers.get(vertex));
+            if (currentVertex.equals(end)) {
+                duration.update(times.get(currentVertex).minus(startTime).toSeconds());
+                return toGeographicLine(paths.get(currentVertex));
+            }
 
-            if (!settled.add(vertex))
+            if (!settledNodes.add(currentVertex))
                 continue; // Skip processing if already settled
 
-            // Visit all adjacent vertices of the vertex
-            for (EdgeNode<T> edge : graph.neighbors(vertex)) {
-                T adjacent = edge.getElement();
-                Trip transfer = Trip.empty();
-                int weight = edge.getWeight(time, transfer);
+            // Visit all adjacent vertices of the currentVertex
+            List<EdgeNode<T>> adjacentNodes = graph.neighbors(currentVertex);
 
-                if (weight == Integer.MAX_VALUE)
+            for (EdgeNode<T> edge : adjacentNodes) {
+                T adjacentVertex = edge.getElement();
+                Route edgeTrip = Route.empty();
+                int edgeWeight = edge.getWeight(currentTime, currentRoute, edgeTrip);
+
+                if (edgeWeight == Integer.MAX_VALUE)
                     continue;
 
-                if (!settled.contains(adjacent)) {
-                    int newTime = weights.get(vertex) + weight;
+                if (!settledNodes.contains(adjacentVertex)) {
+                    double newDist = shortestDistances.get(currentVertex) + edgeWeight;
 
-                    if (newTime < weights.getOrDefault(adjacent, Integer.MAX_VALUE)) {
-                        times.put(adjacent, time.add(weight));
-                        weights.put(adjacent, newTime);
-                        unsettled.add(adjacent);
+                    if (newDist < shortestDistances.get(adjacentVertex)) {
+                        shortestDistances.put(adjacentVertex, newDist);
+                        times.put(adjacentVertex, currentTime.add(edgeWeight));
+                        trips.put(adjacentVertex, edgeTrip);
+                        unsettledNodes.add(adjacentVertex);
 
-                        // Add vertex to path
-                        paths.computeIfAbsent(adjacent, v -> new LinkedList<>(path)).add(adjacent);
-
-                        // Conditionally add trip to transfers
-                        List<Trip> adjacentTransfers = transfers.computeIfAbsent(adjacent, v -> new LinkedList<>(trips));
-
-                        if (!transfer.equals(trip)) {
-                            adjacentTransfers.add(transfer);
-                        }
+                        // Add vertex to path and then to paths
+                        LinkedList<T> path = new LinkedList<>(paths.get(currentVertex));
+                        path.add(adjacentVertex);
+                        paths.put(adjacentVertex, path);
                     }
                 }
             }
+
+            EdgeNode.pleaseForgiveMe = true;
         }
 
         throw new IllegalArgumentException("Could not find a route between these two bus stops.");
