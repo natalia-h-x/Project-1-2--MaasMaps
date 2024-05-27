@@ -1,13 +1,18 @@
 package ui.map.translation;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 /**
  * This class translates a translatable component
- * 
+ *
  * @author Sian Lodde
  */
 public class TranslationListener {
@@ -47,9 +52,20 @@ public class TranslationListener {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+
                 if (SwingUtilities.isMiddleMouseButton(e) || !useMiddle) {
-                    pp.setLocation(e.getPoint());
+                    pp.setLocation(point);
                 }
+
+                point.translate((int) -translation.getX(), (int) -translation.getY());
+                pushClipboardString("new Point(%d, %d)".formatted((int) (point.getX() / getScale()), (int) (point.getY() / getScale())));
+            }
+
+            private void pushClipboardString(String formatted) {
+                StringSelection selection = new StringSelection(formatted);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(selection, selection);
             }
 
             @Override
