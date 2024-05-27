@@ -16,10 +16,6 @@ import core.models.Trip;
 import ui.NetworkTest;
 
 public class LoadGraphTest {
-    public static void main(String[] args) {
-        Graph<Point2D> graph = MapManager.getBusGraph();
-        NetworkTest.makeAbstractedBusNetwork(graph);
-    }
 
     @Test
     public void test1() {
