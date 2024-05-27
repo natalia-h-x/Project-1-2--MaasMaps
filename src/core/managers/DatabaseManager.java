@@ -12,12 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import core.algorithms.datastructures.AdjacencyListGraph;
+import core.algorithms.datastructures.EdgeNode;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
 import core.models.Location;
@@ -307,8 +309,8 @@ public class DatabaseManager {
             int tripId = Integer.parseInt((String) attributes[0].get(i));
             int stopId = Integer.parseInt((String) attributes[1].get(i));
             BusStop busStop = getBusStop(stopId);
-            Trip trip = getTrip(tripId);
-            Route route = Optional.ofNullable(getRoute(Optional.ofNullable(trip).orElse(Trip.empty()).getRouteId())).orElse(Route.empty());
+            Trip trip = Optional.ofNullable(getTrip(tripId)).orElse(Trip.empty());
+            Route route = Optional.ofNullable(getRoute(trip.getRouteId())).orElse(Route.empty());
             Time arrivalTime = Time.of((String) attributes[2].get(i));
 
             busStop.addRoute(route);
