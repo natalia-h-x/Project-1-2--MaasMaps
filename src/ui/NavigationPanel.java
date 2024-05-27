@@ -14,9 +14,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import com.mysql.cj.Constants;
+
+
 import javax.swing.JCheckBox;
 
 import core.Constants.UIConstants;
+import core.Constants.Map;
 import core.Context;
 import core.managers.ExceptionManager;
 import core.managers.MapManager;
@@ -80,8 +85,8 @@ public class NavigationPanel extends JPanel {
         // create search radius label and field
         JLabel search = new JLabel("Search radius: ");
         search.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
-        JTextField radiusField = new JTextField(); //Constants.POSTAL_CODE_MAX_SEARCH_RADIUS
-        radiusField.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+        JTextField radiusField = new JTextField(); 
+        radiusField.setText(String.valueOf(Map.POSTAL_CODE_MAX_SEARCH_RADIUS));
 
         // randomize bus stops button
         JButton busRandom = new JButton("Randomize bus stops");

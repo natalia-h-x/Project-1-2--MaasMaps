@@ -21,7 +21,7 @@ public final class Constants {
     public static final class Map {
         public static final int POSTAL_CODE_MAX_SEARCH_RADIUS = 50;
         public static final int POSTAL_CODE_MAX_BUS_OPTIONS = 20;
-    }
+    } 
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Paths {
