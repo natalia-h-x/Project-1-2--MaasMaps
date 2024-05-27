@@ -41,6 +41,7 @@ public final class Constants {
         public static final Color GUI_HIGHLIGHT_COLOR            = new Color(237, 242 , 244);
         public static final Color GUI_ACCENT_COLOR               = new Color(53 , 80  , 112);
         public static final Color GUI_TITLE_COLOR                = new Color(87 , 100 , 144);
+        public static final Color GUI_BUTTON_COLOR               = new Color(117, 112, 131);
         public static final int GUI_INFO_FONT_SIZE       = 13;
         public static final int GUI_TEXT_FIELD_FONT_SIZE = 15;
         public static final int GUI_TITLE_FONT_SIZE      = 40;

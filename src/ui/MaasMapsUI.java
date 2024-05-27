@@ -27,7 +27,7 @@ public class MaasMapsUI extends JFrame {
     }
 
     private void initialiseUI() {
-        setSize(800, 600);
+        setSize(800, 700);
         setLayout(new BorderLayout()); // Use borderlayout to completely fill the child panel in this panel
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
