@@ -14,6 +14,10 @@ public class Time implements Comparable<Time> {
         this.seconds = seconds;
     }
 
+    public static Time of(int hours, int minutes, int seconds) {
+        return new Time(hours, minutes, seconds);
+    }
+
     public static Time of(String string) {
         if (string.contains("Infinity"))
             return new Time(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -64,6 +68,10 @@ public class Time implements Comparable<Time> {
         return (hours   > 0 ? clock[0] + (hours   > 1 ? "s" : "") + (minutes > 0 ^ seconds > 0 ? " and " : minutes > 0 && seconds > 0 ? ", " : "") : "")
              + (minutes > 0 ? clock[1] + (minutes > 1 ? "s" : "") + (              seconds > 0 ? " and " :                                     "") : "")
              + (seconds > 0 ? clock[2] + (seconds > 1 ? "s" : "")                                                                                  : "") + ".";
+    }
+
+    public String toISOString() {
+        return "%d:%d:%d".formatted(hours, minutes, seconds);
     }
 
     public Time clone() {

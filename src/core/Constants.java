@@ -2,6 +2,7 @@ package core;
 
 import java.awt.Color;
 
+import core.models.Time;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
@@ -21,7 +22,8 @@ public final class Constants {
     public static final class Map {
         public static final int POSTAL_CODE_MAX_SEARCH_RADIUS = 50;
         public static final int POSTAL_CODE_MAX_BUS_OPTIONS = 20;
-    } 
+        public static final Time DEFAULT_DEPARTURE_TUME = Time.of(7, 0, 0);
+    }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Paths {

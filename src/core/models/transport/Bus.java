@@ -20,6 +20,7 @@ import ui.map.geometry.interfaces.MapGraphics;
 @EqualsAndHashCode(callSuper = true)
 public class Bus extends TransportMode {
     private Time departingTime = Time.of(25200);
+    private boolean allowTransfers = false;
     private Optional<Transport> shortestRoute = Optional.empty();
     private Optional<Transport> shortestManualRoute = Optional.empty();
     private Optional<Transport> shortestVehicleRoute = Optional.empty();

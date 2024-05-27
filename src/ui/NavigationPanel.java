@@ -1,30 +1,26 @@
 package ui;
 
-import java.awt.Dimension;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.mysql.cj.Constants;
-
-
-import javax.swing.JCheckBox;
-
+import core.Constants;
 import core.Constants.UIConstants;
-import core.Constants.Map;
 import core.Context;
 import core.managers.ExceptionManager;
 import core.managers.MapManager;
+import core.models.Time;
 import core.models.transport.Biking;
 import core.models.transport.Bus;
 import core.models.transport.TransportMode;
@@ -36,6 +32,11 @@ import core.zipcode.ZipCodeDatabase;
  */
 public class NavigationPanel extends JPanel {
     private JLabel timeLabel;
+    private transient TransportMode[] options = {
+        new Walking(),
+        new Biking(),
+        new Bus()
+    };
 
     public NavigationPanel() {
         initialiseNavigationUI();
@@ -71,28 +72,39 @@ public class NavigationPanel extends JPanel {
         departure.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         JTextField departureField = new JTextField();
         departureField.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+        departureField.addActionListener(e -> {
+            for (TransportMode option : options) {
+                if (option instanceof Bus b)
+                    b.setDepartingTime(Time.of(departureField.getText()));
+            }
+        });
 
         // create an empty panel for spacing
         JPanel spacerPanel = new JPanel();
-        spacerPanel.setPreferredSize(new java.awt.Dimension(0, 10)); 
+        spacerPanel.setPreferredSize(new java.awt.Dimension(0, 10));
         spacerPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
         // create an empty panel 2 for spacing
         JPanel spacerPanel2 = new JPanel();
-        spacerPanel2.setPreferredSize(new java.awt.Dimension(0, 10)); 
+        spacerPanel2.setPreferredSize(new java.awt.Dimension(0, 10));
         spacerPanel2.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
         // create search radius label and field
         JLabel search = new JLabel("Search radius: ");
         search.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
-        JTextField radiusField = new JTextField(); 
-        radiusField.setText(String.valueOf(Map.POSTAL_CODE_MAX_SEARCH_RADIUS));
+        JTextField radiusField = new JTextField(Constants.Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
+        radiusField.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+        radiusField.addActionListener(e -> Integer.parseInt(radiusField.getText()));
 
         // randomize bus stops button
         JButton busRandom = new JButton("Randomize bus stops");
         busRandom.setPreferredSize(new Dimension(10, 25));
         busRandom.setBackground(UIConstants.GUI_BUTTON_COLOR);
         busRandom.setForeground(Color.WHITE);
+        busRandom.addActionListener(e -> {
+            textField1.setText(MapManager.getRandomPostalCode());
+            textField2.setText(MapManager.getRandomPostalCode());
+        });
 
         // arrange text fields to jpanels
         JPanel panel1 = new JPanel();
@@ -105,12 +117,12 @@ public class NavigationPanel extends JPanel {
         panel1.add(location1);
         panel1.add(location2);
         panel1.add(departure);
-        panel1.add(spacerPanel); 
+        panel1.add(spacerPanel);
         panel1.add(search);
         panel2.add(textField1);
         panel2.add(textField2);
         panel2.add(departureField);
-        panel2.add(spacerPanel2); 
+        panel2.add(spacerPanel2);
         panel2.add(radiusField);
         panel2.add(busRandom, BorderLayout.CENTER);
 
@@ -134,7 +146,6 @@ public class NavigationPanel extends JPanel {
         transportType.setFont(new Font("Select means of transport: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // create combo box
-        TransportMode[] options = {new Walking(), new Biking(), new Bus()};
         JComboBox<TransportMode> selection = new JComboBox<>(options);
         selection.setBackground(UIConstants.GUI_ACCENT_COLOR);
         selection.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
@@ -211,10 +222,9 @@ public class NavigationPanel extends JPanel {
     // Add temporary action listener to the checkbox
     private void addBoxActionListener(JCheckBox checkBox) {
         checkBox.addActionListener(e -> {
-            if (checkBox.isSelected()) {
-                System.out.println("Checkbox is selected");
-            } else {
-                System.out.println("Checkbox is not selected");
+            for (TransportMode option : options) {
+                if (option instanceof Bus b)
+                    b.setAllowTransfers(checkBox.isSelected());
             }
         });
     }
