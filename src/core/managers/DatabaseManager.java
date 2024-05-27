@@ -164,7 +164,7 @@ public class DatabaseManager {
         for (int i = 0; i < attributes[0].size(); i++) {
             try {
                 Integer id = Integer.parseInt((String) attributes[0].get(i));
-                BusStop busStop = new BusStop(Double.parseDouble((String) attributes[1].get(i)), Double.parseDouble((String) attributes[2].get(i)), (String) attributes[3].get(i));
+                BusStop busStop = new BusStop(id, Double.parseDouble((String) attributes[1].get(i)), Double.parseDouble((String) attributes[2].get(i)), (String) attributes[3].get(i));
 
                 map.put(id, busStop);
             }
