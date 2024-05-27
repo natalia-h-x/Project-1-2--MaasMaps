@@ -1,10 +1,10 @@
 package algorithms;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.Test;
 
-import core.Constants;
 import core.algorithms.DijkstraAlgorithm;
 import core.managers.MapManager;
 import core.models.BusStop;
@@ -31,5 +31,15 @@ public class DijkstraTest {
         assert(((BusStop) line.getLocations().get(2)).getStopName().contains("Maastricht, Dorpstraat/De Leim"));
         assert(((BusStop) line.getLocations().get(3)).getStopName().contains("Maastricht, Dorpstraat/Kerk"));
         assert(((BusStop) line.getLocations().get(4)).getStopName().contains("Maastricht, Rijksweg/Veldstraat"));
+    }
+
+    @Test
+    public void testForSameStop() {
+        try {
+            Location[] closestStarts = MapManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
+            Location[] closestDestinations = MapManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
+            Transport transport = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200));
+        } catch (IllegalArgumentException e) {
+        }
     }
 }
