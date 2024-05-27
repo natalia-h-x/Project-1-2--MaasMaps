@@ -4,7 +4,7 @@ public class DBPreparation {
 
     public DBPreparation() {
         Unzipper unzipper = new Unzipper("resources/gtfs", "resources/gtfs/gtfs.zip");
-        
+
         try {
             unzipper.unzip();
             System.out.println("-- Success --");

@@ -1,9 +1,8 @@
 package core.models;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
-import core.managers.DatabaseManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Exclude;
@@ -11,21 +10,23 @@ import lombok.EqualsAndHashCode.Exclude;
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class BusStop extends Location {
-    private static Map<Integer, Shape> shapeMap = new HashMap<>();
+    private int stopId;
     private String stopName;
     @Exclude
-    private Trip trip;
+    private Set<Route> routes;
 
     public BusStop(double latitude, double longitude) {
         super(latitude, longitude);
+        routes = new HashSet<>();
     }
 
-    public BusStop(double latitude, double longitude, String stopName) {
+    public BusStop(int stopId, double latitude, double longitude, String stopName) {
         this(latitude, longitude);
         this.stopName = stopName;
+        this.stopId = stopId;
     }
 
-    public Shape loadShape(BusStop to) {
-        return shapeMap.computeIfAbsent(trip.getShapeId(), DatabaseManager::getShape).prune(this, to);
+    public void addRoute(Route route) {
+        routes.add(route);
     }
 }

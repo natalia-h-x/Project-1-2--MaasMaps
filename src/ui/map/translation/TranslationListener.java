@@ -1,13 +1,18 @@
 package ui.map.translation;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 /**
  * This class translates a translatable component
- * 
+ *
  * @author Sian Lodde
  */
 public class TranslationListener {
@@ -17,10 +22,12 @@ public class TranslationListener {
     private static final int ZOOM_LEVEL_BOUND_MAX = 10;
 
     private TranslateableComponent translateableComponent;
-    private Point translation;
-    private int zoomLevel;
+    private Point  translation;
+    private int    zoomLevel;
+    private double zoomScale = 1.2;
 
     private boolean useMiddle = false;
+    private boolean useClipboard = true;
 
     public TranslationListener(TranslateableComponent translateableComponent) {
         this.translateableComponent = translateableComponent;
@@ -47,15 +54,27 @@ public class TranslationListener {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+
                 if (SwingUtilities.isMiddleMouseButton(e) || !useMiddle) {
-                    pp.setLocation(e.getPoint());
+                    pp.setLocation(point);
                 }
+
+                if (useClipboard) {
+                    point.translate((int) -translation.getX(), (int) -translation.getY());
+                    pushClipboardString("new Point(%d, %d)".formatted((int) (point.getX() / getScale()), (int) (point.getY() / getScale())));
+                }
+            }
+
+            private void pushClipboardString(String formatted) {
+                StringSelection selection = new StringSelection(formatted);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(selection, selection);
             }
 
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 Point cp = e.getPoint();
-
                 double prevScale = getScale();
 
                 // Scale the image
@@ -99,12 +118,11 @@ public class TranslationListener {
     }
 
     public void setScale(int level) {
-        zoomLevel = Math.min(Math.max(zoomLevel + level, ZOOM_LEVEL_BOUND_MIN), ZOOM_LEVEL_BOUND_MAX);
-
+        zoomLevel = Math.min(Math.max(zoomLevel + level, (int) (ZOOM_LEVEL_BOUND_MIN / (-1 + zoomScale))), (int) (ZOOM_LEVEL_BOUND_MAX / (-1 + zoomScale)));
         translateableComponent.setScale(getScale());
     }
 
     public double getScale() {
-        return Math.pow(2, zoomLevel);
+        return Math.pow(zoomScale, zoomLevel);
     }
 }

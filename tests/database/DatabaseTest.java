@@ -8,7 +8,7 @@ import tools.generator.sqlite.db_helpers.DBPreparation;
 public class DatabaseTest {
     @Test
     public void test1() {
-        DBPreparation dbPreparation = new DBPreparation();
+        new DBPreparation();
     }
 
     @Test
