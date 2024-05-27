@@ -1,7 +1,6 @@
 package algorithms;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.Test;
 
@@ -21,11 +20,11 @@ public class DijkstraTest {
         Location[] closestDestinations = MapManager.getClosestPoint(new Location(50.836348, 5.726151), 1);
 
         Transport transport = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200));
-        
+
         assertEquals(transport.getTime(), Time.of(360));
-        
+
         GeographicLine line = transport.getLine();
- 
+
         assert(((BusStop) line.getLocations().get(0)).getStopName().contains("Maastricht, Scharn Kerk"));
         assert(((BusStop) line.getLocations().get(1)).getStopName().contains("Maastricht, Burgemeester Cortenstraat"));
         assert(((BusStop) line.getLocations().get(2)).getStopName().contains("Maastricht, Dorpstraat/De Leim"));
