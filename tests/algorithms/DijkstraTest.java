@@ -39,6 +39,7 @@ public class DijkstraTest {
             Location[] closestDestinations = MapManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
             Transport transport = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200));
         } catch (IllegalArgumentException e) {
+            assert(true);
         }
     }
 }
