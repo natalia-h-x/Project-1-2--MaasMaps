@@ -2,8 +2,8 @@ package core.algorithms.datastructures;
 
 import java.util.List;
 
-import core.models.Route;
 import core.models.Time;
+import core.models.Trip;
 
 public interface Graph<T> extends Iterable<T> {
     /**
@@ -49,7 +49,7 @@ public interface Graph<T> extends Iterable<T> {
      * @param x
      * @param y
      */
-    public void addEdge(T x, T y, int weight, Route route, Time time);
+    public void addEdge(T x, T y, int weight, Trip trip, Time time);
 
     /**
      * Inserts an edge in the vertex x

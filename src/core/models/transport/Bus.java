@@ -20,9 +20,9 @@ import ui.map.geometry.interfaces.MapGraphics;
 @EqualsAndHashCode(callSuper = true)
 public class Bus extends TransportMode {
     private Time departingTime = Time.of(25200);
-    private Optional<Route> shortestRoute = Optional.empty();
-    private Optional<Route> shortestManualRoute = Optional.empty();
-    private Optional<Route> shortestVehicleRoute = Optional.empty();
+    private Optional<Transport> shortestRoute = Optional.empty();
+    private Optional<Transport> shortestManualRoute = Optional.empty();
+    private Optional<Transport> shortestVehicleRoute = Optional.empty();
     private static final double AVERAGE_SPEED = 333; // meters per minute
 
     public double getAverageSpeed() {
@@ -33,13 +33,14 @@ public class Bus extends TransportMode {
         return "Take Bus";
     }
 
+    @Override
     public void dispose() {
         shortestRoute = Optional.empty();
         shortestManualRoute = Optional.empty();
         shortestVehicleRoute = Optional.empty();
     }
 
-    public Route getChosenRoute() {
+    public Transport getChosenRoute() {
         try {
             return getShortestRoute();
         }
@@ -49,21 +50,21 @@ public class Bus extends TransportMode {
     }
 
     // Je kan die bus pakken en die bus pakken, je kan dan kiezen welke bus je neemt. een aantal opties
-    public Route getShortestRoute() {
+    public Transport getShortestRoute() {
         if (!shortestRoute.isPresent())
             calculateShortestPath();
 
         return shortestRoute.orElseThrow();
     }
 
-    public Route getShortestManualRoute() {
+    public Transport getShortestManualRoute() {
         if (!shortestManualRoute.isPresent())
             calculateShortestPath();
 
         return shortestManualRoute.orElseThrow();
     }
 
-    public Route getShortestVehicleRoute() {
+    public Transport getShortestVehicleRoute() {
         if (!shortestVehicleRoute.isPresent())
             calculateShortestPath();
 
@@ -71,26 +72,28 @@ public class Bus extends TransportMode {
     }
 
     public void calculateShortestPath() {
-        List<Route> routes = new ArrayList<>();
+        List<Transport> routes = new ArrayList<>();
         Location[] closestStarts = MapManager.getClosestPoint(getStart(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
         Location[] closestDestinations = MapManager.getClosestPoint(getDestination(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
 
         for (int i = 0; i < closestStarts.length; i++) {
             for (int j = 0; j < closestDestinations.length; j++) {
                 try {
-                    Time duration = Time.of(0);
-                    Route route = Route.ofWalking();
-                    route.getManualTransportModeA().setStart(getStart());
-                    route.getManualTransportModeA().setDestination(closestStarts[i]);
-                    route.getManualTransportModeB().setStart(closestDestinations[j]);
-                    route.getManualTransportModeB().setDestination(getDestination());
-                    route.setLine(DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(route.getManualTransportModeA().getTravelTime()), duration));
-                    route.setTime(duration);
+                    TransportMode manualSource = new Walking();
+                    TransportMode manualDestination = new Walking();
+                    manualSource.setStart(getStart());
+                    manualSource.setDestination(closestStarts[i]);
+                    manualDestination.setStart(closestDestinations[j]);
+                    manualDestination.setDestination(getDestination());
+
+                    Transport route = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(manualSource.getTravelTime()));
+                    route.setManualTransportModeA(manualSource);
+                    route.setManualTransportModeB(manualDestination);
 
                     routes.add(route);
                 }
                 catch (IllegalArgumentException e) {
-
+                    // System.out.println("Could not find a route here.");
                 }
             }
         }
@@ -103,7 +106,7 @@ public class Bus extends TransportMode {
         double shortestManualDistance = Double.POSITIVE_INFINITY;
         double shortestVehicleDistance = Double.POSITIVE_INFINITY;
 
-        for (Route route : routes) {
+        for (Transport route : routes) {
             double manualDistanceA = route.getManualTransportModeA().getTravelTime().toSeconds();
             double manualDistanceB = route.getManualTransportModeB().getTravelTime().toSeconds();
             double manualDistance = manualDistanceA + manualDistanceB;
@@ -132,7 +135,7 @@ public class Bus extends TransportMode {
 
     @Override
     public Time getTravelTime() {
-        Route chosenRoute = getChosenRoute();
+        Transport chosenRoute = getChosenRoute();
         return chosenRoute.getTime()
                           .add(chosenRoute.getManualTransportModeA().getTravelTime())
                           .add(chosenRoute.getManualTransportModeB().getTravelTime());

@@ -1,6 +1,5 @@
 package ui.map.geometry;
 
-import java.awt.BasicStroke;
 import java.awt.Shape;
 import java.awt.Stroke;
 

@@ -264,11 +264,15 @@ public class DatabaseManager {
     }
 
     private static Trip getTrip(int id) {
-        return tripMap.get(id);
+        return getTripMap().get(id);
     }
 
     private static Route getRoute(int id) {
-        return routeMap.get(id);
+        return getRouteMap().get(id);
+    }
+
+    private static BusStop getBusStop(int stopId) {
+        return getBusStopMap().get(stopId);
     }
 
     protected static Graph<Point2D> getBusGraph() {
@@ -302,12 +306,12 @@ public class DatabaseManager {
         for (int i = 0; i < attributes[0].size(); i++) {
             int tripId = Integer.parseInt((String) attributes[0].get(i));
             int stopId = Integer.parseInt((String) attributes[1].get(i));
-            BusStop busStop = busStopMap.get(stopId);
+            BusStop busStop = getBusStop(stopId);
             Trip trip = getTrip(tripId);
             Route route = Optional.ofNullable(getRoute(Optional.ofNullable(trip).orElse(Trip.empty()).getRouteId())).orElse(Route.empty());
             Time arrivalTime = Time.of((String) attributes[2].get(i));
 
-            busStop.setTrip(Optional.ofNullable(trip).orElse(busStop.getTrip()));
+            busStop.addRoute(route);
 
             // We have this following if statement to check if there are at least two stops in a trip.
             // If there is only one, we do not need to connect / add vertices.
@@ -318,7 +322,7 @@ public class DatabaseManager {
                 if (!busGraph.containsVertex(Optional.ofNullable(previousBusStop).orElseThrow()))
                     busGraph.addVertex(previousBusStop);
 
-                busGraph.addEdge(previousBusStop, busStop, arrivalTime.minus(Optional.ofNullable(departureTime).orElseThrow()).toSeconds(), route, departureTime);
+                busGraph.addEdge(previousBusStop, busStop, arrivalTime.minus(Optional.ofNullable(departureTime).orElseThrow()).toSeconds(), trip, departureTime);
             }
 
             previousTripId = tripId;
