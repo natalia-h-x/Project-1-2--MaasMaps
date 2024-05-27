@@ -16,12 +16,12 @@ public class NetworkTest {
     public NetworkTest() {
         adjacencyListGraph = new AdjacencyListGraph<>();
 
-        BusStop loc1 = new BusStop(50.855233, 5.692237, "Maastricht Bus Stop nr. 1");
-        BusStop loc2 = new BusStop(50.853608, 5.691958, "Maastricht Bus Stop nr. 2");
-        BusStop loc3 = new BusStop(50.853617, 5.692009, "Maastricht Bus Stop nr. 3");
-        BusStop loc4 = new BusStop(50.853037, 5.691825, "Maastricht Bus Stop nr. 4");
-        BusStop loc5 = new BusStop(50.854993, 5.692294, "Maastricht Bus Stop nr. 5");
-        BusStop loc6 = new BusStop(50.854581, 5.690199, "Maastricht Bus Stop nr. 6");
+        BusStop loc1 = new BusStop(0, 50.855233, 5.692237, "Maastricht Bus Stop nr. 1");
+        BusStop loc2 = new BusStop(0, 50.853608, 5.691958, "Maastricht Bus Stop nr. 2");
+        BusStop loc3 = new BusStop(0, 50.853617, 5.692009, "Maastricht Bus Stop nr. 3");
+        BusStop loc4 = new BusStop(0, 50.853037, 5.691825, "Maastricht Bus Stop nr. 4");
+        BusStop loc5 = new BusStop(0, 50.854993, 5.692294, "Maastricht Bus Stop nr. 5");
+        BusStop loc6 = new BusStop(0, 50.854581, 5.690199, "Maastricht Bus Stop nr. 6");
 
         adjacencyListGraph.addVertex(loc1);
         adjacencyListGraph.addVertex(loc2);
