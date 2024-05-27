@@ -302,7 +302,7 @@ public class DatabaseManager {
         for (int i = 0; i < attributes[0].size(); i++) {
             int tripId = Integer.parseInt((String) attributes[0].get(i));
             int stopId = Integer.parseInt((String) attributes[1].get(i));
-            BusStop busStop = busStopMap.get(stopId);
+            BusStop busStop = getBusStopMap().get(stopId);
             Trip trip = getTrip(tripId);
             Route route = Optional.ofNullable(getRoute(Optional.ofNullable(trip).orElse(Trip.empty()).getRouteId())).orElse(Route.empty());
             Time arrivalTime = Time.of((String) attributes[2].get(i));
