@@ -264,11 +264,11 @@ public class DatabaseManager {
     }
 
     private static Trip getTrip(int id) {
-        return tripMap.get(id);
+        return getTripMap().get(id);
     }
 
     private static Route getRoute(int id) {
-        return routeMap.get(id);
+        return getRouteMap().get(id);
     }
 
     protected static Graph<Point2D> getBusGraph() {
