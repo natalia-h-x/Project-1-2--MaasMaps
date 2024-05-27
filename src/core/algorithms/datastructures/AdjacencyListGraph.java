@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import core.models.Route;
 import core.models.Time;
+import core.models.Trip;
 
 public class AdjacencyListGraph<T> implements Graph<T> {
     private HashMap<T, List<EdgeNode<T>>> vertices;
@@ -60,17 +60,17 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     }
 
     @Override
-    public void addEdge(T x, T y, int weight, Route route, Time time) {
+    public void addEdge(T x, T y, int weight, Trip trip, Time time) {
         if (!containsVertex(x) || !containsVertex(y)) {
             throw new IllegalArgumentException("One or both vertices are not in the Graph.");
         }
 
         List<EdgeNode<T>> edges = vertices.get(x);
 
-        if (time != null && route != null)
+        if (time != null && trip != null)
             for (EdgeNode<T> edge : edges) {
                 if (edge.getElement().equals(y)) {
-                    edge.addDepartureTime(route, time);
+                    edge.addTrip(trip, time);
 
                     return;
                 }
@@ -78,8 +78,8 @@ public class AdjacencyListGraph<T> implements Graph<T> {
 
         EdgeNode<T> edge = new EdgeNode<>(y, weight);
 
-        if (time != null && route != null)
-            edge.addDepartureTime(route, time);
+        if (time != null && trip != null)
+            edge.addTrip(trip, time);
 
         edges.add(edge);
     }
