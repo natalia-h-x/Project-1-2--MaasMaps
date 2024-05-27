@@ -1,5 +1,6 @@
 package database;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import core.managers.DatabaseManager;
@@ -7,8 +8,9 @@ import tools.generator.sqlite.db_helpers.DBPreparation;
 
 public class DatabaseTest {
     @Test
+    @BeforeAll
     public void test1() {
-        DBPreparation dbPreparation = new DBPreparation();
+        new DBPreparation();
     }
 
     @Test
