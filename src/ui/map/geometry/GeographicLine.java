@@ -13,11 +13,11 @@ import ui.map.geometry.interfaces.GeographicMapGraphics;
 
 public class GeographicLine extends Line implements GeographicMapGraphics {
     public GeographicLine(Time[] times, Paint paint, Stroke stroke, Location... locations) {
-        super(locations);
+        super(locations, times);
     }
 
     public GeographicLine(Time[] times, Location... locations) {
-        super(locations);
+        super(locations, times);
     }
 
     public GeographicLine(Location... locations) {
@@ -63,7 +63,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
             Location loc2 = (Location) p2;
 
             // Calculate distance and midpoint
-            drawDistance(g2, loc1, loc2);
+            // drawDistance(g2, loc1, loc2);
         }
         catch (ClassCastException e) {
             throw new IllegalArgumentException("A Geographic Line only supports Locations. Please do not use other Point2D's!", e);
