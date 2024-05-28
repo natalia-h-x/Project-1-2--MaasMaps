@@ -2,14 +2,20 @@ package models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import core.Context;
 import core.models.Location;
+import core.models.Time;
+import core.models.Trip;
 import core.models.transport.Biking;
 import core.models.transport.Bus;
+import core.models.transport.Transport;
 import core.models.transport.Walking;
 import ui.MaasMapsUI;
+import ui.map.geometry.GeographicLine;
 import ui.map.geometry.interfaces.MapGraphics;
 
 public class TransportModeTest {
@@ -59,5 +65,7 @@ public class TransportModeTest {
         new MaasMapsUI();
         Context.getContext().getMap().addMapGraphics(mapGraphics);
         Context.getContext().getMap().repaint();
+
+        Transport.ofBiking(new GeographicLine(), Time.of(2), new ArrayList<Trip>());
     }
 }
