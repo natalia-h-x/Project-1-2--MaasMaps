@@ -5,6 +5,7 @@ import static core.Constants.Paths.DATABASE_PATH;
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,9 +14,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.Graph;
@@ -123,23 +127,69 @@ public class DatabaseManager {
     public static void createTable(String tableName, String[] headers, String[] types) throws IllegalArgumentException {
         try (Statement stmt = getConnection().createStatement()) {
             StringBuilder bld = new StringBuilder();
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tableName + "(\n";
             bld.append(createTableSQL);
 
             for (int i = 0; i < headers.length; i++) {
-                bld.append(headers[i] + " " + types[i]);
+                bld.append("`" + headers[i] + "` " + removeTags(types[i]) + ",\n");
+            }
 
-                if (i < headers.length-1) {
-                    bld.append(", ");
+            List<String> compositePK = new LinkedList<>();
+            
+            for (int i = 0; i < headers.length; i++) {
+                String type = types[i];
+
+                while (type.contains("<")) {
+                    String tag = getFirstTag(type);
+                    type = removeFirstTag(type);
+
+                    switch (tag.split(" ")[0]) {
+                        case "PK":
+                            compositePK.add(headers[i]);
+                            break;
+                        case "FK":
+                            bld.append("FOREIGN KEY (`%s`) REFERENCES (`%s`)),\n".formatted(headers[i], tag.replace("FK ", "").replace(".", "`(`")));
+                            break;
+                        default:
+                            throw new UnsupportedOperationException("XML Command not supported.");
+                    }
                 }
             }
 
+            if (!compositePK.isEmpty())
+                bld.append("PRIMARY KEY (");
+            
+            for (String attrib : compositePK) {
+                bld.append("`" + attrib + "`,");
+            }
+            
+            if (!compositePK.isEmpty())
+                bld.append(")\n");
+            
             bld.append(");");
-            stmt.execute(bld.toString());
+            stmt.execute(bld.toString().replace(",)", ")"));
         }
         catch (SQLException e) {
             throw new IllegalArgumentException("Error on creating table \"%s\"".formatted(tableName), e);
         }
+    }
+
+    private static String removeTags(String xml) {
+        return xml.replaceAll("<.*>", "");
+    }
+
+    private static String removeFirstTag(String xml) {
+        return xml.replaceFirst("<(.*?)>", "");
+    }
+
+    private static String getFirstTag(String xml) {
+        Pattern r = Pattern.compile("<(.*?)>");
+        Matcher m = r.matcher(xml);
+
+        if (m.find())
+            return m.group(1);
+        
+        return "";
     }
 
     private static Connection optimizeDatabaseForBulkInsert(Connection connection) throws SQLException {
@@ -227,10 +277,10 @@ public class DatabaseManager {
                                            Double.parseDouble((String) attributes[2].get(i))));
             }
 
-            return new Shape(Color.gray, locations.toArray(Location[]::new));
+            return new Shape(shapeId, Color.gray, locations.toArray(Location[]::new));
         }
         catch (NumberFormatException e) {
-            throw new IllegalAccessError("Could not make a shape from shape_id '%s'".formatted(shapeId));
+            throw new IllegalArgumentException("Could not make a shape from shape_id '%s'".formatted(shapeId), e);
         }
         catch (IndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Could find a shape with shape_id '%s'".formatted(shapeId));

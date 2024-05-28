@@ -17,6 +17,8 @@ import core.Context;
 import core.managers.ExceptionManager;
 import core.managers.FileManager;
 import lombok.Getter;
+import lombok.Setter;
+import ui.map.geometry.MapBackground;
 import ui.map.geometry.interfaces.MapGraphics;
 import ui.map.translation.ProxyTranslatableGraphics2D;
 import ui.map.translation.TranslateableComponent;
@@ -31,11 +33,10 @@ import ui.map.translation.TranslationListener;
  * @author Arda Ayyildizbayraktar
  */
 public class Map extends JPanel implements TranslateableComponent {
-    private transient BufferedImage mapImage;
-    @Getter private transient int mapWidth;
-    @Getter private transient int mapHeight;
     @Getter private transient TranslationListener translationListener = new TranslationListener(this);
     @Getter private transient ArrayList<MapGraphics> icons = new ArrayList<>();
+    @Getter
+    private MapBackground mapBackground;
 
     /** Variables for translating this Map */
     private double scale;
@@ -48,13 +49,6 @@ public class Map extends JPanel implements TranslateableComponent {
 
         scale = 1;
         translation = new Point(0, 0);
-
-        try {
-            loadMap(FileManager.getMapImage());
-        }
-        catch (IOException e) {
-            ExceptionManager.handle(this, e);
-        }
     }
 
     @Override
@@ -64,17 +58,7 @@ public class Map extends JPanel implements TranslateableComponent {
         Graphics2D g2 = new ProxyTranslatableGraphics2D((Graphics2D) g, scale, translation);
 
         applyFastRenderingHints(g2);
-        drawMapImage(g2);
         drawMapIcon(g2);
-    }
-
-    private void drawMapImage(Graphics2D g2) {
-        if (mapImage == null)
-            return;
-
-        TexturePaint paint = new TexturePaint(mapImage, new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
-        g2.setPaint(paint);
-        g2.fill(new Rectangle2D.Double(0, 0, mapWidth, mapHeight));
     }
 
     private void applyFastRenderingHints(Graphics2D g2) {
@@ -99,16 +83,13 @@ public class Map extends JPanel implements TranslateableComponent {
         }
     }
 
-    private void loadMap(BufferedImage image) {
-        mapImage = image;
-
-        mapWidth = image.getWidth();
-        mapHeight = image.getHeight();
-
-        repaint();
+    public void setMapBackground(MapBackground mapBackground) {
+        this.mapBackground = mapBackground;
+        addMapGraphics(mapBackground);
     }
 
-    public void addMapIcon(MapGraphics icon) {
+
+    public void addMapGraphics(MapGraphics icon) {
         icons.add(icon);
 
         repaint();
@@ -125,11 +106,11 @@ public class Map extends JPanel implements TranslateableComponent {
     }
 
     public int getMapWidth() {
-        return mapWidth;
+        return mapBackground.getMapWidth();
     }
 
     public int getMapHeight() {
-        return mapHeight;
+        return mapBackground.getMapHeight();
     }
 
     public Point getTranslation() {

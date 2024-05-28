@@ -7,7 +7,9 @@ import static core.Constants.ANSI.YELLOW;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import core.managers.DatabaseManager;
 import core.managers.FileManager;
@@ -18,10 +20,23 @@ import core.managers.FileManager;
 public class TxtToSQLite {
     private TxtToSQLite() {}
 
+    private static Map<String, String[]> types;
+
     public static void txtToSQLite(String folderPath) throws IOException {
         long startTime = System.currentTimeMillis(); // Start timer
         File folder = new File(folderPath);
         File[] listOfFiles = sortFiles(folder.listFiles());
+        
+        types = new HashMap<>();
+        types.put("agency.txt", "<PK>INT:VARCHAR(64):VARCHAR(256):VARCHAR(64):VARCHAR(32)".split(","));
+        types.put("calendar_dates.txt", "<PK>INT:DATE:ENUM('added', 'removed')".split(","));
+        types.put("feed_info.txt", "VARCHAR(64),VARCHAR(8),VARCHAR(256),VARCHAR(8),DATE,DATE,INT".split(","));
+        types.put("routes.txt", "<PK>INT:VARCHAR(64):VARCHAR(256):VARCHAR(512):VARCHAR(256):ENUM('tram','metro','rail','bus','ferry','cable_tram','aerial_lift','funicular','','','','trolley_bus','monorail'):CHAR(6):CHAR(6):VARCHAR(256)".split(":"));
+        types.put("shapes.txt", "<PK>INT:INT:DOUBLE:DOUBLE:INT".split(":"));
+        types.put("stop_times.txt", "<PK>INT:<PK>INT:<FK stops.stop_id>INT:VARCHAR(64):TIME:TIME:ENUM('regular', 'no_pickup', 'phone_agency_for_pickup', 'coordinate_with_driver'):ENUM('regular', 'no_pickup', 'phone_agency_for_pickup', 'coordinate_with_driver'):ENUM('approximate', 'exact'):INT UNSIGNED:INT UNSIGNED".split(":"));
+        types.put("stops.txt", "<PK>INT:VARCHAR(16):VARCHAR(64):DOUBLE:DOUBLE:ENUM('stop', 'station', 'entrance', 'generic_node', 'boarding_area'):<FK stops.stop_id>INT:VARCHAR(64):ENUM('parent_station', 'accessible', 'not_accessible'):VARCHAR(8):VARCHAR(32)".split(":"));
+        types.put("transfers.txt", "<PK><FK stops.stop_id>INT:<PK><FK stops.stop_id>INT:<PK><FK routes.route_id>INT:<PK><FK routes.route_id>INT:<PK><FK trips.trip_id>INT:<PK><FK trips.trip_id>INT:ENUM('reccommended', 'timed_transfer_point', 'requires_min_transfer_time', 'not_possible', 'in_seat_transfer', 'in_seat_transfer_not_allowed')".split(":"));
+        types.put("trips.txt", "<PK>INT:INT:<FK trips.trip_id>INT:VARCHAR(64):VARCHAR(256):VARCHAR(256):VARCHAR(512):ENUM('one_direction', 'opposite_direction'):INT:<FK shapes.shape_id>INT:ENUM('no_information', 'at_least_one', 'not_possible'):ENUM('no_information', 'at_least_one', 'not_possible')".split(":"));
 
         System.out.println("\n" + GREEN + "[CONNECTING TO DATABASE]" + RESET);
 
@@ -74,13 +89,8 @@ public class TxtToSQLite {
         String tableName = file.getName().replaceFirst("[.][^.]+$", "");
         String[] lines = FileManager.readLines(file);
         String[] headers = parseCSV(lines[0].trim());
-        String[] types = new String[headers.length]; //FIXME
 
-        for (int j = 0; j < types.length; j++) {
-            types[j] = "TEXT(100000)"; //FIXME change to actual type
-        }
-
-        DatabaseManager.createTable(tableName, headers, types);
+        DatabaseManager.createTable(tableName, headers, types.get(file.getName()));
         int maxLines = 10000;
         int current = lines.length;
         String[] smallerLines = new String[maxLines];

@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.geom.Point2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -10,8 +11,12 @@ import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
 import core.Constants.UIConstants;
+import core.algorithms.datastructures.Graph;
+import core.managers.MapManager;
 import ui.map.Map;
-import ui.results.Results;
+import ui.map.geometry.AbstractedBusNetwork;
+import ui.map.geometry.MapBackground;
+import ui.map.geometry.Network;
 
 /**
  * This class represents the app UI showing the map and the navigation panel
@@ -33,6 +38,7 @@ public class MaasMapsUI extends JFrame {
 
         // Creating all components
         map = new Map();
+        map.setMapBackground(new MapBackground());
         map.setMinimumSize(new Dimension(800, 500));
         map.setPreferredSize(new Dimension(800, 500));
 
@@ -55,10 +61,16 @@ public class MaasMapsUI extends JFrame {
         navigationPanel.setMinimumSize(new Dimension(450, 600));
         navigationPanel.setPreferredSize(new Dimension(500, 600));
 
-        Results resultsPanel = new Results();
+        Map resultsPanel = new Map();
         resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         resultsPanel.setMinimumSize(new Dimension(500,150));
         resultsPanel.setPreferredSize(new Dimension(500,150));
+        
+        Graph<Point2D> graph = MapManager.getBusGraph();
+        Network abstractedBusNetwork = new AbstractedBusNetwork(graph);
+
+        resultsPanel.addMapGraphics(abstractedBusNetwork);
+        resultsPanel.repaint();
 
         // Adding all components
         verticalSplitPane.add(map, JSplitPane.TOP);

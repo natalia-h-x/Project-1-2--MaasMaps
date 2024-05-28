@@ -20,7 +20,7 @@ public class ProxyMap {
 
     public void addMapGraphics(MapGraphics... mapIcons) {
         for (MapGraphics mapIcon : mapIcons) {
-            map.addMapIcon(mapIcon);
+            map.addMapGraphics(mapIcon);
         }
     }
 

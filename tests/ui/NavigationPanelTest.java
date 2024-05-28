@@ -22,7 +22,6 @@ import core.models.transport.Bus;
 import core.models.transport.TransportMode;
 
 public class NavigationPanelTest {
-
     private NavigationPanel navigationPanel;
     private JPanel testPanel;
     private JTextField textField1;
@@ -38,8 +37,6 @@ public class NavigationPanelTest {
     @BeforeEach
     public void setUp() {
         // Initialize the context and necessary components
-        Context.getContext().initialize(); 
-
         navigationPanel = new NavigationPanel();
 
         // Extract components from the navigation panel for testing
