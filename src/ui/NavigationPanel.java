@@ -33,6 +33,7 @@ import core.zipcode.ZipCodeDatabase;
 
 /**
  * This class represents the side navigation panel in the UI
+ * @author Natalia Hadjisoteriou
  */
 public class NavigationPanel extends JPanel {
     private JLabel timeLabel;
@@ -204,6 +205,7 @@ public class NavigationPanel extends JPanel {
 
 // Call the addActionListeners method and pass the array of components
         addActionListeners(components);
+
         addClearActionListener(clearButton);
         addBoxActionListener(checkBox);
     }
