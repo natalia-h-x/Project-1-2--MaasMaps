@@ -29,7 +29,7 @@ public final class Constants {
     public static final class Paths {
         public static final String POSTAL_COORDS_API_URL = "https://project12.ashish.nl/get_coordinates";
         public static final String POSTAL_COORDS_FILE = "resources/MassZipLatLon.csv";
-        public static final String DATABASE_PATH = "jdbc:sqlite:resources/gtfs/gtfs";
+        public static final String DATABASE_PATH = "jdbc:sqlite:resources\\gtfs\\gtfs";
         public static final String MAP_IMAGE = "resources/visuals/MaastrichtOpenStreetMap.png";
         public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.png";
         public static final String A_IMAGE = "resources/visuals/icons/AIcon.png";
