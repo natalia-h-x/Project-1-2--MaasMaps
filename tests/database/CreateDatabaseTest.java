@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 import core.managers.DatabaseManager;
 import core.managers.FileManager;
@@ -14,6 +15,7 @@ public class CreateDatabaseTest {
     public static void main(String[] args) {
         new CreateDatabaseTest().createDatabaseTest();
     }
+    
     @Test
     public void createDatabaseTest() {
         try {
