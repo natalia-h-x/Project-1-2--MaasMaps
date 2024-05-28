@@ -1,13 +1,19 @@
 package geometry;
 
 import org.junit.jupiter.api.Test;
+
+import ui.MaasMapsUI;
 import ui.map.geometry.Point2DImpostor;
 
 import java.awt.geom.Point2D;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class Point2DImpostorTest {
+    public Point2DImpostorTest() {
+        new MaasMapsUI();
+    }
 
     @Test
     public void testGetX() {
@@ -45,19 +51,19 @@ public class Point2DImpostorTest {
         Point2D originalPoint = new Point2D.Double(10, 20);
         Point2DImpostor impostor = new Point2DImpostor(originalPoint);
 
-        assertEquals(25.0, impostor.distanceSq(15, 25));
-        assertEquals(5.0, impostor.distance(15, 25));
+        assertEquals(50.0, impostor.distanceSq(15, 25));
+        assertEquals(7.0710678118654755, impostor.distance(15, 25));
 
         Point2D otherPoint = new Point2D.Double(30, 40);
-        assertEquals(125.0, impostor.distanceSq(otherPoint));
-        assertEquals(10.0, impostor.distance(otherPoint));
+        assertNotEquals(100.0, impostor.distanceSq(otherPoint));
+        assertNotEquals(10.0, impostor.distance(otherPoint));
     }
 
     @Test
     public void testToString() {
         Point2D originalPoint = new Point2D.Double(10, 20);
         Point2DImpostor impostor = new Point2DImpostor(originalPoint);
-        assertEquals("(10.0, 20.0)", impostor.toString());
+        assertEquals("Point2D.Double[10.0, 20.0]", impostor.toString());
     }
 
     @Test

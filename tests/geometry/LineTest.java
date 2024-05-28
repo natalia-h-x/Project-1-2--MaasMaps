@@ -1,22 +1,15 @@
 package geometry;
 
-import org.junit.jupiter.api.Test;
-import ui.map.geometry.Line;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.geom.AffineTransform;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ImageObserver;
-import java.awt.image.RenderedImage;
-import java.awt.image.renderable.RenderableImage;
-import java.text.AttributedCharacterIterator;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import ui.map.geometry.Line;
 
 public class LineTest {
 
