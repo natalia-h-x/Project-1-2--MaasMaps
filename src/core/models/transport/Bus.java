@@ -14,6 +14,7 @@ import core.models.Time;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ui.map.geometry.ImageMarkerFactory;
+import ui.map.geometry.Radius;
 import ui.map.geometry.factories.LineFactory;
 import ui.map.geometry.interfaces.MapGraphics;
 
@@ -154,6 +155,8 @@ public class Bus extends TransportMode {
     @Override
     public MapGraphics[] getGraphics() {
         return new MapGraphics[] {
+            new Radius((int) getStart().getX(), (int) getStart().getY(), (int) Context.getContext().getMap().getRadius()),
+            new Radius((int) getDestination().getX(), (int) getDestination().getY(), (int) Context.getContext().getMap().getRadius()),
             getChosenRoute().getLine(),
             LineFactory.createResultsLine(getChosenRoute().getManualTransportModeA().getStart(), getChosenRoute().getManualTransportModeA().getDestination()),
             LineFactory.createResultsLine(getChosenRoute().getManualTransportModeB().getStart(), getChosenRoute().getManualTransportModeB().getDestination()),

@@ -11,9 +11,11 @@ import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
 import core.Constants.UIConstants;
+import core.Context;
 import core.algorithms.datastructures.Graph;
 import core.managers.MapManager;
 import ui.map.Map;
+import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
 import ui.map.geometry.MapBackground;
 import ui.map.geometry.Network;
@@ -38,9 +40,12 @@ public class MaasMapsUI extends JFrame {
 
         // Creating all components
         map = new Map();
-        map.setMapBackground(new MapBackground());
+        map.addMapBackground();
         map.setMinimumSize(new Dimension(800, 500));
         map.setPreferredSize(new Dimension(800, 500));
+
+        ProxyMap proxyMap = new ProxyMap(map);
+        Context.getContext().setMap(proxyMap);
 
         // create split pane with left and right panels
         JSplitPane verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);

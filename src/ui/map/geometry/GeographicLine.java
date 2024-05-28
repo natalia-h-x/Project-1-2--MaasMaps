@@ -13,7 +13,7 @@ import ui.map.geometry.interfaces.GeographicMapGraphics;
 
 public class GeographicLine extends Line implements GeographicMapGraphics {
     public GeographicLine(Time[] times, Paint paint, Stroke stroke, Location... locations) {
-        super(paint, stroke, locations);
+        super(locations);
     }
 
     public GeographicLine(Time[] times, Location... locations) {
@@ -25,15 +25,15 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
     }
 
     public GeographicLine(Paint paint, Location... locations) {
-        super(paint, locations);
+        super(locations);
     }
 
     public GeographicLine(Stroke stroke, Location... locations) {
-        super(stroke, locations);
+        super(locations);
     }
 
     public GeographicLine(Paint paint, Stroke stroke, Location... locations) {
-        super(paint, stroke, locations);
+        super(locations);
     }
 
     @Override

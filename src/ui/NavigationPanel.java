@@ -78,7 +78,7 @@ public class NavigationPanel extends JPanel {
         // create departure time label and field
         JLabel departure = new JLabel("Departure time: ");
         departure.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
-        JTextField departureField = new JTextField();
+        JTextField departureField = new JTextField("07:00:00");
 
         // create an empty panel for spacing
         JPanel spacerPanel = new JPanel();
@@ -93,7 +93,7 @@ public class NavigationPanel extends JPanel {
         // create search radius label and field
         JLabel search = new JLabel("Search radius: ");
         search.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
-        JTextField radiusField = new JTextField(Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
+        JTextField radiusField = new JTextField("" + Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
 
         // randomize bus stops button
         JButton busRandom = new JButton("Randomize bus stops");
@@ -177,7 +177,6 @@ public class NavigationPanel extends JPanel {
         bottomPanel.add(clearButton, BorderLayout.SOUTH);
         bottomPanel.add(selectionPanel, BorderLayout.CENTER);
         bottomPanel.add(timeLabel, BorderLayout.NORTH);
-        // bottomPanel.add(selectionPanel2);
 
         JPanel zipCodeSelectionPanel = new JPanel(new BorderLayout());
         zipCodeSelectionPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
@@ -222,23 +221,25 @@ public class NavigationPanel extends JPanel {
 
         calculate.addActionListener(e -> {
             try {
-                for (TransportMode option : options) {
-                    if (option instanceof Bus b) {
-                        b.setDepartingTime(Time.of(departureField.getText()));
-                        b.setAllowTransfers(checkBox.isSelected());
-                    }
-                }
-
                 TransportMode transportMode = (TransportMode) selection.getSelectedItem();
                 transportMode.dispose();
                 transportMode.setStart(db.getLocation(textField1.getText()));
                 transportMode.setDestination(db.getLocation(textField2.getText()));
 
-                Context.getContext().getMap().clearIcons();
+                
+                if (transportMode instanceof Bus)
+                    for (TransportMode option : options) {
+                        if (option instanceof Bus b) {
+                            b.setDepartingTime(Time.of(departureField.getText()));
+                            b.setAllowTransfers(checkBox.isSelected());
+                        }
+                    }
 
-                Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
-                Context.getContext().getMap().addMapGraphics(new Radius((int) transportMode.getStart().getX(), (int) transportMode.getStart().getY(), Integer.parseInt(radiusField.getText())));
-                Context.getContext().getMap().addMapGraphics(new Radius((int) transportMode.getDestination().getX(), (int) transportMode.getDestination().getY(), Integer.parseInt(radiusField.getText())));
+                Context.getContext().getMap().clearIcons();
+                
+                if (radiusField.getText().length() > 0)
+                    Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
+                
                 Context.getContext().getMap().addMapGraphics(transportMode.getGraphics());
 
                 timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + transportMode.getTravelTime().toString());

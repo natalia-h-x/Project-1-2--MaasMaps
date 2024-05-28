@@ -36,17 +36,15 @@ public class Map extends JPanel implements TranslateableComponent {
     @Getter private transient TranslationListener translationListener = new TranslationListener(this);
     @Getter private transient ArrayList<MapGraphics> icons = new ArrayList<>();
     @Getter
-    private MapBackground mapBackground;
+    private MapBackground mapBackground = new MapBackground();
+    private boolean useMapBackground = false;
 
     /** Variables for translating this Map */
     private double scale;
-    private double radius;
+    private double radius = 1000;
     private Point translation;
 
     public Map() {
-        ProxyMap proxyMap = new ProxyMap(this);
-        Context.getContext().setMap(proxyMap);
-
         scale = 1;
         translation = new Point(0, 0);
     }
@@ -58,6 +56,11 @@ public class Map extends JPanel implements TranslateableComponent {
         Graphics2D g2 = new ProxyTranslatableGraphics2D((Graphics2D) g, scale, translation);
 
         applyFastRenderingHints(g2);
+
+        if (useMapBackground) {
+            mapBackground.paint(g2);
+        }
+
         drawMapIcon(g2);
     }
 
@@ -83,9 +86,8 @@ public class Map extends JPanel implements TranslateableComponent {
         }
     }
 
-    public void setMapBackground(MapBackground mapBackground) {
-        this.mapBackground = mapBackground;
-        addMapGraphics(mapBackground);
+    public void addMapBackground() {
+        useMapBackground = true;
     }
 
 
