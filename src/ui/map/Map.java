@@ -1,5 +1,6 @@
 package ui.map;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -38,6 +39,7 @@ public class Map extends JPanel implements TranslateableComponent {
 
     /** Variables for translating this Map */
     private double scale;
+    private double radius;
     private Point translation;
 
     public Map() {
@@ -89,6 +91,8 @@ public class Map extends JPanel implements TranslateableComponent {
 
     @SuppressWarnings("unchecked")
     private void drawMapIcon(Graphics2D g2) {
+        g2.setPaint(Color.black);
+
         for (MapGraphics icon : (Iterable<MapGraphics>) icons.clone()) {
             if (icon != null)
                 icon.paint(g2);
@@ -144,5 +148,13 @@ public class Map extends JPanel implements TranslateableComponent {
         this.translation = translation;
 
         repaint();
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    public double getRadius() {
+        return radius;
     }
 }

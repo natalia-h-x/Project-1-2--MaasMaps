@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +111,24 @@ public class MapManager {
         }
 
         return closestSet.toArray(Location[]::new);
+    }
+
+    public static List<Location> getAllPointsWithin(Location center, Double radius) {
+        Map<Location, Double> distances = new HashMap<>();
+        PriorityQueue<Location> closestSet = new PriorityQueue<>((a, b) -> distances.get(b).compareTo(distances.get(a)));
+
+        for (Point2D vertex : getBusGraph()) {
+            Location location = ((Location) vertex);
+            double dist = location.distance(center);
+
+            distances.put(location, dist);
+
+            if (dist < radius) {
+                closestSet.add(location);
+            }
+        }
+
+        return Arrays.asList(closestSet.toArray(Location[]::new));
     }
 
     public static Graph<Point2D> getBusGraph() {
