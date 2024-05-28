@@ -35,14 +35,15 @@ import ui.map.geometry.Radius;
 
 /**
  * This class represents the side navigation panel in the UI
+ * 
  * @author Natalia Hadjisoteriou
  */
 public class NavigationPanel extends JPanel {
     private JLabel timeLabel;
     private transient TransportMode[] options = {
-        new Walking(),
-        new Biking(),
-        new Bus()
+            new Walking(),
+            new Biking(),
+            new Bus()
     };
 
     public NavigationPanel() {
@@ -52,7 +53,7 @@ public class NavigationPanel extends JPanel {
     private void initialiseNavigationUI() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createMatteBorder(UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE,
-                                                  UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BACKGROUND_COLOR));
+                UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BACKGROUND_COLOR));
         setForeground(UIConstants.GUI_BACKGROUND_COLOR);
         setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
@@ -78,31 +79,21 @@ public class NavigationPanel extends JPanel {
         JLabel departure = new JLabel("Departure time: ");
         departure.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         JTextField departureField = new JTextField();
-        departureField.addActionListener(e -> {
-            for (TransportMode option : options) {
-                if (option instanceof Bus b)
-                    b.setDepartingTime(Time.of(departureField.getText()));
-            }
-        });
 
         // create an empty panel for spacing
         JPanel spacerPanel = new JPanel();
-        spacerPanel.setPreferredSize(new java.awt.Dimension(0, 10)); 
+        spacerPanel.setPreferredSize(new java.awt.Dimension(0, 10));
         spacerPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
         // create an empty panel 2 for spacing
         JPanel spacerPanel2 = new JPanel();
-        spacerPanel2.setPreferredSize(new java.awt.Dimension(0, 10)); 
+        spacerPanel2.setPreferredSize(new java.awt.Dimension(0, 10));
         spacerPanel2.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
         // create search radius label and field
         JLabel search = new JLabel("Search radius: ");
         search.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         JTextField radiusField = new JTextField(Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
-        radiusField.addActionListener( e -> {
-            Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
-            Context.getContext().getMap().addMapGraphics(new Radius(0, 0, Integer.parseInt(radiusField.getText())));
-        });
 
         // randomize bus stops button
         JButton busRandom = new JButton("Randomize bus stops");
@@ -130,12 +121,12 @@ public class NavigationPanel extends JPanel {
         panel1.add(location1);
         panel1.add(location2);
         panel1.add(departure);
-        panel1.add(spacerPanel); 
+        panel1.add(spacerPanel);
         panel1.add(search);
         panel2.add(textField1);
         panel2.add(textField2);
         panel2.add(departureField);
-        panel2.add(spacerPanel2); 
+        panel2.add(spacerPanel2);
         panel2.add(radiusField);
         panel2.add(busRandom, BorderLayout.CENTER);
 
@@ -149,7 +140,8 @@ public class NavigationPanel extends JPanel {
 
         // Create Check Box header
         JLabel checkTransfer = new JLabel("Select if you want to include bus transfers: ");
-        checkTransfer.setFont(new Font("Select if you want to include bus transfers: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
+        checkTransfer.setFont(
+                new Font("Select if you want to include bus transfers: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // create check boxes
         JCheckBox checkBox = new JCheckBox("Yes");
@@ -185,8 +177,7 @@ public class NavigationPanel extends JPanel {
         bottomPanel.add(clearButton, BorderLayout.SOUTH);
         bottomPanel.add(selectionPanel, BorderLayout.CENTER);
         bottomPanel.add(timeLabel, BorderLayout.NORTH);
-        //bottomPanel.add(selectionPanel2);
-
+        // bottomPanel.add(selectionPanel2);
 
         JPanel zipCodeSelectionPanel = new JPanel(new BorderLayout());
         zipCodeSelectionPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
@@ -202,22 +193,21 @@ public class NavigationPanel extends JPanel {
         add(navigationButtons, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.SOUTH);
 
-    // Create an array of JComponent to hold the components
-    JComponent[] components = new JComponent[] {
-    textField1, textField2, calculate, selection, departure, departureField,
-    search, radiusField, busRandom, checkTransfer, checkBox, clearButton
-    };
+        // Create an array of JComponent to hold the components
+        JComponent[] components = new JComponent[] {
+                textField1, textField2, calculate, selection, departure, departureField,
+                search, radiusField, busRandom, checkTransfer, checkBox, clearButton
+        };
 
-// Call the addActionListeners method and pass the array of components
+        // Call the addActionListeners method and pass the array of components
         addActionListeners(components);
 
         addClearActionListener(clearButton);
-        addBoxActionListener(checkBox);
     }
 
     private void addActionListeners(JComponent[] components) {
         final ZipCodeDatabase db = Context.getContext().getZipCodeDatabase();
-    
+
         JTextField textField1 = (JTextField) components[0];
         JTextField textField2 = (JTextField) components[1];
         JButton calculate = (JButton) components[2];
@@ -229,23 +219,35 @@ public class NavigationPanel extends JPanel {
         JButton busRandom = (JButton) components[8];
         JLabel checkTransfer = (JLabel) components[9];
         JCheckBox checkBox = (JCheckBox) components[10];
-    
+
         calculate.addActionListener(e -> {
             try {
+                for (TransportMode option : options) {
+                    if (option instanceof Bus b) {
+                        b.setDepartingTime(Time.of(departureField.getText()));
+                        b.setAllowTransfers(checkBox.isSelected());
+                    }
+                }
+
                 TransportMode transportMode = (TransportMode) selection.getSelectedItem();
                 transportMode.dispose();
                 transportMode.setStart(db.getLocation(textField1.getText()));
                 transportMode.setDestination(db.getLocation(textField2.getText()));
-    
+
                 Context.getContext().getMap().clearIcons();
+
+                Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
+                Context.getContext().getMap().addMapGraphics(new Radius((int) transportMode.getStart().getX(), (int) transportMode.getStart().getY(), Integer.parseInt(radiusField.getText())));
+                Context.getContext().getMap().addMapGraphics(new Radius((int) transportMode.getDestination().getX(), (int) transportMode.getDestination().getY(), Integer.parseInt(radiusField.getText())));
                 Context.getContext().getMap().addMapGraphics(transportMode.getGraphics());
-    
+
                 timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + transportMode.getTravelTime().toString());
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 ExceptionManager.handle(this, ex);
             }
         });
-    
+
         // Add ItemListener to the selection JComboBox
         selection.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -271,34 +273,14 @@ public class NavigationPanel extends JPanel {
                 }
             }
         });
-    
-        // Add temporary action listener to the checkbox
-        checkBox.addActionListener(e -> {
-            for (TransportMode option : options) {
-                if (option instanceof Bus b)
-                    b.setAllowTransfers(checkBox.isSelected());
-            }
-        });
-    
+
         addClearActionListener((JButton) components[11]);
     }
-    
-    
 
     private void addClearActionListener(JButton clearButton) {
         clearButton.addActionListener(e -> {
             Context.getContext().getMap().clearIcons();
             timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT);
-        });
-    }
-
-    // Add temporary action listener to the checkbox
-    private void addBoxActionListener(JCheckBox checkBox) {
-        checkBox.addActionListener(e -> {
-            for (TransportMode option : options) {
-                if (option instanceof Bus b)
-                    b.setAllowTransfers(checkBox.isSelected());
-            }
         });
     }
 }

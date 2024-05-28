@@ -22,7 +22,7 @@ public class Radius implements MapGraphics {
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         
-        Ellipse2D radius = new Ellipse2D.Double(x, y, r, r);
+        Ellipse2D radius = new Ellipse2D.Double(x - r / 2.0, y - r / 2.0, r, r);
         g2.fill(radius);
     }
 }
