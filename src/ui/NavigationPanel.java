@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ItemEvent;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.JCheckBox;
 
@@ -97,7 +98,10 @@ public class NavigationPanel extends JPanel {
         JLabel search = new JLabel("Search radius: ");
         search.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         JTextField radiusField = new JTextField(Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
-        radiusField.addActionListener(e -> Integer.parseInt(radiusField.getText()));
+        radiusField.addActionListener( e -> {
+            Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
+            Context.getContext().getMap().addMapGraphics(new Ellipse2D());
+        });
 
         // randomize bus stops button
         JButton busRandom = new JButton("Randomize bus stops");

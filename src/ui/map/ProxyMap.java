@@ -47,4 +47,12 @@ public class ProxyMap {
     public Point getLocation() {
         return map.getLocation();
     }
+
+    public double getRadius() {
+        return map.getRadius();
+    }
+
+    public void setRadius(double radius) {
+        map.setRadius(radius);
+    }
 }

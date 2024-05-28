@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import core.Constants;
+import core.Context;
 import core.algorithms.DijkstraAlgorithm;
 import core.managers.MapManager;
 import core.models.Location;
@@ -74,24 +75,32 @@ public class Bus extends TransportMode {
 
     public void calculateShortestPath() {
         List<Transport> routes = new ArrayList<>();
+        List<Location> locationsIntoRadius = MapManager.getAllPointsWithin(getStart(), Context.getContext().getMap().getRadius());
         Location[] closestStarts = MapManager.getClosestPoint(getStart(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
         Location[] closestDestinations = MapManager.getClosestPoint(getDestination(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
 
         for (int i = 0; i < closestStarts.length; i++) {
+            if (!locationsIntoRadius.contains(closestStarts[i]))
+                closestStarts[i] = null;
+        }
+
+        for (int i = 0; i < closestStarts.length; i++) {
             for (int j = 0; j < closestDestinations.length; j++) {
                 try {
-                    TransportMode manualSource = new Walking();
-                    TransportMode manualDestination = new Walking();
-                    manualSource.setStart(getStart());
-                    manualSource.setDestination(closestStarts[i]);
-                    manualDestination.setStart(closestDestinations[j]);
-                    manualDestination.setDestination(getDestination());
-
-                    Transport route = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(manualSource.getTravelTime()));
-                    route.setManualTransportModeA(manualSource);
-                    route.setManualTransportModeB(manualDestination);
-
-                    routes.add(route);
+                    if (closestStarts[i] != null) {
+                        TransportMode manualSource = new Walking();
+                        TransportMode manualDestination = new Walking();
+                        manualSource.setStart(getStart());
+                        manualSource.setDestination(closestStarts[i]);
+                        manualDestination.setStart(closestDestinations[j]);
+                        manualDestination.setDestination(getDestination());
+    
+                        Transport route = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(manualSource.getTravelTime()));
+                        route.setManualTransportModeA(manualSource);
+                        route.setManualTransportModeB(manualDestination);
+    
+                        routes.add(route);
+                    }
                 }
                 catch (IllegalArgumentException e) {
                     // System.out.println("Could not find a route here.");
