@@ -35,4 +35,4 @@ public class Biking extends TransportMode {
             ImageMarkerFactory.createBImageMarker(getDestination())
         };
     }
-}
+}   

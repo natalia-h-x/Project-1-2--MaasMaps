@@ -50,7 +50,7 @@ public class DijkstraAlgorithm {
             Trip trip = trips.isEmpty() ? null : trips.get(trips.size() - 1);
 
             if (vertex.equals(end))
-                return Transport.ofWalking(toGeographicLine(paths.get(vertex)), times.get(vertex).minus(startTime), transfers.get(vertex));
+                return Transport.of(toGeographicLine(paths.get(vertex)), times.get(vertex).minus(startTime), transfers.get(vertex));
 
             if (!settled.add(vertex))
                 continue; // Skip processing if already settled

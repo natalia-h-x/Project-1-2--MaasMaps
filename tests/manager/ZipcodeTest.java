@@ -1,10 +1,13 @@
 package manager;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import core.models.Location;
+import core.models.ZipCode;
 import core.zipcode.ZipCodeDatabase;
 
 public class ZipcodeTest {
@@ -39,5 +42,30 @@ public class ZipcodeTest {
         } catch (IllegalArgumentException e) {
             assert(true);
         }
+    }
+
+    @Test
+    public void zipCodeTest() {
+        ZipCode zipCode = new ZipCode("6227XBA", new Location(50.839116, 5.734282));
+
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("62D7XB");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("62276B");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("62276B");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("622!FX");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("6227{B");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("6227XB");
+        zipCode.setLocation(new Location(50.839116, 5.734282));
+        assertEquals(-412058659, zipCode.hashCode());
+        ZipCode zipCode1 = new ZipCode("6227XB", new Location(50.839116, 5.734282));
+        assertTrue(zipCode1.equals(zipCode));
+        assertTrue(zipCode.toString().equals(zipCode.toString()));
+        zipCode1.setCode("6226AB");
+        assertFalse(zipCode.equals(zipCode1));
     }
 }
