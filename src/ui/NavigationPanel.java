@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -72,7 +73,6 @@ public class NavigationPanel extends JPanel {
         JLabel departure = new JLabel("Departure time: ");
         departure.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         JTextField departureField = new JTextField();
-        departureField.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
 
         // create an empty panel for spacing
         JPanel spacerPanel = new JPanel();
@@ -165,15 +165,17 @@ public class NavigationPanel extends JPanel {
         selectionPanel.add(calculate, BorderLayout.EAST);
         selectionPanel2.add(checkTransfer, BorderLayout.WEST);
         selectionPanel2.add(checkBox, BorderLayout.CENTER);
-        bottomPanel.add(timeLabel, BorderLayout.CENTER);
         bottomPanel.add(clearButton, BorderLayout.SOUTH);
-        bottomPanel.add(selectionPanel, BorderLayout.NORTH);
-        bottomPanel.add(selectionPanel2);
+        bottomPanel.add(selectionPanel, BorderLayout.CENTER);
+        bottomPanel.add(timeLabel, BorderLayout.NORTH);
+        //bottomPanel.add(selectionPanel2);
+
 
         JPanel zipCodeSelectionPanel = new JPanel(new BorderLayout());
         zipCodeSelectionPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         zipCodeSelectionPanel.add(panel1, BorderLayout.WEST);
         zipCodeSelectionPanel.add(panel2, BorderLayout.CENTER);
+        zipCodeSelectionPanel.add(selectionPanel2, BorderLayout.SOUTH);
 
         // add components to the navigation panel
         navigationButtons.add(title);
@@ -182,6 +184,7 @@ public class NavigationPanel extends JPanel {
         // add split pane to the frame
         add(navigationButtons, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.SOUTH);
+
 
         addActionListeners(textField1, textField2, calculate, selection, departure, departureField, search, radiusField, busRandom, checkTransfer, checkBox );
         addClearActionListener(clearButton);
@@ -229,6 +232,8 @@ public class NavigationPanel extends JPanel {
                 search.setVisible(false);
                 radiusField.setVisible(false);
                 busRandom.setVisible(false);
+                checkTransfer.setVisible(false);
+                checkBox.setVisible(false);
             }
         }
     });
