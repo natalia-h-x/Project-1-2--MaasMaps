@@ -196,33 +196,49 @@ public class NavigationPanel extends JPanel {
         add(navigationButtons, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.SOUTH);
 
+    // Create an array of JComponent to hold the components
+    JComponent[] components = new JComponent[] {
+    textField1, textField2, calculate, selection, departure, departureField,
+    search, radiusField, busRandom, checkTransfer, checkBox, clearButton
+    };
 
-        addActionListeners(textField1, textField2, calculate, selection, departure, departureField, search, radiusField, busRandom, checkTransfer, checkBox );
+// Call the addActionListeners method and pass the array of components
+        addActionListeners(components);
         addClearActionListener(clearButton);
         addBoxActionListener(checkBox);
     }
 
-    private void addActionListeners(JTextField textField1, JTextField textField2, JButton calculate,
-                                JComboBox<TransportMode> selection, JLabel departure, JTextField departureField, JLabel search, JTextField radiusField, JButton busRandom, JLabel checkTransfer, JCheckBox checkBox) {
-
+    private void addActionListeners(JComponent[] components) {
         final ZipCodeDatabase db = Context.getContext().getZipCodeDatabase();
-
+    
+        JTextField textField1 = (JTextField) components[0];
+        JTextField textField2 = (JTextField) components[1];
+        JButton calculate = (JButton) components[2];
+        JComboBox<TransportMode> selection = (JComboBox<TransportMode>) components[3];
+        JLabel departure = (JLabel) components[4];
+        JTextField departureField = (JTextField) components[5];
+        JLabel search = (JLabel) components[6];
+        JTextField radiusField = (JTextField) components[7];
+        JButton busRandom = (JButton) components[8];
+        JLabel checkTransfer = (JLabel) components[9];
+        JCheckBox checkBox = (JCheckBox) components[10];
+    
         calculate.addActionListener(e -> {
             try {
                 TransportMode transportMode = (TransportMode) selection.getSelectedItem();
                 transportMode.dispose();
                 transportMode.setStart(db.getLocation(textField1.getText()));
                 transportMode.setDestination(db.getLocation(textField2.getText()));
-
+    
                 Context.getContext().getMap().clearIcons();
                 Context.getContext().getMap().addMapGraphics(transportMode.getGraphics());
-
+    
                 timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + transportMode.getTravelTime().toString());
             } catch (Exception ex) {
                 ExceptionManager.handle(this, ex);
             }
         });
-
+    
         // Add ItemListener to the selection JComboBox
         selection.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -244,11 +260,23 @@ public class NavigationPanel extends JPanel {
                     radiusField.setVisible(false);
                     busRandom.setVisible(false);
                     checkTransfer.setVisible(false);
-                checkBox.setVisible(false);
-            }
+                    checkBox.setVisible(false);
+                }
             }
         });
+    
+        // Add temporary action listener to the checkbox
+        checkBox.addActionListener(e -> {
+            for (TransportMode option : options) {
+                if (option instanceof Bus b)
+                    b.setAllowTransfers(checkBox.isSelected());
+            }
+        });
+    
+        addClearActionListener((JButton) components[11]);
     }
+    
+    
 
     private void addClearActionListener(JButton clearButton) {
         clearButton.addActionListener(e -> {
