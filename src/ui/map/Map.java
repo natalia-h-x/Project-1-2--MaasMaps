@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import core.Context;
 import core.managers.ExceptionManager;
 import core.managers.FileManager;
+import lombok.Getter;
 import ui.map.geometry.interfaces.MapGraphics;
 import ui.map.translation.ProxyTranslatableGraphics2D;
 import ui.map.translation.TranslateableComponent;
@@ -30,11 +31,10 @@ import ui.map.translation.TranslationListener;
  */
 public class Map extends JPanel implements TranslateableComponent {
     private transient BufferedImage mapImage;
-    private transient int mapWidth;
-    private transient int mapHeight;
-    @SuppressWarnings("unused")
-    private transient TranslationListener translationListener = new TranslationListener(this);
-    private transient ArrayList<MapGraphics> icons = new ArrayList<>();
+    @Getter private transient int mapWidth;
+    @Getter private transient int mapHeight;
+    @Getter private transient TranslationListener translationListener = new TranslationListener(this);
+    @Getter private transient ArrayList<MapGraphics> icons = new ArrayList<>();
 
     /** Variables for translating this Map */
     private double scale;

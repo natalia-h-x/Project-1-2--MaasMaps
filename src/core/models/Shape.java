@@ -8,12 +8,18 @@ import lombok.Data;
 
 @Data
 public class Shape {
+    private int id;
     private Color color;
     private Location[] locations;
 
-    public Shape(Color color, Location... locations) {
+    public Shape(int id, Color color, Location... locations) {
         this.color = color;
         this.locations = locations;
+        this.id = id;
+    }
+
+    public static Shape empty() {
+        return new Shape(0, Color.white);
     }
 
     public Shape prune(BusStop a, BusStop b) {
@@ -22,11 +28,11 @@ public class Shape {
 
         Location[] prunedLocations = Arrays.copyOfRange(locations, Math.min(ca, cb), Math.max(ca, cb));
 
-        return new Shape(color, prunedLocations);
+        return new Shape(id, color, prunedLocations);
     }
 
     private int closestLocationIndex(Location loc) {
-        double previousDistance = 0;
+        double previousDistance = Integer.MAX_VALUE;
         int best = Integer.MAX_VALUE;
 
         for (int i = 0; i < locations.length; i++) {

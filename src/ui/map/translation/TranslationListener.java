@@ -10,16 +10,21 @@ import java.awt.event.MouseWheelEvent;
 
 import javax.swing.SwingUtilities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * This class translates a translatable component
  *
  * @author Sian Lodde
  */
+@Getter
+@Setter
 public class TranslationListener {
     /** For zooming out */
-    private static final int ZOOM_LEVEL_BOUND_MIN = -3;
+    public static final int ZOOM_LEVEL_BOUND_MIN = -3;
     /** For zooming in */
-    private static final int ZOOM_LEVEL_BOUND_MAX = 10;
+    public static final int ZOOM_LEVEL_BOUND_MAX = 10;
 
     private TranslateableComponent translateableComponent;
     private Point  translation;
@@ -107,22 +112,29 @@ public class TranslationListener {
     }
 
     public void translateTo(int x, int y) {
-        translation.x = x;
-        translation.y = y;
+        setTranslation(new Point(x, y));
 
         translateableComponent.setTranslation(translation);
     }
 
-    public void setTranslation(Point point) {
-        translation = point;
-    }
-
     public void setScale(int level) {
-        zoomLevel = Math.min(Math.max(zoomLevel + level, (int) (ZOOM_LEVEL_BOUND_MIN / (-1 + zoomScale))), (int) (ZOOM_LEVEL_BOUND_MAX / (-1 + zoomScale)));
+        zoomLevel = Math.min(Math.max(zoomLevel + level, getMinZoom()), getMaxZoom());
         translateableComponent.setScale(getScale());
     }
 
+    public int getMaxZoom() {
+        return (int) (ZOOM_LEVEL_BOUND_MAX / (-1 + zoomScale));
+    }
+
+    public int getMinZoom() {
+        return (int) (ZOOM_LEVEL_BOUND_MIN / (-1 + zoomScale));
+    }
+
     public double getScale() {
-        return Math.pow(zoomScale, zoomLevel);
+        return calculateScale(getZoomLevel());
+    }
+
+    public double calculateScale(int zoomLevel) {
+        return Math.pow(getZoomScale(), zoomLevel);
     }
 }

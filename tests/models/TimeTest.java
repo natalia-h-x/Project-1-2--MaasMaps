@@ -86,7 +86,6 @@ public class TimeTest {
         assertEquals("2 minutes and 1 second.", Time.of(0, 2, 1).toString());
         assertEquals("1 minute and 1 second.", Time.of(0, 1, 1).toString());
         assertEquals(".", Time.of(0, 0, 0).toString());
-
     }
 
     @Test

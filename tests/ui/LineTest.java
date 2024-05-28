@@ -1,21 +1,19 @@
 package ui;
 
-import org.junit.jupiter.api.Test;
-
-import algorithms.datastructures.AdjacencyListTest;
-import core.algorithms.datastructures.Graph;
-import core.models.BusStop;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.*;
+import java.awt.Paint;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import org.junit.jupiter.api.Test;
+
+import algorithms.datastructures.AdjacencyListTest;
+import core.algorithms.datastructures.Graph;
+import core.models.BusStop;
 import ui.map.geometry.ArrowStroke;
 import ui.map.geometry.GeographicLine;
 import ui.map.geometry.Line;

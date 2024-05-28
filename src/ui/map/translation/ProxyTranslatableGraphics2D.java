@@ -29,6 +29,7 @@ import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,18 +46,25 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
     private double scaleY;
     private Point translation;
 
+    private final Map<Class<?>, Boolean> scaled;
+
     public ProxyTranslatableGraphics2D(Graphics2D g2, double scale, Point translation) {
         this(g2, scale, scale, translation);
     }
 
     public ProxyTranslatableGraphics2D(Graphics2D g2, double scaleX, double scaleY, Point translation) {
         mGraphics = g2;
+        scaled = new HashMap<>();
         this.scaleX = scaleX;
         this.scaleY = scaleY;
         this.translation = translation;
 
         // Update font size to scale
         setFont(mGraphics.getFont());
+    }
+
+    public void setScaled(Class<?> clazz, boolean scale) {
+        scaled.put(clazz, scale);
     }
 
     public Graphics2D getDelegate() {
@@ -411,11 +419,10 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
 
     @Override
     public void setStroke(Stroke s) {
-        BasicStroke bs = (BasicStroke) s;
-
-        bs = new BasicStroke(scaleX(bs.getLineWidth()), bs.getEndCap(), bs.getLineJoin(), bs.getMiterLimit(), bs.getDashArray(), scaleX(bs.getDashPhase()));
-
-        mGraphics.setStroke(bs);
+        if (s instanceof BasicStroke bs)
+            mGraphics.setStroke(new BasicStroke(scaleX(bs.getLineWidth()), bs.getEndCap(), bs.getLineJoin(), bs.getMiterLimit(), bs.getDashArray(), scaleX(bs.getDashPhase())));
+        
+        else mGraphics.setStroke(s);
     }
 
     @Override
