@@ -31,6 +31,7 @@ import core.models.transport.Bus;
 import core.models.transport.TransportMode;
 import core.models.transport.Walking;
 import core.zipcode.ZipCodeDatabase;
+import ui.map.geometry.Radius;
 
 /**
  * This class represents the side navigation panel in the UI
@@ -100,7 +101,7 @@ public class NavigationPanel extends JPanel {
         JTextField radiusField = new JTextField(Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
         radiusField.addActionListener( e -> {
             Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
-            Context.getContext().getMap().addMapGraphics(new Ellipse2D());
+            Context.getContext().getMap().addMapGraphics(new Radius(0, 0, Integer.parseInt(radiusField.getText())));
         });
 
         // randomize bus stops button
