@@ -2,42 +2,34 @@ package geometry;
 
 
 import static org.junit.jupiter.api.Assertions.fail;
-import java.awt.geom.Point2D;
-import core.algorithms.datastructures.AdjacencyListGraph;
+
 import org.junit.Test;
+
+import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
+import ui.MaasMapsUI;
 import ui.map.geometry.AbstractedBusNetwork;
 
 public class AbstractedBusNetworkTest {
-
-    public static void main(String[] args) {
-        Graph<BusStop> graph = createGraph();
-        AbstractedBusNetwork abstractedBusNetwork = new AbstractedBusNetwork(graph);
+    public AbstractedBusNetworkTest() {
+        new MaasMapsUI();
     }
-
+    
     @Test
     public void testCreateLines() {
-        try {
-            Graph<BusStop> graph = createGraph();
-            AbstractedBusNetwork abstractedBusNetwork = new AbstractedBusNetwork(graph);
-            abstractedBusNetwork.createLines(graph);
-        } catch (Exception e) {
-            fail(e);
-        }
+        Graph<BusStop> graph = createGraph();
+        AbstractedBusNetwork abstractedBusNetwork = new AbstractedBusNetwork(graph);
+        abstractedBusNetwork.createLines(graph);
     }
 
     @Test
     public void testCreateMarker() {
-        try {
-            Graph<BusStop> graph = createGraph();
-            AbstractedBusNetwork abstractedBusNetwork = new AbstractedBusNetwork(graph);
+        Graph<BusStop> graph = createGraph();
+        AbstractedBusNetwork abstractedBusNetwork = new AbstractedBusNetwork(graph);
 
-            Point2D point = new Point2D.Double(50.0, 50.0);
-            abstractedBusNetwork.createMarker(point);
-        } catch (Exception e) {
-            fail(e);
-        }
+        BusStop point = new BusStop(10, 10);
+        abstractedBusNetwork.createMarker(point);
     }
 
     private static Graph<BusStop> createGraph() {
