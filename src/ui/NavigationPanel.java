@@ -96,7 +96,6 @@ public class NavigationPanel extends JPanel {
         JLabel search = new JLabel("Search radius: ");
         search.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         JTextField radiusField = new JTextField(Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
-        radiusField.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
         radiusField.addActionListener(e -> Integer.parseInt(radiusField.getText()));
 
         // randomize bus stops button
