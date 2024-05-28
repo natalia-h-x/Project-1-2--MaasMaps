@@ -20,7 +20,7 @@ public class LineFactory {
     }
 
     public static GeographicLine createGeographicArrowLine(Time[] times, Location... points) {
-        return new GeographicLine(new Color(0, 0, 255), new ArrowStroke(1, 5, 1), times, points);
+        return new GeographicLine(times, new Color(0, 0, 255), new ArrowStroke(1, 5, 1), points);
     }
 
     public static GeographicLine createGeographicArrowLine(Location... points) {
