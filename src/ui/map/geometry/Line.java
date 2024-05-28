@@ -18,6 +18,8 @@ import java.util.NoSuchElementException;
 import javax.swing.Timer;
 
 import core.Context;
+import core.managers.MapManager;
+import core.models.Time;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,12 +34,14 @@ import ui.map.geometry.interfaces.MapGraphics;
 public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment> {
     private static final int ANIMATION_SPEED = 100;
     private List<Point2D> locations = new ArrayList<>();
+    private List<Time> times = new ArrayList<>();
     private Paint paint = new Color(001, 010, 100);
     private Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
     private Point offset = new Point();
     private Timer animatorTimer = new Timer(ANIMATION_SPEED, e -> advanceLineDrawIterator(e));
     private Segment[] lineIterator;
     private int animatedSegments = 0;
+    private Time time;  
 
     // take the locations as parameter
     public Line(Point2D... points) {
@@ -58,6 +62,10 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
         this(points);
         this.paint = paint;
         this.stroke = stroke;
+    }
+    public Line(Point2D[] points, Time[] times) {
+        this(points);
+        this.times.addAll(Arrays.asList(times));
     }
 
     public Paint getPaint() {
@@ -121,6 +129,14 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
             // Set paint color for the line
             g2.setPaint(paint);
             drawLineSegment(g2, lineIterator[i].getStart(), lineIterator[i].getEnd());
+            
+            Point2D centerPoint = new Point2D.Double(
+                (lineIterator[i].getStart().getX() + lineIterator[i].getEnd().getX()) / 2,
+                (lineIterator[i].getStart().getY() + lineIterator[i].getEnd().getY()) / 2
+            );
+            if (i < times.size() && times.get(i) != null) {
+                MapManager.drawString(g2, times.get(i).toISOString(), centerPoint);
+            }
         }
     }
 
@@ -159,5 +175,20 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
                 return segments[++position];
             }
         };
+    }
+    public void setTime(Time time) {
+        this.time = time;
+    }
+    
+    public Time getTime() {
+        return this.time;
+    }
+
+    public void addTime(Time time) {
+        times.add(time);
+    }
+    public void setTimes(Time... times) {
+        this.times.clear();
+        this.times.addAll(Arrays.asList(times));
     }
 }
