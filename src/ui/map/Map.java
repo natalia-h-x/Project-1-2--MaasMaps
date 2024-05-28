@@ -38,6 +38,7 @@ public class Map extends JPanel implements TranslateableComponent {
 
     /** Variables for translating this Map */
     private double scale;
+    private double radius;
     private Point translation;
 
     public Map() {
@@ -144,5 +145,13 @@ public class Map extends JPanel implements TranslateableComponent {
         this.translation = translation;
 
         repaint();
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    public double getRadius() {
+        return radius;
     }
 }
