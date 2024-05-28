@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import core.models.Location;
 import core.models.ZipCode;
+import core.zipcode.APIRequest;
 import core.zipcode.ZipCodeDatabase;
 
 public class ZipcodeTest {
@@ -27,7 +28,7 @@ public class ZipcodeTest {
     @Test
     public void gettingLocationAPITest() {
         try {
-            Location location = db.getLocation("6211AB");
+            Location location = new APIRequest().getLocation("6211AB");
             assertEquals(50.857758901804, location.getLongitude(), 0.1);
             assertEquals(5.6909697778482, location.getLatitude(), 0.1);
         } catch (Exception e) {
