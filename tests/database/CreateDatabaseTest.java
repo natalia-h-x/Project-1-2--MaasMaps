@@ -16,7 +16,7 @@ public class CreateDatabaseTest {
         new CreateDatabaseTest().createDatabaseTest();
     }
     
-/*     @Test
+    @Test
     public void createDatabaseTest() {
         try {
             if (FileManager.fileExists(DATABASE_PATH.substring(DATABASE_PATH.lastIndexOf(":") + 1, DATABASE_PATH.length())))
@@ -27,5 +27,5 @@ public class CreateDatabaseTest {
         catch (IOException e) {
             fail(e);
         }
-    } */
+    }
 }

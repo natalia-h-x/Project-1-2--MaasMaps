@@ -3,6 +3,7 @@ package manager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +33,7 @@ public class ZipcodeTest {
             assertEquals(50.857758901804, location.getLatitude(), 0.1);
             assertEquals(5.6909697778482, location.getLongitude(), 0.1);
         } catch (Exception e) {
-            assert(true); //FIXME remove when API is fixed
+            fail(e);
         }
     }
 
