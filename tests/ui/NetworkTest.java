@@ -1,10 +1,13 @@
 package ui;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
+
 import org.junit.Test;
 
 import algorithms.datastructures.AdjacencyListTest;
@@ -89,5 +92,19 @@ public class NetworkTest {
         adjacencyListGraph.toString();
 
         Graph<BusStop> copy = adjacencyListGraph.clone();
+    }
+
+    @Test
+    public void edgeNodeTest() {
+        EdgeNode<Integer> a = new EdgeNode<Integer>(1, 0);
+        EdgeNode<Integer> b = new EdgeNode<Integer>(1, 0);
+        assertTrue(a.equals(b));
+        assertTrue(a.hashCode() == b.hashCode());
+        assertTrue(a.toString().equals(b.toString()));
+
+        a.setElement(2);
+        b.setWeight(4);
+        b.setDepartureTimes(new TreeMap<>());
+        assertFalse(a.equals(b));
     }
 }
