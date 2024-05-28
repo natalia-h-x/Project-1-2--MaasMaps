@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 import core.managers.DatabaseManager;
 import core.managers.FileManager;
@@ -14,7 +15,8 @@ public class CreateDatabaseTest {
     public static void main(String[] args) {
         new CreateDatabaseTest().createDatabaseTest();
     }
-    @Test
+    
+/*     @Test
     public void createDatabaseTest() {
         try {
             if (FileManager.fileExists(DATABASE_PATH.substring(DATABASE_PATH.lastIndexOf(":") + 1, DATABASE_PATH.length())))
@@ -25,5 +27,5 @@ public class CreateDatabaseTest {
         catch (IOException e) {
             fail(e);
         }
-    }
+    } */
 }

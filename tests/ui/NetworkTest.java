@@ -5,17 +5,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
-import java.util.List;
+import java.util.*;
 import java.util.TreeMap;
 
 import org.junit.Test;
 
 import algorithms.datastructures.AdjacencyListTest;
 import core.Context;
+import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.EdgeNode;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
 import ui.map.geometry.AbstractedBusNetwork;
+import ui.map.geometry.ArrowStroke;
+import ui.map.geometry.Network;
+import ui.map.geometry.factories.BusMarkerFactory;
+import ui.map.geometry.interfaces.MapGraphics;
 
 public class NetworkTest {
     private Graph<BusStop> adjacencyListGraph;
@@ -27,6 +32,7 @@ public class NetworkTest {
     @Test
     public void test1() {
         makeAbstractedBusNetwork(adjacencyListGraph);
+        makeNetwork(adjacencyListGraph);
     }
 
     public static <P extends Point2D> void makeAbstractedBusNetwork(Graph<P> adjacencyListGraph) {
@@ -38,8 +44,36 @@ public class NetworkTest {
 
         AbstractedBusNetwork abstractedBusNetwork = new AbstractedBusNetwork(adjacencyListGraph);
         abstractedBusNetwork.setPaint(Color.green);
+        abstractedBusNetwork.createLineSegment();
+        abstractedBusNetwork.createLines(adjacencyListGraph);
+
+        for (P p1 : adjacencyListGraph) {
+            abstractedBusNetwork.createMarker(p1);
+        }
+
+        Network network = new Network(adjacencyListGraph);
+        network.createLines(adjacencyListGraph);
 
         Context.getContext().getMap().addMapGraphics(abstractedBusNetwork);
+
+        network.setFactory(new BusMarkerFactory());
+        assertTrue(network.getFactory() instanceof BusMarkerFactory);
+        network.setStroke(new ArrowStroke(2, 1, 2));
+        List<MapGraphics> list = new ArrayList<>();
+        list.add(abstractedBusNetwork);
+        network.setMapGraphics(list);
+        assertTrue(network.getMapGraphics().contains(abstractedBusNetwork));
+        assertFalse(network.getPaint().equals(abstractedBusNetwork.getPaint()));
+    }
+
+    public static <P extends Point2D> void makeNetwork(Graph<P> adjacencyListGraph) {
+        Network network = new Network(adjacencyListGraph);
+        network.createLines(adjacencyListGraph);
+
+        Network network2 = new Network(new AdjacencyListGraph<>());
+        network2.createLines(new AdjacencyListGraph<>());
+
+        Context.getContext().getMap().addMapGraphics(network);
     }
 
     @Test

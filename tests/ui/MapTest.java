@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import org.junit.jupiter.api.Test;
 
+import core.Context;
 import ui.map.Map;
 
 public class MapTest {
@@ -38,5 +39,8 @@ public class MapTest {
         newPoint3.setLocation(point3.getX(), 1);
         map.setTranslation(newPoint3);
         map.setScale(map.getScale() + 100);
+
+        map.clearIcons();
+        Context.getContext().getMap().clearIcons();
     }
 }

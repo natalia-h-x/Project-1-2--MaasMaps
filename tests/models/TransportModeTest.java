@@ -1,8 +1,10 @@
 package models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +15,7 @@ import core.models.Trip;
 import core.models.transport.Biking;
 import core.models.transport.Bus;
 import core.models.transport.Transport;
+import core.models.transport.TransportMode;
 import core.models.transport.Walking;
 import ui.MaasMapsUI;
 import ui.map.geometry.GeographicLine;
@@ -67,5 +70,15 @@ public class TransportModeTest {
         Context.getContext().getMap().repaint();
 
         Transport.ofBiking(new GeographicLine(), Time.of(2), new ArrayList<Trip>());
+
+        bus.calculateShortestPath();
+
+        Bus bus2 = bus;
+        bus.hashCode();
+        assertTrue(bus.equals(bus2));
+    }
+
+    @Test
+    public void transportModeTest() {
     }
 }

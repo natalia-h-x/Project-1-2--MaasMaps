@@ -28,11 +28,11 @@ public class ZipcodeTest {
     @Test
     public void gettingLocationAPITest() {
         try {
-            Location location = new APIRequest().getLocation("6211AB");
-            assertEquals(50.857758901804, location.getLongitude(), 0.1);
-            assertEquals(5.6909697778482, location.getLatitude(), 0.1);
+            Location location = new APIRequest().getLocation("6229EN");
+            assertEquals(50.857758901804, location.getLatitude(), 0.1);
+            assertEquals(5.6909697778482, location.getLongitude(), 0.1);
         } catch (Exception e) {
-            assert(true);
+            assert(true); //FIXME remove when API is fixed
         }
     }
 
