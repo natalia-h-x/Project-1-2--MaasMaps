@@ -1,5 +1,6 @@
 package ui.map;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -89,6 +90,8 @@ public class Map extends JPanel implements TranslateableComponent {
 
     @SuppressWarnings("unchecked")
     private void drawMapIcon(Graphics2D g2) {
+        g2.setPaint(Color.black);
+
         for (MapGraphics icon : (Iterable<MapGraphics>) icons.clone()) {
             if (icon != null)
                 icon.paint(g2);
