@@ -17,8 +17,12 @@ import ui.NetworkTest;
 
 public class LoadGraphTest {
 
+    public static void main(String[] args){
+        test1();
+    }
+
     @Test
-    public void test1() {
+    public static void test1() {
         try {
             Graph<Point2D> graph = MapManager.getBusGraph();
 

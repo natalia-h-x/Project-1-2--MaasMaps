@@ -2,7 +2,6 @@ package core.models.transport;
 
 import java.util.List;
 
-import core.models.Location;
 import core.models.Time;
 import core.models.Trip;
 import lombok.AccessLevel;

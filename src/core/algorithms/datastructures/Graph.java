@@ -51,13 +51,6 @@ public interface Graph<T> extends Iterable<T> {
      */
     public void addEdge(T x, T y, int weight, Trip trip, Time time);
 
-    /**
-     * Inserts an edge in the vertex x
-     *
-     * @param x
-     * @param y
-     */
-    public void addEdge(EdgeNode<T> edge, T x);
 
     /**
      * Removes the edge from the vertices x to y

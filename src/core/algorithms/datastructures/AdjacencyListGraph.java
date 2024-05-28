@@ -85,15 +85,6 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     }
 
     @Override
-    public void addEdge(EdgeNode<T> edge, T x) {
-        if (!containsVertex(x) || !containsVertex(edge.getElement())) {
-            throw new IllegalArgumentException("One or both vertices are not in the Graph.");
-        }
-
-        vertices.get(x).add(edge);
-    }
-
-    @Override
     public void removeEdge(T x, T y) {
         if (!containsVertex(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
@@ -124,8 +115,11 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     public Graph<T> clone() {
         AdjacencyListGraph<T> copy = new AdjacencyListGraph<>();
         for (T vertex : vertices.keySet()) {
-            copy.addVertex(vertex);
+            if (!copy.containsVertex(vertex))
+                copy.addVertex(vertex);
             for (EdgeNode<T> edge : vertices.get(vertex)) {
+                if (!copy.containsVertex(edge.getElement()))
+                    copy.addVertex(edge.getElement());
                 copy.addEdge(vertex, edge.getElement(), edge.getWeight());
             }
         }

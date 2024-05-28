@@ -1,13 +1,30 @@
 package ui;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import org.junit.jupiter.api.Test;
 
+import core.Context;
+import core.algorithms.datastructures.Graph;
+import core.managers.MapManager;
 import ui.map.Map;
+import ui.map.geometry.AbstractedBusNetwork;
+import ui.map.geometry.Network;
 
 public class MapTest {
     private Map map;
+
+    // This main method is to test more in depth if the GUI actually looks good.
+    public static void main(String[] args) {
+        new MaasMapsUI();
+
+        Graph<Point2D> graph = MapManager.getBusGraph();
+        Network abstractedBusNetwork = new AbstractedBusNetwork(graph);
+
+        Context.getContext().getMap().addMapGraphics(abstractedBusNetwork);
+        Context.getContext().getMap().repaint();
+    }
 
     public MapTest() {
         map = new Map();
@@ -38,5 +55,8 @@ public class MapTest {
         newPoint3.setLocation(point3.getX(), 1);
         map.setTranslation(newPoint3);
         map.setScale(map.getScale() + 100);
+
+        map.clearIcons();
+        Context.getContext().getMap().clearIcons();
     }
 }

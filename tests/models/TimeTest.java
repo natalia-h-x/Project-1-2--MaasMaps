@@ -66,6 +66,27 @@ public class TimeTest {
 
         n.update(7321);
         assertEquals("2 hours, 2 minutes and 1 second.", n.toString());
+        
+        assertEquals("2:2:1", n.toISOString());
+
+        Time time = Time.of(50, 2, 1);
+        assertEquals("50 hours, 2 minutes and 1 second.", time.toString());
+
+        Time time1 = Time.of(1, 1, 1);
+        assertEquals("1 hour, 1 minute and 1 second.", time1.toString());
+
+        assertEquals("1 hour, 2 minutes and 1 second.", Time.of(1, 2, 1).toString());
+        assertEquals("1 hour, 2 minutes and 2 seconds.", Time.of(1, 2, 2).toString());
+        assertEquals("1 hour, 1 minute and 2 seconds.", Time.of(1, 1, 2).toString());
+        assertEquals("1 hour and 1 minute.", Time.of(1, 1, 0).toString());
+        assertEquals("2 hours and 1 second.", Time.of(2, 0, 1).toString());
+        assertEquals("1 hour and 2 seconds.", Time.of(1, 0, 2).toString());
+        assertEquals("1 hour and 1 second.", Time.of(1, 0, 1).toString());
+        assertEquals("2 minutes and 2 seconds.", Time.of(0, 2, 2).toString());
+        assertEquals("2 minutes and 1 second.", Time.of(0, 2, 1).toString());
+        assertEquals("1 minute and 1 second.", Time.of(0, 1, 1).toString());
+        assertEquals(".", Time.of(0, 0, 0).toString());
+
     }
 
     @Test

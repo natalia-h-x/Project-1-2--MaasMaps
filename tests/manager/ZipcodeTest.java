@@ -1,10 +1,15 @@
 package manager;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
 import core.models.Location;
+import core.models.ZipCode;
+import core.zipcode.APIRequest;
 import core.zipcode.ZipCodeDatabase;
 
 public class ZipcodeTest {
@@ -24,11 +29,11 @@ public class ZipcodeTest {
     @Test
     public void gettingLocationAPITest() {
         try {
-            Location location = db.getLocation("6211AB");
-            assertEquals(50.857758901804, location.getLongitude(), 0.1);
-            assertEquals(5.6909697778482, location.getLatitude(), 0.1);
+            Location location = new APIRequest().getLocation("6229EN");
+            assertEquals(50.857758901804, location.getLatitude(), 0.1);
+            assertEquals(5.6909697778482, location.getLongitude(), 0.1);
         } catch (Exception e) {
-            assert(true);
+            fail(e);
         }
     }
 
@@ -39,5 +44,30 @@ public class ZipcodeTest {
         } catch (IllegalArgumentException e) {
             assert(true);
         }
+    }
+
+    @Test
+    public void zipCodeTest() {
+        ZipCode zipCode = new ZipCode("6227XBA", new Location(50.839116, 5.734282));
+
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("62D7XB");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("62276B");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("62276B");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("622!FX");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("6227{B");
+        assertFalse(ZipCode.isValid(zipCode.getCode()));
+        zipCode.setCode("6227XB");
+        zipCode.setLocation(new Location(50.839116, 5.734282));
+        assertEquals(-412058659, zipCode.hashCode());
+        ZipCode zipCode1 = new ZipCode("6227XB", new Location(50.839116, 5.734282));
+        assertTrue(zipCode1.equals(zipCode));
+        assertTrue(zipCode.toString().equals(zipCode.toString()));
+        zipCode1.setCode("6226AB");
+        assertFalse(zipCode.equals(zipCode1));
     }
 }

@@ -37,7 +37,7 @@ public class DatabaseManager {
             return optimizeDatabaseForBulkInsert(DriverManager.getConnection(DATABASE_PATH));
         }
         catch (SQLException e) {
-            throw new IllegalAccessError("Could not access database.");
+            throw new IllegalArgumentException("Could not access database.", e);
         }
     }
 

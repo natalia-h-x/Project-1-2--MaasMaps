@@ -30,6 +30,12 @@ public class DijkstraTest {
         assert(((BusStop) line.getLocations().get(2)).getStopName().contains("Maastricht, Dorpstraat/De Leim"));
         assert(((BusStop) line.getLocations().get(3)).getStopName().contains("Maastricht, Dorpstraat/Kerk"));
         assert(((BusStop) line.getLocations().get(4)).getStopName().contains("Maastricht, Rijksweg/Veldstraat"));
+        
+        assertEquals("Walking", transport.getManualTransportModeA().toString());
+        assertEquals("Walking", transport.getManualTransportModeB().toString());
+        assertEquals("6 minutes.", transport.getTime().toString());
+        transport.toString();
+        transport.getTransfers();
     }
 
     @Test
