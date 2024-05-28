@@ -35,21 +35,20 @@ public class EdgeNode<T> {
      * @param arrivalTime the time you arrive at the bus stop, where you want to look for departing buses to take.
      * @return
      */
-    public int getWeight(Time arrivalTime, Trip transfer) {
-        Trip trip = departureTimes.get(arrivalTime);
+    public int getWeight(int arrivalTime, Trip transfer) {
+        Trip trip = departureTimes.get(Time.of(arrivalTime));
 
         if (trip != null) {
             transfer.copyInto(trip);
             return weight;
         }
 
-        int arrival = arrivalTime.toSeconds();
         int closestDepartureTime = Integer.MAX_VALUE;
 
         for (Map.Entry<Time, Trip> entry : departureTimes.entrySet()) {
             Time departureTime = entry.getKey();
 
-            if (departureTime.toSeconds() < arrival)
+            if (departureTime.toSeconds() < arrivalTime)
                 break;
 
             transfer.copyInto(entry.getValue());
@@ -59,7 +58,7 @@ public class EdgeNode<T> {
         if (closestDepartureTime == Integer.MAX_VALUE)
             return Integer.MAX_VALUE;
 
-        return weight + closestDepartureTime - arrival;
+        return weight + closestDepartureTime - arrivalTime;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class DijkstraAlgorithm {
 
         Map<T, List<T>> paths = new HashMap<>();
         Map<T, List<Trip>> transfers = new HashMap<>();
-        Map<T, Time> times = new HashMap<>();
+        Map<T, List<Time>> times = new HashMap<>();
         Map<T, Integer> weights = new HashMap<>();
         PriorityQueue<T> unsettled = new PriorityQueue<>((a, b) -> weights.get(b).compareTo(weights.get(a)));
         Set<T> settled = new HashSet<>();
@@ -37,20 +37,21 @@ public class DijkstraAlgorithm {
 
         // Create an edge with departing time and source
         unsettled.add(source);
-        times.put(source, startTime);
         transfers.put(source, new LinkedList<>());
+        times.computeIfAbsent(source, v -> new LinkedList<>()).add(startTime);
         paths.computeIfAbsent(source, v -> new LinkedList<>()).add(source);
 
         while (!unsettled.isEmpty()) {
             // Removing the minimum distance node from the priority process
             T vertex = unsettled.poll();
-            Time time = times.get(vertex);
+            List<Time> time = times.get(vertex);
             List<T> path = paths.get(vertex);
             List<Trip> trips = transfers.get(vertex);
             Trip trip = trips.isEmpty() ? null : trips.get(trips.size() - 1);
+            int currentWeight = weights.get(vertex);
 
             if (vertex.equals(end))
-                return Transport.of(toGeographicLine(paths.get(vertex)), times.get(vertex).minus(startTime), transfers.get(vertex));
+                return Transport.of(toGeographicLine(path, time), Time.of(currentWeight).minus(startTime), transfers.get(vertex));
 
             if (!settled.add(vertex))
                 continue; // Skip processing if already settled
@@ -59,20 +60,20 @@ public class DijkstraAlgorithm {
             for (EdgeNode<T> edge : graph.neighbors(vertex)) {
                 T adjacent = edge.getElement();
                 Trip transfer = Trip.empty();
-                int weight = edge.getWeight(time, transfer);
+                int weight = edge.getWeight(currentWeight, transfer);
 
                 if (weight == Integer.MAX_VALUE)
                     continue;
 
                 if (!settled.contains(adjacent)) {
-                    int newTime = weights.get(vertex) + weight;
+                    int newTime = currentWeight + weight;
 
                     if (newTime < weights.getOrDefault(adjacent, Integer.MAX_VALUE)) {
-                        times.put(adjacent, time.add(weight));
                         weights.put(adjacent, newTime);
                         unsettled.add(adjacent);
-
+                        
                         // Add vertex to path
+                        times.computeIfAbsent(adjacent, v -> new LinkedList<>(time)).add(Time.of(weight));
                         paths.computeIfAbsent(adjacent, v -> new LinkedList<>(path)).add(adjacent);
 
                         // Conditionally add trip to transfers
@@ -89,7 +90,7 @@ public class DijkstraAlgorithm {
         throw new IllegalArgumentException("Could not find a route between these two bus stops.");
     }
 
-    private static <T extends Point2D> GeographicLine toGeographicLine(List<T> shortestDistances) {
-        return LineFactory.createGeographicArrowLine(shortestDistances.toArray(Location[]::new));
+    private static <T extends Point2D> GeographicLine toGeographicLine(List<T> shortestDistances, List<Time> timesTaken) {
+        return LineFactory.createGeographicArrowLine(timesTaken.toArray(Time[]::new), shortestDistances.toArray(Location[]::new));
     }
 }

@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import javax.swing.plaf.ColorUIResource;
 
 import core.models.Location;
+import core.models.Time;
 import ui.map.geometry.ArrowStroke;
 import ui.map.geometry.GeographicLine;
 import ui.map.geometry.Line;
@@ -18,8 +19,12 @@ public class LineFactory {
         return new Line(new Color(0, 0, 255), new ArrowStroke(1, 5, 1), points);
     }
 
+    public static GeographicLine createGeographicArrowLine(Time[] times, Location... points) {
+        return new GeographicLine(new Color(0, 0, 255), new ArrowStroke(1, 5, 1), times, points);
+    }
+
     public static GeographicLine createGeographicArrowLine(Location... points) {
-        return new GeographicLine(new Color(0, 0, 255), new ArrowStroke(1, 5, 1), points);
+        return createGeographicArrowLine(new Time[0], points);
     }
 
     public static Line createResultsLine(Point2D... locations){

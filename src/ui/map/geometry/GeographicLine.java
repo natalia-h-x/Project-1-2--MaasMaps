@@ -8,23 +8,28 @@ import java.awt.geom.Point2D;
 import core.managers.DistanceManager;
 import core.managers.MapManager;
 import core.models.Location;
+import core.models.Time;
 import ui.map.geometry.interfaces.GeographicMapGraphics;
 
 public class GeographicLine extends Line implements GeographicMapGraphics {
+    public GeographicLine(Time[] time, Location... locations) {
+        super(locations);
+    }
+
     public GeographicLine(Location... locations) {
         super(locations);
     }
 
     public GeographicLine(Paint paint, Location... locations) {
-        super(locations);
+        super(paint, locations);
     }
 
     public GeographicLine(Stroke stroke, Location... locations) {
-        super(locations);
+        super(stroke, locations);
     }
 
     public GeographicLine(Paint paint, Stroke stroke, Location... locations) {
-        super(locations);
+        super(paint, stroke, locations);
     }
 
     @Override
