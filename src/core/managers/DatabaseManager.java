@@ -5,7 +5,6 @@ import static core.Constants.Paths.DATABASE_PATH;
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -135,7 +134,7 @@ public class DatabaseManager {
             }
 
             List<String> compositePK = new LinkedList<>();
-            
+
             for (int i = 0; i < headers.length; i++) {
                 String type = types[i];
 
@@ -158,14 +157,14 @@ public class DatabaseManager {
 
             if (!compositePK.isEmpty())
                 bld.append("PRIMARY KEY (");
-            
+
             for (String attrib : compositePK) {
                 bld.append("`" + attrib + "`,");
             }
-            
+
             if (!compositePK.isEmpty())
                 bld.append(")\n");
-            
+
             bld.append(");");
             stmt.execute(bld.toString().replace(",)", ")"));
         }
@@ -188,7 +187,7 @@ public class DatabaseManager {
 
         if (m.find())
             return m.group(1);
-        
+
         return "";
     }
 
