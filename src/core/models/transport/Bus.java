@@ -74,6 +74,10 @@ public class Bus extends TransportMode {
         return shortestVehicleRoute.orElseThrow();
     }
 
+    public int getTransfers() {
+        return getChosenRoute().getTransfers().size() - 1;
+    }
+
     public void calculateShortestPath() {
         List<Transport> routes = new ArrayList<>();
         List<Location> locationsIntoRadius = MapManager.getAllPointsWithin(getStart(), Context.getContext().getMap().getRadius());
@@ -95,11 +99,11 @@ public class Bus extends TransportMode {
                         manualSource.setDestination(closestStarts[i]);
                         manualDestination.setStart(closestDestinations[j]);
                         manualDestination.setDestination(getDestination());
-    
+
                         Transport route = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(manualSource.getTravelTime()));
                         route.setManualTransportModeA(manualSource);
                         route.setManualTransportModeB(manualDestination);
-    
+
                         routes.add(route);
                     }
                 }

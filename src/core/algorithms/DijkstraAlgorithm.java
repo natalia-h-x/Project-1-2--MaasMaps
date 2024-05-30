@@ -33,7 +33,7 @@ public class DijkstraAlgorithm {
         PriorityQueue<T> unsettled = new PriorityQueue<>((a, b) -> weights.get(b).compareTo(weights.get(a)));
         Set<T> settled = new HashSet<>();
 
-        weights.put(source, 0);
+        weights.put(source, startTime.toSeconds());
 
         // Create an edge with departing time and source
         unsettled.add(source);
@@ -71,7 +71,7 @@ public class DijkstraAlgorithm {
                     if (newTime < weights.getOrDefault(adjacent, Integer.MAX_VALUE)) {
                         weights.put(adjacent, newTime);
                         unsettled.add(adjacent);
-                        
+
                         // Add vertex to path
                         times.computeIfAbsent(adjacent, v -> new LinkedList<>(time)).add(Time.of(weight));
                         paths.computeIfAbsent(adjacent, v -> new LinkedList<>(path)).add(adjacent);
@@ -92,5 +92,15 @@ public class DijkstraAlgorithm {
 
     private static <T extends Point2D> GeographicLine toGeographicLine(List<T> shortestDistances, List<Time> timesTaken) {
         return LineFactory.createGeographicArrowLine(timesTaken.toArray(Time[]::new), shortestDistances.toArray(Location[]::new));
+    }
+
+    private static <T extends Point2D> Time toTime(List<Time> timesTaken, Time startTime) {
+        Time total = Time.of(0);
+
+        for (Time time : timesTaken) {
+            total = total.add(time);
+        }
+
+        return total.minus(startTime);
     }
 }

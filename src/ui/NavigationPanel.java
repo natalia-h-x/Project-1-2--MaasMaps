@@ -35,7 +35,7 @@ import ui.map.geometry.Radius;
 
 /**
  * This class represents the side navigation panel in the UI
- * 
+ *
  * @author Natalia Hadjisoteriou
  */
 public class NavigationPanel extends JPanel {
@@ -139,15 +139,15 @@ public class NavigationPanel extends JPanel {
         timeLabel.setFont(new Font(" ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // Create Check Box header
-        JLabel checkTransfer = new JLabel("Select if you want to include bus transfers: ");
+        JLabel checkTransfer = new JLabel("The count when you need bus transfers: ");
         checkTransfer.setFont(
-                new Font("Select if you want to include bus transfers: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
+                new Font("The count when you need bus transfers: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // create check boxes
-        JCheckBox checkBox = new JCheckBox("Yes");
+        JLabel transferCount = new JLabel("");
 
         checkTransfer.setVisible(false);
-        checkBox.setVisible(false);
+        transferCount.setVisible(false);
 
         // Create Combo Box header
         JLabel transportType = new JLabel("Select means of transport: ");
@@ -167,13 +167,13 @@ public class NavigationPanel extends JPanel {
         clearButton.setForeground(Color.WHITE);
         selectionPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         selectionPanel2.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-        checkBox.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+        transferCount.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         bottomPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         selectionPanel.add(transportType, BorderLayout.WEST);
         selectionPanel.add(selection, BorderLayout.CENTER);
         selectionPanel.add(calculate, BorderLayout.EAST);
         selectionPanel2.add(checkTransfer, BorderLayout.WEST);
-        selectionPanel2.add(checkBox, BorderLayout.CENTER);
+        selectionPanel2.add(transferCount, BorderLayout.CENTER);
         bottomPanel.add(clearButton, BorderLayout.SOUTH);
         bottomPanel.add(selectionPanel, BorderLayout.CENTER);
         bottomPanel.add(timeLabel, BorderLayout.NORTH);
@@ -195,7 +195,7 @@ public class NavigationPanel extends JPanel {
         // Create an array of JComponent to hold the components
         JComponent[] components = new JComponent[] {
                 textField1, textField2, calculate, selection, departure, departureField,
-                search, radiusField, busRandom, checkTransfer, checkBox, clearButton
+                search, radiusField, busRandom, checkTransfer, transferCount, clearButton
         };
 
         // Call the addActionListeners method and pass the array of components
@@ -217,7 +217,7 @@ public class NavigationPanel extends JPanel {
         JTextField radiusField = (JTextField) components[7];
         JButton busRandom = (JButton) components[8];
         JLabel checkTransfer = (JLabel) components[9];
-        JCheckBox checkBox = (JCheckBox) components[10];
+        JLabel transferCount = (JLabel) components[10];
 
         calculate.addActionListener(e -> {
             try {
@@ -226,20 +226,21 @@ public class NavigationPanel extends JPanel {
                 transportMode.setStart(db.getLocation(textField1.getText()));
                 transportMode.setDestination(db.getLocation(textField2.getText()));
 
-                
                 if (transportMode instanceof Bus)
                     for (TransportMode option : options) {
                         if (option instanceof Bus b) {
                             b.setDepartingTime(Time.of(departureField.getText()));
-                            b.setAllowTransfers(checkBox.isSelected());
                         }
                     }
 
                 Context.getContext().getMap().clearIcons();
-                
+
                 if (radiusField.getText().length() > 0)
                     Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
-                
+
+                if (transportMode instanceof Bus b)
+                    transferCount.setText(String.valueOf(b.getTransfers()));
+
                 Context.getContext().getMap().addMapGraphics(transportMode.getGraphics());
 
                 timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + transportMode.getTravelTime().toString());
@@ -261,7 +262,7 @@ public class NavigationPanel extends JPanel {
                     radiusField.setVisible(true);
                     busRandom.setVisible(true);
                     checkTransfer.setVisible(true);
-                    checkBox.setVisible(true);
+                    transferCount.setVisible(true);
                 } else {
                     // Hide components related to bus stops
                     departure.setVisible(false);
@@ -270,7 +271,7 @@ public class NavigationPanel extends JPanel {
                     radiusField.setVisible(false);
                     busRandom.setVisible(false);
                     checkTransfer.setVisible(false);
-                    checkBox.setVisible(false);
+                    transferCount.setVisible(false);
                 }
             }
         });
