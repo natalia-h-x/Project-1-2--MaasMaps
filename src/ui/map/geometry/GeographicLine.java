@@ -44,6 +44,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
             for (int i = 0; i < getLocations().size() - 1; i++) {
                 Location loc1 = (Location) getLocations().get(i);
                 Location loc2 = (Location) getLocations().get(i + 1);
+
                 totalDistance += DistanceManager.haversine(loc1, loc2);
             }
         }
