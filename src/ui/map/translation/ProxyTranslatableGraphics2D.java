@@ -21,7 +21,9 @@ import java.awt.TexturePaint;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -105,6 +107,15 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
             rectangle.setRect(translateX(rectangle.getX()), translateY(rectangle.getY()), scaleX(rectangle.getWidth()), scaleY(rectangle.getHeight()));
         else if (s instanceof Ellipse2D ellipse)
             ellipse.setFrame(translateX(ellipse.getX()), translateY(ellipse.getY()), scaleX(ellipse.getWidth()), scaleY(ellipse.getHeight()));
+        else if (s instanceof QuadCurve2D curve)
+            curve.setCurve(translateX(curve.getX1()), translateY(curve.getY1()),
+                           translateX(curve.getCtrlX()), translateY(curve.getCtrlY()),
+                           translateX(curve.getX2()), translateY(curve.getY2()));
+        else if (s instanceof CubicCurve2D curve)
+            curve.setCurve(translateX(curve.getX1()), translateY(curve.getY1()),
+                           translateX(curve.getCtrlX1()), translateY(curve.getCtrlY1()),
+                           translateX(curve.getCtrlX2()), translateY(curve.getCtrlY2()),
+                           translateX(curve.getX2()), translateY(curve.getY2()));
     }
 
     private void translatePolygon(Polygon p) {

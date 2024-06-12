@@ -38,10 +38,10 @@ public class LineTest {
     }
 
     public <P extends Point2D> void points(Graph<P> adjacencyListGraph) {
-        Line line = new Line(new ArrowStroke(0, 0, 0));
-        GeographicLine geographicLine = new GeographicLine(new ArrowStroke(0, 0, 0));
+        Line line = LineFactory.createLine(new ArrowStroke(0, 0, 0));
+        GeographicLine geographicLine = LineFactory.createGeographicLine(new ArrowStroke(0, 0, 0));
         Paint paint = null;
-        GeographicLine geographicLine2 = new GeographicLine(paint);
+        GeographicLine geographicLine2 = LineFactory.createGeographicLine(paint);
 
         line.setLocations(new ArrayList<>());
         line.setAnimatorTimer(new Timer(0, null));

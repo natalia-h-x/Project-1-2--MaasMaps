@@ -1,6 +1,5 @@
 package ui.map.geometry;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
@@ -34,9 +33,7 @@ public class MapBackground implements MapGraphics {
     }
 
     @Override
-    public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-
+    public void paint(Graphics2D g2) {
         if (mapImage == null)
             return;
 

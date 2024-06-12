@@ -49,8 +49,8 @@ public class Marker implements MapGraphics {
     }
 
     @Override
-    public void paint(Graphics g) {
-        Graphics2D g2 = new ProxyTranslatableGraphics2D((Graphics2D) g, 1, offset);
+    public void paint(Graphics2D g2) {
+        g2 = new ProxyTranslatableGraphics2D(g2, 1, offset);
 
         Point iconPoint = getIconLocation();
 
