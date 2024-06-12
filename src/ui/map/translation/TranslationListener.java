@@ -67,7 +67,10 @@ public class TranslationListener {
 
                 if (useClipboard) {
                     point.translate((int) -translation.getX(), (int) -translation.getY());
-                    pushClipboardString("new Point(%d, %d)".formatted(Math.floorDiv((int) (point.getX() / getScale()), 5) * 5, Math.floorDiv((int) (point.getY() / getScale()), 5) * 5));
+                    pushClipboardString("new Point(%d, %d)".formatted(
+                        Math.floorDiv((int) (point.getX() / getScale()), 5) * 5,
+                        Math.floorDiv((int) (point.getY() / getScale()), 5) * 5
+                    ));
                 }
             }
 

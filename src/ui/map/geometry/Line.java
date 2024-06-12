@@ -69,10 +69,13 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
 
                 // Filter out control points here into the segment, to make the creation of bezier or cubic curves a lot easier (nicely automatic)
                 List<Point2D> controlPoints = new ArrayList<>();
-                
-                while (end instanceof ControlPoint) {
-                    controlPoints.add(end);
+                Point2D previousPoint = start;
+
+                while (end instanceof ControlPoint controlPoint) {
+                    controlPoints.add(controlPoint);
                     end = locations.get(++i + 1);
+                    controlPoint.map(previousPoint, end);
+                    previousPoint = controlPoint;
                 }
 
                 segments.add(createSegment(start, end, controlPoints));

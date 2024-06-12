@@ -12,7 +12,7 @@ import ui.map.geometry.factories.LineFactory;
 public class AbstractedBusNetwork extends BusNetwork {
     private static final AbstractorMap map = new AbstractorMap(
             LineFactory.createLine(Color.GREEN,
-                    new Point       (747 , 942 ), new ControlPoint(759 , 535 ), new Point       (848 , 470 ), new Point       (866 , 240 ),
+                    new Point       (747 , 942 ), new ControlPoint(759 , 535 ), new ControlPoint(848 , 470 ), new Point       (866 , 240 ),
                     new Point       (1045, 232 ), new Point       (1108, 140 ), new Point       (1157, 138 ), new Point       (1221, 39  ),
                     new Point       (1301, 33  )),
             LineFactory.createLine(Color.BLUE,
@@ -28,7 +28,7 @@ public class AbstractedBusNetwork extends BusNetwork {
                     new Point       (743 , 942 ), new Point       (953 , 945 ), new Point       (953 , 1149),
                     new Point       (846 , 1149)),
             LineFactory.createLine(Color.MAGENTA,
-                    new Point       (745 , 929 ), new Point       (573 , 929 ), new ControlPoint(521 , 929 ), new Point       (521 , 971 ),
+                    new Point       (745 , 929 ), new Point       (573 , 929 ), new ControlPoint.Implode()          , new Point       (521 , 971 ),
                     new Point       (521 , 1003),
                     new Point       (451 , 1003), new Point       (451 , 822 ), new Point       (147 , 822 ), new Point       (147 , 586 ),
                     new Point       (63  , 586 )),
@@ -52,6 +52,18 @@ public class AbstractedBusNetwork extends BusNetwork {
 
     public <P extends Point2D> AbstractedBusNetwork(Graph<P> graph) {
         super(graph);
+    }
+
+    @Override
+    public Line createLineSegment(Point2D... points) {
+        for (int i = 0; i < points.length; i++) {
+            points[i] = new Point2DImpostor(points[i], abstractingFunction);
+        }
+
+        Line segment = new Line(points);
+        segment.setStroke(getStroke());
+
+        return segment;
     }
 
     @Override
