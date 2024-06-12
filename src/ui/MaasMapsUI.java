@@ -3,6 +3,8 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -14,9 +16,11 @@ import core.Constants.UIConstants;
 import core.Context;
 import core.algorithms.datastructures.Graph;
 import core.managers.MapManager;
+import core.models.ZipCode;
 import ui.map.Map;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
+import ui.map.geometry.AccessibilityMapBackground;
 import ui.map.geometry.MapBackground;
 import ui.map.geometry.Network;
 
@@ -38,9 +42,13 @@ public class MaasMapsUI extends JFrame {
         setLayout(new BorderLayout()); // Use borderlayout to completely fill the child panel in this panel
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        List<String> postalCodes = new ArrayList<>();
+        for (ZipCode zipCode : Context.getContext().getZipCodeDatabase().getZipCodes()) {
+            postalCodes.add(zipCode.getCode());
+        }
+
         // Creating all components
-        map = new Map();
-        map.addMapBackground();
+        map = new Map(new AccessibilityMapBackground(postalCodes));
         map.setMinimumSize(new Dimension(800, 500));
         map.setPreferredSize(new Dimension(800, 500));
 
@@ -66,7 +74,7 @@ public class MaasMapsUI extends JFrame {
         navigationPanel.setMinimumSize(new Dimension(450, 600));
         navigationPanel.setPreferredSize(new Dimension(500, 600));
 
-        Map resultsPanel = new Map();
+        Map resultsPanel = new Map(null);
         resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         resultsPanel.setMinimumSize(new Dimension(500,150));
         resultsPanel.setPreferredSize(new Dimension(500,150));

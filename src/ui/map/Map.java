@@ -5,19 +5,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.TexturePaint;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import core.Context;
-import core.managers.ExceptionManager;
-import core.managers.FileManager;
 import lombok.Getter;
-import lombok.Setter;
 import ui.map.geometry.MapBackground;
 import ui.map.geometry.interfaces.MapGraphics;
 import ui.map.translation.ProxyTranslatableGraphics2D;
@@ -36,15 +28,15 @@ public class Map extends JPanel implements TranslateableComponent {
     @Getter private transient TranslationListener translationListener = new TranslationListener(this);
     @Getter private transient ArrayList<MapGraphics> icons = new ArrayList<>();
     @Getter
-    private MapBackground mapBackground = new MapBackground();
-    private boolean useMapBackground = false;
+    private transient MapBackground mapBackground;
 
     /** Variables for translating this Map */
     private double scale;
     private double radius = 1000;
     private Point translation;
 
-    public Map() {
+    public Map(MapBackground mapBackground) {
+        this.mapBackground = mapBackground;
         scale = 1;
         translation = new Point(0, 0);
     }
@@ -57,11 +49,21 @@ public class Map extends JPanel implements TranslateableComponent {
 
         applyFastRenderingHints(g2);
 
-        if (useMapBackground) {
+        if (mapBackground != null) {
             mapBackground.paint(g2);
         }
 
         drawMapIcon(g2);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void drawMapIcon(Graphics2D g2) {
+        g2.setPaint(Color.black);
+
+        for (MapGraphics icon : (Iterable<MapGraphics>) icons.clone()) {
+            if (icon != null)
+                icon.paint(g2);
+        }
     }
 
     private void applyFastRenderingHints(Graphics2D g2) {
@@ -76,28 +78,13 @@ public class Map extends JPanel implements TranslateableComponent {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
     }
 
-    @SuppressWarnings("unchecked")
-    private void drawMapIcon(Graphics2D g2) {
-        g2.setPaint(Color.black);
-
-        for (MapGraphics icon : (Iterable<MapGraphics>) icons.clone()) {
-            if (icon != null)
-                icon.paint(g2);
-        }
-    }
-
-    public void addMapBackground() {
-        useMapBackground = true;
-    }
-
-
     public void addMapGraphics(MapGraphics icon) {
         icons.add(icon);
 
         repaint();
     }
 
-    public void clearIcons() {
+    public void clear() {
         icons.clear();
 
         repaint();
