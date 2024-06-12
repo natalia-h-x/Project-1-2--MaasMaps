@@ -2,12 +2,12 @@ package ui.map.geometry;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import core.algorithms.datastructures.EdgeNode;
@@ -61,8 +61,12 @@ public class Network implements MapGraphics {
         }
     }
 
-    protected void addGraphic(MapGraphics graphic) {
-        mapGraphics.add(graphic);
+    public void clear() {
+        mapGraphics.clear();
+    }
+
+    public void addGraphic(MapGraphics... graphic) {
+        mapGraphics.addAll(Arrays.asList(graphic));
     }
 
     public Marker createMarker(Point2D p1) {
@@ -78,9 +82,7 @@ public class Network implements MapGraphics {
     }
 
     @Override
-    public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-
+    public void paint(Graphics2D g2) {
         for (MapGraphics graphic : mapGraphics) {
             graphic.paint(g2);
         }

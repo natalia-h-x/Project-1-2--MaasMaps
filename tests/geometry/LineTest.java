@@ -10,16 +10,16 @@ import java.awt.geom.Point2D;
 import org.junit.jupiter.api.Test;
 
 import ui.map.geometry.Line;
+import ui.map.geometry.factories.LineFactory;
 
 public class LineTest {
-
     @Test
     public void testLineConstructorAndGetters() {
         Point2D p1 = new Point.Double(100, 100);
         Point2D p2 = new Point.Double(200, 200);
         Point2D p3 = new Point.Double(300, 300);
 
-        Line line = new Line(Color.RED, new BasicStroke(3), p1, p2, p3);
+        Line line = LineFactory.createLine(Color.RED, new BasicStroke(3), p1, p2, p3);
 
         assertEquals(Color.RED, line.getPaint());
         assertEquals(new BasicStroke(3), line.getStroke());
@@ -35,7 +35,7 @@ public class LineTest {
         Point2D p1 = new Point.Double(100, 100);
         Point2D p2 = new Point.Double(200, 200);
 
-        Line line = new Line(Color.BLUE, new BasicStroke(2), p1);
+        Line line = LineFactory.createLine(Color.BLUE, new BasicStroke(2), p1);
         line.addLocation(p2);
 
         assertEquals(2, line.getLocations().size());
@@ -48,7 +48,7 @@ public class LineTest {
         Point2D p2 = new Point.Double(200, 200);
         Point2D p3 = new Point.Double(300, 300);
 
-        Line line = new Line(p1, p2, p3);
+        Line line = LineFactory.createLine(p1, p2, p3);
 
         Line.Segment[] segments = line.getLineIterator();
         assertEquals(2, segments.length);
@@ -65,6 +65,6 @@ public class LineTest {
         Point2D p2 = new Point.Double(200, 200);
         Point2D p3 = new Point.Double(300, 300);
 
-        Line line = new Line(Color.GREEN, new BasicStroke(4), p1, p2, p3);
+        LineFactory.createLine(Color.GREEN, new BasicStroke(4), p1, p2, p3);
     }
 }

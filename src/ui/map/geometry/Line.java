@@ -2,13 +2,14 @@ package ui.map.geometry;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
+import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.QuadCurve2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -18,11 +19,9 @@ import java.util.NoSuchElementException;
 import javax.swing.Timer;
 
 import core.Context;
-import core.managers.MapManager;
-import core.models.Time;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode.Exclude;
 import ui.map.geometry.interfaces.MapGraphics;
 
 /**
@@ -30,58 +29,20 @@ import ui.map.geometry.interfaces.MapGraphics;
  * @author Arda Ayyildizbayraktar
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment> {
     private static final int ANIMATION_SPEED = 100;
     private List<Point2D> locations = new ArrayList<>();
-    private List<Time> times = new ArrayList<>();
     private Paint paint = new Color(001, 010, 100);
     private Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
     private Point offset = new Point();
-    private Timer animatorTimer = new Timer(ANIMATION_SPEED, e -> advanceLineDrawIterator(e));
-    private Segment[] lineIterator;
-    private int animatedSegments = 0;
-    private Time time;  
+    @Exclude private Timer animatorTimer = new Timer(ANIMATION_SPEED, e -> advanceLineDrawIterator(e));
+    @Exclude private Segment[] lineIterator;
+    @Exclude private int animatedSegments = 0;
 
     // take the locations as parameter
     public Line(Point2D... points) {
         this.locations.addAll(Arrays.asList(points));
-    }
-
-    public Line(Paint paint, Point2D... points) {
-        this(points);
-        this.paint = paint;
-    }
-
-    public Line(Stroke stroke, Point2D... points) {
-        this(points);
-        this.stroke = stroke;
-    }
-
-    public Line(Paint paint, Stroke stroke, Point2D... points) {
-        this(points);
-        this.paint = paint;
-        this.stroke = stroke;
-    }
-    public Line(Point2D[] points, Time[] times) {
-        this(points);
-        this.times.addAll(Arrays.asList(times));
-    }
-
-    public Paint getPaint() {
-        return paint;
-    }
-
-    public void setPaint(Paint paint) {
-        this.paint = paint;
-    }
-
-    public Stroke getStroke() {
-        return stroke;
-    }
-
-    public void setStroke(Stroke stroke) {
-        this.stroke = stroke;
     }
 
     public void addLocation(Point2D point) {
@@ -91,34 +52,47 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
     public void addRelativeLocation(Point2D loc) {
         Point2D p = locations.get(locations.size() - 1);
         loc.setLocation(p.getX() + loc.getX(), p.getY() + loc.getY());
-        addLocation(loc);
-    }
 
-    public void drawLineSegment(Graphics2D g2, Point2D p1, Point2D p2) {
-        g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
+        addLocation(loc);
     }
 
     public Segment[] getLineIterator() {
         ArrayList<Segment> segments = new ArrayList<>();
 
-        for (int i = 0; i < locations.size() - 1; i++) {
-            Point2D p1 = locations.get(i);
-            Point2D p2 = locations.get(i + 1);
+        try {
+            for (int i = 0; i < locations.size() - 1; i++) {
+                Point2D start = locations.get(i);
+                Point2D end = locations.get(i + 1);
+                
+                if (start == null || end == null)
+                    continue;
 
-            if (p1 == null || p2 == null)
-                continue;
+                // Filter out control points here into the segment, to make the creation of bezier or cubic curves a lot easier (nicely automatic)
+                List<Point2D> controlPoints = new ArrayList<>();
+                
+                while (end instanceof ControlPoint) {
+                    controlPoints.add(end);
+                    end = locations.get(++i + 1);
+                }
 
-            segments.add(new Segment(p1, p2));
+                segments.add(createSegment(start, end, controlPoints));
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("A line cannot end with a control point.");
         }
 
         return segments.toArray(Segment[]::new);
     }
 
-    @Override
-    public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+    public Segment createSegment(Point2D start, Point2D end, List<Point2D> controlPoints) {
+        return new Segment(start, end, controlPoints.toArray(Point2D[]::new));
+    }
 
+    @Override
+    public void paint(Graphics2D g2) {
         g2.setStroke(stroke);
+        g2.setPaint(paint);
 
         if (animatedSegments == 0)
             animatorTimer.start();
@@ -128,16 +102,10 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
         for (int i = 0; i < Math.min(animatedSegments, lineIterator.length); i++) {
             // Set paint color for the line
             g2.setPaint(paint);
-            drawLineSegment(g2, lineIterator[i].getStart(), lineIterator[i].getEnd());
-            
-            Point2D centerPoint = new Point2D.Double(
-                (lineIterator[i].getStart().getX() + lineIterator[i].getEnd().getX()) / 2,
-                (lineIterator[i].getStart().getY() + lineIterator[i].getEnd().getY()) / 2
-            );
-            if (i < times.size() && times.get(i) != null) {
-                MapManager.drawString(g2, times.get(i).toISOString(), centerPoint);
-            }
+            lineIterator[i].paint(g2);
         }
+
+        g2.setPaint(new Color(0, 0, 0));
     }
 
     public void advanceLineDrawIterator(ActionEvent e) {
@@ -150,10 +118,130 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
     }
 
     @Data
-    @AllArgsConstructor
-    public static class Segment {
+    public static class Segment implements MapGraphics, Iterable<Segment> {
+        private static final int QUAD_SUBDIVISIONS = 4;
+        private static final int BEZIER_SUBDIVISIONS = 6;
         private Point2D start;
         private Point2D end;
+        private List<Point2D> controlPoints = new ArrayList<>();
+        private Interpolation interpolation = Interpolation.FLAT;
+
+        public Segment(Point2D start, Point2D end, Interpolation interpolation, Point2D... controlPoints) {
+            this.start = start;
+            this.end = end;
+            this.controlPoints = Arrays.asList(controlPoints);
+            this.interpolation = interpolation;
+        }
+
+        public Segment(Point2D start, Point2D end, Point2D... controlPoints) {
+            this(start, end, controlPoints.length <= 0? Interpolation.FLAT :
+                             controlPoints.length <= 1? Interpolation.QUADRATIC : Interpolation.BEZIER, controlPoints);
+
+            if (controlPoints.length > 2) {
+                throw new IllegalArgumentException("More than 2 control points are not supported");
+            }
+        }
+
+        enum Interpolation {
+            FLAT {
+                @Override
+                public void paint(Graphics2D g2, Point2D start, Point2D end, Point2D... controlPoints) {
+                    g2.drawLine((int) start.getX(), (int) start.getY(), (int) end.getX(), (int) end.getY());
+                }
+
+                @Override
+                public Segment[] subdivide(Point2D start, Point2D end, Point2D... controlPoints) {
+                    return new Segment[] {new Segment(start, end)};
+                }
+            },
+            QUADRATIC {
+                @Override
+                public void paint(Graphics2D g2, Point2D start, Point2D end, Point2D... controlPoints) {
+                    g2.draw(new QuadCurve2D.Double((int) start.getX(), (int) start.getY(),
+                                                   (int) controlPoints[0].getX(), (int) controlPoints[0].getY(),
+                                                   (int) end.getX(), (int) end.getY()));
+                }
+
+                @Override
+                public Segment[] subdivide(Point2D start, Point2D end, Point2D... controlPoints) {
+                    var curve = new QuadCurve2D.Double((int) start.getX(), (int) start.getY(),
+                                            (int) controlPoints[0].getX(), (int) controlPoints[0].getY(),
+                                            (int) end.getX(), (int) end.getY());
+
+                    return subdivide(curve, new ArrayList<>(QUAD_SUBDIVISIONS), 0).toArray(Segment[]::new);
+                }
+
+                private List<Segment> subdivide(QuadCurve2D curve, List<Segment> segments, int level) {
+                    if (level >= QUAD_SUBDIVISIONS) {
+                        segments.add(new Segment(curve.getP1(), curve.getP2()));
+                        
+                        return segments;
+                    }
+                    
+                    var curve1 = new QuadCurve2D.Double();
+                    var curve2 = new QuadCurve2D.Double();
+                    curve.subdivide(curve1, curve2);
+
+                    subdivide(curve1, segments, level + 1);
+                    subdivide(curve2, segments, level + 1);
+
+                    return segments;
+                }
+            },
+            BEZIER {
+                @Override
+                public void paint(Graphics2D g2, Point2D start, Point2D end, Point2D... controlPoints) {
+                    g2.draw(new CubicCurve2D.Double((int) start.getX(), (int) start.getY(),
+                                                   (int) controlPoints[0].getX(), (int) controlPoints[0].getY(),
+                                                   (int) controlPoints[1].getX(), (int) controlPoints[1].getY(),
+                                                   (int) end.getX(), (int) end.getY()));
+                }
+
+                @Override
+                public Segment[] subdivide(Point2D start, Point2D end, Point2D... controlPoints) {
+                    var curve = new CubicCurve2D.Double((int) start.getX(), (int) start.getY(),
+                                            (int) controlPoints[0].getX(), (int) controlPoints[0].getY(),
+                                            (int) controlPoints[1].getX(), (int) controlPoints[1].getY(),
+                                            (int) end.getX(), (int) end.getY());
+
+                    return subdivide(curve, new ArrayList<>(BEZIER_SUBDIVISIONS), 0).toArray(Segment[]::new);
+                }
+
+                private List<Segment> subdivide(CubicCurve2D curve, List<Segment> segments, int level) {
+                    if (level >= BEZIER_SUBDIVISIONS) {
+                        segments.add(new Segment(curve.getP1(), curve.getP2()));
+
+                        return segments;
+                    }
+
+                    var curve1 = new CubicCurve2D.Double();
+                    var curve2 = new CubicCurve2D.Double();
+                    curve.subdivide(curve1, curve2);
+
+                    subdivide(curve1, segments, level + 1);
+                    subdivide(curve2, segments, level + 1);
+
+                    return segments;
+                }
+            };
+
+            public abstract void paint(Graphics2D g2, Point2D start, Point2D end, Point2D... controlPoints);
+            public abstract Segment[] subdivide(Point2D start, Point2D end, Point2D... controlPoints);
+        }
+
+        @Override
+        public void paint(Graphics2D g2) {
+            interpolation.paint(g2, start, end, controlPoints.toArray(Point2D[]::new));
+        }
+
+        public Segment[] getSubdivisions() {
+            return interpolation.subdivide(start, end, controlPoints.toArray(Point2D[]::new));
+        }
+
+        @Override
+        public Iterator<Segment> iterator() {
+            return Arrays.stream(getSubdivisions()).iterator();
+        }
     }
 
     @Override
@@ -175,20 +263,5 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
                 return segments[++position];
             }
         };
-    }
-    public void setTime(Time time) {
-        this.time = time;
-    }
-    
-    public Time getTime() {
-        return this.time;
-    }
-
-    public void addTime(Time time) {
-        times.add(time);
-    }
-    public void setTimes(Time... times) {
-        this.times.clear();
-        this.times.addAll(Arrays.asList(times));
     }
 }

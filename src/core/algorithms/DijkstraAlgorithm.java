@@ -91,7 +91,7 @@ public class DijkstraAlgorithm {
     }
 
     private static <T extends Point2D> GeographicLine toGeographicLine(List<T> shortestDistances, List<Time> timesTaken) {
-        return LineFactory.createGeographicArrowLine(timesTaken.toArray(Time[]::new), shortestDistances.toArray(Location[]::new));
+        return LineFactory.createResultsLine(timesTaken.toArray(Time[]::new), shortestDistances.toArray(Location[]::new));
     }
 
     private static <T extends Point2D> Time toTime(List<Time> timesTaken, Time startTime) {

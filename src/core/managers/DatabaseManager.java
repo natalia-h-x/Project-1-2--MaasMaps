@@ -17,8 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.Graph;
@@ -130,7 +128,7 @@ public class DatabaseManager {
             bld.append(createTableSQL);
 
             for (int i = 0; i < headers.length; i++) {
-                bld.append("`" + headers[i] + "` " + removeTags(types[i]) + ",\n");
+                bld.append("`" + headers[i] + "` " + SerializationManager.removeTags(types[i]) + ",\n");
             }
 
             List<String> compositePK = new LinkedList<>();
@@ -139,15 +137,19 @@ public class DatabaseManager {
                 String type = types[i];
 
                 while (type.contains("<")) {
-                    String tag = getFirstTag(type);
-                    type = removeFirstTag(type);
+                    String tag = SerializationManager.getFirstTag(type);
+                    type = SerializationManager.removeFirstTag(type);
 
                     switch (tag.split(" ")[0]) {
                         case "PK":
                             compositePK.add(headers[i]);
                             break;
                         case "FK":
-                            bld.append("FOREIGN KEY (`%s`) REFERENCES (`%s`)),\n".formatted(headers[i], tag.replace("FK ", "").replace(".", "`(`")));
+                            bld.append(
+                                    "FOREIGN KEY (`%s`) REFERENCES `%s`),"
+                                    .formatted(headers[i], tag.replace("FK ", "")
+                                                              .replace(".", "`(`")))
+                               .append("\n");
                             break;
                         default:
                             throw new UnsupportedOperationException("XML Command not supported.");
@@ -171,24 +173,6 @@ public class DatabaseManager {
         catch (SQLException e) {
             throw new IllegalArgumentException("Error on creating table \"%s\"".formatted(tableName), e);
         }
-    }
-
-    private static String removeTags(String xml) {
-        return xml.replaceAll("<.*>", "");
-    }
-
-    private static String removeFirstTag(String xml) {
-        return xml.replaceFirst("<(.*?)>", "");
-    }
-
-    private static String getFirstTag(String xml) {
-        Pattern r = Pattern.compile("<(.*?)>");
-        Matcher m = r.matcher(xml);
-
-        if (m.find())
-            return m.group(1);
-
-        return "";
     }
 
     private static Connection optimizeDatabaseForBulkInsert(Connection connection) throws SQLException {

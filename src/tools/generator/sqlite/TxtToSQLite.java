@@ -100,7 +100,7 @@ public class TxtToSQLite {
             current = current - maxLines;
             createPruneConditions(tableName, smallerLines, headers);
         }
-
+        
         if (current > 0) {
             smallerLines = new String[current];
             System.arraycopy(lines, lines.length - current, smallerLines, 0, current);

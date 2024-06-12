@@ -1,6 +1,7 @@
 package ui.results;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -48,12 +49,12 @@ public class ResultsPanel extends JPanel implements ResultDisplay {
         if (line != null) {
             Point offset = new Point(getWidth()/7, getHeight()/2);
             line.setOffset(offset);
-            line.paint(graphics);
+            line.paint((Graphics2D) graphics);
 
             for (Point2D location : line.getLocations()) {
                 Marker resultMarker = resultMarker((Location) location);
                 resultMarker.setOffset(offset);
-                resultMarker.paint(graphics);
+                resultMarker.paint((Graphics2D) graphics);
             }
         }
     }

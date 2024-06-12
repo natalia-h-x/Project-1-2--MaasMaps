@@ -30,9 +30,9 @@ public class ImageMarker extends Marker {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D) g;
+    public void paint(Graphics2D g2) {
+        super.paint(g2);
+        
         Point point = getIconLocation();
 
         double imageX = (point.x - (imageWidth * scaler) / 2.0);

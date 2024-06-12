@@ -1,6 +1,6 @@
 package ui.map.geometry.interfaces;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 /**
  * Interface that gets implemented by different map icons.
@@ -8,5 +8,5 @@ import java.awt.Graphics;
  * @author Alexandra Plishkin Islamgulova
  */
 public interface MapGraphics {
-    public void paint(Graphics g);
+    public void paint(Graphics2D g);
 }
