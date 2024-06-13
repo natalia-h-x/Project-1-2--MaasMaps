@@ -23,6 +23,18 @@ public class Unzipper {
         System.out.println(GREEN + "[UNZIP: " + zipFilePath + " TO " + targetDirectory + "]" + RESET);
     }
 
+    public static void prepareForDatabase() {
+        Unzipper unzipper = new Unzipper("resources/gtfs", "resources/gtfs/gtfs.zip");
+
+        try {
+            unzipper.unzip();
+            System.out.println("-- Success --");
+        }
+        catch (Exception e) {
+            System.err.println("Error unzipping file: " + e.getMessage());
+        }
+    }
+
     // Method to unzip the file
     public void unzip() throws IOException {
         // Ensure the target directory exists or create it
@@ -49,7 +61,7 @@ public class Unzipper {
                         Files.createDirectories(path);
                     }
                 }
-                
+
                 zipInputStream.closeEntry();
                 entry = zipInputStream.getNextEntry();
             }

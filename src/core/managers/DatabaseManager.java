@@ -168,7 +168,7 @@ public class DatabaseManager {
                 bld.append(")\n");
 
             bld.append(");");
-            stmt.execute(bld.toString().replace(",)", ")"));
+            stmt.execute(bld.toString().replaceAll(",(\n|)\\)", ")"));
         }
         catch (SQLException e) {
             throw new IllegalArgumentException("Error on creating table \"%s\"".formatted(tableName), e);
@@ -330,7 +330,7 @@ public class DatabaseManager {
         // Take for example A -> B -> C, that cannot be A -> C -> B. This will not have correct weights because
         // the times are also not chonological.
         List<?>[] attributes = executeQuery("select trip_id, stop_id, arrival_time, departure_time\r\n" + //
-            "from stop_times ORDER BY CAST(trip_id AS INT), CAST(stop_sequence AS INT);\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
+            "from stop_times ORDER BY trip_id, stop_sequence;\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         int previousTripId = -1;
         Time departureTime = null;

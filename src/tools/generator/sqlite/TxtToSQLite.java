@@ -8,8 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import core.managers.DatabaseManager;
 import core.managers.FileManager;
@@ -26,14 +28,14 @@ public class TxtToSQLite {
         long startTime = System.currentTimeMillis(); // Start timer
         File folder = new File(folderPath);
         File[] listOfFiles = sortFiles(folder.listFiles());
-        
+
         types = new HashMap<>();
-        types.put("agency.txt", "<PK>INT:VARCHAR(64):VARCHAR(256):VARCHAR(64):VARCHAR(32)".split(","));
-        types.put("calendar_dates.txt", "<PK>INT:DATE:INT".split(","));
-        types.put("feed_info.txt", "VARCHAR(64),VARCHAR(8),VARCHAR(256),VARCHAR(8),DATE,DATE,INT".split(","));
+        types.put("agency.txt", "<PK>INT:VARCHAR(64):VARCHAR(256):VARCHAR(64):VARCHAR(32)".split(":"));
+        types.put("calendar_dates.txt", "INT:DATE:INT".split(":"));
+        types.put("feed_info.txt", "VARCHAR(64):VARCHAR(8):VARCHAR(256):DATE:DATE:VARCHAR(8):INT".split(":"));
         types.put("routes.txt", "<PK>INT:VARCHAR(64):VARCHAR(256):VARCHAR(512):VARCHAR(256):INT:CHAR(6):CHAR(6):VARCHAR(256)".split(":"));
         types.put("shapes.txt", "<PK>INT:INT:DOUBLE:DOUBLE:INT".split(":"));
-        types.put("stop_times.txt", "<PK>INT:<PK>INT:<FK stops.stop_id>INT:VARCHAR(64):TIME:TIME:INT:INT:INT:INT UNSIGNED:INT UNSIGNED".split(":"));
+        types.put("stop_times.txt", "<PK>VARCHAR(16):<PK>INT:<FK stops.stop_id>INT:VARCHAR(64):TIME:TIME:INT:INT:INT:INT UNSIGNED:INT UNSIGNED".split(":"));
         types.put("stops.txt", "<PK>INT:VARCHAR(16):VARCHAR(64):DOUBLE:DOUBLE:INT:<FK stops.stop_id>INT:VARCHAR(64):INT:VARCHAR(8):VARCHAR(32)".split(":"));
         types.put("transfers.txt", "<PK><FK stops.stop_id>INT:<PK><FK stops.stop_id>INT:<PK><FK routes.route_id>INT:<PK><FK routes.route_id>INT:<PK><FK trips.trip_id>INT:<PK><FK trips.trip_id>INT:INT".split(":"));
         types.put("trips.txt", "<PK>INT:INT:<FK trips.trip_id>INT:VARCHAR(64):VARCHAR(256):VARCHAR(256):VARCHAR(512):INT:INT:<FK shapes.shape_id>INT:INT:INT".split(":"));
@@ -93,60 +95,64 @@ public class TxtToSQLite {
         DatabaseManager.createTable(tableName, headers, types.get(file.getName()));
         int maxLines = 10000;
         int current = lines.length;
-        String[] smallerLines = new String[maxLines];
+        String[] batch = new String[maxLines];
 
         for (int i = 0; i < divideData(lines.length, maxLines); i++) {
-            System.arraycopy(lines, i*maxLines, smallerLines, 0, maxLines);
+            System.arraycopy(lines, i*maxLines, batch, 0, maxLines);
             current = current - maxLines;
-            createPruneConditions(tableName, smallerLines, headers);
+            String[] pruned = prune(tableName, batch, headers);
+
+            if (pruned.length != 0)
+                insertData(tableName, pruned, headers);
         }
-        
+
         if (current > 0) {
-            smallerLines = new String[current];
-            System.arraycopy(lines, lines.length - current, smallerLines, 0, current);
-            createPruneConditions(tableName, smallerLines, headers);
+            batch = new String[current];
+            System.arraycopy(lines, lines.length - current, batch, 0, current);
+            String[] pruned = prune(tableName, batch, headers);
+
+            if (pruned.length != 0)
+                insertData(tableName, pruned, headers);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private static void createPruneConditions(String tableName, String[] lines, String[] headers) {
+    private static String[] prune(String tableName, String[] lines, String[] headers) {
         if (tableName.equals("stops"))
             lines = pruneLines(lines);
 
-
         if (tableName.equals("stop_times") || tableName.equals("transfers")) {
-            List<String> stopIDs = (List<String>) DatabaseManager.executeQuery("SELECT `stop_id` FROM stops", new ArrayList<String>())[0];
-            List<Integer> indexes = getIndexes(headers, "stop_id");
+            List<Integer> stopIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `stop_id` FROM stops", new ArrayList<Integer>())[0];
+            List<Integer> indexes = indexOf(headers, "stop_id");
 
-            lines = pruneLines(lines, stopIDs, indexes);
+            lines = pruneLines(lines, new HashSet<>(stopIDs), new HashSet<>(indexes));
         }
 
         if (tableName.equals("trips")) {
-            List<String> routeIDs = (List<String>) DatabaseManager.executeQuery("SELECT `trip_id` FROM stop_times", new ArrayList<String>())[0];
-            List<Integer> indexes = getIndexes(headers, "trip_id");
+            List<Integer> routeIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `trip_id` FROM stop_times", new ArrayList<Integer>())[0];
+            List<Integer> indexes = indexOf(headers, "trip_id");
 
-            lines = pruneLines(lines, routeIDs, indexes);
+            lines = pruneLines(lines, new HashSet<>(routeIDs), new HashSet<>(indexes));
         }
 
         if (tableName.equals("shapes")) {
-            List<String> shapeIDs = (List<String>) DatabaseManager.executeQuery("SELECT `shape_id` FROM trips", new ArrayList<String>())[0];
-            List<Integer> indexes = getIndexes(headers, "shape_id");
+            List<Integer> shapeIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `shape_id` FROM trips", new ArrayList<Integer>())[0];
+            List<Integer> indexes = indexOf(headers, "shape_id");
 
-            lines = pruneLines(lines, shapeIDs, indexes);
+            lines = pruneLines(lines, new HashSet<>(shapeIDs), new HashSet<>(indexes));
         }
 
         if (tableName.equals("routes")) {
-            List<String> shapeIDs = (List<String>) DatabaseManager.executeQuery("SELECT `route_id` FROM trips", new ArrayList<String>())[0];
-            List<Integer> indexes = getIndexes(headers, "route_id");
+            List<Integer> shapeIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `route_id` FROM trips", new ArrayList<Integer>())[0];
+            List<Integer> indexes = indexOf(headers, "route_id");
 
-            lines = pruneLines(lines, shapeIDs, indexes);
+            lines = pruneLines(lines, new HashSet<>(shapeIDs), new HashSet<>(indexes));
         }
 
-        if (lines.length != 0)
-            insertData(tableName, lines, headers);
+        return lines;
     }
 
-    private static List<Integer> getIndexes(String[] headers, String attributeName) {
+    private static List<Integer> indexOf(String[] headers, String attributeName) {
         List<Integer> indexes = new ArrayList<>();
 
         for (int i = 0; i < headers.length; i++) {
@@ -197,18 +203,18 @@ public class TxtToSQLite {
         return prunedLines.toArray(new String[0]);
     }
 
-    private static String[] pruneLines(String[] lines, List<String> IDs, List<Integer> indexes) {
-        List<String> prunedLines = new ArrayList<>();
+    private static String[] pruneLines(String[] lines, Set<Integer> ids, Set<Integer> indexes) {
+        Set<String> prunedLines = new HashSet<>();
 
-        for (int i = 0; i < lines.length; i++) {
-            for (int index : indexes) {
-                String[] current = parseCSV(lines[i].trim());
+        for (int i = 1; i < lines.length; i++) {
+            String[] current = parseCSV(lines[i].trim());
 
-                for (String ID : IDs) {
-                    if (current[index].equalsIgnoreCase(ID) && !prunedLines.contains(lines[i]))
+            try {
+                for (int index : indexes) {
+                    if (ids.contains(Integer.parseInt(current[index])) && !prunedLines.contains(lines[i]))
                         prunedLines.add(lines[i]);
                 }
-            }
+            } catch (NumberFormatException e) {}
         }
 
         return prunedLines.toArray(new String[0]);

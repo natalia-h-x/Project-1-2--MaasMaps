@@ -9,12 +9,17 @@ import org.junit.Test;
 
 import core.managers.DatabaseManager;
 import core.managers.FileManager;
+import tools.generator.sqlite.db_helpers.Unzipper;
 
 public class CreateDatabaseTest {
     public static void main(String[] args) {
         new CreateDatabaseTest().createDatabaseTest();
     }
-    
+
+    public CreateDatabaseTest() {
+        Unzipper.prepareForDatabase();
+    }
+
     @Test
     public void createDatabaseTest() {
         try {

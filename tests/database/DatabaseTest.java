@@ -3,12 +3,12 @@ package database;
 import org.junit.jupiter.api.Test;
 
 import core.managers.DatabaseManager;
-import tools.generator.sqlite.db_helpers.DBPreparation;
+import tools.generator.sqlite.db_helpers.Unzipper;
 
 public class DatabaseTest {
     @Test
     public void test1() {
-        new DBPreparation();
+        Unzipper.prepareForDatabase();
     }
 
     @Test
