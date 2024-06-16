@@ -49,14 +49,17 @@ public class MaasMapsUI extends JFrame {
         // Creating all components
         map = new Map();
         map.addMapBackground();
-        map.setMinimumSize(new Dimension(800, 500));
+        map.setMinimumSize(new Dimension(800, 150));
         map.setPreferredSize(new Dimension(800, 500));
+        map.setSize(new Dimension(800, 500));
 
         ProxyMap proxyMap = new ProxyMap(map);
         Context.getContext().setMap(proxyMap);
 
         // Create split pane with left and right panels
         JSplitPane verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        verticalSplitPane.setDividerLocation(10000);
+
         JSplitPane horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         setContentPane(horizontalSplitPane);
 
@@ -74,8 +77,8 @@ public class MaasMapsUI extends JFrame {
 
         Map resultsPanel = new Map();
         resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-        resultsPanel.setMinimumSize(new Dimension(500, 150));
         resultsPanel.setPreferredSize(new Dimension(500, 150));
+        resultsPanel.setSize(new Dimension(500, 150));
 
         Graph<Point2D> graph = MapManager.getBusGraph();
         Network abstractedBusNetwork = new AbstractedBusNetwork(graph);
