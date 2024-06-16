@@ -34,11 +34,11 @@ public class TxtToSQLite {
         types.put("calendar_dates.txt", "INT:DATE:INT".split(":"));
         types.put("feed_info.txt", "VARCHAR(64):VARCHAR(8):VARCHAR(256):DATE:DATE:VARCHAR(8):INT".split(":"));
         types.put("routes.txt", "<PK>INT:VARCHAR(64):VARCHAR(256):VARCHAR(512):VARCHAR(256):INT:CHAR(6):CHAR(6):VARCHAR(256)".split(":"));
-        types.put("shapes.txt", "<PK>INT:INT:DOUBLE:DOUBLE:INT".split(":"));
-        types.put("stop_times.txt", "<PK>VARCHAR(16):<PK>INT:<FK stops.stop_id>INT:VARCHAR(64):TIME:TIME:INT:INT:INT:INT UNSIGNED:INT UNSIGNED".split(":"));
+        types.put("shapes.txt", "<PK>INT:<PK>INT:DOUBLE:DOUBLE:INT".split(":"));
+        types.put("stop_times.txt", "<PK>INT:<PK>INT:<FK stops.stop_id>INT:VARCHAR(64):TIME:TIME:INT:INT:INT:INT UNSIGNED:INT UNSIGNED".split(":"));
         types.put("stops.txt", "<PK>INT:VARCHAR(16):VARCHAR(64):DOUBLE:DOUBLE:INT:<FK stops.stop_id>INT:VARCHAR(64):INT:VARCHAR(8):VARCHAR(32)".split(":"));
         types.put("transfers.txt", "<PK><FK stops.stop_id>INT:<PK><FK stops.stop_id>INT:<PK><FK routes.route_id>INT:<PK><FK routes.route_id>INT:<PK><FK trips.trip_id>INT:<PK><FK trips.trip_id>INT:INT".split(":"));
-        types.put("trips.txt", "<PK>INT:INT:<FK trips.trip_id>INT:VARCHAR(64):VARCHAR(256):VARCHAR(256):VARCHAR(512):INT:INT:<FK shapes.shape_id>INT:INT:INT".split(":"));
+        types.put("trips.txt", "<FK routes.route_id>INT:INT:<PK>INT:VARCHAR(64):VARCHAR(256):VARCHAR(256):VARCHAR(512):INT:INT:<FK shapes.shape_id>INT:INT:INT".split(":"));
 
         System.out.println("\n" + GREEN + "[CONNECTING TO DATABASE]" + RESET);
 
@@ -92,6 +92,10 @@ public class TxtToSQLite {
         String[] lines = FileManager.readLines(file);
         String[] headers = parseCSV(lines[0].trim());
 
+        if (file.getName().contains("trips")) {
+            System.out.println();
+        }
+
         DatabaseManager.createTable(tableName, headers, types.get(file.getName()));
         int maxLines = 10000;
         int current = lines.length;
@@ -129,10 +133,10 @@ public class TxtToSQLite {
         }
 
         if (tableName.equals("trips")) {
-            List<Integer> routeIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `trip_id` FROM stop_times", new ArrayList<Integer>())[0];
+            List<Integer> tripIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `trip_id` FROM stop_times", new ArrayList<Integer>())[0];
             List<Integer> indexes = indexOf(headers, "trip_id");
 
-            lines = pruneLines(lines, new HashSet<>(routeIDs), new HashSet<>(indexes));
+            lines = pruneLines(lines, new HashSet<>(tripIDs), new HashSet<>(indexes));
         }
 
         if (tableName.equals("shapes")) {
@@ -156,7 +160,7 @@ public class TxtToSQLite {
         List<Integer> indexes = new ArrayList<>();
 
         for (int i = 0; i < headers.length; i++) {
-            if (headers[i].contains(attributeName))
+            if (headers[i].equals(attributeName))
                 indexes.add(i);
         }
 

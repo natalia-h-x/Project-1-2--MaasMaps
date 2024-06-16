@@ -194,12 +194,12 @@ public class DatabaseManager {
 
         for (int i = 0; i < attributes[0].size(); i++) {
             try {
-                Integer id = Integer.parseInt((String) attributes[0].get(i));
-                BusStop busStop = new BusStop(id, Double.parseDouble((String) attributes[1].get(i)), Double.parseDouble((String) attributes[2].get(i)), (String) attributes[3].get(i));
+                Integer id = (int) attributes[0].get(i);
+                BusStop busStop = new BusStop(id, (double) attributes[1].get(i), (double) attributes[2].get(i), (String) attributes[3].get(i));
 
                 map.put(id, busStop);
             }
-            catch (NumberFormatException e) {
+            catch (ClassCastException e) {
                 ExceptionManager.warn(new IllegalStateException("Could not parse row from stops table", e));
             }
         }
@@ -210,16 +210,16 @@ public class DatabaseManager {
     public static Map<Integer, Trip> getTrips() {
         Map<Integer, Trip> map = new HashMap<>();
         List<?>[] attributes = executeQuery("select trip_id, shape_id, route_id, trip_headsign\r\n" + //
-            "from trips;\r\n", new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>());
+            "from trips;\r\n", new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<String>());
 
         for (int i = 0; i < attributes[0].size(); i++) {
             try {
-                int id = Integer.parseInt((String) attributes[0].get(i));
-                Trip trip = new Trip(id, Integer.parseInt((String) attributes[1].get(i)), Integer.parseInt((String) attributes[2].get(i)), (String) attributes[3].get(i));
+                int id = (int) attributes[0].get(i);
+                Trip trip = new Trip(id, (int) attributes[1].get(i), (int) attributes[2].get(i), (String) attributes[3].get(i));
 
                 map.put(id, trip);
             }
-            catch (NumberFormatException e) {
+            catch (ClassCastException e) {
                 ExceptionManager.warn(new IllegalStateException("Could not parse row from trips table", e));
             }
         }
@@ -230,11 +230,11 @@ public class DatabaseManager {
     public static Map<Integer, Route> getRoutes() {
         Map<Integer, Route> map = new HashMap<>();
         List<?>[] attributes = executeQuery("select route_id, route_long_name, route_color\r\n" + //
-            "from routes;\r\n", new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>());
+            "from routes;\r\n", new ArrayList<Integer>(), new ArrayList<String>(), new ArrayList<String>());
 
         for (int i = 0; i < attributes[0].size(); i++) {
             try {
-                int id = Integer.parseInt((String) attributes[0].get(i));
+                int id = (int) attributes[0].get(i);
                 Route trip = new Route(id, (String) attributes[1].get(i), Color.decode((String) attributes[2].get(i)));
 
                 map.put(id, trip);
@@ -248,16 +248,16 @@ public class DatabaseManager {
     }
 
     public static Shape getShape(int shapeId) {
-        List<?>[] attributes = executeQuery("select shape_pt_sequence, shape_pt_lat, shape_pt_lon\r\n" + //
+        List<?>[] attributes = executeQuery("select shape_pt_lat, shape_pt_lon\r\n" + //
             "from shapes\r\n" + //
-            "where shape_id = '%s'".formatted(shapeId), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
+            "where shape_id = '%s' ORDER BY shape_pt_sequence".formatted(shapeId), new ArrayList<Double>(), new ArrayList<Double>());
 
         try {
             List<Location> locations = new ArrayList<>();
 
             for (int i = 0; i < attributes[0].size(); i++) {
-                locations.add(new Location(Double.parseDouble((String) attributes[1].get(i)),
-                                           Double.parseDouble((String) attributes[2].get(i))));
+                locations.add(new Location((double) attributes[0].get(i),
+                                           (double) attributes[1].get(i)));
             }
 
             return new Shape(shapeId, Color.gray, locations.toArray(Location[]::new));
@@ -330,15 +330,15 @@ public class DatabaseManager {
         // Take for example A -> B -> C, that cannot be A -> C -> B. This will not have correct weights because
         // the times are also not chonological.
         List<?>[] attributes = executeQuery("select trip_id, stop_id, arrival_time, departure_time\r\n" + //
-            "from stop_times ORDER BY trip_id, stop_sequence;\r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
+            "from stop_times ORDER BY trip_id, stop_sequence;\r\n", new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         int previousTripId = -1;
         Time departureTime = null;
         BusStop previousBusStop = null;
 
         for (int i = 0; i < attributes[0].size(); i++) {
-            int tripId = Integer.parseInt((String) attributes[0].get(i));
-            int stopId = Integer.parseInt((String) attributes[1].get(i));
+            int tripId = (int) attributes[0].get(i);
+            int stopId = (int) attributes[1].get(i);
             BusStop busStop = getBusStop(stopId);
             Trip trip = Optional.ofNullable(getTrip(tripId)).orElse(Trip.empty());
             Route route = Optional.ofNullable(getRoute(trip.getRouteId())).orElse(Route.empty());
