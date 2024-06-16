@@ -27,19 +27,20 @@ public class AccessibilityMapBackground extends MapBackground {
             accessibilityMap.computeIfAbsent(postalCode, s -> GeoJSONManager.getAccessibilityMetric(postalCode));
 
             Location location = Context.getContext().getZipCodeDatabase().getLocation(postalCode);
-            g2.setPaint(notSiansLinearInterpolation(accessibilityMap.get(postalCode), new Color[] {Color.RED, Color.GREEN, Color.BLUE, Color.PINK, Color.ORANGE, Color.yellow, Color.CYAN, Color.magenta}));
+            g2.setPaint(notSiansLinearInterpolation(accessibilityMap.get(postalCode), new Color[] {Color.YELLOW, Color.GREEN}));
             
             g2.fill(new Ellipse2D.Double(location.getX(), location.getY(), 10, 10));
         }
     }
 
-    public Color notSiansLinearInterpolation(double accessibility, Color[] colors) {
+    public static Color notSiansLinearInterpolation(double accessibility, Color[] colors) {
         double number = accessibility * (colors.length - 1);
-        double inv = 1 - accessibility;
+        double newNumber = number - Math.floor(number);
+        double inv = 1 - newNumber;
 
-        double r = colors[(int) Math.floor(number)].getRed()*accessibility + colors[(int) Math.ceil(number)].getRed()*inv;
-        double g = colors[(int) Math.floor(number)].getGreen()*accessibility + colors[(int) Math.ceil(number)].getGreen()*inv;
-        double b = colors[(int) Math.floor(number)].getBlue()*accessibility + colors[(int) Math.ceil(number)].getBlue()*inv;
+        double r = colors[(int) Math.floor(number)].getRed()*inv + colors[(int) Math.floor(number) + 1].getRed()*newNumber;
+        double g = colors[(int) Math.floor(number)].getGreen()*inv + colors[(int) Math.floor(number) + 1].getGreen()*newNumber;
+        double b = colors[(int) Math.floor(number)].getBlue()*inv + colors[(int) Math.floor(number) + 1].getBlue()*newNumber;
             
         return new Color((float) r / 255, (float) g / 255, (float) b / 255);
     }
