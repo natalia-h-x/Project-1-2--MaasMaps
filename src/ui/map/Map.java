@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import core.Context;
 import core.managers.ExceptionManager;
@@ -43,6 +43,8 @@ public class Map extends JPanel implements TranslateableComponent {
     private double scale;
     private double radius = 1000;
     private Point translation;
+
+
 
     public Map() {
         scale = 1;

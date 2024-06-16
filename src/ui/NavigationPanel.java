@@ -139,7 +139,7 @@ public class NavigationPanel extends JPanel {
         timeLabel.setFont(new Font(" ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // Create Check Box header
-        JLabel checkTransfer = new JLabel("The count when you need bus transfers: ");
+        JLabel checkTransfer = new JLabel("Number of transfers: ");
         checkTransfer.setFont(
                 new Font("The count when you need bus transfers: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 

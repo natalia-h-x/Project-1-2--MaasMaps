@@ -2,6 +2,8 @@ package core;
 
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
+
 import core.models.Time;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -34,6 +36,10 @@ public final class Constants {
         public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.png";
         public static final String A_IMAGE = "resources/visuals/icons/AIcon.png";
         public static final String B_IMAGE = "resources/visuals/icons/BIcon.png";
+        public static final ImageIcon buttonMenu1 = new ImageIcon("resources/visuals/icons/display1.png");
+        public static final ImageIcon buttonMenu2 = new ImageIcon("resources/visuals/icons/display2.png");
+        public static final ImageIcon buttonMenu3 = new ImageIcon("resources/visuals/icons/display3.png");
+        public static final ImageIcon menuIcon = new ImageIcon("resources/visuals/icons/menuIcon.png");
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -50,6 +56,7 @@ public final class Constants {
         public static final String GUI_TIME_LABEL_TEXT = "Average duration: ";
         public static final String GUI_FONT_FAMILY = "Arial";
         public static final int GUI_BORDER_SIZE = 25;
+        public static final int BUTTON_SIZE =65;
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
