@@ -1,12 +1,10 @@
 package ui;
 
 import java.awt.Dimension;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,10 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ItemEvent;
-import java.awt.geom.Ellipse2D;
-
-import javax.swing.JCheckBox;
-
 import core.Constants.UIConstants;
 import core.Constants.Map;
 import core.Context;
@@ -31,7 +25,6 @@ import core.models.transport.Bus;
 import core.models.transport.TransportMode;
 import core.models.transport.Walking;
 import core.zipcode.ZipCodeDatabase;
-import ui.map.geometry.Radius;
 
 /**
  * This class represents the side navigation panel in the UI
@@ -82,18 +75,16 @@ public class NavigationPanel extends JPanel {
 
         // create an empty panel for spacing
         JPanel spacerPanel = new JPanel();
-        spacerPanel.setPreferredSize(new java.awt.Dimension(0, 10));
+        spacerPanel.setPreferredSize(new Dimension(0, 10));
         spacerPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
-        // create an empty panel 2 for spacing
-        JPanel spacerPanel2 = new JPanel();
-        spacerPanel2.setPreferredSize(new java.awt.Dimension(0, 10));
-        spacerPanel2.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
         // create search radius label and field
-        JLabel search = new JLabel("Search radius: ");
+        JLabel search = new JLabel("Search radius (m): ");
         search.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         JTextField radiusField = new JTextField("" + Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
+
+        
 
         // randomize bus stops button
         JButton busRandom = new JButton("Randomize bus stops");
@@ -111,24 +102,48 @@ public class NavigationPanel extends JPanel {
         panel1.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         panel2.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
-        panel1.setLayout(new GridLayout(6, 0, 0, UIConstants.GUI_BORDER_SIZE / 2));
-        panel2.setLayout(new GridLayout(6, 0, 0, UIConstants.GUI_BORDER_SIZE / 2));
+        panel1.setLayout(new GridLayout(7, 0, 0, UIConstants.GUI_BORDER_SIZE / 2));
+        panel2.setLayout(new GridLayout(7, 0, 0, UIConstants.GUI_BORDER_SIZE / 2));
         departure.setVisible(false);
         departureField.setVisible(false);
         search.setVisible(false);
         radiusField.setVisible(false);
         busRandom.setVisible(false);
+
+        // Add the new "Maximal walking time desired" label and field above the "Number of transfers"
+        JLabel walkingTime = new JLabel("Maximal walking time (min): ");
+        walkingTime.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
+
+        JTextField walkingField = new JTextField("" + Map.WALKING_MAX_TIME );
+
+        walkingTime.setVisible(false);
+        walkingField.setVisible(false);
+
+        JLabel checkTransfer = new JLabel("Number of transfers: ");
+        checkTransfer.setFont(new Font("Number of transfers: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
+        
+        // transfer number label
+        JLabel transferCount = new JLabel("");
+
+        checkTransfer.setVisible(false);
+        transferCount.setVisible(false);
+
+        // Adding new components to the panels
         panel1.add(location1);
         panel1.add(location2);
         panel1.add(departure);
         panel1.add(spacerPanel);
         panel1.add(search);
+        panel1.add(walkingTime);
+        panel1.add(checkTransfer);
+        
         panel2.add(textField1);
         panel2.add(textField2);
         panel2.add(departureField);
-        panel2.add(spacerPanel2);
+        panel2.add(busRandom);
         panel2.add(radiusField);
-        panel2.add(busRandom, BorderLayout.CENTER);
+        panel2.add(walkingField);
+        panel2.add(transferCount);
 
         JLabel title = new JLabel("Maas maps");
         title.setForeground(UIConstants.GUI_TITLE_COLOR);
@@ -137,17 +152,6 @@ public class NavigationPanel extends JPanel {
 
         timeLabel = new JLabel(UIConstants.GUI_TIME_LABEL_TEXT);
         timeLabel.setFont(new Font(" ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
-
-        // Create Check Box header
-        JLabel checkTransfer = new JLabel("Number of transfers: ");
-        checkTransfer.setFont(
-                new Font("The count when you need bus transfers: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
-
-        // create check boxes
-        JLabel transferCount = new JLabel("");
-
-        checkTransfer.setVisible(false);
-        transferCount.setVisible(false);
 
         // Create Combo Box header
         JLabel transportType = new JLabel("Select means of transport: ");
@@ -195,7 +199,7 @@ public class NavigationPanel extends JPanel {
         // Create an array of JComponent to hold the components
         JComponent[] components = new JComponent[] {
                 textField1, textField2, calculate, selection, departure, departureField,
-                search, radiusField, busRandom, checkTransfer, transferCount, clearButton
+                search, radiusField, busRandom, checkTransfer, transferCount, walkingTime, walkingField, clearButton
         };
 
         // Call the addActionListeners method and pass the array of components
@@ -218,6 +222,9 @@ public class NavigationPanel extends JPanel {
         JButton busRandom = (JButton) components[8];
         JLabel checkTransfer = (JLabel) components[9];
         JLabel transferCount = (JLabel) components[10];
+        JLabel walkingTime = (JLabel) components[11];
+        JTextField walkingField = (JTextField) components[12];
+
 
         calculate.addActionListener(e -> {
             try {
@@ -263,6 +270,8 @@ public class NavigationPanel extends JPanel {
                     busRandom.setVisible(true);
                     checkTransfer.setVisible(true);
                     transferCount.setVisible(true);
+                    walkingTime.setVisible(true);
+                    walkingField.setVisible(true);
                 } else {
                     // Hide components related to bus stops
                     departure.setVisible(false);
@@ -272,11 +281,13 @@ public class NavigationPanel extends JPanel {
                     busRandom.setVisible(false);
                     checkTransfer.setVisible(false);
                     transferCount.setVisible(false);
+                    walkingTime.setVisible(false);
+                    walkingField.setVisible(false);
                 }
             }
         });
 
-        addClearActionListener((JButton) components[11]);
+        addClearActionListener((JButton) components[13]);
     }
 
     private void addClearActionListener(JButton clearButton) {

@@ -23,6 +23,7 @@ public final class Constants {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Map {
         public static final int POSTAL_CODE_MAX_SEARCH_RADIUS = 200;
+        public static final int WALKING_MAX_TIME = 40;
         public static final int POSTAL_CODE_MAX_BUS_OPTIONS = 20;
         public static final Time DEFAULT_DEPARTURE_TUME = Time.of(7, 0, 0);
     }
