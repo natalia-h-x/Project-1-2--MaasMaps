@@ -100,7 +100,7 @@ public class Bus extends TransportMode {
                         manualDestination.setStart(closestDestinations[j]);
                         manualDestination.setDestination(getDestination());
 
-                        Transport route = DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(manualSource.getTravelTime()));
+                        Transport route = (new DijkstraAlgorithm()).shortestPath(MapManager.getBusGraph(), closestStarts[i], closestDestinations[j], departingTime.add(manualSource.getTravelTime()));
                         route.setManualTransportModeA(manualSource);
                         route.setManualTransportModeB(manualDestination);
 

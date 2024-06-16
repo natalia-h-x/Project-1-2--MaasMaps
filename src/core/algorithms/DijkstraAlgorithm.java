@@ -11,27 +11,24 @@ import java.util.Set;
 
 import core.algorithms.datastructures.EdgeNode;
 import core.algorithms.datastructures.Graph;
-import core.models.Location;
 import core.models.Time;
 import core.models.Trip;
 import core.models.transport.Transport;
-import ui.map.geometry.GeographicLine;
-import ui.map.geometry.factories.LineFactory;
 
-public class DijkstraAlgorithm {
-    private DijkstraAlgorithm() {}
+
+public class DijkstraAlgorithm extends PathStrategy{
 
     // Boy do I hope java has objInserting.equals(objInList) instead of the other way around. Why?
-    public static <T extends Point2D> Transport shortestPath(Graph<T> graph, T source, T end, Time startTime) throws IllegalArgumentException {
+    public Transport shortestPath(Graph<Point2D> graph, Point2D source, Point2D end, Time startTime) throws IllegalArgumentException {
         if (source.equals(end))
             throw new IllegalArgumentException("Start is destination");
 
-        Map<T, List<T>> paths = new HashMap<>();
-        Map<T, List<Trip>> transfers = new HashMap<>();
-        Map<T, List<Time>> times = new HashMap<>();
-        Map<T, Integer> weights = new HashMap<>();
-        PriorityQueue<T> unsettled = new PriorityQueue<>((a, b) -> weights.get(b).compareTo(weights.get(a)));
-        Set<T> settled = new HashSet<>();
+        Map<Point2D, List<Point2D>> paths = new HashMap<>();
+        Map<Point2D, List<Trip>> transfers = new HashMap<>();
+        Map<Point2D, List<Time>> times = new HashMap<>();
+        Map<Point2D, Integer> weights = new HashMap<>();
+        PriorityQueue<Point2D> unsettled = new PriorityQueue<>((a, b) -> weights.get(b).compareTo(weights.get(a)));
+        Set<Point2D> settled = new HashSet<>();
 
         weights.put(source, startTime.toSeconds());
 
@@ -43,9 +40,9 @@ public class DijkstraAlgorithm {
 
         while (!unsettled.isEmpty()) {
             // Removing the minimum distance node from the priority process
-            T vertex = unsettled.poll();
+            Point2D vertex = unsettled.poll();
             List<Time> time = times.get(vertex);
-            List<T> path = paths.get(vertex);
+            List<Point2D> path = paths.get(vertex);
             List<Trip> trips = transfers.get(vertex);
             Trip trip = trips.isEmpty() ? null : trips.get(trips.size() - 1);
             int currentWeight = weights.get(vertex);
@@ -57,8 +54,8 @@ public class DijkstraAlgorithm {
                 continue; // Skip processing if already settled
 
             // Visit all adjacent vertices of the vertex
-            for (EdgeNode<T> edge : graph.neighbors(vertex)) {
-                T adjacent = edge.getElement();
+            for (EdgeNode<Point2D> edge : graph.neighbors(vertex)) {
+                Point2D adjacent = edge.getElement();
                 Trip transfer = Trip.empty();
                 int weight = edge.getWeight(currentWeight, transfer);
 
@@ -90,17 +87,5 @@ public class DijkstraAlgorithm {
         throw new IllegalArgumentException("Could not find a route between these two bus stops.");
     }
 
-    private static <T extends Point2D> GeographicLine toGeographicLine(List<T> shortestDistances, List<Time> timesTaken) {
-        return LineFactory.createResultsLine(timesTaken.toArray(Time[]::new), shortestDistances.toArray(Location[]::new));
-    }
 
-    private static <T extends Point2D> Time toTime(List<Time> timesTaken, Time startTime) {
-        Time total = Time.of(0);
-
-        for (Time time : timesTaken) {
-            total = total.add(time);
-        }
-
-        return total.minus(startTime);
-    }
 }
