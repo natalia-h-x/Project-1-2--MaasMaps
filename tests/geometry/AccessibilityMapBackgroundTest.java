@@ -28,10 +28,9 @@ public class AccessibilityMapBackgroundTest {
             final double j = i;
             Context.getContext().getMap().addMapGraphics(new Marker(new Point2D.Double(i*100, -30.0)) {
                 @Override
-                public void paint(Graphics g) {
-                    Graphics2D g2 = (Graphics2D) g;
-                    g2.setPaint(AccessibilityMapBackground.notSiansLinearInterpolation(j, new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN}));
-                    g2.fill(new Ellipse2D.Double(getLocation().getX(), getLocation().getY(), 10, 10));
+                public void paint(Graphics2D g) {
+                    g.setPaint(AccessibilityMapBackground.notSiansLinearInterpolation(j, new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN}));
+                    g.fill(new Ellipse2D.Double(getLocation().getX(), getLocation().getY(), 10, 10));
                 }
             });
         }

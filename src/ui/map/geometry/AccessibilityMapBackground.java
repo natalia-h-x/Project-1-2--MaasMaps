@@ -26,9 +26,7 @@ public class AccessibilityMapBackground extends MapBackground {
 
 
     @Override
-    public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-
+    public void paint(Graphics2D g) {
         for (String postalCode : postalCodes) {
             accessibilityMap.computeIfAbsent(postalCode, s -> GeoJSONManager.getAccessibilityMetric(postalCode));
 
@@ -36,7 +34,7 @@ public class AccessibilityMapBackground extends MapBackground {
             accesibilityPoints.computeIfAbsent(new Point2D.Double(location.getX(), location.getY()), s -> accessibilityMap.get(postalCode));
         }
 
-        fill(g2);
+        fill(g);
     }
 
     public static Color notSiansLinearInterpolation(double accessibility, Color[] colors) {
