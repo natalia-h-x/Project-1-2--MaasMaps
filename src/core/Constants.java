@@ -25,7 +25,7 @@ public final class Constants {
         public static final int POSTAL_CODE_MAX_SEARCH_RADIUS = 200;
         public static final int WALKING_MAX_TIME = 30;
         public static final int POSTAL_CODE_MAX_BUS_OPTIONS = 20;
-        public static final Time DEFAULT_DEPARTURE_TUME = Time.of(7, 0, 0);
+        public static final Time DEFAULT_DEPARTURE_TIME = Time.of(7, 0, 0);
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)

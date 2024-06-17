@@ -11,6 +11,10 @@ import java.awt.geom.Point2D;
 import core.Context;
 import core.algorithms.datastructures.Graph;
 import core.managers.MapManager;
+import core.models.transport.Biking;
+import core.models.transport.Bus;
+import core.models.transport.TransportMode;
+import core.models.transport.Walking;
 import ui.map.Map;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
@@ -33,6 +37,7 @@ public class MaasMapsUI extends JFrame {
     private JButton button3;
     private JButton legend;
     private Timer timer;
+    private JFrame legendWindow = new JFrame("Legend");
     private boolean expanded = false;
     private int animationStep = 0;
     private final int ANIMATION_STEPS = 30;
@@ -90,6 +95,20 @@ public class MaasMapsUI extends JFrame {
         JPanel legendPanel = new JPanel (new FlowLayout(FlowLayout.RIGHT));
         legendPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
+        // JPanel changeAlgorithmPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+        // changeAlgorithmPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+
+        // // Create Combo Box header
+        // JLabel changeLabel = new JLabel("Select algorithm: ");
+        // changeLabel.setFont(new Font("Select algorithm: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
+
+        // String algoOptions[] = { "A*", "Dijkstra's" };
+
+        // //add combo box to change algorithms
+        // JComboBox<String> changeAlgorithmBox = new JComboBox<> (algoOptions);
+        // changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
+        // changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+
         //add legend button
         legend = new JButton("LEGEND");
         legend.setPreferredSize(new Dimension(150,25));
@@ -105,7 +124,6 @@ public class MaasMapsUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Create a new window
-            JFrame legendWindow = new JFrame("Legend");
             legendWindow.setSize(250, 350);
             legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Set the new window to be visible
@@ -113,8 +131,6 @@ public class MaasMapsUI extends JFrame {
             legendWindow.setLocation(1400, 600); 
         }
     });
-
-    
 
 
         // Adding components to the split panes
@@ -169,6 +185,7 @@ public class MaasMapsUI extends JFrame {
 
         // Add button panel to the frame
         resultsContainer.add(buttonPanel, BorderLayout.NORTH);
+
 
         setVisible(true);
         revalidate();
