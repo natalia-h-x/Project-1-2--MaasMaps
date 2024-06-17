@@ -36,6 +36,7 @@ public class MaasMapsUI extends JFrame {
     private boolean expanded = false;
     private int animationStep = 0;
     private final int ANIMATION_STEPS = 30;
+    private JFrame legendWindow = new JFrame("Legend");
 
     public MaasMapsUI() {
         super("Maas Maps");
@@ -92,7 +93,7 @@ public class MaasMapsUI extends JFrame {
 
         //add legend button
         legend = new JButton("LEGEND");
-        legend.setPreferredSize(new Dimension(150,25));
+        legend.setPreferredSize(new Dimension(100,25));
         legend.setBackground(UIConstants.GUI_TITLE_COLOR);
         legend.setForeground(Color.WHITE);
         legendPanel.add(legend);
@@ -105,7 +106,6 @@ public class MaasMapsUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Create a new window
-            JFrame legendWindow = new JFrame("Legend");
             legendWindow.setSize(250, 350);
             legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Set the new window to be visible
