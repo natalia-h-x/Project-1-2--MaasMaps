@@ -1,32 +1,39 @@
 package ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import core.Constants.Paths;
-import core.Constants.UIConstants;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.WindowConstants;
+
+import core.Constants.Paths;
+import core.Constants.UIConstants;
 import core.Context;
 import core.algorithms.datastructures.Graph;
 import core.managers.MapManager;
-import core.models.transport.Biking;
-import core.models.transport.Bus;
-import core.models.transport.TransportMode;
-import core.models.transport.Walking;
 import ui.map.Map;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
 import ui.map.geometry.MapBackground;
 import ui.map.geometry.Network;
-import ui.map.geometry.interfaces.MapGraphics;
 
 /*
  * 4 closest postal codes
