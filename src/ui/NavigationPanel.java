@@ -245,6 +245,9 @@ public class NavigationPanel extends JPanel {
                 if (radiusField.getText().length() > 0)
                     Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
 
+                if (walkingField.getText().length() > 0)
+                    System.out.println("max walking: " + walkingField.getText()); //temporary
+
                 if (transportMode instanceof Bus b)
                     transferCount.setText(String.valueOf(b.getTransfers()));
 

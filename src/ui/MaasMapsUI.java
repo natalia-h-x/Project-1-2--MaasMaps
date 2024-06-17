@@ -31,6 +31,7 @@ public class MaasMapsUI extends JFrame {
     private JButton button1;
     private JButton button2;
     private JButton button3;
+    private JButton legend;
     private Timer timer;
     private boolean expanded = false;
     private int animationStep = 0;
@@ -85,6 +86,36 @@ public class MaasMapsUI extends JFrame {
 
         resultsPanel.addMapGraphics(abstractedBusNetwork);
         resultsPanel.repaint();
+
+        JPanel legendPanel = new JPanel (new FlowLayout(FlowLayout.RIGHT));
+        legendPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+
+        //add legend button
+        legend = new JButton("LEGEND");
+        legend.setPreferredSize(new Dimension(150,25));
+        legend.setBackground(UIConstants.GUI_TITLE_COLOR);
+        legend.setForeground(Color.WHITE);
+        legendPanel.add(legend);
+
+        legendPanel.setVisible(true);
+        resultsContainer.add(legendPanel,BorderLayout.SOUTH);
+
+        // Add action listener to the button
+        legend.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create a new window
+            JFrame legendWindow = new JFrame("Legend");
+            legendWindow.setSize(250, 350);
+            legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            // Set the new window to be visible
+            legendWindow.setVisible(true);
+            legendWindow.setLocation(1400, 600); 
+        }
+    });
+
+    
+
 
         // Adding components to the split panes
         verticalSplitPane.add(map, JSplitPane.TOP);
