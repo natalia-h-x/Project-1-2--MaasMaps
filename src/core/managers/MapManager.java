@@ -29,6 +29,8 @@ public class MapManager {
     public static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
     public static final Location MAP_BOTTOM_RIGHT_LOCATION = new Location(50.815816, 5.753384);
     public static final Point MAP_BOTTOM_RIGHT_GLOBAL_XY = getGlobalXY(MAP_BOTTOM_RIGHT_LOCATION);
+    public static final Point MAP_TOP_LEFT_XY = locationToPoint(MAP_TOP_LEFT_LOCATION);
+    public static final Point MAP_BOTTOM_RIGHT_XY = locationToPoint(MAP_BOTTOM_RIGHT_LOCATION);
 
     private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
