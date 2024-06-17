@@ -49,7 +49,6 @@ public class MaasMapsUI extends JFrame {
     private boolean expanded = false;
     private int animationStep = 0;
     private final int ANIMATION_STEPS = 30;
-    private JFrame legendWindow = new JFrame("Legend");
 
     public MaasMapsUI() {
         super("Maas Maps");
