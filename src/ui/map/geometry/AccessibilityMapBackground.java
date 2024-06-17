@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -25,6 +24,7 @@ public class AccessibilityMapBackground extends MapBackground {
         this.postalCodes = postalCodes;
     }
 
+
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -34,10 +34,9 @@ public class AccessibilityMapBackground extends MapBackground {
 
             Location location = Context.getContext().getZipCodeDatabase().getLocation(postalCode);
             accesibilityPoints.computeIfAbsent(new Point2D.Double(location.getX(), location.getY()), s -> accessibilityMap.get(postalCode));
-            g2.setPaint(notSiansLinearInterpolation(accessibilityMap.get(postalCode), new Color[] {Color.RED, Color.YELLOW, Color.GREEN}));
-            
-            g2.fill(new Ellipse2D.Double(location.getX(), location.getY(), 10, 10));
         }
+
+        fill(g2);
     }
 
     public static Color notSiansLinearInterpolation(double accessibility, Color[] colors) {
@@ -49,15 +48,16 @@ public class AccessibilityMapBackground extends MapBackground {
         double g = colors[(int) Math.floor(number)].getGreen()*inv + colors[(int) Math.floor(number) + 1].getGreen()*newNumber;
         double b = colors[(int) Math.floor(number)].getBlue()*inv + colors[(int) Math.floor(number) + 1].getBlue()*newNumber;
             
-        return new Color((float) r / 255, (float) g / 255, (float) b / 255);
+        return new Color((float) r / 255, (float) g / 255, (float) b / 255, 0.2f);
     }
 
-    public void fill() {
-        Point2D start = MapManager.MAP_TOP_LEFT_GLOBAL_XY;
-        Point2D end = MapManager.MAP_BOTTOM_RIGHT_GLOBAL_XY;
+    public void fill(Graphics2D g2) {
+        Point2D start = MapManager.MAP_TOP_LEFT_XY;
+        Point2D end = MapManager.MAP_BOTTOM_RIGHT_XY;
+        int scale = 10;
         
-        for (double y = start.getY(); y <= end.getY(); y++) {
-            for (double x = start.getX(); x <= end.getX(); x++) {
+        for (double y = start.getY(); y <= end.getY(); y+=1) {
+            for (double x = start.getX(); x <= end.getX(); x+=1) {
                 Point2D point = new Point2D.Double(x, y);
 
                 if (!accesibilityPoints.containsKey(point)) {
@@ -65,9 +65,17 @@ public class AccessibilityMapBackground extends MapBackground {
                     double accessibility = 0;
 
                     for (Point2D p : closestPoints) {
+                        double distance = distanceBetweenTwoPoints(point, p);
                         accessibility += accesibilityPoints.get(p);
+                        for (double i = distance; i >= 0; i -= 5) {
+                            if (accessibility >= 0.01)
+                                accessibility -= 0.01;
+                        }
                     }
                     accessibility = accessibility/4;
+                    g2.setPaint(notSiansLinearInterpolation(accessibility, new Color[] {Color.RED, Color.YELLOW, Color.GREEN}));
+            
+                    g2.fill(new Ellipse2D.Double(x, y, scale, scale));
                 }
             }
         }
