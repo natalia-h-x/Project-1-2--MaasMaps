@@ -14,7 +14,15 @@ import core.managers.MapManager;
 import ui.map.Map;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
+import ui.map.geometry.MapBackground;
 import ui.map.geometry.Network;
+
+/*
+ * 4 closest postal codes
+ * see how far each postal code is for the location
+ * the further it is it goes to 0
+ * do it for all and then take the av
+ */
 
 /**
  * This class represents the app UI showing the map, the navigation panel and the map option buttons
@@ -49,8 +57,7 @@ public class MaasMapsUI extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Creating all components
-        map = new Map();
-        map.addMapBackground();
+        map = new Map(new MapBackground());
         map.setMinimumSize(new Dimension(800, 150));
         map.setPreferredSize(new Dimension(800, 500));
         map.setSize(new Dimension(800, 500));
@@ -77,7 +84,7 @@ public class MaasMapsUI extends JFrame {
         navigationPanel.setMinimumSize(new Dimension(450, 600));
         navigationPanel.setPreferredSize(new Dimension(500, 600));
 
-        Map resultsPanel = new Map();
+        Map resultsPanel = new Map(null);
         resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         resultsPanel.setPreferredSize(new Dimension(500, 150));
         resultsPanel.setSize(new Dimension(500, 150));
