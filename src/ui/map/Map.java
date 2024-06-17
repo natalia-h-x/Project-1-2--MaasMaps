@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -29,6 +30,8 @@ public class Map extends JPanel implements TranslateableComponent {
     @Getter private transient ArrayList<MapGraphics> icons = new ArrayList<>();
     @Getter
     private transient MapBackground mapBackground;
+    @Getter
+    private java.util.Map<String, MapGraphics> topGraphics = new HashMap<>();
 
     /** Variables for translating this Map */
     private double scale;
@@ -51,6 +54,10 @@ public class Map extends JPanel implements TranslateableComponent {
 
         if (mapBackground != null) {
             mapBackground.paint(g2);
+        }
+
+        for (MapGraphics mapGraphics : topGraphics.values()) {
+            mapGraphics.paint(g2);
         }
 
         drawMapIcon(g2);
@@ -126,5 +133,17 @@ public class Map extends JPanel implements TranslateableComponent {
 
     public double getRadius() {
         return radius;
+    }
+
+    public void setTranslationListener(TranslationListener translationListener) {
+        this.translationListener = translationListener;
+    }
+
+    public void setIcons(ArrayList<MapGraphics> icons) {
+        this.icons = icons;
+    }
+
+    public void setMapBackground(MapBackground mapBackground) {
+        this.mapBackground = mapBackground;
     }
 }
