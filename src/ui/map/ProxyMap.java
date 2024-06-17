@@ -33,7 +33,7 @@ public class ProxyMap {
     }
 
     public void clearIcons() {
-        map.clearIcons();
+        map.clear();
     }
 
     public void repaint() {

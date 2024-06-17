@@ -10,6 +10,7 @@ import core.algorithms.datastructures.Graph;
 import core.managers.MapManager;
 import ui.map.Map;
 import ui.map.geometry.AbstractedBusNetwork;
+import ui.map.geometry.MapBackground;
 import ui.map.geometry.Network;
 
 public class MapTest {
@@ -27,7 +28,7 @@ public class MapTest {
     }
 
     public MapTest() {
-        map = new Map();
+        map = new Map(new MapBackground());
     }
 
     @Test
@@ -56,7 +57,7 @@ public class MapTest {
         map.setTranslation(newPoint3);
         map.setScale(map.getScale() + 100);
 
-        map.clearIcons();
+        map.clear();
         Context.getContext().getMap().clearIcons();
     }
 }

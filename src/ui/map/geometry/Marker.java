@@ -9,6 +9,7 @@ import java.awt.Polygon;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
+import lombok.Data;
 import ui.map.geometry.interfaces.MapGraphics;
 import ui.map.translation.ProxyTranslatableGraphics2D;
 
@@ -17,6 +18,7 @@ import ui.map.translation.ProxyTranslatableGraphics2D;
  * @author Alexandra Plishkin Islamgulova
  * @author Meriç Uruş
  */
+@Data
 public class Marker implements MapGraphics {
     private int markerOffsetY = 10;
     private int innerSize = 7;
