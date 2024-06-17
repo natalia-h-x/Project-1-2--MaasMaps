@@ -1,20 +1,34 @@
 package ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.WindowConstants;
 
 import core.Constants.Paths;
 import core.Constants.UIConstants;
-import java.awt.geom.Point2D;
 import core.Context;
 import core.algorithms.datastructures.Graph;
 import core.managers.MapManager;
-import core.models.transport.Biking;
-import core.models.transport.Bus;
-import core.models.transport.TransportMode;
-import core.models.transport.Walking;
 import ui.map.Map;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
@@ -188,6 +202,30 @@ public class MaasMapsUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleMenu();
+            }
+        });
+
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Context.getContext().getMap().unlinkMapGraphics("Accessibility");
+                repaint();
+            }
+        });
+
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    BufferedImage image = ImageIO.read(new File("resources/accessibilityMap.png"));
+                
+                    MapBackground top = new MapBackground(image);
+                    top.setAlpha(0.3f);
+                    Context.getContext().getMap().linkMapGraphics("Accessibility", top);
+                    repaint();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 

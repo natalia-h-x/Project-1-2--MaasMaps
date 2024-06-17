@@ -55,4 +55,16 @@ public class ProxyMap {
     public void setRadius(double radius) {
         map.setRadius(radius);
     }
+
+    public void linkMapGraphics(String option, MapGraphics top) {
+        map.getTopGraphics().put(option, top);
+        map.repaint();
+    }
+
+    public void unlinkMapGraphics(String option) {
+        if (map.getTopGraphics().containsKey(option))
+            map.getTopGraphics().remove(option);
+
+        map.repaint();
+    }
 }
