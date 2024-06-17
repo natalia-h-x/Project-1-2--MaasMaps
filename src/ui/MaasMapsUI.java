@@ -99,8 +99,8 @@ public class MaasMapsUI extends JFrame {
         resultsPanel.addMapGraphics(abstractedBusNetwork);
         resultsPanel.repaint();
 
-        JPanel legendPanel = new JPanel (new FlowLayout(FlowLayout.RIGHT));
-        legendPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+        JPanel legendButtonPanel = new JPanel (new FlowLayout(FlowLayout.RIGHT));
+        legendButtonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
         // JPanel changeAlgorithmPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
         // changeAlgorithmPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
@@ -115,16 +115,17 @@ public class MaasMapsUI extends JFrame {
         // JComboBox<String> changeAlgorithmBox = new JComboBox<> (algoOptions);
         // changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
         // changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+        //working on it aaaaa
 
         //add legend button
         legend = new JButton("LEGEND");
         legend.setPreferredSize(new Dimension(100,25));
         legend.setBackground(UIConstants.GUI_TITLE_COLOR);
         legend.setForeground(Color.WHITE);
-        legendPanel.add(legend);
+        legendButtonPanel.add(legend);
 
-        legendPanel.setVisible(true);
-        resultsContainer.add(legendPanel,BorderLayout.SOUTH);
+        legendButtonPanel.setVisible(true);
+        resultsContainer.add(legendButtonPanel,BorderLayout.SOUTH);
 
         // Add action listener to the button
         legend.addActionListener(new ActionListener() {
