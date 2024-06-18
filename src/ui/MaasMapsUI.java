@@ -113,23 +113,27 @@ public class MaasMapsUI extends JFrame {
         resultsPanel.addMapGraphics(abstractedBusNetwork);
         resultsPanel.repaint();
 
-        JPanel legendButtonPanel = new JPanel (new FlowLayout(FlowLayout.RIGHT));
-        legendButtonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-
+        
+        
         // JPanel changeAlgorithmPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
         // changeAlgorithmPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-
+        
         // // Create Combo Box header
         // JLabel changeLabel = new JLabel("Select algorithm: ");
         // changeLabel.setFont(new Font("Select algorithm: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
-
+        
         // String algoOptions[] = { "A*", "Dijkstra's" };
-
+        
         // //add combo box to change algorithms
         // JComboBox<String> changeAlgorithmBox = new JComboBox<> (algoOptions);
         // changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
         // changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
         //working on it aaaaa
+        
+        JPanel legendButtonPanel = new JPanel (new FlowLayout(FlowLayout.RIGHT));
+        legendButtonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+
+        
 
         //add legend button
         legend = new JButton("LEGEND");
@@ -145,7 +149,7 @@ public class MaasMapsUI extends JFrame {
         legend.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Create a new window
+            // Adjust new window
             legendWindow.setSize(250, 350);
             legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             // Set the new window to be visible
@@ -153,6 +157,11 @@ public class MaasMapsUI extends JFrame {
             legendWindow.setLocation(1400, 600); 
         }
     });
+        
+        JPanel legendPanel = new JPanel ();
+        legendPanel.setBackground(UIConstants.GUI_LEGEND_COLOR);
+        legendWindow.add(legendPanel);
+    
 
 
         // Adding components to the split panes
