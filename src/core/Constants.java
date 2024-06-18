@@ -71,6 +71,7 @@ public final class Constants {
         public static final Color BUS_4 = Color.ORANGE;
         public static final Color BUS_2 = Color.MAGENTA;
         public static final Color BUS_350 = Color.BLUE;
+        public static final Color BUS_15 = Color.decode("#31AE9B");
     } //CHANGE ALL BUS COLORS ACCORDINGLY
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
