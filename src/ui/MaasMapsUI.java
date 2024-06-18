@@ -250,8 +250,8 @@ public class MaasMapsUI extends JFrame {
 
 
     JLabel heading = new JLabel("Bus Lines");
-    heading.setFont(new Font("Arial", Font.BOLD, 15));
-   //heading.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR );
+    heading.setFont(new Font("Arial", Font.BOLD, 20));
+    heading.setForeground(UIConstants.GUI_TITLE_COLOR);
     JPanel legendPanel = new JPanel();
     legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
     legendPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -269,6 +269,7 @@ public class MaasMapsUI extends JFrame {
     busData.put(BusColors.BUS_4, 4);
     busData.put(BusColors.BUS_2, 2);
     busData.put(BusColors.BUS_350, 350);
+    busData.put(BusColors.BUS_15, 15);
 
     // Create legend items
     for (java.util.Map.Entry<Color, Integer> entry : busData.entrySet()) {
@@ -288,6 +289,7 @@ public class MaasMapsUI extends JFrame {
     }
 
     legendWindow.add(legendPanel);
+    legendWindow.setAlwaysOnTop( true );
     legendWindow.setVisible(true);
 }
     
