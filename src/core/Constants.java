@@ -63,14 +63,14 @@ public final class Constants {
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class BusColors {
-        public static final Color BUS_30 = new Color(201, 202 , 217);
-        public static final Color BUS_6 = new Color(201, 202 , 217);
-        public static final Color BUS_1 = new Color(201, 202 , 217);
-        public static final Color BUS_10 = new Color(201, 202 , 217);
-        public static final Color BUS_7 = new Color(201, 202 , 217);
-        public static final Color BUS_4 = new Color(201, 202 , 217);
-        public static final Color BUS_2 = new Color(201, 202 , 217);
-        public static final Color BUS_350 = new Color(201, 202 , 217);
+        public static final Color BUS_30 = Color.GREEN;
+        public static final Color BUS_6 = Color.CYAN;
+        public static final Color BUS_1 = Color.decode("#80217D");
+        public static final Color BUS_10 = Color.RED;
+        public static final Color BUS_7 = Color.YELLOW;
+        public static final Color BUS_4 = Color.ORANGE;
+        public static final Color BUS_2 = Color.MAGENTA;
+        public static final Color BUS_350 = Color.BLUE;
     } //CHANGE ALL BUS COLORS ACCORDINGLY
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
