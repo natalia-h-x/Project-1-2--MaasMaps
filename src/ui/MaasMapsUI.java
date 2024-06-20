@@ -53,9 +53,7 @@ import ui.map.geometry.Network;
  *
  * @author Sheena Gallagher
  * @author Natalia Hadjisoteriou
- *
  */
-
 public class MaasMapsUI extends JFrame {
     private Map map;
     private JPanel buttonPanel;
@@ -120,24 +118,27 @@ public class MaasMapsUI extends JFrame {
 
         JPanel resultsContainerSouth = new JPanel (new GridLayout(1, 2, 900, UIConstants.GUI_BORDER_SIZE / 2));
         resultsContainerSouth.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-        
+
         JPanel changeAlgoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         changeAlgoPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
-
-        
         String algoOptions[] = { "A*", "Dijkstra's" };
-        
+
         //add combo box to change algorithms
         JComboBox<String> changeAlgorithmBox = new JComboBox<> (algoOptions);
         changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
         changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
-        
+
 
         JPanel legendButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         legendButtonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
-        // Add legend button
+        // //add combo box to change algorithms
+        // JComboBox<String> changeAlgorithmBox = new JComboBox<>(algoOptions);
+        // changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
+        // changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+
+        //add legend button
         legend = new JButton("LEGEND");
         legend.setPreferredSize(new Dimension(100, 25));
         legend.setBackground(UIConstants.GUI_TITLE_COLOR);
@@ -145,13 +146,14 @@ public class MaasMapsUI extends JFrame {
         legendButtonPanel.add(legend);
         changeAlgoPanel.add(changeAlgorithmBox); //needs action listener
 
-        
+        legendPanel.setVisible(true);
+        resultsContainer.add(legendPanel, BorderLayout.SOUTH);
 
         legendButtonPanel.setVisible(true);
         changeAlgoPanel.setVisible(true);
 
         resultsContainer.add(resultsContainerSouth, BorderLayout.SOUTH);
-        
+
         resultsContainerSouth.add(changeAlgoPanel);
         resultsContainerSouth.add(legendButtonPanel);
 
@@ -159,16 +161,20 @@ public class MaasMapsUI extends JFrame {
         legend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createLegendPanel(); // Call method to create and display legend panel
+                // Create a new window
+                JFrame legendWindow = new JFrame("Legend");
+                legendWindow.setSize(250, 350);
+                legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                // Set the new window to be visible
+                legendWindow.setVisible(true);
+                legendWindow.setLocation(1400, 600);
             }
         });
 
-
-        
         // Adding components to the split panes
         verticalSplitPane.add(map, JSplitPane.TOP);
         verticalSplitPane.add(resultsPanel, JSplitPane.BOTTOM);
-        
+
         resultsContainer.add(verticalSplitPane);
 
         horizontalSplitPane.add(navigationPanel, JSplitPane.LEFT);
@@ -177,12 +183,12 @@ public class MaasMapsUI extends JFrame {
         // Add button panel to the top right corner of the map
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-        
+
         // Create label and add to button panel
         JLabel buttonsLabel = new JLabel("Map Options:  ");
         buttonsLabel.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         buttonPanel.add(buttonsLabel);
-        
+
         mainButton = new JButton("Menu ", Paths.menuIcon);
         mainButton.setVerticalTextPosition(SwingConstants.CENTER);
         mainButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -199,22 +205,22 @@ public class MaasMapsUI extends JFrame {
         button1.setBackground(Color.WHITE);
         button2.setBackground(Color.WHITE);
         button3.setBackground(Color.WHITE);
-        
+
         button1.setVisible(false);
         button2.setVisible(false);
         button3.setVisible(false);
-        
+
         buttonPanel.add(button1);
         buttonPanel.add(button2);
         buttonPanel.add(button3);
-        
+
         mainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleMenu();
             }
         });
-        
+
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -222,13 +228,13 @@ public class MaasMapsUI extends JFrame {
                 repaint();
             }
         });
-        
+
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     BufferedImage image = ImageIO.read(new File("resources/accessibilityMap.png"));
-                    
+
                     MapBackground top = new MapBackground(image);
                     top.setAlpha(0.3f);
                     Context.getContext().getMap().linkMapGraphics("Accessibility", top);
@@ -238,10 +244,10 @@ public class MaasMapsUI extends JFrame {
                 }
             }
         });
-        
+
         // Add button panel to the frame
         resultsContainer.add(buttonPanel, BorderLayout.NORTH);
-        
+
 
         setVisible(true);
         revalidate();
@@ -252,7 +258,7 @@ public class MaasMapsUI extends JFrame {
     JFrame legendWindow = new JFrame("Legend");
     legendWindow.setSize(250, 400);
     legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    legendWindow.setLocationRelativeTo(this); 
+    legendWindow.setLocationRelativeTo(this);
 
 
     JLabel heading = new JLabel("Bus Lines");
@@ -298,7 +304,7 @@ public class MaasMapsUI extends JFrame {
     legendWindow.setAlwaysOnTop( true );
     legendWindow.setVisible(true);
 }
-    
+
     private void toggleMenu() {
         if (expanded) {
             shrinkMenu();
