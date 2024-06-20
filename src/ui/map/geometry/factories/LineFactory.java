@@ -4,11 +4,12 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
-
-import javax.swing.plaf.ColorUIResource;
+import java.util.ArrayList;
+import java.util.List;
 
 import core.models.Location;
-import core.models.Time;
+import core.models.gtfs.Time;
+import core.models.transport.Transport;
 import ui.map.geometry.ArrowStroke;
 import ui.map.geometry.GeographicLine;
 import ui.map.geometry.Line;
@@ -23,18 +24,18 @@ public class LineFactory {
 
         return line;
     }
-    
+
     public static Line createLine(Point2D... points) {
         return new Line(points);
     }
-    
+
     public static Line createLine(Paint paint, Point2D... points) {
         Line line = new Line(points);
         line.setPaint(paint);
 
         return line;
     }
-    
+
     public static Line createLine(Stroke stroke, Point2D... points) {
         Line line = new Line(points);
         line.setStroke(stroke);
@@ -62,14 +63,14 @@ public class LineFactory {
 
         return line;
     }
-    
+
     public static GeographicLine createGeographicLine(Time[] times, Location... locations) {
         GeographicLine line = new GeographicLine(locations);
         line.setTimes(times);
 
         return line;
     }
-    
+
     public static GeographicLine createGeographicLine(Paint paint, Time[] times, Location... locations) {
         GeographicLine line = new GeographicLine(locations);
         line.setPaint(paint);
@@ -84,7 +85,7 @@ public class LineFactory {
 
         return line;
     }
-    
+
     public static GeographicLine createGeographicLine(Stroke stroke, Time[] times, Location... locations) {
         GeographicLine line = new GeographicLine(locations);
         line.setStroke(stroke);
@@ -107,9 +108,25 @@ public class LineFactory {
     public static GeographicLine createGeographicArrowLine(Time[] times, Location... points) {
         return createGeographicLine(new Color(0, 0, 255), new ArrowStroke(1, 5, 1), times, points);
     }
-    
+
     public static GeographicLine createGeographicArrowLine(Location... points) {
         return createGeographicArrowLine(new Time[0], points);
+    }
+
+    public static GeographicLine createResultsLine(Transport... transports) {
+        //change the stroke type here
+        List<Location> locations = new ArrayList<>();
+        List<Time> times = new ArrayList<>();
+
+        for (Transport transport : transports) {
+            locations.add(transport.getStart());
+            times.add(transport.getTime());
+        }
+
+        locations.add(transports[transports.length - 1].getDestination());
+
+        Stroke stroke = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
+        return createGeographicLine(Color.BLUE, stroke, times.toArray(Time[]::new), locations.toArray(Location[]::new));
     }
 
     public static Line createResultsLine(Point2D... locations) {

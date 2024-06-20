@@ -10,7 +10,7 @@ public class AmenityManager {
      * gets the Accessibility Metric.
      *
      * @param postalCode
-     * @return a accessibility metric ranging from 0 - 1.
+     * @return an accessibility metric ranging from 0 - 1.
      */
     public static double getAccessibilityMetric(String postalCode) {
         return Math.random();

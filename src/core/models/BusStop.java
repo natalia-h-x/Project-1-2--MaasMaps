@@ -3,6 +3,7 @@ package core.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import core.models.gtfs.Route;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Exclude;

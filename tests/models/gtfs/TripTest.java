@@ -1,12 +1,12 @@
-package models;
+package models.gtfs;
 
 
 import org.junit.jupiter.api.Test;
 
 import core.Context;
 import core.models.BusStop;
-import core.models.Shape;
-import core.models.Trip;
+import core.models.gtfs.Shape;
+import core.models.gtfs.Trip;
 import ui.MaasMapsUI;
 import ui.map.geometry.Line;
 import ui.map.geometry.factories.LineFactory;
@@ -22,7 +22,7 @@ public class TripTest {
 
         Shape shape = trip.loadShape(new BusStop(50.847853, 5.724670), new BusStop(50.844914, 5.727588));
         Line line = LineFactory.createResultsLine(shape.getLocations());
-        
+
         new MaasMapsUI();
 
         Context.getContext().getMap().addMapGraphics(line);

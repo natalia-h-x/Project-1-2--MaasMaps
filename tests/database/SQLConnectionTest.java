@@ -7,13 +7,13 @@ import java.util.List;
 
 import org.junit.Test;
 
-import core.managers.DatabaseManager;
+import core.managers.database.QueryManager;
 import core.models.BusStop;
 
 public class SQLConnectionTest {
     @Test
     public void test1() {
-        List<?>[] attributes = DatabaseManager.executeQuery("select a.stop_lon as from_stop_lon, a.stop_lat as from_stop_lat, b.stop_lon as to_stop_lon, b.stop_lat as to_stop_lat, a.stop_id\r\n" + //
+        List<?>[] attributes = QueryManager.executeQuery("select a.stop_lon as from_stop_lon, a.stop_lat as from_stop_lat, b.stop_lon as to_stop_lon, b.stop_lat as to_stop_lat, a.stop_id\r\n" + //
                         "from stops a\r\n" + //
                         "left join transfers on a.stop_id = transfers.from_stop_id \r\n" + //
                         "left join stops b on b.stop_id = transfers.to_stop_id \r\n", new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>(), new ArrayList<Double>());
@@ -25,9 +25,9 @@ public class SQLConnectionTest {
                 int weight = (int) (1000 * Double.parseDouble((String) attributes[5].get(i)));
                 System.out.println("%s -> %s: %s".formatted(fromLocation, toLocation, weight));
             } catch (NullPointerException e) {
-            
+
             } catch (IndexOutOfBoundsException e) {
-                
+
             }
 
         }

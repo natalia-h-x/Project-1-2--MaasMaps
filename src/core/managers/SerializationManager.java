@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class SerializationManager {
     private SerializationManager() {}
-    
+
     /**
      * Extract value from JSON string
      *
@@ -48,7 +48,7 @@ public class SerializationManager {
     public static String getFirstTag(String xml) {
         Pattern r = Pattern.compile("<(.*?)>");
         Matcher m = r.matcher(xml);
-    
+
         if (m.find())
             return m.group(1);
 

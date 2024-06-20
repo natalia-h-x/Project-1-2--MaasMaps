@@ -1,9 +1,10 @@
-package core.models;
+package core.models.gtfs;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import core.managers.DatabaseManager;
+import core.managers.database.GTFSManager;
+import core.models.BusStop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -28,6 +29,6 @@ public class Trip {
     }
 
     public Shape loadShape(BusStop from, BusStop to) {
-        return shapeMap.computeIfAbsent(shapeId, DatabaseManager::getShape).prune(from, to);
+        return shapeMap.computeIfAbsent(shapeId, GTFSManager::getShape).prune(from, to);
     }
 }

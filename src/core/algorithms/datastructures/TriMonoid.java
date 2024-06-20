@@ -1,0 +1,58 @@
+package core.algorithms.datastructures;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.IntFunction;
+
+import lombok.Data;
+
+/**
+ * Monoid design pattern representing a backtrace of operations so we can see
+ * which operations were used to reach a certain state.
+ */
+@Data
+public class TriMonoid<T, X, Y, S> {
+    /** Backtrace of how we got to the final element */
+    private List<T> elements;
+
+    /** Generator of the backtrace */
+    private TriFunction<S, X, Y, T> extractor;
+
+    public TriMonoid(TriFunction<S, X, Y, T> extractor) {
+        this.extractor = extractor;
+        elements = new ArrayList<>();
+    }
+
+    /**
+     * Copy constructor of another monoid, it keeps a reference to the extractor function
+     * but copies the elements.
+     *
+     * @param monoid The monoid to copy.
+     */
+    public TriMonoid(TriMonoid<T, X, Y, S> monoid) {
+        this.extractor = monoid.getExtractor();
+        elements = new ArrayList<>(monoid.getElements());
+    }
+
+    public TriMonoid<T, X, Y, S> add(S shell, X generatorX, Y generatorY) {
+        elements.add(extractor.apply(shell, generatorX, generatorY));
+
+        return this;
+    }
+
+    public T getElement() {
+        return elements.get(elements.size() - 1);
+    }
+
+    public Object[] toArray() {
+        return elements.toArray();
+    }
+
+    public T[] toArray(T[] a) {
+        return elements.toArray(a);
+    }
+
+    public T[] toArray(IntFunction<T[]> generator) {
+        return elements.toArray(generator);
+    }
+}

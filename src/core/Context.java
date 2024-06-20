@@ -6,7 +6,7 @@ import core.zipcode.ZipCodeDatabase;
 import lombok.Getter;
 import lombok.Setter;
 import ui.map.ProxyMap;
-import ui.results.ResultsProxy;
+import ui.route.ResultsProxy;
 
 /**
  * This class is the Context singleton of our program that harbour all share objects amoungst classes.

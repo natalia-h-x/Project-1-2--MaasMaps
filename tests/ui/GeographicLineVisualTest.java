@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import core.Context;
 import core.models.Location;
-import core.models.Time;
+import core.models.gtfs.Time;
 import ui.map.geometry.GeographicLine;
 import ui.map.geometry.factories.LineFactory;
 

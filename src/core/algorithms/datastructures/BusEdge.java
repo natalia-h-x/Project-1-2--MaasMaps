@@ -4,28 +4,29 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import core.models.Time;
-import core.models.Trip;
+import core.models.Location;
+import core.models.gtfs.Time;
+import core.models.gtfs.Trip;
+import core.models.transport.Transport;
+import core.models.transport.TransportFactory;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * EdgeNode that can be a route.
  */
 @Data
-public class EdgeNode<T> {
-    private T element;
-    private int weight;
+@EqualsAndHashCode(callSuper = true)
+public class BusEdge<T> extends Edge<T> {
     private SortedMap<Time, Trip> departureTimes;
 
-    public EdgeNode(T element, int weight) {
-        this.element = element;
-        this.weight = weight;
+    public BusEdge(T element, int weight) {
+        super(element, weight);
         departureTimes = new TreeMap<>();
     }
 
     public void addTrip(Trip trip, Time departingTime) {
         departureTimes.put(departingTime, trip);
-            //throw new IllegalArgumentException("Time is already contained in departure times");
     }
 
     /**
@@ -40,7 +41,7 @@ public class EdgeNode<T> {
 
         if (trip != null) {
             transfer.copyInto(trip);
-            return weight;
+            return super.getWeight();
         }
 
         int closestDepartureTime = Integer.MAX_VALUE;
@@ -58,24 +59,15 @@ public class EdgeNode<T> {
         if (closestDepartureTime == Integer.MAX_VALUE)
             return Integer.MAX_VALUE;
 
-        return weight + closestDepartureTime - arrivalTime;
+        return super.getWeight() + closestDepartureTime - arrivalTime;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public boolean equals(Object o) {
-        if (o instanceof EdgeNode)
-            return element.equals(((EdgeNode<T>) o).getElement());
+    public Transport asTransport(T outgoingVertex, Trip trip) {
+        if (outgoingVertex instanceof Location point1 && getElement() instanceof Location point2) {
+            return TransportFactory.createBus(point1, point2, trip);
+        }
 
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        final int PRIME = 29;
-        int p = 2;
-        int result = -1;
-        result = p * element.hashCode() * PRIME + p^2 * weight * PRIME;
-        return result;
+        throw new UnsupportedOperationException("could not make a transport from a classes of type " + outgoingVertex.getClass().getCanonicalName() + " and " + getElement().getClass().getCanonicalName());
     }
 }

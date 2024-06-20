@@ -2,7 +2,9 @@ package database;
 
 import org.junit.jupiter.api.Test;
 
-import core.managers.DatabaseManager;
+import core.managers.database.DatabaseDefinitionManager;
+import core.managers.database.DatabaseModificationManager;
+import core.managers.database.GTFSManager;
 import tools.generator.sqlite.db_helpers.Unzipper;
 
 public class DatabaseTest {
@@ -13,12 +15,12 @@ public class DatabaseTest {
 
     @Test
     public void test2() {
-        DatabaseManager.createTable("test", new String[]{"test1", "test2"}, new String[]{"TEXT", "TEXT"});
-        DatabaseManager.insertInTable("test", new String[]{"test1", "test2"}, new String[][]{{"testA", "testB"}, {"testC", "testD"}});
+        DatabaseDefinitionManager.createTable("test", new String[]{"test1", "test2"}, new String[]{"TEXT", "TEXT"});
+        DatabaseModificationManager.insertInTable("test", new String[]{"test1", "test2"}, new String[][]{{"testA", "testB"}, {"testC", "testD"}});
     }
 
     @Test
     public void shapeTest() {
-        DatabaseManager.getShape(1071429);
+        GTFSManager.getShape(1071429);
     }
 }

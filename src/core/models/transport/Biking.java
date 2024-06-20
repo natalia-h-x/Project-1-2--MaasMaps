@@ -1,6 +1,9 @@
 package core.models.transport;
 
+import javax.swing.ImageIcon;
+
 import core.models.Location;
+import core.models.gtfs.Time;
 import ui.map.geometry.ImageMarkerFactory;
 import ui.map.geometry.factories.LineFactory;
 import ui.map.geometry.interfaces.MapGraphics;
@@ -10,7 +13,7 @@ import ui.map.geometry.interfaces.MapGraphics;
  *
  * @author Kimon Navridis
  */
-public class Biking extends TransportMode {
+public class Biking extends Transport {
     private static final double AVERAGE_SPEED = 291.66666;
 
     public Biking() {}
@@ -18,6 +21,10 @@ public class Biking extends TransportMode {
         super(start, destination);
     }
 
+    @Override
+    public Time getTime() {
+        return getTravelTime();
+    }
 
     public double getAverageSpeed() {
         return AVERAGE_SPEED;
@@ -35,4 +42,9 @@ public class Biking extends TransportMode {
             ImageMarkerFactory.createBImageMarker(getDestination())
         };
     }
-}   
+    @Override
+    public ImageIcon getIcon() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIcon'");
+    }
+}

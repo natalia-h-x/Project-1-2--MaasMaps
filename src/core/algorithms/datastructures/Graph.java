@@ -2,8 +2,8 @@ package core.algorithms.datastructures;
 
 import java.util.List;
 
-import core.models.Time;
-import core.models.Trip;
+import core.models.gtfs.Time;
+import core.models.gtfs.Trip;
 
 public interface Graph<T> extends Iterable<T> {
     /**
@@ -12,7 +12,7 @@ public interface Graph<T> extends Iterable<T> {
      * @param x
      * @return
      */
-    public List<EdgeNode<T>> neighbors(T x);
+    public List<Edge<T>> neighbors(T x);
 
     /**
      * Adds the vertex x to the graph
