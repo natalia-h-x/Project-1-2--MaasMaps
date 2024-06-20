@@ -51,6 +51,8 @@ public final class Constants {
         public static final Color GUI_ACCENT_COLOR               = new Color(53 , 80  , 112);
         public static final Color GUI_TITLE_COLOR                = new Color(87 , 100 , 144);
         public static final Color GUI_BUTTON_COLOR               = new Color(117, 112 , 131);
+        public static final Color GUI_LEGEND_COLOR               = new Color(225, 238, 254);
+        public static final Color GUI_LEGENDITEM_COLOR           = new Color(225, 238, 254);
         public static final int GUI_INFO_FONT_SIZE       = 13;
         public static final int GUI_TEXT_FIELD_FONT_SIZE = 15;
         public static final int GUI_TITLE_FONT_SIZE      = 40;
@@ -59,6 +61,19 @@ public final class Constants {
         public static final int GUI_BORDER_SIZE = 25;
         public static final int BUTTON_SIZE =65;
     }
+
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class BusColors {
+        public static final Color BUS_30 = Color.GREEN;
+        public static final Color BUS_6 = Color.CYAN;
+        public static final Color BUS_1 = Color.decode("#80217D");
+        public static final Color BUS_10 = Color.RED;
+        public static final Color BUS_7 = Color.YELLOW;
+        public static final Color BUS_4 = Color.ORANGE;
+        public static final Color BUS_2 = Color.MAGENTA;
+        public static final Color BUS_350 = Color.BLUE;
+        public static final Color BUS_15 = Color.decode("#31AE9B");
+    } //CHANGE ALL BUS COLORS ACCORDINGLY
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class ANSI {

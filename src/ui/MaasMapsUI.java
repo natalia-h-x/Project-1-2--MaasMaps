@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,11 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
+import core.Constants.BusColors;
 import core.Constants.Paths;
 import core.Constants.UIConstants;
 import core.Context;
@@ -59,7 +64,6 @@ public class MaasMapsUI extends JFrame {
     private JButton button3;
     private JButton legend;
     private Timer timer;
-    private JFrame legendWindow = new JFrame("Legend");
     private boolean expanded = false;
     private int animationStep = 0;
     private final int ANIMATION_STEPS = 30;
@@ -113,51 +117,52 @@ public class MaasMapsUI extends JFrame {
         resultsPanel.addMapGraphics(abstractedBusNetwork);
         resultsPanel.repaint();
 
-        JPanel legendPanel = new JPanel (new FlowLayout(FlowLayout.RIGHT));
-        legendPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-
+        
+        
         // JPanel changeAlgorithmPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
         // changeAlgorithmPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-
+        
         // // Create Combo Box header
         // JLabel changeLabel = new JLabel("Select algorithm: ");
         // changeLabel.setFont(new Font("Select algorithm: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
-
+        
         // String algoOptions[] = { "A*", "Dijkstra's" };
-
+        
         // //add combo box to change algorithms
         // JComboBox<String> changeAlgorithmBox = new JComboBox<> (algoOptions);
         // changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
         // changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+        //working on it aaaaa
+        
+        JPanel legendButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        legendButtonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
-        //add legend button
+        // Add legend button
         legend = new JButton("LEGEND");
-        legend.setPreferredSize(new Dimension(100,25));
+        legend.setPreferredSize(new Dimension(100, 25));
         legend.setBackground(UIConstants.GUI_TITLE_COLOR);
         legend.setForeground(Color.WHITE);
-        legendPanel.add(legend);
+        legendButtonPanel.add(legend);
 
-        legendPanel.setVisible(true);
-        resultsContainer.add(legendPanel,BorderLayout.SOUTH);
+        legendButtonPanel.setVisible(true);
+        resultsContainer.add(legendButtonPanel, BorderLayout.SOUTH);
 
-        // Add action listener to the button
+        // Add action listener to the legend button
         legend.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Create a new window
-            legendWindow.setSize(250, 350);
-            legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            // Set the new window to be visible
-            legendWindow.setVisible(true);
-            legendWindow.setLocation(1400, 600); 
-        }
-    });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createLegendPanel(); // Call method to create and display legend panel
+            }
+        });
 
 
+        
+        
+        
         // Adding components to the split panes
         verticalSplitPane.add(map, JSplitPane.TOP);
         verticalSplitPane.add(resultsPanel, JSplitPane.BOTTOM);
-
+        
         resultsContainer.add(verticalSplitPane);
 
         horizontalSplitPane.add(navigationPanel, JSplitPane.LEFT);
@@ -166,12 +171,12 @@ public class MaasMapsUI extends JFrame {
         // Add button panel to the top right corner of the map
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-
+        
         // Create label and add to button panel
         JLabel buttonsLabel = new JLabel("Map Options:  ");
         buttonsLabel.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         buttonPanel.add(buttonsLabel);
-
+        
         mainButton = new JButton("Menu ", Paths.menuIcon);
         mainButton.setVerticalTextPosition(SwingConstants.CENTER);
         mainButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -188,22 +193,22 @@ public class MaasMapsUI extends JFrame {
         button1.setBackground(Color.WHITE);
         button2.setBackground(Color.WHITE);
         button3.setBackground(Color.WHITE);
-
+        
         button1.setVisible(false);
         button2.setVisible(false);
         button3.setVisible(false);
-
+        
         buttonPanel.add(button1);
         buttonPanel.add(button2);
         buttonPanel.add(button3);
-
+        
         mainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleMenu();
             }
         });
-
+        
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -211,13 +216,13 @@ public class MaasMapsUI extends JFrame {
                 repaint();
             }
         });
-
+        
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     BufferedImage image = ImageIO.read(new File("resources/accessibilityMap.png"));
-                
+                    
                     MapBackground top = new MapBackground(image);
                     top.setAlpha(0.3f);
                     Context.getContext().getMap().linkMapGraphics("Accessibility", top);
@@ -227,15 +232,67 @@ public class MaasMapsUI extends JFrame {
                 }
             }
         });
-
+        
         // Add button panel to the frame
         resultsContainer.add(buttonPanel, BorderLayout.NORTH);
-
+        
 
         setVisible(true);
         revalidate();
     }
 
+
+    private void createLegendPanel() {
+    JFrame legendWindow = new JFrame("Legend");
+    legendWindow.setSize(250, 400);
+    legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    legendWindow.setLocationRelativeTo(this); 
+
+
+    JLabel heading = new JLabel("Bus Lines");
+    heading.setFont(new Font("Arial", Font.BOLD, 20));
+    heading.setForeground(UIConstants.GUI_TITLE_COLOR);
+    JPanel legendPanel = new JPanel();
+    legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
+    legendPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    legendPanel.setBackground(UIConstants.GUI_LEGEND_COLOR);
+    legendPanel.add(heading);
+
+
+    // Map to store bus colors and their corresponding counts
+    java.util.Map<Color, Integer> busData = new HashMap<>();
+    busData.put(BusColors.BUS_30, 30);
+    busData.put(BusColors.BUS_6, 6);
+    busData.put(BusColors.BUS_1, 1);
+    busData.put(BusColors.BUS_10, 10);
+    busData.put(BusColors.BUS_7, 7);
+    busData.put(BusColors.BUS_4, 4);
+    busData.put(BusColors.BUS_2, 2);
+    busData.put(BusColors.BUS_350, 350);
+    busData.put(BusColors.BUS_15, 15);
+
+    // Create legend items
+    for (java.util.Map.Entry<Color, Integer> entry : busData.entrySet()) {
+        JPanel legendItem = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        legendItem.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
+        legendItem.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel colorLabel = new JLabel("●");
+        colorLabel.setForeground(entry.getKey()); // Set color
+        colorLabel.setFont(new Font("●",3,20  )); // Set font size
+        legendItem.add(colorLabel);
+
+        JLabel numberLabel = new JLabel(" - No. " + entry.getValue());
+        legendItem.add(numberLabel);
+
+        legendPanel.add(legendItem);
+    }
+
+    legendWindow.add(legendPanel);
+    legendWindow.setAlwaysOnTop( true );
+    legendWindow.setVisible(true);
+}
+    
     private void toggleMenu() {
         if (expanded) {
             shrinkMenu();
