@@ -8,18 +8,14 @@ import core.models.Time;
 import core.models.transport.Transport;
 
 public class AStarAlgorithm extends PathStrategy {
-
     @Override
     public Transport shortestPath(Graph<Point2D> graph, Point2D source, Point2D end, Time startTime) throws IllegalArgumentException {
-        return new DijkstraAlgorithm().shortestPath(graph, source, end, startTime, makeHeuristic());
+        return new DijkstraAlgorithm().shortestPath(graph, source, end, startTime, getHeuristicComparator());
     }
 
-    private Comparator<? super Point2D> makeHeuristic() {
+    private Comparator<? super Point2D> getHeuristicComparator() {
         return (a, b) -> {
             return 0;
         };
     }
-
-
-
 }
