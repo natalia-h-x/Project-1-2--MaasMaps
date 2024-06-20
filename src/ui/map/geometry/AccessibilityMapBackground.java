@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import core.Context;
-import core.managers.GeoJSONManager;
+import core.managers.amenity.AmenityCalculationManager;
 import core.managers.MapManager;
 import core.models.Location;
 
@@ -28,7 +28,7 @@ public class AccessibilityMapBackground extends MapBackground {
     @Override
     public void paint(Graphics2D g) {
         for (String postalCode : postalCodes) {
-            accessibilityMap.computeIfAbsent(postalCode, s -> GeoJSONManager.getAccessibilityMetric(postalCode));
+            accessibilityMap.computeIfAbsent(postalCode, s -> AmenityCalculationManager.getAccessibilityMetric(postalCode));
 
             Location location = Context.getContext().getZipCodeDatabase().getLocation(postalCode);
             accesibilityPoints.computeIfAbsent(new Point2D.Double(location.getX(), location.getY()), s -> accessibilityMap.get(postalCode));

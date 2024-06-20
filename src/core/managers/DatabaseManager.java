@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import core.algorithms.datastructures.AdjacencyListGraph;
 import core.algorithms.datastructures.Graph;
+import core.managers.serialization.XMLSerializationManager;
 import core.models.BusStop;
 import core.models.Location;
 import core.models.Route;
@@ -128,7 +129,7 @@ public class DatabaseManager {
             bld.append(createTableSQL);
 
             for (int i = 0; i < headers.length; i++) {
-                bld.append("`" + headers[i] + "` " + SerializationManager.removeTags(types[i]) + ",\n");
+                bld.append("`" + headers[i] + "` " + XMLSerializationManager.removeTags(types[i]) + ",\n");
             }
 
             List<String> compositePK = new LinkedList<>();
@@ -137,8 +138,8 @@ public class DatabaseManager {
                 String type = types[i];
 
                 while (type.contains("<")) {
-                    String tag = SerializationManager.getFirstTag(type);
-                    type = SerializationManager.removeFirstTag(type);
+                    String tag = XMLSerializationManager.getFirstTag(type);
+                    type = XMLSerializationManager.removeFirstTag(type);
 
                     switch (tag.split(" ")[0]) {
                         case "PK":
