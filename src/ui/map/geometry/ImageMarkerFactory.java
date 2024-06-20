@@ -36,7 +36,7 @@ public class ImageMarkerFactory {
         }
     }
 
-    public static ImageMarker createBusImageMarker(Point2D location) {
+    public static ImageMarker createBusMarker(Point2D location) {
         return new ImageMarker(location, busStopImage);
     }
 
@@ -47,4 +47,6 @@ public class ImageMarkerFactory {
     public static ImageMarker createBImageMarker(Point2D location) {
         return new ImageMarker(location, bImage);
     }
+
+    public static BusMarker createBusImageMarker(Point2D location) { return new BusMarker(location, 3, "bus 3", busStopImage); }
 }

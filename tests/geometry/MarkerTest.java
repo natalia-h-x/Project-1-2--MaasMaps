@@ -1,6 +1,7 @@
 package geometry;
 
 import org.junit.jupiter.api.Test;
+import ui.map.geometry.BusMarker;
 import ui.map.geometry.Marker;
 
 import java.awt.*;
@@ -14,7 +15,6 @@ public class MarkerTest {
     public void testMarkerConstructorAndGetters() {
         Point2D location = new Point.Double(100, 200);
         Marker marker = new Marker(location);
-
         assertEquals(location, marker.getMarkerLocation());
     }
 
@@ -25,5 +25,6 @@ public class MarkerTest {
 
         Point expectedIconLocation = new Point(150, 240); // Y - 10 due to markerOffsetY
         assertEquals(expectedIconLocation, marker.getIconLocation());
+
     }
 }

@@ -30,8 +30,10 @@ public class BusNetwork extends Network {
             bTo = (BusStop) point;
         }
 
-        Marker marker = super.createMarker(point);
+        BusMarker marker = (BusMarker) super.createMarker(point);
         marker.setText(bTo.getStopName());
+        marker.setLocationName(bTo.getStopName());
         return marker;
+
     }
 }
