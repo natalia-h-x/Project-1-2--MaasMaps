@@ -27,11 +27,15 @@ public class Network implements MapGraphics {
     private Stroke stroke = new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10);
 
     public <P extends Point2D> Network(Graph<P> graph, AbstractMarkerFactory factory) {
-        this(graph);
         this.factory = factory;
+        createNetwork(graph);
     }
 
     public <P extends Point2D> Network(Graph<P> graph) {
+        createNetwork(graph);
+    }
+
+    private <P extends Point2D> void createNetwork(Graph<P> graph) {
         createLines(graph);
 
         for (P p1 : graph) {
