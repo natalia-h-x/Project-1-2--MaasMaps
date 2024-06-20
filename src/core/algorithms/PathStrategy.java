@@ -10,14 +10,16 @@ import ui.map.geometry.factories.LineFactory;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-public abstract class PathStrategy {
-    public abstract Transport shortestPath(Graph<Point2D> graph, Point2D source, Point2D end, Time startTime) throws IllegalArgumentException;
-    
-    protected static GeographicLine toGeographicLine(List<Point2D> shortestDistances, List<Time> timesTaken) {
+public abstract interface PathStrategy {
+    public static Transport shortestPath(Graph<Point2D> graph, Point2D source, Point2D end, Time startTime) throws IllegalArgumentException {
+        throw new UnsupportedOperationException("cannot instanciate this in PathStrategy");
+    }
+
+    public static GeographicLine toGeographicLine(List<Point2D> shortestDistances, List<Time> timesTaken) {
         return LineFactory.createResultsLine(timesTaken.toArray(Time[]::new), shortestDistances.toArray(Location[]::new));
     }
 
-    protected static Time toTime(List<Time> timesTaken, Time startTime) {
+    public static Time toTime(List<Time> timesTaken, Time startTime) {
         Time total = Time.of(0);
 
         for (Time time : timesTaken) {

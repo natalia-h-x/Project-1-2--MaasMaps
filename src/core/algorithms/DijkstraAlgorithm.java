@@ -1,6 +1,7 @@
 package core.algorithms;
 
 import java.awt.geom.Point2D;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -15,11 +16,13 @@ import core.models.Time;
 import core.models.Trip;
 import core.models.transport.Transport;
 
-
-public class DijkstraAlgorithm extends PathStrategy{
-
+public class DijkstraAlgorithm extends PathStrategy {
     // Boy do I hope java has objInserting.equals(objInList) instead of the other way around. Why?
     public Transport shortestPath(Graph<Point2D> graph, Point2D source, Point2D end, Time startTime) throws IllegalArgumentException {
+        return shortestPath(graph, source, end, startTime, (a, b) -> 0);
+    }
+
+    public Transport shortestPath(Graph<Point2D> graph, Point2D source, Point2D end, Time startTime, Comparator<? super Point2D> heuristic) throws IllegalArgumentException {
         if (source.equals(end))
             throw new IllegalArgumentException("Start is destination");
 
@@ -27,7 +30,7 @@ public class DijkstraAlgorithm extends PathStrategy{
         Map<Point2D, List<Trip>> transfers = new HashMap<>();
         Map<Point2D, List<Time>> times = new HashMap<>();
         Map<Point2D, Integer> weights = new HashMap<>();
-        PriorityQueue<Point2D> unsettled = new PriorityQueue<>((a, b) -> weights.get(b).compareTo(weights.get(a)));
+        PriorityQueue<Point2D> unsettled = new PriorityQueue<>((a, b) -> weights.get(b).compareTo(weights.get(a)) + heuristic.compare(a, b));
         Set<Point2D> settled = new HashSet<>();
 
         weights.put(source, startTime.toSeconds());
@@ -86,6 +89,4 @@ public class DijkstraAlgorithm extends PathStrategy{
 
         throw new IllegalArgumentException("Could not find a route between these two bus stops.");
     }
-
-
 }
