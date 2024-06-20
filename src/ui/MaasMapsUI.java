@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -117,23 +118,22 @@ public class MaasMapsUI extends JFrame {
         resultsPanel.addMapGraphics(abstractedBusNetwork);
         resultsPanel.repaint();
 
+        JPanel resultsContainerSouth = new JPanel (new GridLayout(1, 2, 900, UIConstants.GUI_BORDER_SIZE / 2));
+        resultsContainerSouth.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
         
+        JPanel changeAlgoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        changeAlgoPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+
+
         
-        // JPanel changeAlgorithmPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
-        // changeAlgorithmPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+        String algoOptions[] = { "A*", "Dijkstra's" };
         
-        // // Create Combo Box header
-        // JLabel changeLabel = new JLabel("Select algorithm: ");
-        // changeLabel.setFont(new Font("Select algorithm: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
+        //add combo box to change algorithms
+        JComboBox<String> changeAlgorithmBox = new JComboBox<> (algoOptions);
+        changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
+        changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
         
-        // String algoOptions[] = { "A*", "Dijkstra's" };
-        
-        // //add combo box to change algorithms
-        // JComboBox<String> changeAlgorithmBox = new JComboBox<> (algoOptions);
-        // changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
-        // changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
-        //working on it aaaaa
-        
+
         JPanel legendButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         legendButtonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
@@ -143,9 +143,17 @@ public class MaasMapsUI extends JFrame {
         legend.setBackground(UIConstants.GUI_TITLE_COLOR);
         legend.setForeground(Color.WHITE);
         legendButtonPanel.add(legend);
+        changeAlgoPanel.add(changeAlgorithmBox); //needs action listener
+
+        
 
         legendButtonPanel.setVisible(true);
-        resultsContainer.add(legendButtonPanel, BorderLayout.SOUTH);
+        changeAlgoPanel.setVisible(true);
+
+        resultsContainer.add(resultsContainerSouth, BorderLayout.SOUTH);
+        
+        resultsContainerSouth.add(changeAlgoPanel);
+        resultsContainerSouth.add(legendButtonPanel);
 
         // Add action listener to the legend button
         legend.addActionListener(new ActionListener() {
@@ -156,8 +164,6 @@ public class MaasMapsUI extends JFrame {
         });
 
 
-        
-        
         
         // Adding components to the split panes
         verticalSplitPane.add(map, JSplitPane.TOP);
