@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-import core.managers.SerializationManager;
+import core.managers.serialization.XMLSerializationManager;
 import tools.generator.sqlite.TxtToSQLite;
 
 public class DatabaseDefinitionManager {
@@ -19,7 +19,7 @@ public class DatabaseDefinitionManager {
             bld.append(createTableSQL);
 
             for (int i = 0; i < headers.length; i++) {
-                bld.append("`" + headers[i] + "` " + SerializationManager.removeTags(types[i]) + ",\n");
+                bld.append("`" + headers[i] + "` " + XMLSerializationManager.removeTags(types[i]) + ",\n");
             }
 
             List<String> compositePK = new LinkedList<>();
@@ -28,8 +28,8 @@ public class DatabaseDefinitionManager {
                 String type = types[i];
 
                 while (type.contains("<")) {
-                    String tag = SerializationManager.getFirstTag(type);
-                    type = SerializationManager.removeFirstTag(type);
+                    String tag = XMLSerializationManager.getFirstTag(type);
+                    type = XMLSerializationManager.removeFirstTag(type);
 
                     switch (tag.split(" ")[0]) {
                         case "PK":
