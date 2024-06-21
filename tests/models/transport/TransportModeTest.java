@@ -68,7 +68,7 @@ public class TransportModeTest {
 
         Route.of(Time.of(2), new ArrayList<>());
 
-        DijkstraAlgorithm.calculateShortestPath(bus);
+        new DijkstraAlgorithm<Location>().calculateShortestPath(bus);
 
         Bus bus2 = bus;
         bus.hashCode();

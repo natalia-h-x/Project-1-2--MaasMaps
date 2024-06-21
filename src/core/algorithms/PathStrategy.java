@@ -23,6 +23,7 @@ public abstract class PathStrategy<T extends Point2D> {
 
     public abstract Transport[] shortestPath(Graph<T> graph, T source, T end, Time startTime) throws IllegalArgumentException;
 
+    @SuppressWarnings("unchecked")
     public Optional<Route> calculateShortestPath(Bus bus) {
         if (shortestPaths.containsKey(bus))
             return shortestPaths.get(bus);

@@ -129,7 +129,6 @@ public class MaasMapsUI extends JFrame {
         changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
         changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
 
-
         JPanel legendButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         legendButtonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
@@ -146,9 +145,6 @@ public class MaasMapsUI extends JFrame {
         legendButtonPanel.add(legend);
         changeAlgoPanel.add(changeAlgorithmBox); //needs action listener
 
-        legendPanel.setVisible(true);
-        resultsContainer.add(legendPanel, BorderLayout.SOUTH);
-
         legendButtonPanel.setVisible(true);
         changeAlgoPanel.setVisible(true);
 
@@ -158,18 +154,7 @@ public class MaasMapsUI extends JFrame {
         resultsContainerSouth.add(legendButtonPanel);
 
         // Add action listener to the legend button
-        legend.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Create a new window
-                JFrame legendWindow = new JFrame("Legend");
-                legendWindow.setSize(250, 350);
-                legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                // Set the new window to be visible
-                legendWindow.setVisible(true);
-                legendWindow.setLocation(1400, 600);
-            }
-        });
+        legend.addActionListener(e -> createLegendPanel());
 
         // Adding components to the split panes
         verticalSplitPane.add(map, JSplitPane.TOP);
@@ -255,55 +240,53 @@ public class MaasMapsUI extends JFrame {
 
 
     private void createLegendPanel() {
-    JFrame legendWindow = new JFrame("Legend");
-    legendWindow.setSize(250, 400);
-    legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    legendWindow.setLocationRelativeTo(this);
+        JFrame legendWindow = new JFrame("Legend");
+        legendWindow.setSize(250, 400);
+        legendWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        legendWindow.setLocationRelativeTo(this);
 
+        JLabel heading = new JLabel("Bus Lines");
+        heading.setFont(new Font("Arial", Font.BOLD, 20));
+        heading.setForeground(UIConstants.GUI_TITLE_COLOR);
+        JPanel legendPanel = new JPanel();
+        legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
+        legendPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        legendPanel.setBackground(UIConstants.GUI_LEGEND_COLOR);
+        legendPanel.add(heading);
 
-    JLabel heading = new JLabel("Bus Lines");
-    heading.setFont(new Font("Arial", Font.BOLD, 20));
-    heading.setForeground(UIConstants.GUI_TITLE_COLOR);
-    JPanel legendPanel = new JPanel();
-    legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
-    legendPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    legendPanel.setBackground(UIConstants.GUI_LEGEND_COLOR);
-    legendPanel.add(heading);
+        // Map to store bus colors and their corresponding counts
+        java.util.Map<Color, Integer> busData = new HashMap<>();
+        busData.put(BusColors.BUS_30, 30);
+        busData.put(BusColors.BUS_6, 6);
+        busData.put(BusColors.BUS_1, 1);
+        busData.put(BusColors.BUS_10, 10);
+        busData.put(BusColors.BUS_7, 7);
+        busData.put(BusColors.BUS_4, 4);
+        busData.put(BusColors.BUS_2, 2);
+        busData.put(BusColors.BUS_350, 350);
+        busData.put(BusColors.BUS_15, 15);
 
+        // Create legend items
+        for (java.util.Map.Entry<Color, Integer> entry : busData.entrySet()) {
+            JPanel legendItem = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+            legendItem.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
+            legendItem.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-    // Map to store bus colors and their corresponding counts
-    java.util.Map<Color, Integer> busData = new HashMap<>();
-    busData.put(BusColors.BUS_30, 30);
-    busData.put(BusColors.BUS_6, 6);
-    busData.put(BusColors.BUS_1, 1);
-    busData.put(BusColors.BUS_10, 10);
-    busData.put(BusColors.BUS_7, 7);
-    busData.put(BusColors.BUS_4, 4);
-    busData.put(BusColors.BUS_2, 2);
-    busData.put(BusColors.BUS_350, 350);
-    busData.put(BusColors.BUS_15, 15);
+            JLabel colorLabel = new JLabel("●");
+            colorLabel.setForeground(entry.getKey()); // Set color
+            colorLabel.setFont(new Font("●",3,20  )); // Set font size
+            legendItem.add(colorLabel);
 
-    // Create legend items
-    for (java.util.Map.Entry<Color, Integer> entry : busData.entrySet()) {
-        JPanel legendItem = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        legendItem.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
-        legendItem.setAlignmentX(Component.LEFT_ALIGNMENT);
+            JLabel numberLabel = new JLabel(" - No. " + entry.getValue());
+            legendItem.add(numberLabel);
 
-        JLabel colorLabel = new JLabel("●");
-        colorLabel.setForeground(entry.getKey()); // Set color
-        colorLabel.setFont(new Font("●",3,20  )); // Set font size
-        legendItem.add(colorLabel);
+            legendPanel.add(legendItem);
+        }
 
-        JLabel numberLabel = new JLabel(" - No. " + entry.getValue());
-        legendItem.add(numberLabel);
-
-        legendPanel.add(legendItem);
+        legendWindow.add(legendPanel);
+        legendWindow.setAlwaysOnTop( true );
+        legendWindow.setVisible(true);
     }
-
-    legendWindow.add(legendPanel);
-    legendWindow.setAlwaysOnTop( true );
-    legendWindow.setVisible(true);
-}
 
     private void toggleMenu() {
         if (expanded) {

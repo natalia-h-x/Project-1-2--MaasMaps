@@ -1,6 +1,7 @@
 package core.models.transport;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.BinaryOperator;
 
 import javax.swing.ImageIcon;
@@ -44,7 +45,7 @@ public class Bus extends Transport {
 
     public Route getChosenRoute() {
         try {
-            return pathStrategy.calculateShortestPath(this).orElseThrow();
+            return Optional.ofNullable(pathStrategy).orElse(new DijkstraAlgorithm<>()).calculateShortestPath(this).orElseThrow();
         }
         catch (NoSuchElementException e) {
             throw new IllegalArgumentException("Cannot find a connection between these postal codes.");
