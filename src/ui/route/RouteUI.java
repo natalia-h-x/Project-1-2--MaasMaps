@@ -1,5 +1,6 @@
 package ui.route;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -16,15 +17,13 @@ public class RouteUI extends JPanel {
     public void setRoute(Route route) {
         this.route = route;
 
-        setVisible(true);
         removeAll();
         initializeUI();
-        revalidate();
-        repaint();
     }
 
     public void initializeUI() {
         JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         for (Transport transport : route) {
             panel.add(new RouteSegmentUI(transport));
