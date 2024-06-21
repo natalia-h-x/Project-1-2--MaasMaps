@@ -42,6 +42,7 @@ public abstract class Transport {
 
     public abstract ImageIcon getIcon();
     public abstract String toString();
+    public abstract String takeTransport();
     public abstract double getAverageSpeed();
     public abstract MapGraphics[] getGraphics();
 }

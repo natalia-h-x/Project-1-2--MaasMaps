@@ -1,11 +1,19 @@
 package ui.route;
 
+import javax.swing.JPanel;
+
 import core.models.transport.Transport;
 
-public class RouteSegmentUI {
-    public RouteSegmentUI(Transport transport) {
+public class RouteSegmentUI extends JPanel {
+    private Transport transport;
 
+    public RouteSegmentUI(Transport transport) {
+        this.transport = transport;
+
+        initializeUI();
     }
 
+    private void initializeUI() {
 
+    }
 }
