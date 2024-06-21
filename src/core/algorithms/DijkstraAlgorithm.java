@@ -75,4 +75,9 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
 
         throw new IllegalArgumentException("Could not find a route between these two bus stops.");
     }
+
+    @Override
+    public String toString() {
+        return "Dijkstra's";
+    }
 }

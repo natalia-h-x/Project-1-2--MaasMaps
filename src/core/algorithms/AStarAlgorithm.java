@@ -26,4 +26,9 @@ public class AStarAlgorithm<T extends Point2D> extends PathStrategy<T> {
     private double getFitness(T current, T end) {
         return current.distance(end);
     }
+
+    @Override
+    public String toString() {
+        return "A*";
+    }
 }

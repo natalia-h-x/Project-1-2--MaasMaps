@@ -2,6 +2,7 @@ package core.models.transport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import ui.map.geometry.interfaces.MapGraphics;
 
 @Data
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Route {
+public class Route implements Iterable<Transport> {
     public static Route empty() {
         return new Route(Time.of(0), new LinkedList<>());
     }
@@ -121,5 +122,10 @@ public class Route {
         graphics.add(ImageMarkerFactory.createBImageMarker(getDestination()));
 
         return graphics.toArray(MapGraphics[]::new);
+    }
+
+    @Override
+    public Iterator<Transport> iterator() {
+        return transfers.iterator();
     }
 }

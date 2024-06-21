@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import core.models.transport.Route;
+import core.models.transport.Transport;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,6 +20,8 @@ public class RouteUI extends JPanel {
     public void initializeUI() {
         JScrollPane contentPane = new JScrollPane();
 
-
+        for (Transport transport : route) {
+            contentPane.add(new RouteSegmentUI(transport));
+        }
     }
 }

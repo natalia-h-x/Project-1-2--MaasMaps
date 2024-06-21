@@ -14,6 +14,6 @@ public class RouteSegmentUI extends JPanel {
     }
 
     private void initializeUI() {
-
+        transport.takeTransport();
     }
 }
