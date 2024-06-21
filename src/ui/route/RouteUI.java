@@ -26,7 +26,7 @@ public class RouteUI extends JScrollPane {
 
     public void initializeUI() {
         for (Transport transport : route) {
-            add(new RouteSegmentUI(transport));
+            this.add(new RouteSegmentUI(transport));
         }
     }
 }
