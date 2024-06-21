@@ -38,6 +38,9 @@ public final class Constants {
         public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.png";
         public static final String A_IMAGE = "resources/visuals/icons/AIcon.png";
         public static final String B_IMAGE = "resources/visuals/icons/BIcon.png";
+        public static final String PATH_DELIMETER = "/";
+        public static final String GEOJSON = "resources/geoJSON/%s.geojson";
+
         public static final ImageIcon buttonMenu1 = new ImageIcon("resources/visuals/icons/display1.png");
         public static final ImageIcon buttonMenu2 = new ImageIcon("resources/visuals/icons/display2.png");
         public static final ImageIcon buttonMenu3 = new ImageIcon("resources/visuals/icons/display3.png");
