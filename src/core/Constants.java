@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-import core.models.Time;
+import core.models.gtfs.Time;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 

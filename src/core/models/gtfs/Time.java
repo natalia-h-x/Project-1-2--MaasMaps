@@ -1,4 +1,4 @@
-package core.models;
+package core.models.gtfs;
 
 import lombok.Data;
 
@@ -12,6 +12,10 @@ public class Time implements Comparable<Time> {
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;
+    }
+
+    public static Time empty() {
+        return new Time(0, 0, 0);
     }
 
     public static Time of(int hours, int minutes, int seconds) {
@@ -28,6 +32,10 @@ public class Time implements Comparable<Time> {
 
     public static Time of(int seconds) {
         return new Time(0, 0, 0).update(seconds);
+    }
+
+    public boolean isEmpty() {
+        return toSeconds() == 0;
     }
 
     public Time update(int seconds) {
@@ -55,6 +63,20 @@ public class Time implements Comparable<Time> {
             return Integer.MAX_VALUE;
 
         return (3600 * hours) + (60 * minutes) + seconds;
+    }
+
+    public double toMinutes() {
+        if (hours == Integer.MAX_VALUE || minutes == Integer.MAX_VALUE || seconds == Integer.MAX_VALUE)
+            return Integer.MAX_VALUE;
+
+        return (60.0d * hours) + minutes + (seconds / 60.0d);
+    }
+
+    public double toHours() {
+        if (hours == Integer.MAX_VALUE || minutes == Integer.MAX_VALUE || seconds == Integer.MAX_VALUE)
+            return Integer.MAX_VALUE;
+
+        return hours + (minutes / 60.0d) + (seconds / 3600.0d);
     }
 
     @Override

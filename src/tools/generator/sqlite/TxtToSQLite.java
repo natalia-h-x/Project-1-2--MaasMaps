@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import core.managers.DatabaseManager;
 import core.managers.FileManager;
+import core.managers.database.DatabaseDefinitionManager;
+import core.managers.database.DatabaseModificationManager;
+import core.managers.database.QueryManager;
 
 /*
  * To recreate, first unzip the GTFS file in /resources and rename .txt files to .csv (line 14 assumes unzipped location)
@@ -96,7 +98,7 @@ public class TxtToSQLite {
             System.out.println();
         }
 
-        DatabaseManager.createTable(tableName, headers, types.get(file.getName()));
+        DatabaseDefinitionManager.createTable(tableName, headers, types.get(file.getName()));
         int maxLines = 10000;
         int current = lines.length;
         String[] batch = new String[maxLines];
@@ -126,28 +128,28 @@ public class TxtToSQLite {
             lines = pruneLines(lines);
 
         if (tableName.equals("stop_times") || tableName.equals("transfers")) {
-            List<Integer> stopIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `stop_id` FROM stops", new ArrayList<Integer>())[0];
+            List<Integer> stopIDs = (List<Integer>) QueryManager.executeQuery("SELECT `stop_id` FROM stops", new ArrayList<Integer>())[0];
             List<Integer> indexes = indexOf(headers, "stop_id");
 
             lines = pruneLines(lines, new HashSet<>(stopIDs), new HashSet<>(indexes));
         }
 
         if (tableName.equals("trips")) {
-            List<Integer> tripIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `trip_id` FROM stop_times", new ArrayList<Integer>())[0];
+            List<Integer> tripIDs = (List<Integer>) QueryManager.executeQuery("SELECT `trip_id` FROM stop_times", new ArrayList<Integer>())[0];
             List<Integer> indexes = indexOf(headers, "trip_id");
 
             lines = pruneLines(lines, new HashSet<>(tripIDs), new HashSet<>(indexes));
         }
 
         if (tableName.equals("shapes")) {
-            List<Integer> shapeIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `shape_id` FROM trips", new ArrayList<Integer>())[0];
+            List<Integer> shapeIDs = (List<Integer>) QueryManager.executeQuery("SELECT `shape_id` FROM trips", new ArrayList<Integer>())[0];
             List<Integer> indexes = indexOf(headers, "shape_id");
 
             lines = pruneLines(lines, new HashSet<>(shapeIDs), new HashSet<>(indexes));
         }
 
         if (tableName.equals("routes")) {
-            List<Integer> shapeIDs = (List<Integer>) DatabaseManager.executeQuery("SELECT `route_id` FROM trips", new ArrayList<Integer>())[0];
+            List<Integer> shapeIDs = (List<Integer>) QueryManager.executeQuery("SELECT `route_id` FROM trips", new ArrayList<Integer>())[0];
             List<Integer> indexes = indexOf(headers, "route_id");
 
             lines = pruneLines(lines, new HashSet<>(shapeIDs), new HashSet<>(indexes));
@@ -184,14 +186,14 @@ public class TxtToSQLite {
 
         for (int i = 0; i < divideData(data.length, maxLines); i++) {
             System.arraycopy(data, i * maxLines, smallerData, 0, maxLines);
-            DatabaseManager.insertInTable(tableName, headers, smallerData);
+            DatabaseModificationManager.insertInTable(tableName, headers, smallerData);
             current = current - maxLines;
         }
 
         if (current > 0) {
             smallerData = new String[current][headers.length];
             System.arraycopy(data, data.length - current, smallerData, 0, current);
-            DatabaseManager.insertInTable(tableName, headers, smallerData);
+            DatabaseModificationManager.insertInTable(tableName, headers, smallerData);
         }
     }
 

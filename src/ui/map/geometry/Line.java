@@ -30,7 +30,7 @@ import ui.map.geometry.interfaces.MapGraphics;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment> {
+public class Line implements MapGraphics, Iterable<Line.Segment> {
     private static final int ANIMATION_SPEED = 100;
     private List<Point2D> locations = new ArrayList<>();
     private Paint paint = new Color(001, 010, 100);
@@ -63,7 +63,7 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
             for (int i = 0; i < locations.size() - 1; i++) {
                 Point2D start = locations.get(i);
                 Point2D end = locations.get(i + 1);
-                
+
                 if (start == null || end == null)
                     continue;
 
@@ -78,7 +78,7 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
                     previousPoint = controlPoint;
                 }
 
-                segments.add(createSegment(start, end, controlPoints));
+                segments.add(createSegment(i, start, end, controlPoints));
             }
         }
         catch (ArrayIndexOutOfBoundsException e) {
@@ -88,7 +88,7 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
         return segments.toArray(Segment[]::new);
     }
 
-    public Segment createSegment(Point2D start, Point2D end, List<Point2D> controlPoints) {
+    public Segment createSegment(int i, Point2D start, Point2D end, List<Point2D> controlPoints) {
         return new Segment(start, end, controlPoints.toArray(Point2D[]::new));
     }
 
@@ -114,9 +114,9 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
     public void advanceLineDrawIterator(ActionEvent e) {
         if (animatedSegments >= lineIterator.length)
             animatorTimer.stop();
-        
+
         animatedSegments++;
-        
+
         Context.getContext().getMap().repaint();
     }
 
@@ -177,10 +177,10 @@ public class Line implements MapGraphics, Iterable<ui.map.geometry.Line.Segment>
                 private List<Segment> subdivide(QuadCurve2D curve, List<Segment> segments, int level) {
                     if (level >= QUAD_SUBDIVISIONS) {
                         segments.add(new Segment(curve.getP1(), curve.getP2()));
-                        
+
                         return segments;
                     }
-                    
+
                     var curve1 = new QuadCurve2D.Double();
                     var curve2 = new QuadCurve2D.Double();
                     curve.subdivide(curve1, curve2);

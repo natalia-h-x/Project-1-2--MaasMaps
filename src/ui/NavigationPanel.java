@@ -19,10 +19,10 @@ import core.Constants.Map;
 import core.Context;
 import core.managers.ExceptionManager;
 import core.managers.MapManager;
-import core.models.Time;
+import core.models.gtfs.Time;
 import core.models.transport.Biking;
 import core.models.transport.Bus;
-import core.models.transport.TransportMode;
+import core.models.transport.Transport;
 import core.models.transport.Walking;
 import core.zipcode.ZipCodeDatabase;
 
@@ -33,7 +33,7 @@ import core.zipcode.ZipCodeDatabase;
  */
 public class NavigationPanel extends JPanel {
     private JLabel timeLabel;
-    private transient TransportMode[] options = {
+    private transient Transport[] options = {
             new Walking(),
             new Biking(),
             new Bus()
@@ -84,8 +84,6 @@ public class NavigationPanel extends JPanel {
         search.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
         JTextField radiusField = new JTextField("" + Map.POSTAL_CODE_MAX_SEARCH_RADIUS);
 
-        
-
         // randomize bus stops button
         JButton busRandom = new JButton("Randomize bus stops");
         busRandom.setPreferredSize(new Dimension(10, 25));
@@ -121,7 +119,7 @@ public class NavigationPanel extends JPanel {
 
         JLabel checkTransfer = new JLabel("Number of transfers: ");
         checkTransfer.setFont(new Font("Number of transfers: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
-        
+
         // transfer number label
         JLabel transferCount = new JLabel("");
 
@@ -136,7 +134,7 @@ public class NavigationPanel extends JPanel {
         panel1.add(search);
         panel1.add(walkingTime);
         panel1.add(checkTransfer);
-        
+
         panel2.add(textField1);
         panel2.add(textField2);
         panel2.add(departureField);
@@ -158,7 +156,7 @@ public class NavigationPanel extends JPanel {
         transportType.setFont(new Font("Select means of transport: ", Font.BOLD, UIConstants.GUI_INFO_FONT_SIZE));
 
         // create combo box
-        JComboBox<TransportMode> selection = new JComboBox<>(options);
+        JComboBox<Transport> selection = new JComboBox<>(options);
         selection.setBackground(UIConstants.GUI_ACCENT_COLOR);
         selection.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
 
@@ -204,7 +202,6 @@ public class NavigationPanel extends JPanel {
 
         // Call the addActionListeners method and pass the array of components
         addActionListeners(components);
-
         addClearActionListener(clearButton);
     }
 
@@ -214,7 +211,7 @@ public class NavigationPanel extends JPanel {
         JTextField textField1 = (JTextField) components[0];
         JTextField textField2 = (JTextField) components[1];
         JButton calculate = (JButton) components[2];
-        JComboBox<TransportMode> selection = (JComboBox<TransportMode>) components[3];
+        JComboBox<Transport> selection = (JComboBox<Transport>) components[3];
         JLabel departure = (JLabel) components[4];
         JTextField departureField = (JTextField) components[5];
         JLabel search = (JLabel) components[6];
@@ -225,16 +222,15 @@ public class NavigationPanel extends JPanel {
         JLabel walkingTime = (JLabel) components[11];
         JTextField walkingField = (JTextField) components[12];
 
-
         calculate.addActionListener(e -> {
             try {
-                TransportMode transportMode = (TransportMode) selection.getSelectedItem();
+                Transport transportMode = (Transport) selection.getSelectedItem();
                 transportMode.dispose();
                 transportMode.setStart(db.getLocation(textField1.getText()));
                 transportMode.setDestination(db.getLocation(textField2.getText()));
 
                 if (transportMode instanceof Bus)
-                    for (TransportMode option : options) {
+                    for (Transport option : options) {
                         if (option instanceof Bus b) {
                             b.setDepartingTime(Time.of(departureField.getText()));
                         }
@@ -263,7 +259,7 @@ public class NavigationPanel extends JPanel {
         // Add ItemListener to the selection JComboBox
         selection.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                TransportMode selectedMode = (TransportMode) selection.getSelectedItem();
+                Transport selectedMode = (Transport) selection.getSelectedItem();
                 if (selectedMode instanceof Bus) {
                     // Show components related to bus stops
                     departure.setVisible(true);
@@ -275,7 +271,8 @@ public class NavigationPanel extends JPanel {
                     transferCount.setVisible(true);
                     walkingTime.setVisible(true);
                     walkingField.setVisible(true);
-                } else {
+                }
+                else {
                     // Hide components related to bus stops
                     departure.setVisible(false);
                     departureField.setVisible(false);

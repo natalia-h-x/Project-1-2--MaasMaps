@@ -9,7 +9,7 @@ import java.util.List;
 import core.managers.DistanceManager;
 import core.managers.MapManager;
 import core.models.Location;
-import core.models.Time;
+import core.models.gtfs.Time;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ui.map.geometry.interfaces.GeographicMapGraphics;
@@ -33,8 +33,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
     }
 
     @Override
-    public Segment createSegment(Point2D start, Point2D end, List<Point2D> controlPoints) {
-        int i = getLocations().indexOf(end);
+    public Segment createSegment(int i, Point2D start, Point2D end, List<Point2D> controlPoints) {
         return new GeographicSegment(start, end, times.size() < i? times.get(i) : null, controlPoints.toArray(Point2D[]::new));
     }
 
@@ -70,7 +69,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
         @Override
         public void paint(Graphics2D g2) {
             super.paint(g2);
-            
+
             if (time != null) drawTime(g2);
             else drawDistance(g2);
         }

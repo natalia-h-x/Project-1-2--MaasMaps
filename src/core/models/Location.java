@@ -61,14 +61,14 @@ public class Location extends Point2D {
         if (java.lang.Double.doubleToLongBits(latitude) != java.lang.Double.doubleToLongBits(other.latitude))
             return false;
 
-        return (java.lang.Double.doubleToLongBits(longitude) != java.lang.Double.doubleToLongBits(other.longitude));
+        return java.lang.Double.doubleToLongBits(longitude) == java.lang.Double.doubleToLongBits(other.longitude);
     }
 
     @Override
     public double distance(Point2D destination) {
         if (destination instanceof Location l)
             return DistanceManager.haversine(this, l) * 1000;
-        
+
         return super.distance(destination);
     }
 

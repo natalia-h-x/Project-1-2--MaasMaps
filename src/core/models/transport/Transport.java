@@ -1,32 +1,47 @@
 package core.models.transport;
 
-import java.util.List;
+import javax.swing.ImageIcon;
 
-import core.models.Time;
-import core.models.Trip;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import core.models.Location;
+import core.models.gtfs.Time;
 import lombok.Data;
-import ui.map.geometry.GeographicLine;
+import ui.map.geometry.interfaces.MapGraphics;
 
+/**
+ * Interface that gets implemented but all different means of transport.
+ *
+ * @author Kimon Navridis
+ */
 @Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Transport {
-    private GeographicLine line;
-    private List<Trip> transfers;
-    private Time time;
-    private TransportMode manualTransportModeA;
-    private TransportMode manualTransportModeB;
+public abstract class Transport {
+    private Location start;
+    private Location destination;
+    private Time time = Time.empty();
 
-    public static Transport of(GeographicLine line, Time time, List<Trip> transfers) {
-        return ofWalking(line, time, transfers);
+    protected Transport() {}
+    protected Transport(Location start, Location destination) {
+        this.start = start;
+        this.destination = destination;
     }
 
-    public static Transport ofWalking(GeographicLine line, Time time, List<Trip> transfers) {
-        return new Transport(line, transfers, time, new Walking(), new Walking());
+    public Time getTravelTime() {
+        return Time.of((int) ((start.distance(destination) / getAverageSpeed()) * 60.0));
     }
 
-    public static Transport ofBiking(GeographicLine line, Time time, List<Trip> transfers) {
-        return new Transport(line, transfers, time, new Biking(), new Biking());
+    public boolean canMerge(Transport before) {
+        if (before == null)
+            return false;
+
+        if ((canEqual(before) && (this instanceof Bus bus && bus.getTrip().equals(((Bus) before).getTrip()))) || !(this instanceof Bus))
+            return before.destination.equals(start);
+
+        return false;
     }
+
+    public void dispose() {}
+
+    public abstract ImageIcon getIcon();
+    public abstract String toString();
+    public abstract double getAverageSpeed();
+    public abstract MapGraphics[] getGraphics();
 }

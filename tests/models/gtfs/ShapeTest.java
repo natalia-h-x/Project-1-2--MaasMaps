@@ -1,10 +1,10 @@
-package models;
+package models.gtfs;
 
 import org.junit.jupiter.api.Test;
 
 import core.Context;
 import core.models.Location;
-import core.models.Shape;
+import core.models.gtfs.Shape;
 import ui.MaasMapsUI;
 import ui.map.geometry.factories.LineFactory;
 
@@ -14,8 +14,8 @@ public class ShapeTest {
         Shape shape = Shape.empty();
         shape.setId(1129890);
         shape.setLocations(new Location[] {
-            new Location(50.847854, 5.724670), 
-            new Location(50.844914, 5.727588), 
+            new Location(50.847854, 5.724670),
+            new Location(50.844914, 5.727588),
             new Location(50.842640, 5.727500)
         });
 

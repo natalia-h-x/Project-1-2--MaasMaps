@@ -3,10 +3,9 @@ package core.algorithms.datastructures;
 import java.util.Iterator;
 import java.util.Set;
 
-public class GraphIterator<T> implements Iterator<T>{
-    T[] iterateArray;
-    int currentIndex = 0;
-    int i = -1;
+public class GraphIterator<T> implements Iterator<T> {
+    private T[] iterateArray;
+    private int i = -1;
 
     @SuppressWarnings("unchecked")
     public GraphIterator(Set<T> graph) {
@@ -21,7 +20,7 @@ public class GraphIterator<T> implements Iterator<T>{
 
     @Override
     public boolean hasNext() {
-        if (i+1 >= iterateArray.length) 
+        if (i+1 >= iterateArray.length)
             return false;
         return true;
     }

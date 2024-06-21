@@ -8,7 +8,7 @@ public class ControlPoint extends Point {
     public ControlPoint(int x, int y) {
         super(x, y);
     }
-    
+
     public void map(Point2D start, Point2D end) {
         // Override this method in latter classes which generate the control point based neighboring points.
     }
@@ -33,7 +33,7 @@ public class ControlPoint extends Point {
             setLocation(1.0 / Math.exp(Math.max(start.getX(), end.getX())), Math.min(start.getY(), end.getY()));
         }
     }
-    
+
     public static class InvertedBloom extends ControlPoint {
         @Override
         public void map(Point2D start, Point2D end) {
@@ -47,7 +47,7 @@ public class ControlPoint extends Point {
             setLocation(1.0 / Math.exp(Math.max(start.getX(), end.getX())), Math.max(start.getY(), end.getY()));
         }
     }
-    
+
     public static class InvertedWithering extends ControlPoint {
         @Override
         public void map(Point2D start, Point2D end) {
@@ -61,7 +61,7 @@ public class ControlPoint extends Point {
             setLocation(Math.min(start.getX(), end.getX()), 1.0 / Math.exp(Math.max(start.getY(), end.getY())));
         }
     }
-    
+
     public static class InvertedImplode extends ControlPoint {
         @Override
         public void map(Point2D start, Point2D end) {
@@ -75,7 +75,7 @@ public class ControlPoint extends Point {
             setLocation(Math.max(start.getX(), end.getX()), 1.0 / Math.exp(Math.max(start.getY(), end.getY())));
         }
     }
-    
+
     public static class InvertedExplode extends ControlPoint {
         @Override
         public void map(Point2D start, Point2D end) {

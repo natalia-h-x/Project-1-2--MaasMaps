@@ -1,4 +1,4 @@
-package core.models;
+package core.models.gtfs;
 
 import java.awt.Color;
 

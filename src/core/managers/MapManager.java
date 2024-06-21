@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import java.util.PriorityQueue;
 
 import core.Context;
 import core.algorithms.datastructures.Graph;
+import core.managers.database.GTFSManager;
 import core.models.Location;
 import core.models.ZipCode;
 
@@ -26,11 +26,11 @@ public class MapManager {
     private MapManager() {}
 
     public static final Location MAP_TOP_LEFT_LOCATION = new Location(50.90074, 5.64213);
-    public static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
+    protected static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
     public static final Location MAP_BOTTOM_RIGHT_LOCATION = new Location(50.815816, 5.753384);
-    public static final Point MAP_BOTTOM_RIGHT_GLOBAL_XY = getGlobalXY(MAP_BOTTOM_RIGHT_LOCATION);
-    public static final Point MAP_TOP_LEFT_XY = locationToPoint(MAP_TOP_LEFT_LOCATION);
-    public static final Point MAP_BOTTOM_RIGHT_XY = locationToPoint(MAP_BOTTOM_RIGHT_LOCATION);
+    protected static final Point MAP_BOTTOM_RIGHT_GLOBAL_XY = getGlobalXY(MAP_BOTTOM_RIGHT_LOCATION);
+    public    static final Point MAP_TOP_LEFT_XY = locationToPoint(MAP_TOP_LEFT_LOCATION);
+    public    static final Point MAP_BOTTOM_RIGHT_XY = locationToPoint(MAP_BOTTOM_RIGHT_LOCATION);
 
     private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
@@ -83,12 +83,16 @@ public class MapManager {
     }
 
     public static Location[] getClosestPoint(Location to, int n) {
+        return getClosestPoint(getBusGraph().getVertecesList(), to, n);
+    }
+
+    public static <P extends Point2D> Location[] getClosestPoint(List<P> list, Location to, int n) {
         Map<Location, Double> distances = new HashMap<>();
         PriorityQueue<Location> closestSet = new PriorityQueue<>((a, b) -> distances.get(b).compareTo(distances.get(a)));
         double worstDist = Double.NEGATIVE_INFINITY;
 
-        for (Point2D vertex : getBusGraph()) {
-            Location location = ((Location) vertex);
+        for (Point2D point : list) {
+            Location location = ((Location) point);
             double dist = location.distance(to);
 
             distances.put(location, dist);
@@ -134,7 +138,7 @@ public class MapManager {
     }
 
     public static Graph<Point2D> getBusGraph() {
-        return DatabaseManager.getBusGraph();
+        return GTFSManager.getBusGraph();
     }
 
     public static String getRandomPostalCode() {

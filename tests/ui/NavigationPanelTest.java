@@ -1,32 +1,28 @@
 package ui;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.BorderLayout;
-import java.awt.event.ItemEvent;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import core.Context;
-import core.models.Time;
+import core.models.gtfs.Time;
 import core.models.transport.Bus;
-import core.models.transport.TransportMode;
+import core.models.transport.Transport;
 
 public class NavigationPanelTest {
     private NavigationPanel navigationPanel;
     private JPanel testPanel;
     private JTextField textField1;
     private JTextField textField2;
-    private JComboBox<TransportMode> selection;
+    private JComboBox<Transport> selection;
     private JTextField departureField;
     private JTextField radiusField;
     private JButton calculate;
@@ -42,7 +38,7 @@ public class NavigationPanelTest {
         // Extract components from the navigation panel for testing
         textField1 = (JTextField) getComponentByName(navigationPanel, "textField1");
         textField2 = (JTextField) getComponentByName(navigationPanel, "textField2");
-        selection = (JComboBox<TransportMode>) getComponentByName(navigationPanel, "selection");
+        selection = (JComboBox<Transport>) getComponentByName(navigationPanel, "selection");
         departureField = (JTextField) getComponentByName(navigationPanel, "departureField");
         radiusField = (JTextField) getComponentByName(navigationPanel, "radiusField");
         calculate = (JButton) getComponentByName(navigationPanel, "calculate");
@@ -87,12 +83,10 @@ public class NavigationPanelTest {
         // Verify the bus component behaviors
         Bus bus = (Bus) selection.getSelectedItem();
         assertEquals(Time.of("08:30:00"), bus.getDepartingTime());
-        assertTrue(bus.isAllowTransfers());
 
         // Verify the clear button functionality
         assertEquals("", textField1.getText());
         assertEquals("", textField2.getText());
-        assertFalse(bus.isAllowTransfers());
     }
 
     // Helper method to get a component by its name

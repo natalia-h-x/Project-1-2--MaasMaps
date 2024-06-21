@@ -5,18 +5,18 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import core.models.Time;
-import core.models.Trip;
+import core.models.gtfs.Time;
+import core.models.gtfs.Trip;
 
 public class AdjacencyListGraph<T> implements Graph<T> {
-    private HashMap<T, List<EdgeNode<T>>> vertices;
+    private HashMap<T, List<Edge<T>>> vertices;
 
     public AdjacencyListGraph() {
         vertices = new HashMap<>();
     }
 
     @Override
-    public List<EdgeNode<T>> neighbors(T x) {
+    public List<Edge<T>> neighbors(T x) {
         if (!containsVertex(x)) {
             throw new IllegalArgumentException("The vertex " + x + " is not in the Graph.");
         }
@@ -65,23 +65,26 @@ public class AdjacencyListGraph<T> implements Graph<T> {
             throw new IllegalArgumentException("One or both vertices are not in the Graph.");
         }
 
-        List<EdgeNode<T>> edges = vertices.get(x);
+        List<Edge<T>> edges = vertices.get(x);
 
-        if (time != null && trip != null)
-            for (EdgeNode<T> edge : edges) {
-                if (edge.getElement().equals(y)) {
-                    edge.addTrip(trip, time);
+        if (time != null && trip != null) {
+            for (Edge<T> edge : edges) {
+                if (edge.getElement().equals(y) && edge instanceof BusEdge<T> busEdge) {
+                    busEdge.addTrip(trip, time);
 
                     return;
                 }
             }
 
-        EdgeNode<T> edge = new EdgeNode<>(y, weight);
+            BusEdge<T> edge = new BusEdge<>(y, weight);
 
-        if (time != null && trip != null)
             edge.addTrip(trip, time);
+            edges.add(edge);
 
-        edges.add(edge);
+            return;
+        }
+
+        edges.add(new WalkingEdge<>(y, weight));
     }
 
     @Override
@@ -96,9 +99,9 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (T vertex : vertices.keySet()) {
-            List<EdgeNode<T>> neighbours = vertices.get(vertex);
+            List<Edge<T>> neighbours = vertices.get(vertex);
             result.append(vertex).append(" neighbors: -> ");
-            for (EdgeNode<T> edge : neighbours) {
+            for (Edge<T> edge : neighbours) {
                 result.append(edge.getElement()).append(" (").append(edge.getWeight()).append(") -> ");
             }
             result.append("null\n");
@@ -117,7 +120,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         for (T vertex : vertices.keySet()) {
             if (!copy.containsVertex(vertex))
                 copy.addVertex(vertex);
-            for (EdgeNode<T> edge : vertices.get(vertex)) {
+            for (Edge<T> edge : vertices.get(vertex)) {
                 if (!copy.containsVertex(edge.getElement()))
                     copy.addVertex(edge.getElement());
                 copy.addEdge(vertex, edge.getElement(), edge.getWeight());
@@ -132,4 +135,3 @@ public class AdjacencyListGraph<T> implements Graph<T> {
         return iterator;
     }
 }
-

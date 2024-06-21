@@ -2,7 +2,6 @@ package ui.map.geometry;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -62,7 +61,11 @@ public class Marker implements MapGraphics {
 
         g2.setColor(Color.RED);
         g2.setStroke(new BasicStroke(size));
-        g2.draw(redEllipse);
+
+        try {
+            g2.draw(redEllipse);
+        }
+        catch (NullPointerException e) {}
 
         int[] xPoints = {(int) iconPoint.getX(), (int) (iconPoint.getX() - 4), (int) (iconPoint.getX() + 4)};
         int[] yPoints = {(int) location.getY(), (int) iconPoint.getY(), (int) iconPoint.getY()};

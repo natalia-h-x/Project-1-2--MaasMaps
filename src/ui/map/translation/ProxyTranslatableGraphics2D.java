@@ -78,11 +78,11 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
     }
 
     private int scaleX(double width) {
-        return (int) (width * scaleX);
+        return Math.max((int) (width * scaleX), 1);
     }
 
     private int deScaleX(double width) {
-        return (int) (width / scaleX);
+        return Math.max((int) (width / scaleX), 1);
     }
 
     private int scaleY(double height) {
@@ -432,7 +432,7 @@ public class ProxyTranslatableGraphics2D extends Graphics2D implements Translata
     public void setStroke(Stroke s) {
         if (s instanceof BasicStroke bs)
             mGraphics.setStroke(new BasicStroke(scaleX(bs.getLineWidth()), bs.getEndCap(), bs.getLineJoin(), bs.getMiterLimit(), bs.getDashArray(), scaleX(bs.getDashPhase())));
-        
+
         else mGraphics.setStroke(s);
     }
 

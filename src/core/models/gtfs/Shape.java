@@ -1,9 +1,11 @@
-package core.models;
+package core.models.gtfs;
 
 import java.awt.Color;
 import java.util.Arrays;
 
 import core.managers.DistanceManager;
+import core.models.BusStop;
+import core.models.Location;
 import lombok.Data;
 
 @Data

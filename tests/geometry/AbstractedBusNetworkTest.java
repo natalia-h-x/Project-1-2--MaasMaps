@@ -1,8 +1,5 @@
 package geometry;
 
-
-import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.Test;
 
 import core.algorithms.datastructures.AdjacencyListGraph;
@@ -15,7 +12,7 @@ public class AbstractedBusNetworkTest {
     public AbstractedBusNetworkTest() {
         new MaasMapsUI();
     }
-    
+
     @Test
     public void testCreateLines() {
         Graph<BusStop> graph = createGraph();

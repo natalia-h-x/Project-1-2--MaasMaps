@@ -1,11 +1,11 @@
-package models;
+package models.gtfs;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import core.models.Time;
+import core.models.gtfs.Time;
 
 public class TimeTest {
     @Test
@@ -66,7 +66,7 @@ public class TimeTest {
 
         n.update(7321);
         assertEquals("2 hours, 2 minutes and 1 second.", n.toString());
-        
+
         assertEquals("2:2:1", n.toISOString());
 
         Time time = Time.of(50, 2, 1);

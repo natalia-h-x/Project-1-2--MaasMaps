@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import core.algorithms.datastructures.EdgeNode;
+import core.algorithms.datastructures.Edge;
 import core.algorithms.datastructures.Graph;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,7 +51,7 @@ public class Network implements MapGraphics {
             if (p1 == null)
                 continue;
 
-            for (EdgeNode<P> e : graph.neighbors(p1)) {
+            for (Edge<P> e : graph.neighbors(p1)) {
                 P p2 = e.getElement();
 
                 if (p2 == null)

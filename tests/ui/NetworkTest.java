@@ -13,7 +13,9 @@ import org.junit.Test;
 import algorithms.datastructures.AdjacencyListTest;
 import core.Context;
 import core.algorithms.datastructures.AdjacencyListGraph;
-import core.algorithms.datastructures.EdgeNode;
+import core.algorithms.datastructures.BusEdge;
+import core.algorithms.datastructures.Edge;
+import core.algorithms.datastructures.WalkingEdge;
 import core.algorithms.datastructures.Graph;
 import core.models.BusStop;
 import ui.map.geometry.AbstractedBusNetwork;
@@ -79,7 +81,7 @@ public class NetworkTest {
     @Test
     public void test2() {
         try {
-            List<EdgeNode<BusStop>> a = adjacencyListGraph.neighbors(new BusStop(0, 0));
+            adjacencyListGraph.neighbors(new BusStop(0, 0));
         } catch (IllegalArgumentException e) {
             assert(true);
         }
@@ -125,13 +127,13 @@ public class NetworkTest {
         assertEquals(8, adjacencyListGraph.getVertecesList().size());
         adjacencyListGraph.toString();
 
-        Graph<BusStop> copy = adjacencyListGraph.clone();
+        adjacencyListGraph.clone();
     }
 
     @Test
     public void edgeNodeTest() {
-        EdgeNode<Integer> a = new EdgeNode<Integer>(1, 0);
-        EdgeNode<Integer> b = new EdgeNode<Integer>(1, 0);
+        BusEdge<Integer> a = new BusEdge<>(1, 0);
+        BusEdge<Integer> b = new BusEdge<>(1, 0);
         assertTrue(a.equals(b));
         assertTrue(a.hashCode() == b.hashCode());
         assertTrue(a.toString().equals(b.toString()));

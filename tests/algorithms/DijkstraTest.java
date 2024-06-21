@@ -53,7 +53,7 @@ public class DijkstraTest {
         try {
             Location[] closestStarts = MapManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
             Location[] closestDestinations = MapManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
-            DijkstraAlgorithm.shortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200));
+            new DijkstraAlgorithm<Point2D>().shortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200));
         } catch (IllegalArgumentException e) {
             assert(true);
         }

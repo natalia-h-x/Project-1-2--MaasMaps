@@ -1,14 +1,21 @@
 package ui;
+
+import java.util.ArrayList;
+
 import org.junit.Test;
 
-import core.Context;
 import core.models.Location;
+import core.models.gtfs.Time;
+import core.models.transport.Route;
 import ui.map.geometry.GeographicLine;
 
 public class ResultsTest {
+    public ResultsTest() {
+        new MaasMapsUI();
+    }
+
     @Test
     public void test1() {
-        new MaasMapsUI();
         GeographicLine line = new GeographicLine();
 
         Location loc1 = new Location(50.855233, 5.692237);
@@ -25,6 +32,6 @@ public class ResultsTest {
         line.addLocation(loc5);
         line.addLocation(loc6);
 
-        Context.getContext().getResultsPanel().setLine(line);
+        Route.of(Time.of(1000), new ArrayList<>());
     }
 }

@@ -3,7 +3,7 @@ package ui;
 import org.junit.jupiter.api.Test;
 
 import core.Context;
-import core.models.Time;
+import core.models.gtfs.Time;
 import ui.map.geometry.Line;
 
 import java.awt.geom.Point2D;
