@@ -17,9 +17,9 @@ public class RouteSegmentUI extends JPanel {
     }
 
     private void initializeUI() {
-        this.add(timeLabel());
-        this.add(startLabel());
-        this.add(destinationLabel());
+        add(timeLabel());
+        add(startLabel());
+        add(destinationLabel());
     }
 
     public JLabel timeLabel() {
