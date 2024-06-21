@@ -30,6 +30,7 @@ public final class Constants {
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Paths {
+        public static final String AMENITY_ICON_PATH = "resources/visuals/icons/amenity";
         public static final String POSTAL_COORDS_API_URL = "https://project12.ashish.nl/get_coordinates";
         public static final String POSTAL_COORDS_FILE = "resources/MassZipLatLon.csv";
         public static final String DATABASE_PATH = "jdbc:sqlite:resources\\gtfs\\gtfs";

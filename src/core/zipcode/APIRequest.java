@@ -10,7 +10,7 @@ import java.net.URL;
 
 import core.Constants.Paths;
 import core.managers.FileManager;
-import core.managers.SerializationManager;
+import core.managers.serialization.XMLSerializationManager;
 import core.models.Location;
 
 /**
@@ -54,8 +54,8 @@ public class APIRequest implements LocationReader {
                 in.close();
 
                 // Parse the JSON response
-                double latitude = SerializationManager.extractJSON(response.toString(), "latitude");
-                double longitude = SerializationManager.extractJSON(response.toString(), "longitude");
+                double latitude = XMLSerializationManager.extractJSON(response.toString(), "latitude");
+                double longitude = XMLSerializationManager.extractJSON(response.toString(), "longitude");
 
                 // Cache the result so that we do not have to ask the API for this zipcode again
                 FileManager.appendToFile(Paths.POSTAL_COORDS_FILE, "%s,%s,%s".formatted(zipCode, latitude, longitude));

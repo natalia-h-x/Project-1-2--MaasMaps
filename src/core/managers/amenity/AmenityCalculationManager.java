@@ -1,11 +1,13 @@
-package core.managers;
+package core.managers.amenity;
 
 /**
  * Class for interacting with the data from Geo JSON files.
  *
  * @author Kimon
  */
-public class AmenityManager {
+public class AmenityCalculationManager {
+    private AmenityCalculationManager() {}
+    
     /**
      * gets the Accessibility Metric.
      *
