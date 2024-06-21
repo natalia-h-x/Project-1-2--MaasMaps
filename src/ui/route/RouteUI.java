@@ -1,5 +1,7 @@
 package ui.route;
 
+import java.awt.BorderLayout;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,6 +15,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class RouteUI extends JPanel {
     private transient Route route;
+
+    public RouteUI() {
+        super(new BorderLayout());
+    }
 
     public void setRoute(Route route) {
         this.route = route;
@@ -29,6 +35,9 @@ public class RouteUI extends JPanel {
             panel.add(new RouteSegmentUI(transport));
         }
 
-        add(new JScrollPane(panel));
+        JScrollPane scrollbar = new JScrollPane(panel);
+        scrollbar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollbar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        add(BorderLayout.CENTER, scrollbar);
     }
 }

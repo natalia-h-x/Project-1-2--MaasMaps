@@ -43,11 +43,13 @@ public class Walking extends Transport {
             ImageMarkerFactory.createBImageMarker(getDestination())
         };
     }
+
     @Override
     public ImageIcon getIcon() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getIcon'");
     }
+
     @Override
     public String takeTransport() {
         // TODO Auto-generated method stub
