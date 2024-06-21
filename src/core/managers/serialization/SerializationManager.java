@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Serialization manager to provide helper methods for deserializing and serializing JSON files.
+ *
+ * @author Sian Lodde
+ */
 public class SerializationManager {
     private static final String STRING_QUOTATION = "'";
+
+    private SerializationManager() {}
 
     public static int smallestUsable(int a, int b) {
         if (a == -1 && b == -1) return -1;

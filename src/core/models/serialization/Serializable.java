@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Serializable model to deserialize and serialize JSON files.
+ *
+ * @author Sian Lodde
+ */
 public class Serializable {
     private Object buffer = null;
     private Object arrayBufferKey = null;
@@ -50,7 +55,7 @@ public class Serializable {
 
         for (Serializable o : objects.values()) {
             Object result = o.findRecursive(key);
-            
+
             if (result != null)
                 return result;
         }
