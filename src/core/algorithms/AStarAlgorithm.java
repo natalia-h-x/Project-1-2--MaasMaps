@@ -12,6 +12,10 @@ public class AStarAlgorithm<T extends Point2D> extends PathStrategy<T> {
 
     @Override
     public Transport[] shortestPath(Graph<T> graph, T source, T end, Time startTime) throws IllegalArgumentException {
+        if (dijkstraAlgorithm == null) {
+            dijkstraAlgorithm = new DijkstraAlgorithm<>();
+        }
+
         return dijkstraAlgorithm.shortestPath(graph, source, end, startTime, getHeuristicComparator(source, end));
     }
 
