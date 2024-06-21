@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RouteUI extends JPanel {
+public class RouteUI extends JScrollPane {
     private Route route;
 
     public RouteUI() {
@@ -18,10 +18,8 @@ public class RouteUI extends JPanel {
     }
 
     public void initializeUI() {
-        JScrollPane contentPane = new JScrollPane();
-
         for (Transport transport : route) {
-            contentPane.add(new RouteSegmentUI(transport));
+            add(new RouteSegmentUI(transport));
         }
     }
 }

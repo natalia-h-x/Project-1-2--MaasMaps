@@ -60,17 +60,17 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     }
 
     @Override
-    public void addEdge(T x, T y, int weight, Trip trip, Time time) {
+    public void addEdge(T x, T y, int weight, Trip trip, Time departureTime) {
         if (!containsVertex(x) || !containsVertex(y)) {
             throw new IllegalArgumentException("One or both vertices are not in the Graph.");
         }
 
         List<Edge<T>> edges = vertices.get(x);
 
-        if (time != null && trip != null) {
+        if (departureTime != null && trip != null) {
             for (Edge<T> edge : edges) {
                 if (edge.getElement().equals(y) && edge instanceof BusEdge<T> busEdge) {
-                    busEdge.addTrip(trip, time);
+                    busEdge.addTrip(trip, departureTime, weight);
 
                     return;
                 }
@@ -78,7 +78,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
 
             BusEdge<T> edge = new BusEdge<>(y, weight);
 
-            edge.addTrip(trip, time);
+            edge.addTrip(trip, departureTime, weight);
             edges.add(edge);
 
             return;

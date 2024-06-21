@@ -1,5 +1,6 @@
 package core.algorithms.datastructures;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -19,14 +20,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class BusEdge<T> extends Edge<T> {
     private SortedMap<Time, Trip> departureTimes;
+    private Map<Trip, Integer> weights;
 
     public BusEdge(T element, int weight) {
         super(element, weight);
         departureTimes = new TreeMap<>();
+        weights = new HashMap<>();
     }
 
-    public void addTrip(Trip trip, Time departingTime) {
+    public void addTrip(Trip trip, Time departingTime, int weight) {
         departureTimes.put(departingTime, trip);
+        weights.put(trip, weight);
     }
 
     /**
@@ -41,7 +45,7 @@ public class BusEdge<T> extends Edge<T> {
 
         if (trip != null) {
             transfer.copyInto(trip);
-            return super.getWeight();
+            return weights.get(trip);
         }
 
         int closestDepartureTime = Integer.MAX_VALUE;
@@ -59,7 +63,7 @@ public class BusEdge<T> extends Edge<T> {
         if (closestDepartureTime == Integer.MAX_VALUE)
             return Integer.MAX_VALUE;
 
-        return super.getWeight() + closestDepartureTime - arrivalTime;
+        return weights.get(transfer) + closestDepartureTime - arrivalTime;
     }
 
     @Override
