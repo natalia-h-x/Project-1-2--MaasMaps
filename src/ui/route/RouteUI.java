@@ -16,9 +16,10 @@ public class RouteUI extends JScrollPane {
 
     }
 
-    public void getRoute(Route route) {
+    public void setRoute(Route route) {
         this.route = route;
 
+        removeAll();
         initializeUI();
     }
 
