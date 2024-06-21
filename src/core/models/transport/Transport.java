@@ -1,5 +1,7 @@
 package core.models.transport;
 
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 
 import core.models.Location;
@@ -16,6 +18,7 @@ import ui.map.geometry.interfaces.MapGraphics;
 public abstract class Transport {
     private Location start;
     private Location destination;
+    private Time departingTime = Time.of(7, 0, 0);
     private Time time = Time.empty();
 
     protected Transport() {}
@@ -36,6 +39,10 @@ public abstract class Transport {
             return before.destination.equals(start);
 
         return false;
+    }
+
+    public Route getRoute() {
+        return Route.of(departingTime, this);
     }
 
     public void dispose() {}

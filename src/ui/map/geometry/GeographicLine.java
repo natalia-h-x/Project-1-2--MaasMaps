@@ -34,7 +34,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
 
     @Override
     public Segment createSegment(int i, Point2D start, Point2D end, List<Point2D> controlPoints) {
-        return new GeographicSegment(start, end, times.size() < i? times.get(i) : null, controlPoints.toArray(Point2D[]::new));
+        return new GeographicSegment(start, end, i < times.size()? times.get(i) : null, controlPoints.toArray(Point2D[]::new));
     }
 
     @Override

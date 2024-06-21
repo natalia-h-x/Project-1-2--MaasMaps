@@ -228,13 +228,7 @@ public class NavigationPanel extends JPanel {
                 transportMode.dispose();
                 transportMode.setStart(db.getLocation(textField1.getText()));
                 transportMode.setDestination(db.getLocation(textField2.getText()));
-
-                if (transportMode instanceof Bus)
-                    for (Transport option : options) {
-                        if (option instanceof Bus b) {
-                            b.setDepartingTime(Time.of(departureField.getText()));
-                        }
-                    }
+                transportMode.setDepartingTime(Time.of(departureField.getText()));
 
                 Context.getContext().getMap().clearIcons();
 
@@ -248,6 +242,7 @@ public class NavigationPanel extends JPanel {
                     transferCount.setText(String.valueOf(b.getTransfers()));
 
                 Context.getContext().getMap().addMapGraphics(transportMode.getGraphics());
+                Context.getContext().getResultsPanel().setRoute(transportMode.getRoute());
 
                 timeLabel.setText(UIConstants.GUI_TIME_LABEL_TEXT + transportMode.getTravelTime().toString());
             }

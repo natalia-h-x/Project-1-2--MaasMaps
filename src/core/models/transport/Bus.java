@@ -22,7 +22,6 @@ import ui.map.geometry.interfaces.MapGraphics;
 public class Bus extends Transport {
     private static final double AVERAGE_SPEED = 333; // meters per minute
     private Trip trip;
-    private Time departingTime = Time.of(7, 0, 0);
     private BinaryOperator<Time> routeType = RouteType.SHORTEST.getBinaryOperator();
     private PathStrategy<Location> pathStrategy;
 
@@ -43,7 +42,7 @@ public class Bus extends Transport {
         return "Take Bus";
     }
 
-    public Route getChosenRoute() {
+    public Route getRoute() {
         try {
             return Optional.ofNullable(pathStrategy).orElse(new DijkstraAlgorithm<>()).calculateShortestPath(this).orElseThrow();
         }
@@ -53,12 +52,12 @@ public class Bus extends Transport {
     }
 
     public int getTransfers() {
-        return getChosenRoute().getTransferCount() - 2;
+        return getRoute().getTransferCount() - 2;
     }
 
     @Override
     public Time getTravelTime() {
-        return getChosenRoute().getTime();
+        return getRoute().getTime();
     }
 
     @Override
@@ -66,7 +65,7 @@ public class Bus extends Transport {
         return new MapGraphics[] {
             new Radius((int) getStart      ().getX(), (int) getStart      ().getY(), (int) Context.getContext().getMap().getRadius()),
             new Radius((int) getDestination().getX(), (int) getDestination().getY(), (int) Context.getContext().getMap().getRadius()),
-            getChosenRoute().getLine(),
+            getRoute().getLine(),
         };
     }
 

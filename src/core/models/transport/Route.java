@@ -27,6 +27,10 @@ public class Route implements Iterable<Transport> {
         return new Route(start, path);
     }
 
+    public static Route of(Time start, Transport... path) {
+        return new Route(start, Arrays.asList(path));
+    }
+
     private Time startTime;
     private List<Transport> transfers;
 

@@ -48,4 +48,9 @@ public class Walking extends Transport {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getIcon'");
     }
+    @Override
+    public String takeTransport() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'takeTransport'");
+    }
 }

@@ -114,7 +114,6 @@ public class LineFactory {
     }
 
     public static GeographicLine createResultsLine(Transport... transports) {
-        //change the stroke type here
         List<Location> locations = new ArrayList<>();
         List<Time> times = new ArrayList<>();
 
