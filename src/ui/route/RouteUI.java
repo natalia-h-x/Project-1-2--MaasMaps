@@ -1,6 +1,5 @@
 package ui.route;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import core.models.transport.Route;
@@ -11,10 +10,16 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class RouteUI extends JScrollPane {
-    private Route route;
+    private transient Route route;
 
     public RouteUI() {
 
+    }
+
+    public void getRoute(Route route) {
+        this.route = route;
+
+        initializeUI();
     }
 
     public void initializeUI() {
