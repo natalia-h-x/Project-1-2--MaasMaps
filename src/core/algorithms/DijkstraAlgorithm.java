@@ -11,8 +11,10 @@ import java.util.Set;
 import core.algorithms.datastructures.Edge;
 import core.algorithms.datastructures.Graph;
 import core.algorithms.datastructures.TriMonoid;
+import core.models.BusStop;
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
+import core.models.transport.Bus;
 import core.models.transport.Transport;
 
 public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
@@ -65,9 +67,11 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
                         unsettled.add(adjacent);
 
                         // Add vertex to path
-                        pathMonoids.computeIfAbsent(adjacent, v -> new TriMonoid<>(pathMonoid)).add(edge, vertex, transfer)
-                                                                                               .getElement()
-                                                                                               .setTime(Time.of(weight));
+                        Transport element = pathMonoids.computeIfAbsent(adjacent, v -> new TriMonoid<>(pathMonoid)).add(edge, vertex, transfer).getElement();
+                        element.setTime(Time.of(weight));
+
+                        if (adjacent instanceof BusStop busStop && element instanceof Bus bus)
+                            bus.setBusStop(busStop);
                     }
                 }
             }

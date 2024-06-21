@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import core.Context;
 import core.algorithms.DijkstraAlgorithm;
 import core.algorithms.PathStrategy;
+import core.models.BusStop;
 import core.models.Location;
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
@@ -24,6 +25,7 @@ public class Bus extends Transport {
     private Trip trip;
     private BinaryOperator<Time> routeType = RouteType.SHORTEST.getBinaryOperator();
     private PathStrategy<Location> pathStrategy;
+    private BusStop busStop;
 
     public Bus() {}
     public Bus(Location start, Location destination) {
