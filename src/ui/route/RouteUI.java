@@ -21,6 +21,7 @@ public class RouteUI extends JScrollPane {
 
         removeAll();
         initializeUI();
+        repaint();
     }
 
     public void initializeUI() {
