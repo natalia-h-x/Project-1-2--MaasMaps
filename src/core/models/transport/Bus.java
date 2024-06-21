@@ -97,4 +97,10 @@ public class Bus extends Transport {
 
         public abstract BinaryOperator<Time> getBinaryOperator();
     }
+
+    @Override
+    public String takeTransport() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'takeTransport'");
+    }
 }

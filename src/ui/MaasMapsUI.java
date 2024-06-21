@@ -40,13 +40,8 @@ import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
 import ui.map.geometry.MapBackground;
 import ui.map.geometry.Network;
-
-/*
- * 4 closest postal codes
- * see how far each postal code is for the location
- * the further it is it goes to 0
- * do it for all and then take the av
- */
+import ui.route.ResultsProxy;
+import ui.route.RouteUI;
 
 /**
  * This class represents the app UI showing the map, the navigation panel and the map option buttons
@@ -105,16 +100,9 @@ public class MaasMapsUI extends JFrame {
         navigationPanel.setMinimumSize(new Dimension(450, 600));
         navigationPanel.setPreferredSize(new Dimension(500, 600));
 
-        Map resultsPanel = new Map(null);
-        resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-        resultsPanel.setPreferredSize(new Dimension(500, 150));
-        resultsPanel.setSize(new Dimension(500, 150));
-
-        Graph<Point2D> graph = MapManager.getBusGraph();
-        Network abstractedBusNetwork = new AbstractedBusNetwork(graph);
-
-        resultsPanel.addMapGraphics(abstractedBusNetwork);
-        resultsPanel.repaint();
+        // Create and register the RouteUI to the context
+        RouteUI resultsPanel = new RouteUI();
+        Context.getContext().setResultsPanel(new ResultsProxy(resultsPanel));
 
         JPanel resultsContainerSouth = new JPanel (new GridLayout(1, 2, 900, UIConstants.GUI_BORDER_SIZE / 2));
         resultsContainerSouth.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
@@ -233,9 +221,22 @@ public class MaasMapsUI extends JFrame {
         // Add button panel to the frame
         resultsContainer.add(buttonPanel, BorderLayout.NORTH);
 
-
         setVisible(true);
         revalidate();
+    }
+
+    private Map createResultsPanel() {
+        Map resultsPanel = new Map(null);
+        resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
+        resultsPanel.setPreferredSize(new Dimension(500, 150));
+        resultsPanel.setSize(new Dimension(500, 150));
+
+        Graph<Point2D> graph = MapManager.getBusGraph();
+        Network abstractedBusNetwork = new AbstractedBusNetwork(graph);
+
+        resultsPanel.addMapGraphics(abstractedBusNetwork);
+        resultsPanel.repaint();
+        return resultsPanel;
     }
 
 
