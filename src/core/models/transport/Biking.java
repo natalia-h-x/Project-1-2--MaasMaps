@@ -49,7 +49,8 @@ public class Biking extends Transport {
     }
     @Override
     public String takeTransport() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'takeTransport'");
+        String location = String.format("Start: %s Destination: %s", getStart(), getDestination());
+        
+        return location;
     }
 }

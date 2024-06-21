@@ -101,7 +101,9 @@ public class Bus extends Transport {
 
     @Override
     public String takeTransport() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'takeTransport'");
+        String busStopName = busStop.getStopName();
+        String time = getTime().toISOString();
+        
+        return String.format("Bus Stop: %s Time: %s", busStopName, time);
     }
 }
