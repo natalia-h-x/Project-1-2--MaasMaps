@@ -107,6 +107,10 @@ public class JSONSerializationManager {
 
             if (endChar == -1) break;
 
+            while (startChar + 1 < data.length() && (data.charAt(startChar + 1) == '{' || data.charAt(startChar + 1) == '[' || data.charAt(startChar + 1) == '}' || data.charAt(startChar + 1) == ']')) {
+                startChar++;
+            }
+
             // Add element to elements array
             elements.add(new String(data.substring(startChar + 1, endChar)));
 
@@ -123,6 +127,10 @@ public class JSONSerializationManager {
 
             // Start again from the endingCharacter index
             startChar = endChar - lengthOffset;
+
+            while (startChar + 1 < data.length() && (data.charAt(startChar + 1) == '{' || data.charAt(startChar + 1) == '[' || data.charAt(startChar + 1) == '}' || data.charAt(startChar + 1) == ']')) {
+                startChar++;
+            }
         }
 
         // Iterate over the characters and add elements to the current sterializable
@@ -132,14 +140,13 @@ public class JSONSerializationManager {
 
         for (char c : characters) {
             switch (c) {
-                case '{': currentSterializable = currentSterializable.openObject ();   break;
-                case '}': currentSterializable = currentSterializable.closeObject();   break;
-                case '[': currentSterializable = currentSterializable.openArray  ();   break;
-                case ']': currentSterializable = currentSterializable.closeArray ();   break;
+                case '{': currentSterializable = currentSterializable.openObject (); break;
+                case '}': currentSterializable = currentSterializable.closeObject(); break;
+                case '[': currentSterializable = currentSterializable.openArray  (); break;
+                case ']': currentSterializable = currentSterializable.closeArray (); break;
                 case ':': break;
                 case ',': break;
                 case 'e': currentSterializable.add(getString(elements.get(i++), strings)); break;
-
                 default: throw new IllegalArgumentException("Unknown character \"" + c + "\"!");
             }
         }

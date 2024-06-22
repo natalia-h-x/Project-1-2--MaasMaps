@@ -23,25 +23,26 @@ public class AmenitySerializationManager {
 
         try {
             Serializable serializable = JSONSerializationManager.deSterializeJSON(new String(Files.readAllBytes(Paths.get(String.format(core.Constants.Paths.GEOJSON, type.toLowerCase())))));
-            
+
             List<Object> features = serializable.getArrays().get("features");
             for (Object obj : features) {
+                String geoDataType = type;
                 Serializable feature = (Serializable) obj;
 
                 Serializable properties = feature.getObjects().get("properties");
                 Serializable geometry = feature.getObjects().get("geometry");
 
-                if (type.equals("amenity")) {
-                    type = (String) properties.get("amenity");
+                if (geoDataType.equals("amenity")) {
+                    geoDataType = (String) properties.get("amenity");
                 }
 
                 String[] coordinates = geometry.getArray("coordinates").toArray(String[]::new);
                 String id = (String) feature.get("id");
 
-                data.add(GeoData.of(new Location(Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[0])), id, type));
+                data.add(GeoData.of(new Location(Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[0])), id, geoDataType));
             }
-
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         return data;

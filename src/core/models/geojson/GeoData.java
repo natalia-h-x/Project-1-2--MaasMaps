@@ -77,7 +77,7 @@ public abstract class GeoData {
             case ("shower"): return new Shower(location, id);
             case ("social_facility"): return new SocialFacility(location, id);
             case ("taxi"): return new Taxi(location, id);
-            case ("theater"): return new Theater(location, id);
+            case ("theatre"): return new Theatre(location, id);
             case ("toilets"): return new Toilets(location, id);
             case ("tourism"): return new Tourism(location, id);
             case ("townhall"): return new Townhall(location, id);
@@ -86,7 +86,7 @@ public abstract class GeoData {
             case ("veterinary"): return new Veterinary(location, id);
             case ("waste_basket"): return new WasteBasket(location, id);
             case ("water_point"): return new WaterPoint(location, id);
-            default: throw new UnsupportedOperationException("deserialisation of this Amenity is not possible in this version");
+            default: throw new UnsupportedOperationException("deserialisation of this Amenity %s is not possible in this version".formatted(amenity));
         }
     }
 }

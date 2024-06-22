@@ -18,17 +18,16 @@ import core.models.Location;
 public class AccessibilityMapBackground extends MapBackground {
     private List<String> postalCodes;
     private Map<String, Double> accessibilityMap = new HashMap<>();
-    private Map<Point2D, Double> accesibilityPoints = new HashMap<>(); 
+    private Map<Point2D, Double> accesibilityPoints = new HashMap<>();
 
     public AccessibilityMapBackground(List<String> postalCodes) {
         this.postalCodes = postalCodes;
     }
 
-
     @Override
     public void paint(Graphics2D g) {
         for (String postalCode : postalCodes) {
-            accessibilityMap.computeIfAbsent(postalCode, s -> AmenityCalculationManager.getAccessibilityMetric(postalCode));
+            accessibilityMap.computeIfAbsent(postalCode, s -> AmenityAccessibilityCalculator.getAccessibilityMetric(postalCode));
 
             Location location = Context.getContext().getZipCodeDatabase().getLocation(postalCode);
             accesibilityPoints.computeIfAbsent(new Point2D.Double(location.getX(), location.getY()), s -> accessibilityMap.get(postalCode));
@@ -45,7 +44,7 @@ public class AccessibilityMapBackground extends MapBackground {
         double r = colors[(int) Math.floor(number)].getRed()*inv + colors[(int) Math.floor(number) + 1].getRed()*newNumber;
         double g = colors[(int) Math.floor(number)].getGreen()*inv + colors[(int) Math.floor(number) + 1].getGreen()*newNumber;
         double b = colors[(int) Math.floor(number)].getBlue()*inv + colors[(int) Math.floor(number) + 1].getBlue()*newNumber;
-            
+
         return new Color((float) r / 255, (float) g / 255, (float) b / 255, 0.2f);
     }
 
@@ -53,7 +52,7 @@ public class AccessibilityMapBackground extends MapBackground {
         Point2D start = MapManager.MAP_TOP_LEFT_XY;
         Point2D end = MapManager.MAP_BOTTOM_RIGHT_XY;
         int scale = 10;
-        
+
         for (double y = start.getY(); y <= end.getY(); y+=1) {
             for (double x = start.getX(); x <= end.getX(); x+=1) {
                 Point2D point = new Point2D.Double(x, y);
@@ -72,7 +71,7 @@ public class AccessibilityMapBackground extends MapBackground {
                     }
                     accessibility = accessibility/4;
                     g2.setPaint(notSiansLinearInterpolation(accessibility, new Color[] {Color.RED, Color.YELLOW, Color.GREEN}));
-            
+
                     g2.fill(new Ellipse2D.Double(x, y, scale, scale));
                 }
             }

@@ -242,6 +242,12 @@ public class Serializable {
         Serializable serializable = new Serializable();
         serializable.previousObject = this;
 
+        if (arrayBuffer != null) {
+            arrayBuffer.add(serializable);
+
+            return serializable;
+        }
+
         // Set the name of the object / array to the key stored in the buffer
         objects.put(name, serializable);
         buffer = null;
@@ -277,12 +283,8 @@ public class Serializable {
     }
 
     public Serializable close() {
-        if (arrayBuffer != null) {
-            arrays.put(arrayBufferKey, arrayBuffer);
-            arrayBuffer = null;
-            // arrayBufferKey = null; // No need for this
-            return this;
-        }
+        if (arrayBuffer != null)
+            closeArray();
 
         return previousObject;
     }
@@ -307,8 +309,6 @@ public class Serializable {
     }
 
     public void add(Object key, Object value) {
-        assert (buffer == null);
-
         pairs.put(key, value);
     }
 }
