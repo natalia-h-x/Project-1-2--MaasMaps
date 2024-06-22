@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import core.Context;
-import core.managers.amenity.AmenityCalculationManager;
+import core.managers.amenity.AmenityAccessibilityCalculator;
 import core.managers.MapManager;
 import core.models.Location;
 
