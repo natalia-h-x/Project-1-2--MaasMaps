@@ -1,4 +1,4 @@
-package core.algorithms.datastructures;
+package core.models.function;
 
 @FunctionalInterface
 public interface TriFunction<X, Y, Z, R> {

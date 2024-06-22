@@ -24,7 +24,7 @@ public final class Constants {
     public static final class Map {
         public static final int POSTAL_CODE_MAX_SEARCH_RADIUS = 200;
         public static final int WALKING_MAX_TIME = 30;
-        public static final int POSTAL_CODE_MAX_BUS_OPTIONS = 20;
+        public static final int POSTAL_CODE_MAX_BUS_OPTIONS = 100;
         public static final Time DEFAULT_DEPARTURE_TIME = Time.of(7, 0, 0);
     }
 
@@ -84,5 +84,10 @@ public final class Constants {
         public static final String GREEN = "\u001B[32m";
         public static final String YELLOW = "\u001B[33m";
         public static final String RESET = "\u001B[0m";
+    }
+
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Settings {
+        public static final boolean USE_CLIPBOARD = false;
     }
 }

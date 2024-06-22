@@ -12,14 +12,16 @@ import org.junit.Test;
 
 import algorithms.datastructures.AdjacencyListTest;
 import core.Context;
-import core.algorithms.datastructures.AdjacencyListGraph;
-import core.algorithms.datastructures.BusEdge;
-import core.algorithms.datastructures.Edge;
-import core.algorithms.datastructures.WalkingEdge;
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.AdjacencyListGraph;
+import core.datastructures.graph.BusEdge;
+import core.datastructures.graph.Edge;
+import core.datastructures.graph.Graph;
+import core.datastructures.graph.WalkingEdge;
+import core.managers.map.MapManager;
 import core.models.BusStop;
 import ui.map.geometry.AbstractedBusNetwork;
 import ui.map.geometry.ArrowStroke;
+import ui.map.geometry.BusNetwork;
 import ui.map.geometry.Network;
 import ui.map.geometry.factories.BusMarkerFactory;
 import ui.map.geometry.interfaces.MapGraphics;
@@ -28,6 +30,7 @@ public class NetworkTest {
     private Graph<BusStop> adjacencyListGraph;
 
     public NetworkTest() {
+        new MaasMapsUI();
         adjacencyListGraph = AdjacencyListTest.createTestGraph();
     }
 
@@ -37,12 +40,21 @@ public class NetworkTest {
         makeNetwork(adjacencyListGraph);
     }
 
-    public static <P extends Point2D> void makeAbstractedBusNetwork(Graph<P> adjacencyListGraph) {
-        new MaasMapsUI();
+    @Test
+    public void test3() {
+        makeBusNetwork(MapManager.getBusGraph());
+    }
 
-        // BusNetwork busNetwork = new BusNetwork(adjacencyListGraph);
-        // busNetwork.setPaint(Color.gray);
-        // Context.getContext().getMap().addMapGraphics(busNetwork);
+    public static <P extends Point2D> void makeBusNetwork(Graph<P> adjacencyListGraph) {
+        BusNetwork busNetwork = new BusNetwork(adjacencyListGraph);
+        busNetwork.setPaint(Color.gray);
+        Context.getContext().getMap().addMapGraphics(busNetwork);
+    }
+
+    public static <P extends Point2D> void makeAbstractedBusNetwork(Graph<P> adjacencyListGraph) {
+        BusNetwork busNetwork = new BusNetwork(adjacencyListGraph);
+        busNetwork.setPaint(Color.gray);
+        Context.getContext().getMap().addMapGraphics(busNetwork);
 
         AbstractedBusNetwork abstractedBusNetwork = new AbstractedBusNetwork(adjacencyListGraph);
         abstractedBusNetwork.setPaint(Color.green);

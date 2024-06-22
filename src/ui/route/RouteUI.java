@@ -3,6 +3,7 @@ package ui.route;
 import java.awt.BorderLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -31,8 +32,16 @@ public class RouteUI extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        Transport previous = null;
+
         for (Transport transport : route) {
             panel.add(new RouteSegmentUI(transport));
+
+            if (previous != null && previous.canMerge(transport)) {
+                panel.add(new JLabel("Transfer"));
+            }
+
+            previous = transport;
         }
 
         JScrollPane scrollbar = new JScrollPane(panel);

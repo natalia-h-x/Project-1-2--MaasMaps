@@ -1,4 +1,4 @@
-package core.algorithms.datastructures;
+package core.datastructures.graph;
 
 import core.models.Location;
 import core.models.gtfs.Trip;
@@ -24,8 +24,8 @@ public class WalkingEdge<T> extends Edge<T> {
      * @param arrivalTime the time you arrive at the bus stop, where you want to look for departing buses to take.
      * @return
      */
-    public int getWeight(int arrivalTime, Trip transfer) {
-        return super.getWeight();
+    public Weight getWeight(int arrivalTime, Trip transfer) {
+        return new Weight(super.getWeight(), 0);
     }
 
     @Override

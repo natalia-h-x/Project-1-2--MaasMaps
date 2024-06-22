@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import core.managers.DistanceManager;
-import core.managers.MapManager;
+import core.managers.map.DistanceManager;
+import core.managers.map.DrawManager;
 import core.models.Location;
 import core.models.gtfs.Time;
 import lombok.Data;
@@ -75,7 +75,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
         }
 
         private void drawTime(Graphics2D g2) {
-            MapManager.drawString(g2, time.toISOString(), getCenter(getStart(), getEnd()));
+            DrawManager.drawString(g2, time.toISOString(), getCenter(getStart(), getEnd()));
         }
 
         private void drawDistance(Graphics2D g2) {
@@ -88,7 +88,7 @@ public class GeographicLine extends Line implements GeographicMapGraphics {
 
                 // Create a 'border' effect for the text by drawing it in black first with
                 // slight offsets
-                MapManager.drawString(g2, distance, center);
+                DrawManager.drawString(g2, distance, center);
             }
             catch (ClassCastException e) {
                 throw new IllegalArgumentException("A Geographic Line only supports Locations. Please do not use other Point2D's!", e);

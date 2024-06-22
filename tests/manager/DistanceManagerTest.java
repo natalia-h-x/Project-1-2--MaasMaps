@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import core.managers.DistanceManager;
+import core.managers.map.DistanceManager;
 import core.models.Location;
 
 public class DistanceManagerTest {

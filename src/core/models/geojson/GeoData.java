@@ -1,5 +1,6 @@
 package core.models.geojson;
 
+import core.Constants.Paths;
 import core.models.Location;
 import core.models.geojson.Amenity.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,10 @@ public abstract class GeoData {
     private String id;
 
     public abstract double getWeight();
+
+    public String getIcon() {
+        return Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + getClass().getSimpleName();
+    }
 
     public static GeoData of(Location location, String id, String amenity) {
         switch (amenity) {

@@ -6,8 +6,8 @@ import java.awt.geom.Point2D;
 import org.junit.jupiter.api.Test;
 
 import core.Context;
-import core.algorithms.datastructures.Graph;
-import core.managers.MapManager;
+import core.datastructures.graph.Graph;
+import core.managers.map.MapManager;
 import ui.map.Map;
 import ui.map.geometry.AbstractedBusNetwork;
 import ui.map.geometry.MapBackground;

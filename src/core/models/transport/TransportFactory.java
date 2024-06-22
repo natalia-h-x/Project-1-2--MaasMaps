@@ -1,8 +1,11 @@
 package core.models.transport;
 
+import core.algorithms.PathStrategy;
+import core.models.BusStop;
 import core.models.Location;
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
+import core.models.transport.Bus.RouteType;
 
 public class TransportFactory {
     private TransportFactory() {}
@@ -17,6 +20,18 @@ public class TransportFactory {
 
     public static Bus emptyBus() {
         return new Bus();
+    }
+
+    public static Walking copyWalking(Walking walking) {
+        return createWalking(walking.getStart(), walking.getDestination(), walking.getTime());
+    }
+
+    public static Biking copyBiking(Biking biking) {
+        return createBiking(biking.getStart(), biking.getDestination(), biking.getTime());
+    }
+
+    public static Bus copyBus(Bus bus) {
+        return createBus(bus.getStart(), bus.getDestination(), bus.getTime(), bus.getTrip(), bus.getBusStop(), bus.getRouteType(), bus.getPathStrategy());
     }
 
     public static Walking createWalking(Location start, Location destination) {
@@ -63,6 +78,17 @@ public class TransportFactory {
         Bus bus = new Bus(start, destination);
         bus.setTime(time);
         bus.setTrip(trip);
+
+        return bus;
+    }
+
+    public static Bus createBus(Location start, Location destination, Time time, Trip trip, BusStop busStop, RouteType routeType, PathStrategy<Location> pathStrategy) {
+        Bus bus = new Bus(start, destination);
+        bus.setTime(time);
+        bus.setTrip(trip);
+        bus.setBusStop(busStop);
+        bus.setRouteType(routeType);
+        bus.setPathStrategy(pathStrategy);
 
         return bus;
     }

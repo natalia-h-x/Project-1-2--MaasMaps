@@ -1,5 +1,6 @@
 package core.models;
 
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ public class BusStop extends Location {
     private String stopName;
     @Exclude
     private Set<Route> routes;
+    @Exclude
+    private Color color;
 
     public BusStop(double latitude, double longitude) {
         super(latitude, longitude);

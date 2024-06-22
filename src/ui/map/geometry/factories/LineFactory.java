@@ -17,6 +17,14 @@ import ui.map.geometry.Line;
 public class LineFactory {
     private LineFactory() {}
 
+    public static Line emptyLine() {
+        return createLine();
+    }
+
+    public static GeographicLine emptyGeographicLine() {
+        return createGeographicLine();
+    }
+
     public static Line createLine(Paint paint, Stroke stroke, Point2D... points) {
         Line line = new Line(points);
         line.setPaint(paint);

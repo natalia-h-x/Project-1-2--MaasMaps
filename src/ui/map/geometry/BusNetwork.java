@@ -2,7 +2,7 @@ package ui.map.geometry;
 
 import java.awt.geom.Point2D;
 
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.Graph;
 import core.models.BusStop;
 import ui.map.geometry.factories.BusMarkerFactory;
 

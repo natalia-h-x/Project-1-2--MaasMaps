@@ -18,7 +18,7 @@ import core.Constants.UIConstants;
 import core.Constants.Map;
 import core.Context;
 import core.managers.ExceptionManager;
-import core.managers.MapManager;
+import core.managers.map.PostalCodeManager;
 import core.models.gtfs.Time;
 import core.models.transport.Biking;
 import core.models.transport.Bus;
@@ -59,11 +59,11 @@ public class NavigationPanel extends JPanel {
         JLabel location1 = new JLabel("From: ");
         location1.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
 
-        JTextField textField1 = new JTextField(MapManager.getRandomPostalCode(), 8);
+        JTextField textField1 = new JTextField(PostalCodeManager.getRandomPostalCode(), 8);
         JLabel location2 = new JLabel("To: ");
         location2.setFont(new Font(UIConstants.GUI_FONT_FAMILY, Font.BOLD, UIConstants.GUI_TEXT_FIELD_FONT_SIZE));
 
-        JTextField textField2 = new JTextField(MapManager.getRandomPostalCode(), 8);
+        JTextField textField2 = new JTextField(PostalCodeManager.getRandomPostalCode(), 8);
         JButton calculate = new JButton("Calculate");
         calculate.setBackground(UIConstants.GUI_HIGHLIGHT_BACKGROUND_COLOR);
         calculate.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
@@ -90,8 +90,8 @@ public class NavigationPanel extends JPanel {
         busRandom.setBackground(UIConstants.GUI_BUTTON_COLOR);
         busRandom.setForeground(Color.WHITE);
         busRandom.addActionListener(e -> {
-            textField1.setText(MapManager.getRandomPostalCode());
-            textField2.setText(MapManager.getRandomPostalCode());
+            textField1.setText(PostalCodeManager.getRandomPostalCode());
+            textField2.setText(PostalCodeManager.getRandomPostalCode());
         });
 
         // arrange text fields to jpanels

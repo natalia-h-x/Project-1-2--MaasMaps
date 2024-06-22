@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import algorithms.datastructures.AdjacencyListTest;
 import core.Context;
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.Graph;
 import core.models.BusStop;
 import ui.map.geometry.AbstractedBusNetwork;
 import ui.map.geometry.Network;
@@ -31,7 +31,7 @@ public class Point2DImpostorTest {
 
     public static <P extends Point2D> void makeAbstractedBusNetwork(Graph<P> adjacencyListGraph) {
         new MaasMapsUI();
-  
+
         Point2D point2d = null;
         for (P p : adjacencyListGraph) {
             point2d = p;
@@ -56,9 +56,9 @@ public class Point2DImpostorTest {
 
         point2dImpostor2.setImpostorFunction(point2dImpostor3.getImpostorFunction());
         assertEquals(point2dImpostor2.getImpostorFunction(), point2dImpostor3.getImpostorFunction());
-        
+
         point2dImpostor.setImposedPoint(point2dImpostor2.getImposedPoint());
         assertEquals(point2dImpostor.getImposedPoint(), point2dImpostor2.getImposedPoint());
-        
+
     }
 }

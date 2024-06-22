@@ -43,16 +43,18 @@ public class Route implements Iterable<Transport> {
         List<Transport> newTransfers = new LinkedList<>();
 
         for (Transport transport : transfers) {
-            if (previous != null && transport.canMerge(previous)) {
-                previous.setDestination(transport.getDestination());
-                previous.setTime(previous.getTime().add(transport.getTime()));
+            Transport newTransport = transport.copy();
+
+            if (previous != null && newTransport.canMerge(previous)) {
+                previous.setDestination(newTransport.getDestination());
+                previous.setTime(previous.getTime().add(newTransport.getTime()));
 
                 continue;
             }
 
-            newTransfers.add(transport);
+            newTransfers.add(newTransport);
 
-            previous = transport;
+            previous = newTransport;
         }
 
         return newTransfers;

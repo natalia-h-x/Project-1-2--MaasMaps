@@ -9,8 +9,9 @@ import java.util.Optional;
 
 import core.Constants;
 import core.Context;
-import core.algorithms.datastructures.Graph;
-import core.managers.MapManager;
+import core.datastructures.graph.Graph;
+import core.managers.map.MapManager;
+import core.managers.map.PostalCodeManager;
 import core.models.Location;
 import core.models.gtfs.Time;
 import core.models.transport.Bus;
@@ -29,10 +30,10 @@ public abstract class PathStrategy<T extends Point2D> {
             return shortestPaths.get(bus);
 
         List<Route> routes = new ArrayList<>();
-        List<Location> locationsIntoRadius1 = MapManager.getAllPointsWithin(bus.getStart(), Context.getContext().getMap().getRadius());
-        List<Location> locationsIntoRadius2 = MapManager.getAllPointsWithin(bus.getDestination(), Context.getContext().getMap().getRadius());
-        Location[] closestStarts = MapManager.getClosestPoint(locationsIntoRadius1, bus.getStart(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
-        Location[] closestDestinations = MapManager.getClosestPoint(locationsIntoRadius2, bus.getDestination(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
+        List<Location> locationsIntoRadius1 = PostalCodeManager.getAllPointsWithin(bus.getStart(), Context.getContext().getMap().getRadius());
+        List<Location> locationsIntoRadius2 = PostalCodeManager.getAllPointsWithin(bus.getDestination(), Context.getContext().getMap().getRadius());
+        Location[] closestStarts = PostalCodeManager.getClosestPoint(locationsIntoRadius1, bus.getStart(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
+        Location[] closestDestinations = PostalCodeManager.getClosestPoint(locationsIntoRadius2, bus.getDestination(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
 
         if (closestStarts.length <= 0 || closestDestinations.length <= 0)
             throw new IllegalArgumentException("could not find any bus stops to depart from");
@@ -59,7 +60,7 @@ public abstract class PathStrategy<T extends Point2D> {
                     routes.add(route);
                 }
                 catch (IllegalArgumentException e) {
-                    // System.out.println("Could not find a route here.");
+                    e.printStackTrace();
                 }
             }
         }
@@ -74,7 +75,7 @@ public abstract class PathStrategy<T extends Point2D> {
             if (vehicle.isEmpty())
                 continue;
 
-            Time time = bus.getRouteType().apply(manual, vehicle);
+            Time time = bus.getRouteType().getBinaryOperator().apply(manual, vehicle);
 
             if (time.getSeconds() < shortestTime) {
                 shortestTime = time.getSeconds();

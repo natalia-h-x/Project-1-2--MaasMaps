@@ -1,16 +1,16 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,8 +33,8 @@ import core.Constants.BusColors;
 import core.Constants.Paths;
 import core.Constants.UIConstants;
 import core.Context;
-import core.algorithms.datastructures.Graph;
-import core.managers.MapManager;
+import core.datastructures.graph.Graph;
+import core.managers.map.MapManager;
 import ui.map.Map;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
@@ -80,6 +80,11 @@ public class MaasMapsUI extends JFrame {
 
         ProxyMap proxyMap = new ProxyMap(map);
         Context.getContext().setMap(proxyMap);
+
+        proxyMap.linkMapGraphics("AbstractedBusMap", new AbstractedBusNetwork(MapManager.getBusGraph()));
+        proxyMap.linkMapGraphics("Accessibility", createAccessibilityMap());
+        proxyMap.hideMapGraphics("AbstractedBusMap");
+        proxyMap.hideMapGraphics("Accessibility");
 
         // Create split pane with left and right panels
         JSplitPane verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -187,36 +192,14 @@ public class MaasMapsUI extends JFrame {
         buttonPanel.add(button2);
         buttonPanel.add(button3);
 
-        mainButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toggleMenu();
-            }
-        });
+        mainButton.addActionListener(e -> toggleMenu());
 
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Context.getContext().getMap().unlinkMapGraphics("Accessibility");
-                repaint();
-            }
+        button1.addActionListener(e -> {
+            proxyMap.hideMapGraphics("Accessibility");
+            proxyMap.hideMapGraphics("AbstractedBusMap");
         });
-
-        button3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    BufferedImage image = ImageIO.read(new File("resources/accessibilityMap.png"));
-
-                    MapBackground top = new MapBackground(image);
-                    top.setAlpha(0.3f);
-                    Context.getContext().getMap().linkMapGraphics("Accessibility", top);
-                    repaint();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
+        button2.addActionListener(e -> proxyMap.toggleMapGraphics("AbstractedBusMap"));
+        button3.addActionListener(e -> proxyMap.toggleMapGraphics("Accessibility"));
 
         // Add button panel to the frame
         resultsContainer.add(buttonPanel, BorderLayout.NORTH);
@@ -225,20 +208,18 @@ public class MaasMapsUI extends JFrame {
         revalidate();
     }
 
-    private Map createResultsPanel() {
-        Map resultsPanel = new Map(null);
-        resultsPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
-        resultsPanel.setPreferredSize(new Dimension(500, 150));
-        resultsPanel.setSize(new Dimension(500, 150));
+    private MapBackground createAccessibilityMap() {
+        try {
+            BufferedImage image = ImageIO.read(new File("resources/accessibilityMap.png"));
 
-        Graph<Point2D> graph = MapManager.getBusGraph();
-        Network abstractedBusNetwork = new AbstractedBusNetwork(graph);
-
-        resultsPanel.addMapGraphics(abstractedBusNetwork);
-        resultsPanel.repaint();
-        return resultsPanel;
+            MapBackground top = new MapBackground(image);
+            top.setAlpha(0.3f);
+            return top;
+        }
+        catch (IOException e1) {
+            throw new IllegalArgumentException(e1);
+        }
     }
-
 
     private void createLegendPanel() {
         JFrame legendWindow = new JFrame("Legend");

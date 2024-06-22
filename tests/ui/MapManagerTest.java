@@ -7,7 +7,7 @@ import java.awt.Point;
 
 import org.junit.Test;
 
-import core.managers.MapManager;
+import core.managers.map.MapManager;
 
 public class MapManagerTest {
     @Test

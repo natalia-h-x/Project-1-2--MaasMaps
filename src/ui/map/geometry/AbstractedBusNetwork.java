@@ -3,9 +3,11 @@ package ui.map.geometry;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.Graph;
+import core.models.BusStop;
 import ui.map.geometry.Line.Segment;
 import ui.map.geometry.factories.LineFactory;
 
@@ -55,6 +57,9 @@ public class AbstractedBusNetwork extends BusNetwork {
 
     @Override
     public Marker createMarker(Point2D point) {
+        if (point instanceof BusStop stop)
+            stop.setColor((Color) Optional.ofNullable(map.nearestLine(point)).orElse(LineFactory.emptyLine()).getPaint());
+
         return super.createMarker(new Point2DImpostor(point, abstractingFunction));
     }
 
@@ -93,6 +98,30 @@ public class AbstractedBusNetwork extends BusNetwork {
             return closestPoint;
         }
 
+        public Line nearestLine(Point2D point) {
+            if (lines.length <= 0)
+                throw new IllegalArgumentException("no lines present");
+
+            Line closestLine = null;
+            double dist = 0;
+
+            for (Line line : lines) {
+                Point2D clampedPoint = nearestPointOnLine(line, point);
+
+                if (clampedPoint == null)
+                    continue;
+
+                double distanceSq = clampedPoint.distanceSq(point);
+
+                if (closestLine == null || distanceSq < dist) {
+                    dist = distanceSq;
+                    closestLine = line;
+                }
+            }
+
+            return closestLine;
+        }
+
         private static Point2D nearestPointOnLine(Line line, Point2D point) {
             Point2D closestPoint = null;
             double dist = 0;
@@ -100,7 +129,7 @@ public class AbstractedBusNetwork extends BusNetwork {
             for (Segment segment : line) {
                 for (Segment subdivision : segment) {
                     Point2D clampedPoint = nearestPointOnLine(subdivision.getStart().getX(), subdivision.getStart().getY(),
-                    subdivision.getEnd().getX(), subdivision.getEnd().getY(), point, true);
+                                                              subdivision.getEnd  ().getX(), subdivision.getEnd  ().getY(), point, true);
                     double distanceSq = clampedPoint.distanceSq(point);
 
                     if (closestPoint == null || distanceSq < dist) {

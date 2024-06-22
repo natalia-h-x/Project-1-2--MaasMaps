@@ -1,4 +1,4 @@
-package core.algorithms.datastructures;
+package core.datastructures.graph;
 
 public class AdjacencyMatrixGraph {
     private int[][] adjMatrix;
@@ -32,7 +32,7 @@ public class AdjacencyMatrixGraph {
     public void removeEdge(int i, int j) {
         if (i > adjMatrix.length || j > adjMatrix[0].length)
             throw new IllegalArgumentException("Adjancency matrix does not contain this vertex.");
-        
+
         adjMatrix[i][j] = 9999999;
         adjMatrix[i][j] = 9999999;
     }
@@ -40,7 +40,7 @@ public class AdjacencyMatrixGraph {
     public int[][] getAdjMatrix() {
         return adjMatrix;
     }
-    
+
     public void setAdjMatrix(int[][] adjMatrix) {
         this.adjMatrix = adjMatrix;
     }

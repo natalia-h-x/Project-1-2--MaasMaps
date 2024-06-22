@@ -1,4 +1,4 @@
-package core.algorithms.datastructures;
+package core.datastructures;
 
 import java.util.ArrayList;
 import java.util.List;

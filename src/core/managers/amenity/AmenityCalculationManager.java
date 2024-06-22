@@ -7,7 +7,7 @@ package core.managers.amenity;
  */
 public class AmenityCalculationManager {
     private AmenityCalculationManager() {}
-    
+
     /**
      * gets the Accessibility Metric.
      *

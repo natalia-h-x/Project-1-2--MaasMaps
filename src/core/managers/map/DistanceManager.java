@@ -1,10 +1,10 @@
-package core.managers;
+package core.managers.map;
 
 import core.models.Location;
 
 /**
  * This class represents the distance calculator to calculate the distance in kilometers between two locations using the haversine function.
- * 
+ *
  * @author Kimon Navridis
  */
 public class DistanceManager {

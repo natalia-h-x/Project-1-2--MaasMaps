@@ -1,7 +1,7 @@
 package algorithms.datastructures;
 
-import core.algorithms.datastructures.AdjacencyListGraph;
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.AdjacencyListGraph;
+import core.datastructures.graph.Graph;
 import core.models.BusStop;
 
 public class AdjacencyListTest {

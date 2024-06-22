@@ -10,6 +10,7 @@ import java.awt.event.MouseWheelEvent;
 
 import javax.swing.SwingUtilities;
 
+import core.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +33,7 @@ public class TranslationListener {
     private double zoomScale = 1.2;
 
     private boolean useMiddle = false;
-    private boolean useClipboard = true;
+    private boolean useClipboard = Constants.Settings.USE_CLIPBOARD;
 
     public TranslationListener(TranslateableComponent translateableComponent) {
         this.translateableComponent = translateableComponent;

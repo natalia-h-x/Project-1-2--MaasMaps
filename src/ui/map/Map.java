@@ -31,7 +31,7 @@ public class Map extends JPanel implements TranslateableComponent {
     @Getter
     private transient MapBackground mapBackground;
     @Getter
-    private java.util.Map<String, MapGraphics> topGraphics = new HashMap<>();
+    private transient java.util.Map<String, MapGraphics> topGraphics = new HashMap<>();
 
     /** Variables for translating this Map */
     private double scale;

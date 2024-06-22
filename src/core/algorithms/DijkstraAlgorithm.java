@@ -8,9 +8,10 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import core.algorithms.datastructures.Edge;
-import core.algorithms.datastructures.Graph;
-import core.algorithms.datastructures.TriMonoid;
+import core.datastructures.TriMonoid;
+import core.datastructures.graph.Edge;
+import core.datastructures.graph.Graph;
+import core.datastructures.graph.Weight;
 import core.models.BusStop;
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
@@ -54,13 +55,16 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
             for (Edge<T> edge : graph.neighbors(vertex)) {
                 T adjacent = edge.getElement();
                 Trip transfer = Trip.empty();
-                int weight = edge.getWeight(currentWeight, transfer);
+                Weight weight = edge.getWeight(currentWeight, transfer);
 
-                if (weight == Integer.MAX_VALUE)
+                if (weight.getWaitTime() > 1200) // 20 mins
+                    System.out.println();
+
+                if (!weight.isReachable())
                     continue;
 
                 if (!settled.contains(adjacent)) {
-                    int newTime = currentWeight + weight;
+                    int newTime = currentWeight + weight.getTotal();
 
                     if (newTime < weights.getOrDefault(adjacent, Integer.MAX_VALUE)) {
                         weights.put(adjacent, newTime);
@@ -68,7 +72,8 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
 
                         // Add vertex to path
                         Transport element = pathMonoids.computeIfAbsent(adjacent, v -> new TriMonoid<>(pathMonoid)).add(edge, vertex, transfer).getElement();
-                        element.setTime(Time.of(weight));
+                        element.setTime(weight.weightTime());
+                        element.setWaitTime(weight.waitTime());
 
                         if (adjacent instanceof BusStop busStop && element instanceof Bus bus)
                             bus.setBusStop(busStop);

@@ -53,7 +53,11 @@ public class Walking extends Transport {
     @Override
     public String takeTransport() {
         String location = String.format("Walking time: %s", getTime());
-        
         return location;
+    }
+
+    @Override
+    public Transport copy() {
+        return TransportFactory.copyWalking(this);
     }
 }

@@ -1,18 +1,10 @@
 package core.models.geojson;
 
-import core.Constants;
-import core.Constants.Paths;
 import core.models.Location;
 
 public abstract class Amenity extends GeoData {
     protected Amenity(Location location, String id) {
         super(location, id);
-    }
-
-    
-
-    public String getIcon() {
-        return Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + getClass().getSimpleName();
     }
 
     public static class ArtsCentre extends Amenity {

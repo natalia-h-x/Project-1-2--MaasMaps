@@ -1,4 +1,4 @@
-package core.algorithms.datastructures;
+package core.datastructures.graph;
 
 import java.util.HashMap;
 import java.util.Iterator;

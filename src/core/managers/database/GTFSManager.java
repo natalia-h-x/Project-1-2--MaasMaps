@@ -9,9 +9,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import core.Constants;
-import core.algorithms.datastructures.AdjacencyListGraph;
-import core.algorithms.datastructures.Edge;
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.AdjacencyListGraph;
+import core.datastructures.graph.Graph;
 import core.managers.ExceptionManager;
 import core.models.BusStop;
 import core.models.Location;
@@ -44,7 +43,7 @@ public class GTFSManager {
         // Take for example A -> B -> C, that cannot be A -> C -> B. This will not have correct weights because
         // the times are also not chronological.
         List<?>[] attributes = QueryManager.executeQuery("select trip_id, stop_id, arrival_time, departure_time\r\n" + //
-            "from stop_times ORDER BY trip_id, stop_sequence;\r\n", new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Double>(), new ArrayList<Double>());
+            "from stop_times ORDER BY trip_id, stop_sequence LIMIT -1;\r\n", new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         int previousTripId = -1;
         Time departureTime = null;

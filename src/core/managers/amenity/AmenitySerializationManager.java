@@ -22,7 +22,7 @@ public class AmenitySerializationManager {
 
         try {
             Serializable serializable = JSONSerializationManager.deSterializeJSON(new String(Files.readAllBytes(Paths.get(String.format(core.Constants.Paths.GEOJSON, type.toLowerCase())))));
-            
+
             List<Object> features = serializable.getArrays().get("features");
             for (Object obj : features) {
                 Serializable feature = (Serializable) obj;
@@ -39,16 +39,15 @@ public class AmenitySerializationManager {
 
                 data.add(GeoData.of(new Location(Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[0])), id, type));
             }
-
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
+
         return data;
     }
 
     public static List<GeoData> getGeoData(String type) {
-        geoData.computeIfAbsent(type, s -> amenities(type));
-
-        return geoData.get(type);
+        return geoData.computeIfAbsent(type, s -> amenities(type));
     }
 }

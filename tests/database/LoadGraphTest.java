@@ -8,10 +8,10 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import core.algorithms.datastructures.BusEdge;
-import core.algorithms.datastructures.Edge;
-import core.algorithms.datastructures.Graph;
-import core.managers.MapManager;
+import core.datastructures.graph.BusEdge;
+import core.datastructures.graph.Edge;
+import core.datastructures.graph.Graph;
+import core.managers.map.MapManager;
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
 import ui.NetworkTest;

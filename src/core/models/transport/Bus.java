@@ -22,18 +22,16 @@ import ui.map.geometry.interfaces.MapGraphics;
 @EqualsAndHashCode(callSuper = true)
 public class Bus extends Transport {
     private static final double AVERAGE_SPEED = 333; // meters per minute
-    private Trip trip;
-    private BinaryOperator<Time> routeType = RouteType.SHORTEST.getBinaryOperator();
-    private PathStrategy<Location> pathStrategy;
+
     private BusStop busStop;
+    private Trip trip;
+
+    private RouteType routeType = RouteType.SHORTEST;
+    private PathStrategy<Location> pathStrategy;
 
     public Bus() {}
     public Bus(Location start, Location destination) {
         super(start, destination);
-    }
-
-    public void setRouteType(RouteType routeType) {
-        this.routeType = routeType.getBinaryOperator();
     }
 
     public double getAverageSpeed() {
@@ -44,6 +42,7 @@ public class Bus extends Transport {
         return "Take Bus";
     }
 
+    @Override
     public Route getRoute() {
         try {
             return Optional.ofNullable(pathStrategy).orElse(new DijkstraAlgorithm<>()).calculateShortestPath(this).orElseThrow();
@@ -76,7 +75,7 @@ public class Bus extends Transport {
         throw new UnsupportedOperationException("Unimplemented method 'getIcon'");
     }
 
-    enum RouteType {
+    public enum RouteType {
         SHORTEST {
             @Override
             public BinaryOperator<Time> getBinaryOperator() {
@@ -102,8 +101,14 @@ public class Bus extends Transport {
     @Override
     public String takeTransport() {
         String busStopName = busStop.getStopName();
-        String time = getTime().toISOString();
-        
-        return String.format("Bus Stop: %s Time: %s", busStopName, time);
+        String time = getTime().toString();
+        String waitTime = getWaitTime().toString();
+
+        return String.format("Bus Stop: %s Bus Travel Time: %s, Wait Time: %s", busStopName, time, waitTime);
+    }
+
+    @Override
+    public Transport copy() {
+        return TransportFactory.copyBus(this);
     }
 }

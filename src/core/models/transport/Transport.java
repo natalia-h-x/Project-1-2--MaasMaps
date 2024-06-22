@@ -1,7 +1,5 @@
 package core.models.transport;
 
-import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 
 import core.models.Location;
@@ -20,6 +18,7 @@ public abstract class Transport {
     private Location destination;
     private Time departingTime = Time.of(7, 0, 0);
     private Time time = Time.empty();
+    private Time waitTime = Time.empty();
 
     protected Transport() {}
     protected Transport(Location start, Location destination) {
@@ -52,4 +51,5 @@ public abstract class Transport {
     public abstract String takeTransport();
     public abstract double getAverageSpeed();
     public abstract MapGraphics[] getGraphics();
+    public abstract Transport copy();
 }

@@ -1,26 +1,25 @@
 package ui.map.geometry;
 
-
-import core.managers.MapManager;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-@Getter
-@Setter
+import core.managers.map.DrawManager;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
 // add or change the class when result section will be implemented
 public class BusMarker extends ImageMarker {
     private int busId;
     private String locationName;
-    public BusMarker(Point2D location, int bus_ID, String locationName, BufferedImage image){
-        super(location, image);
-        this.busId = bus_ID;
-        this.locationName = locationName;
 
+    public BusMarker(Point2D location, int busId, String locationName, BufferedImage image){
+        super(location, image);
+        this.busId = busId;
+        this.locationName = locationName;
     }
 
     @Override
@@ -28,11 +27,6 @@ public class BusMarker extends ImageMarker {
         super.paint(g2);
 
         Point point = getIconLocation();
-        MapManager.drawString(g2, locationName, point);
-
-
-
-
+        DrawManager.drawString(g2, locationName, point);
     }
-
 }

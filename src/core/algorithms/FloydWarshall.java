@@ -1,6 +1,6 @@
 package core.algorithms;
 
-import core.algorithms.datastructures.AdjacencyMatrixGraph;
+import core.datastructures.graph.AdjacencyMatrixGraph;
 
 public class FloydWarshall {
     public AdjacencyMatrixGraph floydWarshall(AdjacencyMatrixGraph graph) {

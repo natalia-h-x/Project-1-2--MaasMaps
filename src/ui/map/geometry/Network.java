@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import core.algorithms.datastructures.Edge;
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.Edge;
+import core.datastructures.graph.Graph;
 import lombok.Getter;
 import lombok.Setter;
 import ui.map.geometry.factories.MarkerFactory;

@@ -1,4 +1,4 @@
-package core.algorithms.datastructures;
+package core.datastructures.graph;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,13 +40,23 @@ public class BusEdge<T> extends Edge<T> {
      * @param arrivalTime the time you arrive at the bus stop, where you want to look for departing buses to take.
      * @return
      */
-    public int getWeight(int arrivalTime, Trip transfer) {
+    public Weight getWeight(int arrivalTime, Trip trip) {
+        int closestDepartureTime = getClosestDepartureTime(arrivalTime);
+
+        if (closestDepartureTime == Integer.MAX_VALUE)
+            return new Weight(Integer.MAX_VALUE, 0);
+
+        // It is possible that the trip changes to another trip here which means a transfer occurred.
+        trip.copyInto(departureTimes.get(Time.of(closestDepartureTime)));
+
+        return new Weight(super.getWeight(), closestDepartureTime - arrivalTime);
+    }
+
+    private int getClosestDepartureTime(int arrivalTime) {
         Trip trip = departureTimes.get(Time.of(arrivalTime));
 
-        if (trip != null) {
-            transfer.copyInto(trip);
-            return weights.get(trip);
-        }
+        if (trip != null)
+            return arrivalTime;
 
         int closestDepartureTime = Integer.MAX_VALUE;
 
@@ -56,14 +66,10 @@ public class BusEdge<T> extends Edge<T> {
             if (departureTime.toSeconds() < arrivalTime)
                 break;
 
-            transfer.copyInto(entry.getValue());
             closestDepartureTime = departureTime.toSeconds();
         }
 
-        if (closestDepartureTime == Integer.MAX_VALUE)
-            return Integer.MAX_VALUE;
-
-        return weights.get(transfer) + closestDepartureTime - arrivalTime;
+        return closestDepartureTime;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package core.algorithms.datastructures;
+package core.datastructures.graph;
 
 import core.models.gtfs.Trip;
 import core.models.transport.Transport;
@@ -12,7 +12,7 @@ public abstract class Edge<T> {
     private int weight;
 
     public abstract Transport asTransport(T outgoingVertex, Trip trip);
-    public abstract int getWeight(int arrivalTime, Trip transfer);
+    public abstract Weight getWeight(int arrivalTime, Trip transfer);
 
     @Override
     @SuppressWarnings("unchecked")

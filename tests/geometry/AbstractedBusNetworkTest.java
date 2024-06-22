@@ -2,8 +2,8 @@ package geometry;
 
 import org.junit.Test;
 
-import core.algorithms.datastructures.AdjacencyListGraph;
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.AdjacencyListGraph;
+import core.datastructures.graph.Graph;
 import core.models.BusStop;
 import ui.MaasMapsUI;
 import ui.map.geometry.AbstractedBusNetwork;

@@ -50,7 +50,12 @@ public class Biking extends Transport {
     @Override
     public String takeTransport() {
         String location = String.format("Start: %s Destination: %s", getStart(), getDestination());
-        
+
         return location;
+    }
+
+    @Override
+    public Transport copy() {
+        return TransportFactory.copyBiking(this);
     }
 }

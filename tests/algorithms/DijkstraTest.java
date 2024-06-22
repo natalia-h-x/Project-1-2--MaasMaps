@@ -9,7 +9,8 @@ import org.junit.Test;
 
 import core.algorithms.DijkstraAlgorithm;
 import core.algorithms.PathStrategy;
-import core.managers.MapManager;
+import core.managers.map.MapManager;
+import core.managers.map.PostalCodeManager;
 import core.models.BusStop;
 import core.models.Location;
 import core.models.gtfs.Time;
@@ -23,8 +24,8 @@ public class DijkstraTest {
     public void testForRouteWithBusNumber2() {
         Location start = new Location(50.848101, 5.722739);
         Location destination = new Location(50.836348, 5.726151);
-        Location[] closestStarts = MapManager.getClosestPoint(start, 1);
-        Location[] closestDestinations = MapManager.getClosestPoint(destination, 1);
+        Location[] closestStarts = PostalCodeManager.getClosestPoint(start, 1);
+        Location[] closestDestinations = PostalCodeManager.getClosestPoint(destination, 1);
 
         Route route = Route.empty();
         route.addTransport(TransportFactory.createWalking(start, closestStarts[0]));
@@ -51,8 +52,8 @@ public class DijkstraTest {
     @Test
     public void testForSameStop() {
         try {
-            Location[] closestStarts = MapManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
-            Location[] closestDestinations = MapManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
+            Location[] closestStarts = PostalCodeManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
+            Location[] closestDestinations = PostalCodeManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
             new DijkstraAlgorithm<Point2D>().shortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200));
         } catch (IllegalArgumentException e) {
             assert(true);

@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.Set;
 
 import core.managers.FileManager;
-import core.managers.MapManager;
 import core.managers.database.DatabaseDefinitionManager;
 import core.managers.database.DatabaseModificationManager;
 import core.managers.database.QueryManager;
+import core.managers.map.MapManager;
 
 /*
  * To recreate, first unzip the GTFS file in /resources and rename .txt files to .csv (line 14 assumes unzipped location)

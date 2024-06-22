@@ -12,7 +12,7 @@ import javax.swing.Timer;
 import org.junit.jupiter.api.Test;
 
 import algorithms.datastructures.AdjacencyListTest;
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.Graph;
 import core.models.BusStop;
 import ui.map.geometry.ArrowStroke;
 import ui.map.geometry.GeographicLine;
@@ -55,7 +55,7 @@ public class LineTest {
             segment.setStart(p1);
             segment.setEnd(p1);
         }
-        
+
         assertEquals(point, segment.getStart());
         assertEquals(point, segment.getEnd());
 

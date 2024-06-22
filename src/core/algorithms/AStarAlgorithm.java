@@ -3,7 +3,7 @@ package core.algorithms;
 import java.awt.geom.Point2D;
 import java.util.Comparator;
 
-import core.algorithms.datastructures.Graph;
+import core.datastructures.graph.Graph;
 import core.models.gtfs.Time;
 import core.models.transport.Transport;
 

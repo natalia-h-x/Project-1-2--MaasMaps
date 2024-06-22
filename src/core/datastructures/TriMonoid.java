@@ -1,10 +1,10 @@
-package core.algorithms.datastructures;
+package core.datastructures;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.IntFunction;
 
+import core.models.function.TriFunction;
 import lombok.Data;
 
 /**
@@ -12,14 +12,14 @@ import lombok.Data;
  * which operations were used to reach a certain state.
  */
 @Data
-public class Monoid<T, S> {
+public class TriMonoid<T, X, Y, S> {
     /** Backtrace of how we got to the final element */
     private List<T> elements;
 
     /** Generator of the backtrace */
-    private Function<S, T> extractor;
+    private TriFunction<S, X, Y, T> extractor;
 
-    public Monoid(Function<S, T> extractor) {
+    public TriMonoid(TriFunction<S, X, Y, T> extractor) {
         this.extractor = extractor;
         elements = new ArrayList<>();
     }
@@ -30,13 +30,19 @@ public class Monoid<T, S> {
      *
      * @param monoid The monoid to copy.
      */
-    public Monoid(Monoid<T, S> monoid) {
+    public TriMonoid(TriMonoid<T, X, Y, S> monoid) {
         this.extractor = monoid.getExtractor();
         elements = new ArrayList<>(monoid.getElements());
     }
 
-    public void add(S elementShell) {
-        elements.add(extractor.apply(elementShell));
+    public TriMonoid<T, X, Y, S> add(S shell, X generatorX, Y generatorY) {
+        elements.add(extractor.apply(shell, generatorX, generatorY));
+
+        return this;
+    }
+
+    public T getElement() {
+        return elements.get(elements.size() - 1);
     }
 
     public Object[] toArray() {
