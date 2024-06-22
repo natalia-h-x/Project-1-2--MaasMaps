@@ -32,9 +32,13 @@ import javax.swing.WindowConstants;
 import core.Constants.BusColors;
 import core.Constants.Paths;
 import core.Constants.UIConstants;
+import core.algorithms.AStarAlgorithm;
+import core.algorithms.DijkstraAlgorithm;
+import core.algorithms.PathStrategy;
 import core.Context;
 import core.datastructures.graph.Graph;
 import core.managers.map.MapManager;
+import core.models.Location;
 import ui.map.Map;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
@@ -44,7 +48,8 @@ import ui.route.ResultsProxy;
 import ui.route.RouteUI;
 
 /**
- * This class represents the app UI showing the map, the navigation panel and the map option buttons
+ * This class represents the app UI showing the map, the navigation panel and
+ * the map option buttons
  *
  * @author Sheena Gallagher
  * @author Natalia Hadjisoteriou
@@ -57,16 +62,26 @@ public class MaasMapsUI extends JFrame {
     private JButton button2;
     private JButton button3;
     private JButton legend;
+    private JComboBox<PathStrategy> changeAlgorithmBox;
     private Timer timer;
     private boolean expanded = false;
     private int animationStep = 0;
     private final int ANIMATION_STEPS = 30;
+
+    @SuppressWarnings("rawtypes")
+    private final PathStrategy[] algoOptions = {
+            new DijkstraAlgorithm<Location>(),
+            new AStarAlgorithm<Location>()
+    };
+
+    private PathStrategy<Location> selectedAlgorithm;
 
     public MaasMapsUI() {
         super("Maas Maps");
         initialiseUI();
     }
 
+    @SuppressWarnings("rawtypes")
     private void initialiseUI() {
         setSize(800, 700);
         setLayout(new BorderLayout());
@@ -95,13 +110,14 @@ public class MaasMapsUI extends JFrame {
 
         // Create split pane with top and bottom panels
         JPanel resultsContainer = new JPanel(new BorderLayout());
-        resultsContainer.setBorder(BorderFactory.createMatteBorder(UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE,
+        resultsContainer.setBorder(BorderFactory.createMatteBorder(UIConstants.GUI_BORDER_SIZE,
+                UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE, UIConstants.GUI_BORDER_SIZE,
                 UIConstants.GUI_BACKGROUND_COLOR));
         resultsContainer.setMinimumSize(new Dimension(800, 600));
         resultsContainer.setPreferredSize(new Dimension(800, 600));
 
         // Adding custom panels
-        NavigationPanel navigationPanel = new NavigationPanel();
+        NavigationPanel navigationPanel = new NavigationPanel(this);
         navigationPanel.setMinimumSize(new Dimension(450, 600));
         navigationPanel.setPreferredSize(new Dimension(500, 600));
 
@@ -109,34 +125,35 @@ public class MaasMapsUI extends JFrame {
         RouteUI resultsPanel = new RouteUI();
         Context.getContext().setResultsPanel(new ResultsProxy(resultsPanel));
 
-        JPanel resultsContainerSouth = new JPanel (new GridLayout(1, 2, 900, UIConstants.GUI_BORDER_SIZE / 2));
+        JPanel resultsContainerSouth = new JPanel(new GridLayout(1, 2, 900, UIConstants.GUI_BORDER_SIZE / 2));
         resultsContainerSouth.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
         JPanel changeAlgoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         changeAlgoPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
-        String algoOptions[] = { "A*", "Dijkstra's" };
-
-        //add combo box to change algorithms
-        JComboBox<String> changeAlgorithmBox = new JComboBox<> (algoOptions);
+        // add combo box to change algorithms
+        changeAlgorithmBox = new JComboBox<>(algoOptions);
         changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
         changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
+
+        changeAlgorithmBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Update the selected algorithm when selection changes
+                selectedAlgorithm = (PathStrategy) changeAlgorithmBox.getSelectedItem();
+            }
+        });
 
         JPanel legendButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         legendButtonPanel.setBackground(UIConstants.GUI_BACKGROUND_COLOR);
 
-        // //add combo box to change algorithms
-        // JComboBox<String> changeAlgorithmBox = new JComboBox<>(algoOptions);
-        // changeAlgorithmBox.setBackground(UIConstants.GUI_ACCENT_COLOR);
-        // changeAlgorithmBox.setForeground(UIConstants.GUI_HIGHLIGHT_COLOR);
-
-        //add legend button
+        // add legend button
         legend = new JButton("LEGEND");
         legend.setPreferredSize(new Dimension(100, 25));
         legend.setBackground(UIConstants.GUI_TITLE_COLOR);
         legend.setForeground(Color.WHITE);
         legendButtonPanel.add(legend);
-        changeAlgoPanel.add(changeAlgorithmBox); //needs action listener
+        changeAlgoPanel.add(changeAlgorithmBox); // needs action listener
 
         legendButtonPanel.setVisible(true);
         changeAlgoPanel.setVisible(true);
@@ -256,7 +273,7 @@ public class MaasMapsUI extends JFrame {
 
             JLabel colorLabel = new JLabel("●");
             colorLabel.setForeground(entry.getKey()); // Set color
-            colorLabel.setFont(new Font("●",3,20  )); // Set font size
+            colorLabel.setFont(new Font("●", 3, 20)); // Set font size
             legendItem.add(colorLabel);
 
             JLabel numberLabel = new JLabel(" - No. " + entry.getValue());
@@ -266,7 +283,7 @@ public class MaasMapsUI extends JFrame {
         }
 
         legendWindow.add(legendPanel);
-        legendWindow.setAlwaysOnTop( true );
+        legendWindow.setAlwaysOnTop(true);
         legendWindow.setVisible(true);
     }
 
@@ -334,5 +351,9 @@ public class MaasMapsUI extends JFrame {
                 new MaasMapsUI();
             }
         });
+    }
+
+    public PathStrategy getSelectedAlgorithm() {
+        return selectedAlgorithm;
     }
 }

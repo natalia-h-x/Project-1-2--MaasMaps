@@ -87,4 +87,5 @@ public abstract class PathStrategy<T extends Point2D> {
 
         return shortestRoute;
     }
+    public abstract String toString();
 }
