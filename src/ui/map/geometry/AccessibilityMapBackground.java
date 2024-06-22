@@ -69,7 +69,10 @@ public class AccessibilityMapBackground extends MapBackground {
                         }
                     }
                     accessibility = accessibility/4;
-                    g2.setPaint(notSiansLinearInterpolation(accessibility, new Color[] {Color.RED, Color.YELLOW, Color.GREEN}));
+                    g2.setPaint(notSiansLinearInterpolation(accessibility, new Color[] {new Color(231, 0, 0), new Color(231, 48, 5), new Color(231, 83, 10), 
+                                                                                        new Color(231, 149, 20), new Color(231, 217, 0), new Color(186, 231, 2), 
+                                                                                        new Color(138, 231, 3), new Color(83, 231, 1), new Color(35, 231, 2), 
+                                                                                        new Color(2, 231, 38), new Color(1, 231, 70)}));
 
                     g2.fill(new Ellipse2D.Double(x, y, scale, scale));
                 }
