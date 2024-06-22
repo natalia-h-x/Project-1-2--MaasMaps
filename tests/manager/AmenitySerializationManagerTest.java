@@ -9,7 +9,6 @@ import core.managers.amenity.AmenitySerializationManager;
 import core.models.geojson.GeoData;
 
 public class AmenitySerializationManagerTest {
-
     @Test
     public void test() {
         List<GeoData> amenities = new ArrayList<>();

@@ -12,13 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AmenityAccessibilityCalculator {
-
     public static void main(String[] args) {
         String csvFilePath = "resources/MassZipLatLon.csv";
         String outputFilePath = "resources/PostalCodeAccessibility.csv";
 
         List<GeoData> amenities = loadAmenities();
-
         List<PostalCodeData> postalCodes = readPostalCodes(csvFilePath);
 
         calculateAccessibilityMetrics(postalCodes, amenities);

@@ -33,7 +33,7 @@ public class NavigationPanelTest {
     @BeforeEach
     public void setUp() {
         // Initialize the context and necessary components
-        navigationPanel = new NavigationPanel();
+        navigationPanel = new NavigationPanel(new MaasMapsUI());
 
         // Extract components from the navigation panel for testing
         textField1 = (JTextField) getComponentByName(navigationPanel, "textField1");
