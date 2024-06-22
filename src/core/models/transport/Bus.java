@@ -36,6 +36,10 @@ public class Bus extends Transport {
         this.routeType = routeType.getBinaryOperator();
     }
 
+    public void setPathStrategy(PathStrategy<Location> pathStrategy){
+        this.pathStrategy = pathStrategy;
+    }
+
     public double getAverageSpeed() {
         return AVERAGE_SPEED;
     }

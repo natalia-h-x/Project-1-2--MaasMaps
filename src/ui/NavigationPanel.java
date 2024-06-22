@@ -32,6 +32,7 @@ import core.zipcode.ZipCodeDatabase;
  * @author Natalia Hadjisoteriou
  */
 public class NavigationPanel extends JPanel {
+    private MaasMapsUI parentUI;
     private JLabel timeLabel;
     private transient Transport[] options = {
             new Walking(),
@@ -39,7 +40,8 @@ public class NavigationPanel extends JPanel {
             new Bus()
     };
 
-    public NavigationPanel() {
+    public NavigationPanel(MaasMapsUI parentUI) {
+        this.parentUI = parentUI;
         initialiseNavigationUI();
     }
 
@@ -228,7 +230,14 @@ public class NavigationPanel extends JPanel {
                 transportMode.dispose();
                 transportMode.setStart(db.getLocation(textField1.getText()));
                 transportMode.setDestination(db.getLocation(textField2.getText()));
-                transportMode.setDepartingTime(Time.of(departureField.getText()));
+
+                if (transportMode instanceof Bus)
+                    for (Transport option : options) {
+                        if (option instanceof Bus b) {
+                            b.setDepartingTime(Time.of(departureField.getText()));
+                            b.setPathStrategy(parentUI.getSelectedAlgorithm());
+                        }
+                    }
 
                 Context.getContext().getMap().clearIcons();
 
