@@ -1,7 +1,6 @@
 package ui.map.geometry;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -11,8 +10,8 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import core.Context;
-import core.managers.amenity.AmenityAccessibilityCalculator;
 import core.managers.MapManager;
+import core.managers.amenity.AmenityAccessibilityManager;
 import core.models.Location;
 
 public class AccessibilityMapBackground extends MapBackground {
@@ -27,7 +26,7 @@ public class AccessibilityMapBackground extends MapBackground {
     @Override
     public void paint(Graphics2D g) {
         for (String postalCode : postalCodes) {
-            accessibilityMap.computeIfAbsent(postalCode, s -> AmenityAccessibilityCalculator.getAccessibilityMetric(postalCode));
+            accessibilityMap.computeIfAbsent(postalCode, s -> AmenityAccessibilityManager.getAccessibilityMetric(postalCode));
 
             Location location = Context.getContext().getZipCodeDatabase().getLocation(postalCode);
             accesibilityPoints.computeIfAbsent(new Point2D.Double(location.getX(), location.getY()), s -> accessibilityMap.get(postalCode));

@@ -1,7 +1,10 @@
 package core.managers.amenity;
 
 public class AmenityAccessibilityManager {
-    public double getAccessibilityMetric(String postalCode) {
-        
+    private AmenityAccessibilityManager() {}
+
+    public static double getAccessibilityMetric(String postalCode) {
+        double accessibility = 0;
+        return accessibility;
     }
 }
