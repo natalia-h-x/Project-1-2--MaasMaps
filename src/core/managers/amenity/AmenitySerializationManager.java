@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,11 @@ import core.managers.serialization.JSONSerializationManager;
 import core.models.Location;
 import core.models.geojson.GeoData;
 import core.models.serialization.Serializable;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class AmenitySerializationManager {
-    private static Map<String, List<GeoData>> geoData;
+    private static Map<String, List<GeoData>> geoData = new HashMap<>();
 
     private AmenitySerializationManager() {}
 
@@ -21,23 +24,26 @@ public class AmenitySerializationManager {
         List<GeoData> data = new ArrayList<>();
 
         try {
-            Serializable serializable = JSONSerializationManager.deSterializeJSON(new String(Files.readAllBytes(Paths.get(String.format(core.Constants.Paths.GEOJSON, type.toLowerCase())))));
-            
-            List<Object> features = serializable.getArrays().get("features");
-            for (Object obj : features) {
-                Serializable feature = (Serializable) obj;
+            String jsonString = new String(Files.readAllBytes(Paths.get(String.format(core.Constants.Paths.GEOJSON, type.toLowerCase()))));
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray features = jsonObject.getJSONArray("features");
 
-                Serializable properties = feature.getObjects().get("properties");
-                Serializable geometry = feature.getObjects().get("geometry");
+            for (int i = 0; i < features.length(); i++) {
+                JSONObject feature = features.getJSONObject(i);
+                JSONObject properties = feature.getJSONObject("properties");
+                JSONObject geometry = feature.getJSONObject("geometry");
 
                 if (type.equals("amenity")) {
-                    type = (String) properties.get("amenity");
+                    type = properties.getString("amenity");
                 }
 
-                String[] coordinates = geometry.getArray("coordinates").toArray(String[]::new);
-                String id = (String) feature.get("id");
+                JSONArray coordinates = geometry.getJSONArray("coordinates");
+                String id = feature.getString("id");
 
-                data.add(GeoData.of(new Location(Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[0])), id, type));
+                double longitude = coordinates.getDouble(0);
+                double latitude = coordinates.getDouble(1);
+
+                data.add(GeoData.of(new Location(latitude, longitude), id, type));
             }
 
         } catch (IOException e) {
@@ -48,7 +54,6 @@ public class AmenitySerializationManager {
 
     public static List<GeoData> getGeoData(String type) {
         geoData.computeIfAbsent(type, s -> amenities(type));
-
         return geoData.get(type);
     }
 }
