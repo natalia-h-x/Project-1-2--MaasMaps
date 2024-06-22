@@ -1,5 +1,6 @@
 package core.managers.amenity;
 
+import core.Constants;
 import core.models.Location;
 import core.models.geojson.GeoData;
 
@@ -13,15 +14,12 @@ import java.util.List;
 
 public class AmenityAccessibilityCalculator {
     public static void main(String[] args) {
-        String csvFilePath = "resources/MassZipLatLon.csv";
-        String outputFilePath = "resources/PostalCodeAccessibility.csv";
-
         List<GeoData> amenities = loadAmenities();
-        List<PostalCodeData> postalCodes = readPostalCodes(csvFilePath);
+        List<PostalCodeData> postalCodes = readPostalCodes(Constants.Paths.POSTAL_COORDS_FILE);
 
         calculateAccessibilityMetrics(postalCodes, amenities);
         normalizeAccessibilityMetrics(postalCodes);
-        writeResultsToCSV(postalCodes, outputFilePath);
+        writeResultsToCSV(postalCodes, Constants.Paths.ACCESSIBILITY_FILE);
     }
 
     private static List<GeoData> loadAmenities() {
@@ -62,16 +60,13 @@ public class AmenityAccessibilityCalculator {
     private static double calculateAccessibility(PostalCodeData postalCode, List<GeoData> amenities) {
         double Ai = 0.0;
         double dL = averageDistanceToNearestAmenity(postalCode, amenities);
-        // Placeholder for weight, can be adjusted based on amenity category
-        //
-        //
-        double wL = 1.0;
 
 
         for (GeoData amenity : amenities) {
             double distance = distance(postalCode.getLocation(), amenity.getLocation());
             double Wj = 1.0;
-            Ai += Wj * Math.exp(-distance / dL) * amenity.getWeight();
+            double wL = amenity.getWeight();
+            Ai += Wj * Math.exp(-distance / dL) * wL;
         }
 
         return Ai;
