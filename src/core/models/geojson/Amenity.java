@@ -40,7 +40,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Bank extends Amenity {
-        private static final double WEIGHT = 0.5;
+        private static final double WEIGHT = 0.6;
 
         public Bank(Location location, String id) {
             super(location, id);
@@ -66,7 +66,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Bench extends Amenity {
-        private static final double WEIGHT = 0.03;
+        private static final double WEIGHT = 0.1;
 
         public Bench(Location location, String id) {
             super(location, id);
@@ -79,7 +79,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class BicycleParking extends Amenity {
-        private static final double WEIGHT = 0.2;
+        private static final double WEIGHT = 0.3;
 
         public BicycleParking(Location location, String id) {
             super(location, id);
@@ -118,7 +118,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Brothel extends Amenity {
-        private static final double WEIGHT = 1;
+        private static final double WEIGHT = 0.4;
 
         public Brothel(Location location, String id) {
             super(location, id);
@@ -144,7 +144,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Cafe extends Amenity {
-        private static final double WEIGHT = 0.4;
+        private static final double WEIGHT = 0.5;
 
         public Cafe(Location location, String id) {
             super(location, id);
@@ -157,7 +157,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class CarRental extends Amenity {
-        private static final double WEIGHT = 0.2;
+        private static final double WEIGHT = 0.3;
 
         public CarRental(Location location, String id) {
             super(location, id);
@@ -235,7 +235,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Clinic extends Amenity {
-        private static final double WEIGHT = 0.7;
+        private static final double WEIGHT = 0.8;
 
         public Clinic(Location location, String id) {
             super(location, id);
@@ -287,7 +287,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Courthouse extends Amenity {
-        private static final double WEIGHT = 0.2;
+        private static final double WEIGHT = 0.3;
 
         public Courthouse(Location location, String id) {
             super(location, id);
@@ -300,7 +300,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Dentist extends Amenity {
-        private static final double WEIGHT = 0.9;
+        private static final double WEIGHT = 1;
 
         public Dentist(Location location, String id) {
             super(location, id);
@@ -313,7 +313,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Doctors extends Amenity {
-        private static final double WEIGHT = 0.9;
+        private static final double WEIGHT = 1;
 
         public Doctors(Location location, String id) {
             super(location, id);
@@ -326,7 +326,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class DrinkingWater extends Amenity {
-        private static final double WEIGHT = 0.1;
+        private static final double WEIGHT = 0.3;
 
         public DrinkingWater(Location location, String id) {
             super(location, id);
@@ -339,7 +339,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class FastFood extends Amenity {
-        private static final double WEIGHT = 0.2;
+        private static final double WEIGHT = 0.3;
 
         public FastFood(Location location, String id) {
             super(location, id);
@@ -378,7 +378,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Fountain extends Amenity {
-        private static final double WEIGHT = 0.02;
+        private static final double WEIGHT = 0.1;
 
         public Fountain(Location location, String id) {
             super(location, id);
@@ -391,7 +391,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Fuel extends Amenity {
-        private static final double WEIGHT = 0.4;
+        private static final double WEIGHT = 0.5;
 
         public Fuel(Location location, String id) {
             super(location, id);
@@ -417,7 +417,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class HuntingStand extends Amenity {
-        private static final double WEIGHT = 0.05;
+        private static final double WEIGHT = 0.1;
 
         public HuntingStand(Location location, String id) {
             super(location, id);
@@ -443,7 +443,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Information extends Amenity {
-        private static final double WEIGHT = 0.3;
+        private static final double WEIGHT = 0.4;
 
         public Information(Location location, String id) {
             super(location, id);
@@ -456,7 +456,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Library extends Amenity {
-        private static final double WEIGHT = 0.5;
+        private static final double WEIGHT = 0.7;
 
         public Library(Location location, String id) {
             super(location, id);
@@ -469,7 +469,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class LuggageLocker extends Amenity {
-        private static final double WEIGHT = 0.05;
+        private static final double WEIGHT = 0.1;
 
         public LuggageLocker(Location location, String id) {
             super(location, id);
@@ -482,7 +482,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Marketplace extends Amenity {
-        private static final double WEIGHT = 0.7;
+        private static final double WEIGHT = 0.8;
 
         public Marketplace(Location location, String id) {
             super(location, id);
@@ -508,7 +508,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Nightclub extends Amenity {
-        private static final double WEIGHT = 0.2;
+        private static final double WEIGHT = 0.3;
 
         public Nightclub(Location location, String id) {
             super(location, id);
@@ -521,7 +521,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class NursingHome extends Amenity {
-        private static final double WEIGHT = 0.4;
+        private static final double WEIGHT = 0.6;
 
         public NursingHome(Location location, String id) {
             super(location, id);
@@ -534,7 +534,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Parking extends Amenity {
-        private static final double WEIGHT = 0.1;
+        private static final double WEIGHT = 0.4;
 
         public Parking(Location location, String id) {
             super(location, id);
@@ -547,7 +547,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class ParkingEntrance extends Amenity {
-        private static final double WEIGHT = 0.1;
+        private static final double WEIGHT = 0.2;
 
         public ParkingEntrance(Location location, String id) {
             super(location, id);
@@ -560,7 +560,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class ParkingSpace extends Amenity {
-        private static final double WEIGHT = 0.1;
+        private static final double WEIGHT = 0.4;
 
         public ParkingSpace(Location location, String id) {
             super(location, id);
@@ -573,7 +573,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Pharmacy extends Amenity {
-        private static final double WEIGHT = 0.7;
+        private static final double WEIGHT = 0.8;
 
         public Pharmacy(Location location, String id) {
             super(location, id);
@@ -586,7 +586,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class PhotoBooth extends Amenity {
-        private static final double WEIGHT = 0.05;
+        private static final double WEIGHT = 0.1;
 
         public PhotoBooth(Location location, String id) {
             super(location, id);
@@ -612,7 +612,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Police extends Amenity {
-        private static final double WEIGHT = 0.3;
+        private static final double WEIGHT = 0.6;
 
         public Police(Location location, String id) {
             super(location, id);
@@ -651,7 +651,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class PrepSchool extends Amenity {
-        private static final double WEIGHT = 0.4;
+        private static final double WEIGHT = 0.5;
 
         public PrepSchool(Location location, String id) {
             super(location, id);
@@ -664,7 +664,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Pub extends Amenity {
-        private static final double WEIGHT = 0.3;
+        private static final double WEIGHT = 0.4;
 
         public Pub(Location location, String id) {
             super(location, id);
@@ -690,7 +690,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Recycling extends Amenity {
-        private static final double WEIGHT = 0.6;
+        private static final double WEIGHT = 0.9;
 
         public Recycling(Location location, String id) {
             super(location, id);
@@ -768,7 +768,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Shower extends Amenity {
-        private static final double WEIGHT = 0.02;
+        private static final double WEIGHT = 0.1;
 
         public Shower(Location location, String id) {
             super(location, id);
@@ -794,7 +794,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Taxi extends Amenity {
-        private static final double WEIGHT = 0.3;
+        private static final double WEIGHT = 0.4;
 
         public Taxi(Location location, String id) {
             super(location, id);
@@ -820,7 +820,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Toilets extends Amenity {
-        private static final double WEIGHT = 0.2;
+        private static final double WEIGHT = 0.5;
 
         public Toilets(Location location, String id) {
             super(location, id);
@@ -872,7 +872,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Veterinary extends Amenity {
-        private static final double WEIGHT = 0.6;
+        private static final double WEIGHT = 0.7;
 
         public Veterinary(Location location, String id) {
             super(location, id);
@@ -885,7 +885,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class WasteBasket extends Amenity {
-        private static final double WEIGHT = 0.1;
+        private static final double WEIGHT = 0.8;
 
         public WasteBasket(Location location, String id) {
             super(location, id);
@@ -898,7 +898,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class WaterPoint extends Amenity {
-        private static final double WEIGHT = 0.05;
+        private static final double WEIGHT = 0.2;
 
         public WaterPoint(Location location, String id) {
             super(location, id);
