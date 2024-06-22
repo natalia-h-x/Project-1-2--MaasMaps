@@ -9,25 +9,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AmenityAccessibilityCalculator {
     public static void main(String[] args) {
-        List<GeoData> amenities = loadAmenities();
+        Map<String, List<GeoData>> amenities = AmenitySerializationManager.getGeoData();
         List<PostalCodeData> postalCodes = readPostalCodes(Constants.Paths.POSTAL_COORDS_FILE);
 
         calculateAccessibilityMetrics(postalCodes, amenities);
         normalizeAccessibilityMetrics(postalCodes);
         writeResultsToCSV(postalCodes, Constants.Paths.ACCESSIBILITY_FILE);
-    }
-
-    private static List<GeoData> loadAmenities() {
-        List<GeoData> amenities = new ArrayList<>();
-        amenities.addAll(AmenitySerializationManager.getGeoDataList("amenity"));
-        amenities.addAll(AmenitySerializationManager.getGeoDataList("shop"));
-        amenities.addAll(AmenitySerializationManager.getGeoDataList("tourism"));
-        return amenities;
     }
 
     private static List<PostalCodeData> readPostalCodes(String csvFilePath) {
@@ -50,23 +44,31 @@ public class AmenityAccessibilityCalculator {
         return postalCodes;
     }
 
-    private static void calculateAccessibilityMetrics(List<PostalCodeData> postalCodes, List<GeoData> amenities) {
+    private static void calculateAccessibilityMetrics(List<PostalCodeData> postalCodes, Map<String, List<GeoData>> amenities) {
         for (PostalCodeData postalCode : postalCodes) {
             double accessibilityMetric = calculateAccessibility(postalCode, amenities);
             postalCode.setAccessibilityMetric(accessibilityMetric);
         }
     }
 
-    private static double calculateAccessibility(PostalCodeData postalCode, List<GeoData> amenities) {
-        double Ai = 0.0;
-        double dL = averageDistanceToNearestAmenity(postalCode, amenities);
+    private static double calculateAccessibility(PostalCodeData postalCode, Map<String, List<GeoData>> amenities) {
+        double Ai = 0;
+        double dL = averageDistanceToNearestAmenity(postalCode, amenities.values().stream().flatMap(Collection::stream).toList());
 
+        for (Map.Entry<String, List<GeoData>> amenity : amenities.entrySet()) {
+            double Aj = 0.0;
+            for (GeoData geoData : amenity.getValue()) {
+                double distance = distance(postalCode.getLocation(), geoData.getLocation());
+                double Wj = AmenityAccessibilityManager.getAmenityFrequency(geoData.toString());
+                Aj += Wj * Math.exp(-distance / dL);
+            }
 
-        for (GeoData amenity : amenities) {
-            double distance = distance(postalCode.getLocation(), amenity.getLocation());
-            double Wj = 1.0;
-            double wL = amenity.getWeight();
-            Ai += Wj * Math.exp(-distance / dL) * wL;
+            if (!amenity.getValue().isEmpty()) {
+                double wL = amenity.getValue().get(0).getWeight();
+                Aj *= wL;
+            }
+
+            Ai += Aj;
         }
 
         return Ai;

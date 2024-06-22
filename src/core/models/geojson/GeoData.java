@@ -13,6 +13,11 @@ public abstract class GeoData {
 
     public abstract double getWeight();
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName().replaceAll("([A-Z])", "_$1").toLowerCase().substring(1);
+    }
+
     public static GeoData of(Location location, String id, String type) {
         switch (type) {
             case ("arts_centre"): return new ArtsCentre(location, id);
