@@ -9,8 +9,6 @@ public abstract class Amenity extends GeoData {
         super(location, id);
     }
 
-
-
     public String getIcon() {
         return Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + getClass().getSimpleName();
     }

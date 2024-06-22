@@ -26,12 +26,12 @@ public class AmenityAccessibilityManager {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }   
+        }
 
         return accessibility;
     }
 
-    public int getAmenityFrequency(String type, String amenity) {
-        return AmenitySerializationManager.getGeoData(type, amenity).size();
+    public static int getAmenityFrequency(String type) {
+        return AmenitySerializationManager.getGeoData(type.equals("shop") || type.equals("tourism")? type : "amenity", type).size();
     }
 }

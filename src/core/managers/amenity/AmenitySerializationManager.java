@@ -15,12 +15,12 @@ import core.models.geojson.GeoData;
 import core.models.serialization.Serializable;
 
 public class AmenitySerializationManager {
-    private static Map<String, HashMap<String, List<GeoData>>> geoData = new HashMap<>();
+    private static Map<String, Map<String, List<GeoData>>> geoData = new HashMap<>();
 
     private AmenitySerializationManager() {}
 
-    private static HashMap<String, List<GeoData>> amenities(String type) {
-        HashMap<String, List<GeoData>> data = new HashMap<>();
+    private static Map<String, List<GeoData>> amenities(String type) {
+        Map<String, List<GeoData>> data = new HashMap<>();
 
         try {
             Serializable serializable = JSONSerializationManager.deSterializeJSON(new String(Files.readAllBytes(Paths.get(String.format(core.Constants.Paths.GEOJSON, type.toLowerCase())))));
@@ -40,7 +40,7 @@ public class AmenitySerializationManager {
                 String[] coordinates = geometry.getArray("coordinates").toArray(String[]::new);
                 String id = (String) feature.get("id");
 
-                data.computeIfAbsent(type, i -> new ArrayList<>()).add(GeoData.of(new Location(Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[0])), id, geoDataType));
+                data.computeIfAbsent(geoDataType, i -> new ArrayList<>()).add(GeoData.of(new Location(Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[0])), id, geoDataType));
             }
         }
         catch (IOException e) {
@@ -50,13 +50,20 @@ public class AmenitySerializationManager {
         return data;
     }
 
+    public static Map<String, List<GeoData>> getGeoData() {
+        getGeoDataList();
+
+        Map<String, List<GeoData>> flatGeoData = new HashMap<>();
+        geoData.values().stream().forEach(m -> m.keySet().forEach(k -> flatGeoData.put(k, m.get(k))));
+        return flatGeoData;
+    }
+
     public static List<GeoData> getGeoData(String type, String amenity) {
-        return geoData.get(type).get(amenity);
+        return geoData.computeIfAbsent(type, s -> amenities(type)).get(amenity);
     }
 
     public static List<GeoData> getGeoDataList(String type) {
-        geoData.computeIfAbsent(type, s -> amenities(type));
-        return geoData.get(type).values().stream().flatMap(Collection::stream).toList();
+        return geoData.computeIfAbsent(type, s -> amenities(type)).values().stream().flatMap(Collection::stream).toList();
     }
 
     public static List<GeoData> getGeoDataList() {
