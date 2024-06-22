@@ -1,10 +1,18 @@
 package core.models.geojson;
 
+import core.Constants;
+import core.Constants.Paths;
 import core.models.Location;
 
 public abstract class Amenity extends GeoData {
     protected Amenity(Location location, String id) {
         super(location, id);
+    }
+
+
+
+    public String getIcon() {
+        return Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + getClass().getSimpleName();
     }
 
     public static class ArtsCentre extends Amenity {
@@ -112,7 +120,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public static class Brothel extends Amenity {
-        private static final double WEIGHT = 0.2;
+        private static final double WEIGHT = 1;
 
         public Brothel(Location location, String id) {
             super(location, id);
@@ -800,10 +808,10 @@ public abstract class Amenity extends GeoData {
         }
     }
 
-    public static class Theater extends Amenity {
+    public static class Theatre extends Amenity {
         private static final double WEIGHT = 0.7;
 
-        public Theater(Location location, String id) {
+        public Theatre(Location location, String id) {
             super(location, id);
         }
 

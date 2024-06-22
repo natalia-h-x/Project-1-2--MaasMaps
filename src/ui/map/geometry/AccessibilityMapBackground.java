@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import core.Context;
-import core.managers.amenity.AmenityCalculationManager;
-import core.managers.map.MapManager;
+import core.managers.MapManager;
+import core.managers.amenity.AmenityAccessibilityManager;
 import core.models.Location;
 
 public class AccessibilityMapBackground extends MapBackground {
@@ -23,11 +23,10 @@ public class AccessibilityMapBackground extends MapBackground {
         this.postalCodes = postalCodes;
     }
 
-
     @Override
     public void paint(Graphics2D g) {
         for (String postalCode : postalCodes) {
-            accessibilityMap.computeIfAbsent(postalCode, s -> AmenityCalculationManager.getAccessibilityMetric(postalCode));
+            accessibilityMap.computeIfAbsent(postalCode, s -> AmenityAccessibilityManager.getAccessibilityMetric(postalCode));
 
             Location location = Context.getContext().getZipCodeDatabase().getLocation(postalCode);
             accesibilityPoints.computeIfAbsent(new Point2D.Double(location.getX(), location.getY()), s -> accessibilityMap.get(postalCode));
@@ -49,8 +48,8 @@ public class AccessibilityMapBackground extends MapBackground {
     }
 
     public void fill(Graphics2D g2) {
-        Point2D start = MapManager.getMapTopLeftXy();
-        Point2D end = MapManager.getMapBottomRightXy();
+        Point2D start = MapManager.MAP_TOP_LEFT_XY;
+        Point2D end = MapManager.MAP_BOTTOM_RIGHT_XY;
         int scale = 10;
 
         for (double y = start.getY(); y <= end.getY(); y+=1) {
@@ -69,7 +68,8 @@ public class AccessibilityMapBackground extends MapBackground {
                                 accessibility -= 0.01;
                         }
                     }
-                    accessibility = accessibility/4;
+
+                    accessibility = accessibility / 4;
                     g2.setPaint(notSiansLinearInterpolation(accessibility, new Color[] {Color.RED, Color.YELLOW, Color.GREEN}));
 
                     g2.fill(new Ellipse2D.Double(x, y, scale, scale));

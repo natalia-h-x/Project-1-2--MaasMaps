@@ -1,6 +1,5 @@
 package core.models.geojson;
 
-import core.Constants.Paths;
 import core.models.Location;
 import core.models.geojson.Amenity.*;
 import lombok.AllArgsConstructor;
@@ -14,12 +13,8 @@ public abstract class GeoData {
 
     public abstract double getWeight();
 
-    public String getIcon() {
-        return Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + getClass().getSimpleName();
-    }
-
-    public static GeoData of(Location location, String id, String amenity) {
-        switch (amenity) {
+    public static GeoData of(Location location, String id, String type) {
+        switch (type) {
             case ("arts_centre"): return new ArtsCentre(location, id);
             case ("atm"): return new Atm(location, id);
             case ("bank"): return new Bank(location, id);
@@ -82,7 +77,7 @@ public abstract class GeoData {
             case ("shower"): return new Shower(location, id);
             case ("social_facility"): return new SocialFacility(location, id);
             case ("taxi"): return new Taxi(location, id);
-            case ("theater"): return new Theater(location, id);
+            case ("theatre"): return new Theatre(location, id);
             case ("toilets"): return new Toilets(location, id);
             case ("tourism"): return new Tourism(location, id);
             case ("townhall"): return new Townhall(location, id);
@@ -91,7 +86,7 @@ public abstract class GeoData {
             case ("veterinary"): return new Veterinary(location, id);
             case ("waste_basket"): return new WasteBasket(location, id);
             case ("water_point"): return new WaterPoint(location, id);
-            default: throw new UnsupportedOperationException("deserialisation of this Amenity is not possible in this version");
+            default: throw new UnsupportedOperationException("deserialisation of this geodata \"%s\" is not possible in this version".formatted(type));
         }
     }
 }

@@ -16,11 +16,6 @@ import ui.MaasMapsUI;
 import ui.map.geometry.AccessibilityMapBackground;
 
 public class AccessibilityImageGenerator {
-
-    public AccessibilityImageGenerator() {
-
-    }
-
     public static void generateImage() {
         try {
             BufferedImage newImage = new BufferedImage(Context.getContext().getMap().getMapWidth(), Context.getContext().getMap().getMapHeight(), BufferedImage.TYPE_INT_RGB);
@@ -45,6 +40,5 @@ public class AccessibilityImageGenerator {
     public static void main(String[] args) {
         new MaasMapsUI();
         generateImage();
-        System.out.println();
     }
 }

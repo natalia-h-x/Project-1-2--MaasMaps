@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,31 +15,32 @@ import core.models.geojson.GeoData;
 import core.models.serialization.Serializable;
 
 public class AmenitySerializationManager {
-    private static Map<String, List<GeoData>> geoData;
+    private static Map<String, HashMap<String, List<GeoData>>> geoData = new HashMap<>();
 
     private AmenitySerializationManager() {}
 
-    private static List<GeoData> amenities(String type) {
-        List<GeoData> data = new ArrayList<>();
+    private static HashMap<String, List<GeoData>> amenities(String type) {
+        HashMap<String, List<GeoData>> data = new HashMap<>();
 
         try {
             Serializable serializable = JSONSerializationManager.deSterializeJSON(new String(Files.readAllBytes(Paths.get(String.format(core.Constants.Paths.GEOJSON, type.toLowerCase())))));
 
             List<Object> features = serializable.getArrays().get("features");
             for (Object obj : features) {
+                String geoDataType = type;
                 Serializable feature = (Serializable) obj;
 
                 Serializable properties = feature.getObjects().get("properties");
                 Serializable geometry = feature.getObjects().get("geometry");
 
-                if (type.equals("amenity")) {
-                    type = (String) properties.get("amenity");
+                if (geoDataType.equals("amenity")) {
+                    geoDataType = (String) properties.get("amenity");
                 }
 
                 String[] coordinates = geometry.getArray("coordinates").toArray(String[]::new);
                 String id = (String) feature.get("id");
 
-                data.add(GeoData.of(new Location(Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[0])), id, type));
+                data.computeIfAbsent(type, i -> new ArrayList<>()).add(GeoData.of(new Location(Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[0])), id, geoDataType));
             }
         }
         catch (IOException e) {
@@ -47,7 +50,22 @@ public class AmenitySerializationManager {
         return data;
     }
 
-    public static List<GeoData> getGeoData(String type) {
-        return geoData.computeIfAbsent(type, s -> amenities(type));
+    public static List<GeoData> getGeoData(String type, String amenity) {
+        return geoData.get(type).get(amenity);
+    }
+
+    public static List<GeoData> getGeoDataList(String type) {
+        geoData.computeIfAbsent(type, s -> amenities(type));
+        return geoData.get(type).values().stream().flatMap(Collection::stream).toList();
+    }
+
+    public static List<GeoData> getGeoDataList() {
+        List<GeoData> amenities = new ArrayList<>();
+
+        amenities.addAll(getGeoDataList("amenity"));
+        amenities.addAll(getGeoDataList("shop"));
+        amenities.addAll(getGeoDataList("tourism"));
+
+        return amenities;
     }
 }
