@@ -13,8 +13,8 @@ public abstract class GeoData {
 
     public abstract double getWeight();
 
-    public static GeoData of(Location location, String id, String amenity) {
-        switch (amenity) {
+    public static GeoData of(Location location, String id, String type) {
+        switch (type) {
             case ("arts_centre"): return new ArtsCentre(location, id);
             case ("atm"): return new Atm(location, id);
             case ("bank"): return new Bank(location, id);
@@ -86,7 +86,7 @@ public abstract class GeoData {
             case ("veterinary"): return new Veterinary(location, id);
             case ("waste_basket"): return new WasteBasket(location, id);
             case ("water_point"): return new WaterPoint(location, id);
-            default: throw new UnsupportedOperationException("deserialisation of this Amenity %s is not possible in this version".formatted(amenity));
+            default: throw new UnsupportedOperationException("deserialisation of this geodata \"%s\" is not possible in this version".formatted(type));
         }
     }
 }
