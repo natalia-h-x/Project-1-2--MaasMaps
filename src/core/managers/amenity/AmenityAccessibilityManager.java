@@ -30,4 +30,8 @@ public class AmenityAccessibilityManager {
 
         return accessibility;
     }
+
+    public int getAmenityFrequency(String type, String amenity) {
+        return AmenitySerializationManager.getGeoData(type, amenity).size();
+    }
 }

@@ -24,9 +24,9 @@ public class AmenityAccessibilityCalculator {
 
     private static List<GeoData> loadAmenities() {
         List<GeoData> amenities = new ArrayList<>();
-        amenities.addAll(AmenitySerializationManager.getGeoData("amenity"));
-        amenities.addAll(AmenitySerializationManager.getGeoData("shop"));
-        amenities.addAll(AmenitySerializationManager.getGeoData("tourism"));
+        amenities.addAll(AmenitySerializationManager.getGeoDataList("amenity"));
+        amenities.addAll(AmenitySerializationManager.getGeoDataList("shop"));
+        amenities.addAll(AmenitySerializationManager.getGeoDataList("tourism"));
         return amenities;
     }
 
