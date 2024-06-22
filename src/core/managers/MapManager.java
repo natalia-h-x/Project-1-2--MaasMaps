@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import core.Context;
-import core.algorithms.datastructures.Graph;
+import core.algorithms.datastructures.graph.Graph;
 import core.managers.database.GTFSManager;
 import core.models.Location;
 import core.models.ZipCode;
@@ -29,11 +29,26 @@ public class MapManager {
     protected static final Point MAP_TOP_LEFT_GLOBAL_XY = getGlobalXY(MAP_TOP_LEFT_LOCATION);
     public static final Location MAP_BOTTOM_RIGHT_LOCATION = new Location(50.815816, 5.753384);
     protected static final Point MAP_BOTTOM_RIGHT_GLOBAL_XY = getGlobalXY(MAP_BOTTOM_RIGHT_LOCATION);
-    public    static final Point MAP_TOP_LEFT_XY = locationToPoint(MAP_TOP_LEFT_LOCATION);
-    public    static final Point MAP_BOTTOM_RIGHT_XY = locationToPoint(MAP_BOTTOM_RIGHT_LOCATION);
+    private    static Point MAP_TOP_LEFT_XY;
+    private    static Point MAP_BOTTOM_RIGHT_XY;
 
     private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
+
+
+    public static Point getMapTopLeftXy() {
+        if (MAP_TOP_LEFT_XY == null)
+            MAP_TOP_LEFT_XY = locationToPoint(MAP_TOP_LEFT_LOCATION);
+
+        return MAP_TOP_LEFT_XY;
+    }
+
+    public static Point getMapBottomRightXy() {
+        if (MAP_BOTTOM_RIGHT_XY == null)
+            MAP_BOTTOM_RIGHT_XY = locationToPoint(MAP_BOTTOM_RIGHT_LOCATION);
+
+        return MAP_BOTTOM_RIGHT_XY;
+    }
 
     public static Point locationToPoint(Location location) {
         Point world = getGlobalXY(location);

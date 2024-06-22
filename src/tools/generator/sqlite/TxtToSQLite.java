@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import core.managers.FileManager;
+import core.managers.MapManager;
 import core.managers.database.DatabaseDefinitionManager;
 import core.managers.database.DatabaseModificationManager;
 import core.managers.database.QueryManager;
@@ -200,11 +201,19 @@ public class TxtToSQLite {
     private static String[] pruneLines(String[] lines) {
         List<String> prunedLines = new ArrayList<>();
 
-        for (int i = 0; i < lines.length; i++) {
-            if (lines[i].contains("Maastricht")) {
+        //FIXME fix this thingy not enclosing maastricht
+
+        for (int i = 1; i < lines.length; i++) {
+            String[] csv = parseCSV(lines[i]);
+            double latitude  = Double.parseDouble(csv[3]);
+            double longitude = Double.parseDouble(csv[4]);
+            if (
+                50.8059 < latitude && latitude < 50.8906 &&
+                5.6459 < longitude && longitude < 5.7516
+            ) {
                 prunedLines.add(lines[i]);
             }
-        }
+        }//50.8390987, 5.6892738
 
         return prunedLines.toArray(new String[0]);
     }
