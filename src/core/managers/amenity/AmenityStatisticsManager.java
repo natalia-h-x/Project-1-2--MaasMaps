@@ -19,7 +19,9 @@ public class AmenityStatisticsManager {
     }
 
     public static double getAccessibilityMetric(double percentage) {
-        return Math.random(); // Alexandra
+        List<Double> sortedAccessibilityList = getSortedAccessibilityList();
+
+        return sortedAccessibilityList.get((int) (percentage * sortedAccessibilityList.size()));
     }
 
     public static List<Double> getSortedAccessibilityList() {
