@@ -17,7 +17,7 @@ public class AmenityIconManager {
 
         for (Map.Entry<String, List<GeoData>> data: geoData.entrySet()) {
             for (GeoData amenity : data.getValue()) {
-                icons.computeIfAbsent(data.getKey(), k -> amenity.getIcon());
+                icons.computeIfAbsent(data.getKey(), k -> new ImageIcon(amenity.getIconPath()));
             }
         }
     }
