@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import core.Context;
-import core.managers.MapManager;
+import core.managers.map.MapManager;
 import core.managers.amenity.AmenityAccessibilityManager;
 import core.models.Location;
 
