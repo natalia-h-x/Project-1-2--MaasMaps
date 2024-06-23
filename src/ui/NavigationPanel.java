@@ -196,18 +196,14 @@ public class NavigationPanel extends JPanel {
         add(navigationButtons, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // Create an array of JComponent to hold the components
-        JComponent[] components = new JComponent[] {
-                textField1, textField2, calculate, selection, departure, departureField,
-                search, radiusField, busRandom, checkTransfer, transferCount, walkingTime, walkingField, clearButton
-        };
-
         // Call the addActionListeners method and pass the array of components
-        addActionListeners(components);
+        addActionListeners(textField1, textField2, calculate, selection, departure, departureField,
+                           search, radiusField, busRandom, checkTransfer, transferCount, walkingTime,
+                           walkingField, clearButton);
         addClearActionListener(clearButton);
     }
 
-    private void addActionListeners(JComponent[] components) {
+    private void addActionListeners(JComponent... components) {
         final ZipCodeDatabase db = Context.getContext().getZipCodeDatabase();
 
         JTextField textField1 = (JTextField) components[0];
