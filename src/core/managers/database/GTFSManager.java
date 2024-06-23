@@ -59,6 +59,9 @@ public class GTFSManager {
 
             busStop.addRoute(route);
 
+            if (stopId == 2578363)
+                System.out.println();
+
             // We have this following if statement to check if there are at least two stops in a trip.
             // If there is only one, we do not need to connect / add vertices.
             if (tripId == previousTripId) {

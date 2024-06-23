@@ -1,5 +1,7 @@
 package core.models.geojson;
 
+import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
 
 import core.Constants;
@@ -18,7 +20,7 @@ public abstract class GeoData {
 
     public abstract double getWeight();
 
-    public ImageIcon getIcon() {
+    public BufferedImage getIcon() {
         return AmenityIconManager.getIcon(toString());
     }
 
