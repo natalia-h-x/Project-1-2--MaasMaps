@@ -67,7 +67,7 @@ public class AccessibilityLegend extends Legend {
         legendPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         legendPanel.setBackground(UIConstants.GUI_LEGEND_COLOR);
         legendPanel.add(heading);
-
+        
         // Map to store bus colors and their corresponding counts
         java.util.Map<Color, Double> accessData = new HashMap<>();
         for (int i = 0; i < AccessibilityColours.ACC_GRADIENT.length; i++) {
@@ -75,17 +75,19 @@ public class AccessibilityLegend extends Legend {
         }
         var test = AmenityStatisticsManager.getTop5();
         for (int index = 0; index < test.size(); index++) {
+            JPanel legendItem = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
             AccessibilityMeasure accessibilityMeasure = test.get(index);
             String string = "Top %s at %s with accessibility %s".formatted(index, accessibilityMeasure.getPostalCode(), accessibilityMeasure.getAccessibility());
             JLabel pp = new JLabel(string);
-            legendWindow.add(pp);
+            legendItem.add(pp);
+            legendWindow.add(legendItem);
         }
-
+        
         legendWindow.add(legendPanel);
         legendWindow.setAlwaysOnTop(true);
         legendWindow.setVisible(true);
-
-    for(java.util.Map.Entry<Color, Double> entry : accessData.entrySet()) {
+        
+        for(java.util.Map.Entry<Color, Double> entry : accessData.entrySet()) {
         JPanel legendItem = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         legendItem.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
         legendItem.setAlignmentX(Component.LEFT_ALIGNMENT);
