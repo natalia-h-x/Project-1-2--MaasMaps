@@ -218,19 +218,12 @@ public class MaasMapsUI extends JFrame {
             proxyMap.hideMapGraphics("AbstractedBusMap");
             removeActionListeners(legend);
         });
-        final boolean[] isFirstPress = {true};
 
         button2.addActionListener(e -> {
             proxyMap.toggleMapGraphics("AbstractedBusMap");
             // Add action listener to the legend button
             legend.addActionListener(f -> {
                 BusNetworkLegend busNetworkLegend = new BusNetworkLegend();
-                if (isFirstPress[0]) {
-                    isFirstPress[0] = false;
-                    removeActionListeners(legend);
-                } else {
-                    isFirstPress[0] = true; // Reset the flag
-                }
             });
         });
 
