@@ -127,7 +127,7 @@ public class LineFactory {
 
         for (Transport transport : transports) {
             locations.add(transport.getStart());
-            times.add(transport.getTime());
+            times.add(transport.totalTime());
         }
 
         locations.add(transports[transports.length - 1].getDestination());

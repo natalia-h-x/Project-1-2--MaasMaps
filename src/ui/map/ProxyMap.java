@@ -50,14 +50,6 @@ public class ProxyMap {
         return map.getLocation();
     }
 
-    public double getRadius() {
-        return map.getRadius();
-    }
-
-    public void setRadius(double radius) {
-        map.setRadius(radius);
-    }
-
     public void linkMapGraphics(String option, MapGraphics top) {
         map.getTopGraphics().put(option, top);
         map.repaint();

@@ -26,6 +26,10 @@ public abstract class Transport {
         this.destination = destination;
     }
 
+    public Time totalTime() {
+        return time.add(waitTime);
+    }
+
     public Time getTravelTime() {
         return Time.of((int) ((start.distance(destination) / getAverageSpeed()) * 60.0));
     }

@@ -13,12 +13,16 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -38,15 +42,20 @@ import core.algorithms.DijkstraAlgorithm;
 import core.algorithms.PathStrategy;
 import core.Context;
 import core.datastructures.graph.Graph;
+import core.managers.amenity.AmenityIconManager;
 import core.managers.map.MapManager;
 import core.models.Location;
+import core.models.geojson.Amenity;
+import tools.generator.AccessibilityImageGenerator;
 import ui.legend.AccessibilityLegend;
 import ui.legend.BusNetworkLegend;
-import ui.map.Map;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
+import ui.map.geometry.ImageMarker;
 import ui.map.geometry.MapBackground;
+import ui.map.geometry.MapGraphicsGroup;
 import ui.map.geometry.Network;
+import ui.map.geometry.interfaces.MapGraphics;
 import ui.route.ResultsProxy;
 import ui.route.RouteUI;
 
@@ -58,7 +67,7 @@ import ui.route.RouteUI;
  * @author Natalia Hadjisoteriou
  */
 public class MaasMapsUI extends JFrame {
-    private Map map;
+    private ui.map.Map map;
     private JPanel buttonPanel;
     private JButton mainButton;
     private JButton button1;
@@ -92,7 +101,7 @@ public class MaasMapsUI extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Creating all components
-        map = new Map(new MapBackground());
+        map = new ui.map.Map(new MapBackground());
         map.setMinimumSize(new Dimension(800, 150));
         map.setPreferredSize(new Dimension(800, 500));
         map.setSize(new Dimension(800, 500));
@@ -102,6 +111,8 @@ public class MaasMapsUI extends JFrame {
 
         proxyMap.linkMapGraphics("AbstractedBusMap", new AbstractedBusNetwork(MapManager.getBusGraph()));
         proxyMap.linkMapGraphics("Accessibility", createAccessibilityMap());
+        proxyMap.linkMapGraphics("Icons", new MapGraphicsGroup(createIcons()));
+        proxyMap.hideMapGraphics("Icons");
         proxyMap.hideMapGraphics("AbstractedBusMap");
         proxyMap.hideMapGraphics("Accessibility");
 
@@ -214,9 +225,7 @@ public class MaasMapsUI extends JFrame {
         mainButton.addActionListener(e -> toggleMenu());
 
         button1.addActionListener(e -> {
-            proxyMap.hideMapGraphics("Accessibility");
-            proxyMap.hideMapGraphics("AbstractedBusMap");
-            removeActionListeners(legend);
+            proxyMap.toggleMapGraphics("Icons");
         });
 
         boolean[] pressed2 = {false};
@@ -266,7 +275,11 @@ public class MaasMapsUI extends JFrame {
 
     private MapBackground createAccessibilityMap() {
         try {
-            BufferedImage image = ImageIO.read(new File("resources/accessibilityMap.png"));
+            File file = new File("resources/accessibilityMap.png");
+            if (!file.exists())
+                AccessibilityImageGenerator.generateImage();
+
+            BufferedImage image = ImageIO.read(file);
 
             MapBackground top = new MapBackground(image);
             top.setAlpha(0.5f);
@@ -275,6 +288,17 @@ public class MaasMapsUI extends JFrame {
         catch (IOException e1) {
             throw new IllegalArgumentException(e1);
         }
+    }
+
+    private List<MapGraphics> createIcons() {
+        List<MapGraphics> mapGraphics = new ArrayList<>();
+
+        for (Map.Entry<BufferedImage, List<Location>> icon : AmenityIconManager.getLocationsOfIcons().entrySet()) {
+            for (Location loc : icon.getValue())
+                mapGraphics.add(new ImageMarker(loc, icon.getKey()));
+        }
+
+        return mapGraphics;
     }
 
     private void toggleMenu() {

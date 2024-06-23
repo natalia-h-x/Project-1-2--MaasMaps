@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 
 import core.Context;
 import core.datastructures.graph.Graph;
-import core.managers.database.GTFSManager;
+import core.managers.database.gtfs.GTFSManager;
 import core.models.Location;
 
 /**
