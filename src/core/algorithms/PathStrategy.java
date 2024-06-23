@@ -77,8 +77,8 @@ public abstract class PathStrategy<T extends Point2D> {
 
             Time time = bus.getRouteType().getBinaryOperator().apply(manual, vehicle);
 
-            if (time.getSeconds() < shortestTime) {
-                shortestTime = time.getSeconds();
+            if (time.toSeconds() < shortestTime) {
+                shortestTime = time.toSeconds();
                 shortestRoute = Optional.of(route);
             }
         }
