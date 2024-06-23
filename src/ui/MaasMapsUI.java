@@ -219,19 +219,29 @@ public class MaasMapsUI extends JFrame {
             removeActionListeners(legend);
         });
 
+        boolean[] pressed2 = {false};
+        boolean[] pressed3 = {false};
+        ActionListener action2 = f -> {
+            if (pressed2[0]) new BusNetworkLegend();
+        };
+        
         button2.addActionListener(e -> {
             proxyMap.toggleMapGraphics("AbstractedBusMap");
             // Add action listener to the legend button
-            legend.addActionListener(f -> {
-                BusNetworkLegend busNetworkLegend = new BusNetworkLegend();
-            });
+            if (!pressed2[0]) legend.addActionListener(action2);
+            else legend.removeActionListener(action2);
+            pressed2[0] = !pressed2[0];
         });
+        
+        ActionListener action3 = f -> {
+            if (pressed3[0]) new AccessibilityLegend();
+        };
 
         button3.addActionListener(e -> {
             proxyMap.toggleMapGraphics("Accessibility");
-            legend.addActionListener(f -> {
-                AccessibilityLegend accessibilityLegend = new AccessibilityLegend();
-            });
+            if (!pressed3[0]) legend.addActionListener(action3);
+            else legend.removeActionListener(action3);
+            pressed3[0] = !pressed3[0];
         });
 
         // Add button panel to the frame
