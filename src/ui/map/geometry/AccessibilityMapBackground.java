@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 import core.Context;
-import core.managers.MapManager;
+import core.managers.map.MapManager;
 import core.managers.amenity.AmenityAccessibilityManager;
 import core.models.Location;
 
@@ -48,8 +48,8 @@ public class AccessibilityMapBackground extends MapBackground {
     }
 
     public void fill(Graphics2D g2) {
-        Point2D start = MapManager.MAP_TOP_LEFT_XY;
-        Point2D end = MapManager.MAP_BOTTOM_RIGHT_XY;
+        Point2D start = MapManager.getMapTopLeftXy();
+        Point2D end = MapManager.getMapBottomRightXy();
         int scale = 10;
 
         for (double y = start.getY(); y <= end.getY(); y+=1) {
