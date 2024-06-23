@@ -39,7 +39,9 @@ import core.algorithms.DijkstraAlgorithm;
 import core.algorithms.PathStrategy;
 import core.Context;
 import core.datastructures.graph.Graph;
+import core.managers.amenity.AmenityStatisticsManager;
 import core.managers.map.MapManager;
+import core.models.AccessibilityMeasure;
 import core.models.Location;
 import ui.map.Map;
 import ui.map.ProxyMap;
@@ -66,11 +68,18 @@ public class AccessibilityLegend extends Legend {
         legendPanel.setBackground(UIConstants.GUI_LEGEND_COLOR);
         legendPanel.add(heading);
 
-         // Map to store bus colors and their corresponding counts
-         java.util.Map<Color, Double> accessData = new HashMap<>();
-         for (int i = 0; i < AccessibilityColours.ACC_GRADIENT.length; i++) {
+        // Map to store bus colors and their corresponding counts
+        java.util.Map<Color, Double> accessData = new HashMap<>();
+        for (int i = 0; i < AccessibilityColours.ACC_GRADIENT.length; i++) {
             accessData.put(AccessibilityColours.ACC_GRADIENT[i], (i / (double)(AccessibilityColours.ACC_GRADIENT.length - 1)));
-         }
+        }
+        var test = AmenityStatisticsManager.getTop5();
+        for (int index = 0; index < test.size(); index++) {
+            AccessibilityMeasure accessibilityMeasure = test.get(index);
+            String string = "Top %s at %s with accessibility %s".formatted(index, accessibilityMeasure.getPostalCode(), accessibilityMeasure.getAccessibility());
+            JLabel pp = new JLabel(string);
+            legendWindow.add(pp);
+        }
 
         legendWindow.add(legendPanel);
         legendWindow.setAlwaysOnTop(true);
