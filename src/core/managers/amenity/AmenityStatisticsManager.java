@@ -23,8 +23,7 @@ public class AmenityStatisticsManager {
     }
 
     public static List<Double> getSortedAccessibilityList() {
-        ArrayList<Double> sortedList = new ArrayList<>();
-
+        List<Double> sortedList = new ArrayList<>();
 
         return sortedList;
     }
