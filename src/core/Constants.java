@@ -80,6 +80,10 @@ public final class Constants {
         public static final Color BUS_15 = Color.decode("#31AE9B");
     } //CHANGE ALL BUS COLORS ACCORDINGLY
 
+    public static final class AccessibiltyColours {
+        public static final Color[] ACC_GRADIENT = new Color[] {Color.RED, Color.YELLOW, Color.GREEN};
+    }
+
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class ANSI {
         public static final String GREEN = "\u001B[32m";
