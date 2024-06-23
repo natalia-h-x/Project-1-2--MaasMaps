@@ -114,7 +114,7 @@ public class Route implements Iterable<Transport> {
         Time total = Time.of(0);
 
         for (Transport transport : transfers) {
-            total = total.add(transport.getTime());
+            total = total.add(transport.getTime().add(transport.getWaitTime()));
         }
 
         return total;

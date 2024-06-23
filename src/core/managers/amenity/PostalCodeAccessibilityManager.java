@@ -6,8 +6,8 @@ import java.io.IOException;
 import core.Constants;
 import core.managers.FileManager;
 
-public class AmenityAccessibilityManager {
-    private AmenityAccessibilityManager() {}
+public class PostalCodeAccessibilityManager {
+    private PostalCodeAccessibilityManager() {}
 
     private static String[] lines;
 

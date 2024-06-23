@@ -61,7 +61,7 @@ public class AmenityAccessibilityCalculator {
 
             for (GeoData geoData : amenity.getValue()) {
                 double distance = Math.sqrt(distance(postalCode.getLocation(), geoData.getLocation()));
-                double Wj = AmenityAccessibilityManager.getAmenityFrequency(geoData.toString());
+                double Wj = PostalCodeAccessibilityManager.getAmenityFrequency(geoData.toString());
 
                 Aj += Wj * Math.exp(-distance / dL);
             }
