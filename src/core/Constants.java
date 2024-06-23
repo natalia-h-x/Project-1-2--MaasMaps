@@ -80,7 +80,7 @@ public final class Constants {
         public static final Color BUS_15 = Color.decode("#31AE9B");
     } //CHANGE ALL BUS COLORS ACCORDINGLY
 
-    public static final class AccessibiltyColours {
+    public static final class AccessibilityColours {
         public static final Color[] ACC_GRADIENT = new Color[] {Color.RED, Color.YELLOW, Color.GREEN};
     }
 
