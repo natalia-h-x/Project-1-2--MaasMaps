@@ -54,7 +54,7 @@ public class AmenityAccessibilityCalculator {
 
     private static double calculateAccessibility(PostalCodeData postalCode, Map<String, List<GeoData>> amenities) {
         double dL = averageDistanceToNearestAmenity(postalCode, amenities.values().stream().flatMap(Collection::stream).toList());
-        double Ai = 0;
+        double Ai = 0.0;
 
         for (Map.Entry<String, List<GeoData>> amenity : amenities.entrySet()) {
             double Aj = 0.0;
