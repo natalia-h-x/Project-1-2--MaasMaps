@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -216,9 +217,11 @@ public class MaasMapsUI extends JFrame {
             proxyMap.hideMapGraphics("Accessibility");
             proxyMap.hideMapGraphics("AbstractedBusMap");
         });
+
         button2.addActionListener(e -> {
             proxyMap.toggleMapGraphics("AbstractedBusMap");
             // Add action listener to the legend button
+            legend.removeActionListener(f);
             legend.addActionListener(f -> {
                 BusNetworkLegend busNetworkLegend = new BusNetworkLegend();
             });
@@ -237,6 +240,20 @@ public class MaasMapsUI extends JFrame {
         setVisible(true);
         revalidate();
     }
+
+    public static void removeActionListeners(AbstractButton button) {
+        if (button == null) {
+            return;
+        }
+        ActionListener[] listeners = button.getActionListeners();
+        if (listeners == null) {
+            return;
+        }
+        for (ActionListener listener : listeners) {
+            button.removeActionListener(listener);
+        }
+    }
+}
 
     private MapBackground createAccessibilityMap() {
         try {
