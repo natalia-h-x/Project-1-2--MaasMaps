@@ -39,6 +39,7 @@ import core.Context;
 import core.datastructures.graph.Graph;
 import core.managers.map.MapManager;
 import core.models.Location;
+import ui.legend.AccessibilityLegend;
 import ui.legend.BusNetworkLegend;
 import ui.map.Map;
 import ui.map.ProxyMap;
@@ -166,11 +167,6 @@ public class MaasMapsUI extends JFrame {
         resultsContainerSouth.add(changeAlgoPanel);
         resultsContainerSouth.add(legendButtonPanel);
 
-        // Add action listener to the legend button
-        legend.addActionListener(e -> {
-            BusNetworkLegend busNetworkLegend = new BusNetworkLegend();
-        });
-
         // Adding components to the split panes
         verticalSplitPane.add(map, JSplitPane.TOP);
         verticalSplitPane.add(resultsPanel, JSplitPane.BOTTOM);
@@ -220,8 +216,20 @@ public class MaasMapsUI extends JFrame {
             proxyMap.hideMapGraphics("Accessibility");
             proxyMap.hideMapGraphics("AbstractedBusMap");
         });
-        button2.addActionListener(e -> proxyMap.toggleMapGraphics("AbstractedBusMap"));
-        button3.addActionListener(e -> proxyMap.toggleMapGraphics("Accessibility"));
+        button2.addActionListener(e -> {
+            proxyMap.toggleMapGraphics("AbstractedBusMap");
+            // Add action listener to the legend button
+            legend.addActionListener(f -> {
+                BusNetworkLegend busNetworkLegend = new BusNetworkLegend();
+            });
+        });
+
+        button3.addActionListener(e -> {
+            proxyMap.toggleMapGraphics("Accessibility");
+            legend.addActionListener(f -> {
+                AccessibilityLegend accessibilityLegend = new AccessibilityLegend();
+            });
+        });
 
         // Add button panel to the frame
         resultsContainer.add(buttonPanel, BorderLayout.NORTH);

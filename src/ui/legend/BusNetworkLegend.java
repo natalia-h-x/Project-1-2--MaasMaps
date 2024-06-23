@@ -97,5 +97,4 @@ public class BusNetworkLegend extends Legend {
         legendWindow.setAlwaysOnTop(true);
         legendWindow.setVisible(true);
     }
-
 }
