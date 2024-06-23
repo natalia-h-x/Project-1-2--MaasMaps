@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import core.Constants;
 import core.Context;
 import core.managers.map.MapManager;
 import core.managers.amenity.AmenityAccessibilityManager;
@@ -71,7 +72,7 @@ public class AccessibilityMapBackground extends MapBackground {
                     }
 
                     accessibility = accessibility / 4;
-                    g2.setPaint(notSiansLinearInterpolation(accessibility, new Color[] {Color.RED, Color.YELLOW, Color.GREEN}));
+                    g2.setPaint(notSiansLinearInterpolation(accessibility, Constants.AccessibilityColours.ACC_GRADIENT));
 
                     g2.fill(new Ellipse2D.Double(x, y, scale, scale));
                 }
