@@ -221,7 +221,7 @@ public class MaasMapsUI extends JFrame {
         button2.addActionListener(e -> {
             proxyMap.toggleMapGraphics("AbstractedBusMap");
             // Add action listener to the legend button
-            legend.removeActionListener(f);
+            removeActionListeners(legend);
             legend.addActionListener(f -> {
                 BusNetworkLegend busNetworkLegend = new BusNetworkLegend();
             });
@@ -229,6 +229,7 @@ public class MaasMapsUI extends JFrame {
 
         button3.addActionListener(e -> {
             proxyMap.toggleMapGraphics("Accessibility");
+            removeActionListeners(legend);
             legend.addActionListener(f -> {
                 AccessibilityLegend accessibilityLegend = new AccessibilityLegend();
             });
