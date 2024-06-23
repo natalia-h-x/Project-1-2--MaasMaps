@@ -1,5 +1,8 @@
 package core.managers.amenity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AmenityStatisticsManager {
     private AmenityStatisticsManager() {}
 
@@ -17,5 +20,12 @@ public class AmenityStatisticsManager {
 
     public static double getAccessibilityMetric(double percentage) {
         return Math.random(); // Alexandra
+    }
+
+    public static List<Double> getSortedAccessibilityList() {
+        ArrayList<Double> sortedList = new ArrayList<>();
+
+
+        return sortedList;
     }
 }
