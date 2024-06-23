@@ -29,4 +29,11 @@ public class AmenityIconManager {
 
         return icons;
     }
+
+    public static ImageIcon getIcon(String type) {
+        if (icons == null)
+            loadIcon();
+
+        return icons.get(type);
+    }
 }
