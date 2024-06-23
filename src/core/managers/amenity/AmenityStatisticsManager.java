@@ -24,9 +24,9 @@ public class AmenityStatisticsManager {
     }
 
     public static double getAccessibilityMetric(double position) {
-        List<Double> sortedAccessibilityList = getSortedAccessibilityList();
+        List<AccessibilityMeasure> sortedAccessibilityList = getSortedAccessibilityList();
 
-        return sortedAccessibilityList.get((int) (position * sortedAccessibilityList.size()));
+        return sortedAccessibilityList.get((int) (position * sortedAccessibilityList.size())).getAccessibility();
     }
 
     public static List<AccessibilityMeasure> getSortedAccessibilityList() {
