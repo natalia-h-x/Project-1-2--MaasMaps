@@ -34,7 +34,7 @@ public class AmenityStatisticsManager {
 
         for (ZipCode zipCode : Context.getContext().getZipCodeDatabase().getZipCodes()) {
             String postalCode = zipCode.getCode();
-            double accessibility = AmenityAccessibilityManager.getAccessibilityMetric(postalCode);
+            double accessibility = PostalCodeAccessibilityManager.getAccessibilityMetric(postalCode);
             sortedList.add(new AccessibilityMeasure(postalCode, accessibility));
         }
 

@@ -12,7 +12,7 @@ import java.util.PriorityQueue;
 import core.Constants;
 import core.Context;
 import core.managers.map.MapManager;
-import core.managers.amenity.AmenityAccessibilityManager;
+import core.managers.amenity.PostalCodeAccessibilityManager;
 import core.models.Location;
 
 public class AccessibilityMapBackground extends MapBackground {
@@ -27,7 +27,7 @@ public class AccessibilityMapBackground extends MapBackground {
     @Override
     public void paint(Graphics2D g) {
         for (String postalCode : postalCodes) {
-            accessibilityMap.computeIfAbsent(postalCode, s -> AmenityAccessibilityManager.getAccessibilityMetric(postalCode));
+            accessibilityMap.computeIfAbsent(postalCode, s -> PostalCodeAccessibilityManager.getAccessibilityMetric(postalCode));
 
             Location location = Context.getContext().getZipCodeDatabase().getLocation(postalCode);
             accesibilityPoints.computeIfAbsent(new Point2D.Double(location.getX(), location.getY()), s -> accessibilityMap.get(postalCode));
@@ -38,7 +38,7 @@ public class AccessibilityMapBackground extends MapBackground {
 
     public static Color notSiansLinearInterpolation(double accessibility, Color[] colors) {
         double number = accessibility * (colors.length - 1);
-        
+
         double newNumber = number - Math.floor(number);
         double inv = 1 - newNumber;
 
