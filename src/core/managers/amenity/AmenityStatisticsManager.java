@@ -71,7 +71,7 @@ public class AmenityStatisticsManager {
             sortedList.add(new AccessibilityMeasure(postalCode, accessibility));
         }
 
-        Collections.sort(sortedList, (a, a2) -> Double.compare(a.getAccessibility(), a2.getAccessibility()));
+        Collections.sort(sortedList, (a, a2) -> Double.compare(a2.getAccessibility(), a.getAccessibility()));
 
         return sortedList;
     }

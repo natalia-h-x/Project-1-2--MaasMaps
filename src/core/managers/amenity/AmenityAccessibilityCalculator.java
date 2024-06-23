@@ -60,7 +60,7 @@ public class AmenityAccessibilityCalculator {
             double Aj = 0.0;
 
             for (GeoData geoData : amenity.getValue()) {
-                double distance = Math.sqrt(distance(postalCode.getLocation(), geoData.getLocation()));
+                double distance = distance(postalCode.getLocation(), geoData.getLocation());
                 double Wj = PostalCodeAccessibilityManager.getAmenityFrequency(geoData.toString());
 
                 Aj += Wj * Math.exp(-distance / dL);
@@ -69,7 +69,7 @@ public class AmenityAccessibilityCalculator {
             if (!amenity.getValue().isEmpty()) {
                 double wL = amenity.getValue().get(0).getWeight();
 
-                Aj *= wL;
+                Aj *= (wL*1000);
             }
 
             Ai += Aj;

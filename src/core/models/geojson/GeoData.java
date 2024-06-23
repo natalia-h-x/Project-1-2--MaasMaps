@@ -25,7 +25,7 @@ public abstract class GeoData {
     }
 
     public String getIconPath() {
-        return Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + toString();
+        return Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + toString() + ".PNG";
     }
 
     @Override
