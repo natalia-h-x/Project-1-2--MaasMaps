@@ -18,10 +18,10 @@ public class AmenityStatisticsManager {
         return getAccessibilityMetric(0.5);
     }
 
-    public static double getAccessibilityMetric(double percentage) {
+    public static double getAccessibilityMetric(double position) {
         List<Double> sortedAccessibilityList = getSortedAccessibilityList();
 
-        return sortedAccessibilityList.get((int) (percentage * sortedAccessibilityList.size()));
+        return sortedAccessibilityList.get((int) (position * sortedAccessibilityList.size()));
     }
 
     public static List<Double> getSortedAccessibilityList() {
