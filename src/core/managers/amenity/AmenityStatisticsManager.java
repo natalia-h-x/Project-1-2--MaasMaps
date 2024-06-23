@@ -23,6 +23,39 @@ public class AmenityStatisticsManager {
         return getAccessibilityMetric(0.5);
     }
 
+    public static List<AccessibilityMeasure> getTop5() {
+        List<AccessibilityMeasure> accessibilityMeasure = new ArrayList<>();
+        List<AccessibilityMeasure> sortedAccessibilityList = getSortedAccessibilityList();
+
+        for (int i = 0; i < 5; i++) {
+            accessibilityMeasure.add(sortedAccessibilityList.get(i));
+        }
+
+        return accessibilityMeasure;
+    }
+
+    public static List<AccessibilityMeasure> getBottom5() {
+        List<AccessibilityMeasure> accessibilityMeasure = new ArrayList<>();
+        List<AccessibilityMeasure> sortedAccessibilityList = getSortedAccessibilityList();
+
+        for (int i = sortedAccessibilityList.size() - 1; i >= sortedAccessibilityList.size() - 5; i--) {
+            accessibilityMeasure.add(sortedAccessibilityList.get(i));
+        }
+
+        return accessibilityMeasure;
+    }
+
+    public static double getMeanAccessibility() {
+        double mean = 0;
+        List<AccessibilityMeasure> sortedAccessibilityList = getSortedAccessibilityList();
+        
+        for (AccessibilityMeasure accessibilityMeasure : sortedAccessibilityList) {
+            mean += accessibilityMeasure.getAccessibility();
+        }
+
+        return mean/sortedAccessibilityList.size();
+    }
+
     public static double getAccessibilityMetric(double position) {
         List<AccessibilityMeasure> sortedAccessibilityList = getSortedAccessibilityList();
 

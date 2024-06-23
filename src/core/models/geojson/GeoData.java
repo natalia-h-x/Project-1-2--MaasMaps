@@ -4,8 +4,6 @@ import javax.swing.ImageIcon;
 
 import core.Constants;
 import core.Constants.Paths;
-import core.managers.FileManager;
-import core.managers.IconManager;
 import core.managers.amenity.AmenityIconManager;
 import core.models.Location;
 import core.models.geojson.Amenity.*;
