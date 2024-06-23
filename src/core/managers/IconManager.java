@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 public class IconManager {
     private IconManager() {}
 
-    public ImageIcon loadIcon(String path) {
+    public static ImageIcon loadIcon(String path) {
         return new ImageIcon(path);
     }
 }
