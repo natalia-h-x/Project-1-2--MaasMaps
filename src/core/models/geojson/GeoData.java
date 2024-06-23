@@ -1,5 +1,9 @@
 package core.models.geojson;
 
+import core.Constants;
+import core.Constants.Paths;
+import core.managers.FileManager;
+import core.managers.IconManager;
 import core.models.Location;
 import core.models.geojson.Amenity.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +16,10 @@ public abstract class GeoData {
     private String id;
 
     public abstract double getWeight();
+
+    public String getIcon() {
+        return IconManager.loadIcon(Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + toString());
+    }
 
     @Override
     public String toString() {
