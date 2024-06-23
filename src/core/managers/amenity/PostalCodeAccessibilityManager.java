@@ -2,6 +2,7 @@ package core.managers.amenity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import core.Constants;
@@ -14,6 +15,7 @@ public class PostalCodeAccessibilityManager {
 
     private static double loadAccessibilityMetric() {
         double accessibility = 0;
+        accessibilityMap = new HashMap<>();
 
         try {
             String[] lines = FileManager.readLines(new File(Constants.Paths.ACCESSIBILITY_FILE));
