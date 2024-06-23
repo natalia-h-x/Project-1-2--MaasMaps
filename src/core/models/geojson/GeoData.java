@@ -24,6 +24,10 @@ public abstract class GeoData {
         return AmenityIconManager.getIcon(toString());
     }
 
+    public String getIconPath() {
+        return Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + toString();
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName().replaceAll("([A-Z])", "_$1").toLowerCase().substring(1);
