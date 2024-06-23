@@ -254,7 +254,6 @@ public class MaasMapsUI extends JFrame {
             button.removeActionListener(listener);
         }
     }
-}
 
     private MapBackground createAccessibilityMap() {
         try {
