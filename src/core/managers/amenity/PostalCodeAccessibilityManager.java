@@ -20,7 +20,8 @@ public class PostalCodeAccessibilityManager {
         try {
             String[] lines = FileManager.readLines(new File(Constants.Paths.ACCESSIBILITY_FILE));
 
-            for (String line : lines) {
+            for (int i = 1; i < lines.length; i++) {
+                String line = lines[i];
                 String[] parts = line.split(",");
 
                 if (parts.length == 4)
