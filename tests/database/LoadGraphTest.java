@@ -14,16 +14,10 @@ import core.datastructures.graph.Graph;
 import core.managers.map.MapManager;
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
-import ui.NetworkTest;
 
 public class LoadGraphTest {
-
-    public static void main(String[] args){
-        test1();
-    }
-
     @Test
-    public static void test1() {
+    public void test1() {
         try {
             Graph<Point2D> graph = MapManager.getBusGraph();
 
@@ -46,8 +40,6 @@ public class LoadGraphTest {
                     }
                 }
             }
-
-            NetworkTest.makeAbstractedBusNetwork(graph);
         }
         catch (Exception e) {
             fail(e);

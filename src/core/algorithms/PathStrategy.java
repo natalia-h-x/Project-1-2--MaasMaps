@@ -60,7 +60,7 @@ public abstract class PathStrategy<T extends Point2D> {
                     routes.add(route);
                 }
                 catch (IllegalArgumentException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         }
@@ -87,5 +87,6 @@ public abstract class PathStrategy<T extends Point2D> {
 
         return shortestRoute;
     }
+
     public abstract String toString();
 }

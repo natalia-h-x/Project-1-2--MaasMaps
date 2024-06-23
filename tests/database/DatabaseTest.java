@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import core.managers.database.DatabaseDefinitionManager;
 import core.managers.database.DatabaseModificationManager;
-import core.managers.database.GTFSManager;
+import core.managers.database.gtfs.ShapeManager;
 import tools.generator.sqlite.db_helpers.Unzipper;
 
 public class DatabaseTest {
@@ -21,6 +21,6 @@ public class DatabaseTest {
 
     @Test
     public void shapeTest() {
-        GTFSManager.getShape(1071429);
+        ShapeManager.getShape(1071429);
     }
 }

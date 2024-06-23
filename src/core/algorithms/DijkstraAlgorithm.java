@@ -57,8 +57,8 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
                 Trip transfer = Trip.empty();
                 Weight weight = edge.getWeight(currentWeight, transfer);
 
-                if (weight.getWaitTime() > 1200) // 20 mins
-                    System.out.println();
+                // if (weight.getWaitTime() > 1200) // 20 mins
+                //     System.out.println();
 
                 if (!weight.isReachable())
                     continue;
