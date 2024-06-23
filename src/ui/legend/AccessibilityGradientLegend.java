@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import core.Constants.AccessibilityColours;
 import core.Constants.UIConstants;
-import ui.AccessibilityGradient;
+import ui.accessibility.AccessibilityGradient;
 
 public class AccessibilityGradientLegend extends JPanel {
 
@@ -22,15 +22,16 @@ public class AccessibilityGradientLegend extends JPanel {
     }
 
     public void initialiseUI() {
-        setPreferredSize(new Dimension(200,200));
+        setPreferredSize(new Dimension(50, 200));
         setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
         setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JPanel leftPanel = new AccessibilityGradient();
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
         mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JPanel leftPanel = new AccessibilityGradient();
         leftPanel.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
         leftPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -43,6 +44,6 @@ public class AccessibilityGradientLegend extends JPanel {
         }
 
         add(leftPanel, BorderLayout.WEST);
-        add(mainPanel, BorderLayout.CENTER);
+        add(mainPanel, BorderLayout.EAST);
     }
 }

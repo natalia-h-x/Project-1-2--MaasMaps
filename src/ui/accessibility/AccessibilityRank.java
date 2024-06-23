@@ -1,10 +1,8 @@
-package ui.legend;
+package ui.accessibility;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -17,8 +15,10 @@ import core.models.AccessibilityMeasure;
 public class AccessibilityRank extends JPanel {
     public AccessibilityRank() {
         super(new BorderLayout());
-        setPreferredSize(new Dimension(550,150));
         
+        setPreferredSize(new Dimension(550,150));
+        setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
+
         add(createBottom5Panel(), BorderLayout.EAST);
         add(createTop5Panel(), BorderLayout.WEST);
     }

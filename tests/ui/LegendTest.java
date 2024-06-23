@@ -2,7 +2,6 @@ package ui;
 
 import org.junit.Test;
 
-import ui.legend.AccessibilityGradientLegend;
 import ui.legend.AccessibilityLegend;
 
 public class LegendTest {

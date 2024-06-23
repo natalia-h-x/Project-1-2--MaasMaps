@@ -1,6 +1,5 @@
-package ui;
+package ui.accessibility;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -27,11 +26,11 @@ public class AccessibilityGradient extends JPanel {
         super.paint(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        double margin = 0;
+        double margin = 10;
         double sizeOfGradient = getSize().getHeight();
 
         for (double i = margin; i < sizeOfGradient - margin; i += 0.1) {
-            g2.setPaint(AccessibilityMapBackground.notSiansLinearInterpolation((i - margin) / (sizeOfGradient - margin), new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN}));
+            g2.setPaint(AccessibilityMapBackground.notSiansLinearInterpolation((i - margin) / (sizeOfGradient), new Color[] {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN}));
             g2.fill(new Ellipse2D.Double(0, i, 10, 10));
         }
     }
