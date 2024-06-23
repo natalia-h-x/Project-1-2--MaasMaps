@@ -26,6 +26,8 @@ public abstract class PathStrategy<T extends Point2D> {
 
     @SuppressWarnings("unchecked")
     public Optional<Route> calculateShortestPath(Bus bus) {
+        long executionStart = System.currentTimeMillis();
+
         if (shortestPaths.containsKey(bus))
             return shortestPaths.get(bus);
 
@@ -84,6 +86,11 @@ public abstract class PathStrategy<T extends Point2D> {
         }
 
         shortestPaths.put(bus, shortestRoute);
+
+
+        long executionEnd = System.currentTimeMillis();
+
+        System.out.println(executionEnd - executionStart);
 
         return shortestRoute;
     }
