@@ -2,6 +2,7 @@ package core.managers.amenity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import core.Constants;
 import core.managers.FileManager;
@@ -9,26 +10,33 @@ import core.managers.FileManager;
 public class PostalCodeAccessibilityManager {
     private PostalCodeAccessibilityManager() {}
 
-    private static String[] lines;
+    private static Map<String, Double> accessibilityMap;
 
-    public static double getAccessibilityMetric(String postalCode) {
+    private static double loadAccessibilityMetric() {
         double accessibility = 0;
 
         try {
-            if (lines == null)
-                lines = FileManager.readLines(new File(Constants.Paths.ACCESSIBILITY_FILE));
+            String[] lines = FileManager.readLines(new File(Constants.Paths.ACCESSIBILITY_FILE));
 
             for (String line : lines) {
                 String[] parts = line.split(",");
 
-                if (parts.length == 4 && parts[0].equals(postalCode))
-                    accessibility = Double.parseDouble(parts[3]);
+                if (parts.length == 4)
+                    accessibilityMap.computeIfAbsent(parts[0], s -> Double.parseDouble(parts[3]));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return accessibility;
+    }
+
+    public static double getAccessibilityMetric(String postalCode) {
+        if (accessibilityMap == null) {
+            loadAccessibilityMetric();
+        }
+
+        return accessibilityMap.get(postalCode);
     }
 
     public static int getAmenityFrequency(String type) {
