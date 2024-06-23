@@ -32,8 +32,8 @@ public abstract class PathStrategy<T extends Point2D> {
             return shortestPaths.get(bus);
 
         List<Route> routes = new ArrayList<>();
-        List<Location> locationsIntoRadius1 = PostalCodeManager.getAllPointsWithin(bus.getStart(), Context.getContext().getMap().getRadius());
-        List<Location> locationsIntoRadius2 = PostalCodeManager.getAllPointsWithin(bus.getDestination(), Context.getContext().getMap().getRadius());
+        List<Location> locationsIntoRadius1 = PostalCodeManager.getAllPointsWithin(bus.getStart(), bus.getRadius());
+        List<Location> locationsIntoRadius2 = PostalCodeManager.getAllPointsWithin(bus.getDestination(), bus.getRadius());
         Location[] closestStarts = PostalCodeManager.getClosestPoint(locationsIntoRadius1, bus.getStart(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
         Location[] closestDestinations = PostalCodeManager.getClosestPoint(locationsIntoRadius2, bus.getDestination(), Constants.Map.POSTAL_CODE_MAX_BUS_OPTIONS);
 

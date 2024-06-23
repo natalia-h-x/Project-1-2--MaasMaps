@@ -20,7 +20,7 @@ public class AStarAlgorithm<T extends Point2D> extends PathStrategy<T> {
     }
 
     private Comparator<? super T> getHeuristicComparator(T source, T end) {
-        return (a, b) -> Double.compare(getFitness(a, end), getFitness(b, end));
+        return (a, b) -> Double.compare(getFitness(a, source), getFitness(b, end));
     }
 
     private double getFitness(T current, T end) {

@@ -232,13 +232,12 @@ public class NavigationPanel extends JPanel {
                         if (option instanceof Bus b) {
                             b.setDepartingTime(Time.of(departureField.getText()));
                             b.setPathStrategy(parentUI.getSelectedAlgorithm());
+                            if (radiusField.getText().length() > 0)
+                                b.setRadius(Integer.parseInt(radiusField.getText()));
                         }
                     }
 
                 Context.getContext().getMap().clearIcons();
-
-                if (radiusField.getText().length() > 0)
-                    Context.getContext().getMap().setRadius(Integer.parseInt(radiusField.getText()));
 
                 if (walkingField.getText().length() > 0)
                     System.out.println("max walking: " + walkingField.getText()); //temporary

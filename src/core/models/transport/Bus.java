@@ -29,6 +29,8 @@ public class Bus extends Transport {
     private RouteType routeType = RouteType.SHORTEST;
     private PathStrategy<Location> pathStrategy;
 
+    private int radius;
+
     public Bus() {}
     public Bus(Location start, Location destination) {
         super(start, destination);
@@ -64,8 +66,8 @@ public class Bus extends Transport {
     @Override
     public MapGraphics[] getGraphics() {
         return new MapGraphics[] {
-            new Radius((int) getStart      ().getX(), (int) getStart      ().getY(), (int) Context.getContext().getMap().getRadius()),
-            new Radius((int) getDestination().getX(), (int) getDestination().getY(), (int) Context.getContext().getMap().getRadius()),
+            new Radius((int) getStart      ().getX(), (int) getStart      ().getY(), getRadius()),
+            new Radius((int) getDestination().getX(), (int) getDestination().getY(), getRadius()),
             getRoute().getLine(),
         };
     }

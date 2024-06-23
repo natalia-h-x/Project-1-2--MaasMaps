@@ -60,7 +60,7 @@ public class PostalCodeManager {
         return closestSet.toArray(Location[]::new);
     }
 
-    public static List<Location> getAllPointsWithin(Location center, Double radius) {
+    public static List<Location> getAllPointsWithin(Location center, Integer radius) {
         Map<Location, Double> distances = new HashMap<>();
         PriorityQueue<Location> closestSet = new PriorityQueue<>((a, b) -> distances.get(b).compareTo(distances.get(a)));
 
