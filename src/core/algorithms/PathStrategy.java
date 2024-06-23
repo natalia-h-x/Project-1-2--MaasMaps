@@ -87,7 +87,6 @@ public abstract class PathStrategy<T extends Point2D> {
 
         shortestPaths.put(bus, shortestRoute);
 
-
         long executionEnd = System.currentTimeMillis();
 
         System.out.println(executionEnd - executionStart);
