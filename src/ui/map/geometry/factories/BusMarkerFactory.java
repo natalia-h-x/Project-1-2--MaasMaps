@@ -2,7 +2,6 @@ package ui.map.geometry.factories;
 
 import java.awt.geom.Point2D;
 
-import ui.map.geometry.ImageMarkerFactory;
 import ui.map.geometry.Marker;
 import ui.map.geometry.interfaces.AbstractMarkerFactory;
 

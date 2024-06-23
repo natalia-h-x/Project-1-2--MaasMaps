@@ -88,11 +88,11 @@ public class Time implements Comparable<Time> {
     public String toString() {
         String[] clock = "%d hour;%d minute;%d second".formatted(hours, minutes, seconds).split(";");
         String string = (hours   > 0 ? clock[0] + (hours   > 1 ? "s" : "") + (minutes > 0 ^ seconds > 0 ? " and " : minutes > 0 && seconds > 0 ? ", " : "") : "")
-             + (minutes > 0 ? clock[1] + (minutes > 1 ? "s" : "") + (              seconds > 0 ? " and " :                                     "") : "")
-             + (seconds > 0 ? clock[2] + (seconds > 1 ? "s" : "")                                                                                  : "") + ".";
+                      + (minutes > 0 ? clock[1] + (minutes > 1 ? "s" : "") + (              seconds > 0 ? " and " :                                     "") : "")
+                      + (seconds > 0 ? clock[2] + (seconds > 1 ? "s" : "")                                                                                  : "");
 
-        if (string.equals("."))
-            string = "0 seconds.";
+        if (string.equals(""))
+            string = "0 seconds";
 
         return string;
     }

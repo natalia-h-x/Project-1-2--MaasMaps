@@ -12,7 +12,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ui.map.geometry.GeographicLine;
-import ui.map.geometry.ImageMarkerFactory;
+import ui.map.geometry.factories.ImageMarkerFactory;
 import ui.map.geometry.factories.LineFactory;
 import ui.map.geometry.interfaces.MapGraphics;
 

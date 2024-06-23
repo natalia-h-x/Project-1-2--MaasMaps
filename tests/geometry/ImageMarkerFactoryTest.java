@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 import org.junit.Test;
 
 import ui.map.geometry.ImageMarker;
-import ui.map.geometry.ImageMarkerFactory;
+import ui.map.geometry.factories.ImageMarkerFactory;
 
 public class ImageMarkerFactoryTest {
     @Test

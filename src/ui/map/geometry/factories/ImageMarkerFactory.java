@@ -1,4 +1,4 @@
-package ui.map.geometry;
+package ui.map.geometry.factories;
 
 import static core.Constants.Paths.A_IMAGE;
 import static core.Constants.Paths.BUS_STOP_ICON;
@@ -10,6 +10,8 @@ import java.io.IOException;
 
 import core.managers.ExceptionManager;
 import core.managers.FileManager;
+import ui.map.geometry.BusMarker;
+import ui.map.geometry.ImageMarker;
 
 /**
  * This class is a marker factory to create different markers in the map.

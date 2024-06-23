@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 import core.models.Location;
 import core.models.gtfs.Time;
-import ui.map.geometry.ImageMarkerFactory;
+import ui.map.geometry.factories.ImageMarkerFactory;
 import ui.map.geometry.factories.LineFactory;
 import ui.map.geometry.interfaces.MapGraphics;
 
