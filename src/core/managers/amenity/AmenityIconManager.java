@@ -21,10 +21,6 @@ public class AmenityIconManager {
             }
         }
     }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 
     public static Map<String, ImageIcon> getAmenityIcons() {
         if (icons == null)
