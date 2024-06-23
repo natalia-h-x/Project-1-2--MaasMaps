@@ -36,7 +36,7 @@ public final class Constants {
         public static final String ACCESSIBILITY_FILE = "resources/PostalCodeAccessibility.csv";
         public static final String DATABASE_PATH = "jdbc:sqlite:resources\\gtfs\\gtfs";
         public static final String MAP_IMAGE = "resources/visuals/MaastrichtOpenStreetMap.png";
-        public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.png";
+        public static final String BUS_STOP_ICON = "resources/visuals/icons/BusIcon.jpg";
         public static final String A_IMAGE = "resources/visuals/icons/AIcon.png";
         public static final String B_IMAGE = "resources/visuals/icons/BIcon.png";
         public static final String PATH_DELIMETER = "/";

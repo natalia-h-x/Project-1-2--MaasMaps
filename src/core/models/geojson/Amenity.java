@@ -10,7 +10,7 @@ public abstract class Amenity extends GeoData {
     }
 
     public String getIcon() {
-        return Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + getClass().getSimpleName();
+        return Constants.Paths.AMENITY_ICON_PATH + Paths.PATH_DELIMETER + toString();
     }
 
     public static class ArtsCentre extends Amenity {
