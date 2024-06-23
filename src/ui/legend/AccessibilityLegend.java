@@ -1,5 +1,5 @@
 package ui.legend;
 
-public class AccessibilityLegend {
+public class AccessibilityLegend extends Legend {
     
 }
