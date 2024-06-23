@@ -218,13 +218,15 @@ public class MaasMapsUI extends JFrame {
             proxyMap.hideMapGraphics("AbstractedBusMap");
             removeActionListeners(legend);
         });
-
+        final int[] pressCount = {0};
         button2.addActionListener(e -> {
-            removeActionListeners(legend);
             proxyMap.toggleMapGraphics("AbstractedBusMap");
+            removeActionListeners(legend);
             // Add action listener to the legend button
             legend.addActionListener(f -> {
-                BusNetworkLegend busNetworkLegend = new BusNetworkLegend();
+            BusNetworkLegend busNetworkLegend = new BusNetworkLegend();
+            pressCount[0]++;
+            if (pressCount[0] == 2) pressCount[0] = 0;
             });
         });
 
@@ -233,6 +235,7 @@ public class MaasMapsUI extends JFrame {
             removeActionListeners(legend);
             legend.addActionListener(f -> {
                 AccessibilityLegend accessibilityLegend = new AccessibilityLegend();
+
             });
         });
 
