@@ -3,6 +3,7 @@ package core.managers.amenity;
 import core.Constants;
 import core.models.Location;
 import core.models.geojson.GeoData;
+import lombok.Data;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -52,19 +53,22 @@ public class AmenityAccessibilityCalculator {
     }
 
     private static double calculateAccessibility(PostalCodeData postalCode, Map<String, List<GeoData>> amenities) {
-        double Ai = 0;
         double dL = averageDistanceToNearestAmenity(postalCode, amenities.values().stream().flatMap(Collection::stream).toList());
+        double Ai = 0.0;
 
         for (Map.Entry<String, List<GeoData>> amenity : amenities.entrySet()) {
             double Aj = 0.0;
+
             for (GeoData geoData : amenity.getValue()) {
                 double distance = Math.sqrt(distance(postalCode.getLocation(), geoData.getLocation()));
                 double Wj = AmenityAccessibilityManager.getAmenityFrequency(geoData.toString());
+
                 Aj += Wj * Math.exp(-distance / dL);
             }
 
             if (!amenity.getValue().isEmpty()) {
                 double wL = amenity.getValue().get(0).getWeight();
+
                 Aj *= wL;
             }
 
@@ -136,12 +140,14 @@ public class AmenityAccessibilityCalculator {
                       .append(String.valueOf(postalCode.getLongitude())).append(",")
                       .append(String.valueOf(postalCode.getAccessibilityMetric())).append("\n");
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
 
+@Data
 class PostalCodeData {
     private String postalCode;
     private double latitude;
@@ -154,27 +160,7 @@ class PostalCodeData {
         this.longitude = longitude;
     }
 
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
     public Location getLocation() {
         return new Location(latitude, longitude);
-    }
-
-    public double getAccessibilityMetric() {
-        return accessibilityMetric;
-    }
-
-    public void setAccessibilityMetric(double accessibilityMetric) {
-        this.accessibilityMetric = accessibilityMetric;
     }
 }

@@ -22,7 +22,6 @@ public class AmenityIconManager {
         }
     }
 
-
     public static Map<String, ImageIcon> getAmenityIcons() {
         if (icons == null)
             loadIcon();
