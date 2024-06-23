@@ -238,12 +238,6 @@ public class MaasMapsUI extends JFrame {
             proxyMap.toggleMapGraphics("Accessibility");
             legend.addActionListener(f -> {
                 AccessibilityLegend accessibilityLegend = new AccessibilityLegend();
-                if (isFirstPress[0]) {
-                    isFirstPress[0] = false;
-                    removeActionListeners(legend);
-                } else {
-                    isFirstPress[0] = true; // Reset the flag
-                }
             });
         });
 
