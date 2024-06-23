@@ -61,7 +61,6 @@ public class MaasMapsUI extends JFrame {
     private JButton button1;
     private JButton button2;
     private JButton button3;
-    private JButton legend;
     private JComboBox<PathStrategy> changeAlgorithmBox;
     private Timer timer;
     private boolean expanded = false;
