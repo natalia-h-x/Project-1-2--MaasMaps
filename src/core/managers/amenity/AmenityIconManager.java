@@ -10,7 +10,7 @@ import core.models.geojson.GeoData;
 public class AmenityIconManager {
     private AmenityIconManager() {}
 
-    private static Map<String, ImageIcon> icons; 
+    private static Map<String, ImageIcon> icons;
 
     public static void loadIcon() {
         Map<String, List<GeoData>> geoData = AmenitySerializationManager.getGeoData();
@@ -21,7 +21,7 @@ public class AmenityIconManager {
             }
         }
     }
-    
+
 
     public static Map<String, ImageIcon> getAmenityIcons() {
         if (icons == null)
