@@ -37,14 +37,15 @@ public class AccessibilityMapBackground extends MapBackground {
 
     public static Color notSiansLinearInterpolation(double accessibility, Color[] colors) {
         double number = accessibility * (colors.length - 1);
+        
         double newNumber = number - Math.floor(number);
         double inv = 1 - newNumber;
 
-        double r = colors[(int) Math.floor(number)].getRed()*inv + colors[(int) Math.floor(number) + 1].getRed()*newNumber;
-        double g = colors[(int) Math.floor(number)].getGreen()*inv + colors[(int) Math.floor(number) + 1].getGreen()*newNumber;
-        double b = colors[(int) Math.floor(number)].getBlue()*inv + colors[(int) Math.floor(number) + 1].getBlue()*newNumber;
+        double r = colors[(int) Math.max(0, Math.ceil(number - 1))].getRed()*inv + colors[(int) Math.max(0, Math.ceil(number - 1)) + 1].getRed()*newNumber;
+        double g = colors[(int) Math.max(0, Math.ceil(number - 1))].getGreen()*inv + colors[(int) Math.max(0, Math.ceil(number - 1)) + 1].getGreen()*newNumber;
+        double b = colors[(int) Math.max(0, Math.ceil(number - 1))].getBlue()*inv + colors[(int) Math.max(0, Math.ceil(number - 1)) + 1].getBlue()*newNumber;
 
-        return new Color((float) r / 255, (float) g / 255, (float) b / 255, 0.2f);
+        return new Color((float) r / 255, (float) g / 255, (float) b / 255, 0.4f);
     }
 
     public void fill(Graphics2D g2) {
@@ -70,7 +71,7 @@ public class AccessibilityMapBackground extends MapBackground {
                     }
 
                     accessibility = accessibility / 4;
-                    g2.setPaint(notSiansLinearInterpolation(accessibility, new Color[] {Color.RED, Color.YELLOW, Color.GREEN}));
+                    g2.setPaint(notSiansLinearInterpolation(accessibility, new Color[] {Color.GREEN, Color.YELLOW, Color.RED}));
 
                     g2.fill(new Ellipse2D.Double(x, y, scale, scale));
                 }

@@ -230,7 +230,7 @@ public class MaasMapsUI extends JFrame {
             BufferedImage image = ImageIO.read(new File("resources/accessibilityMap.png"));
 
             MapBackground top = new MapBackground(image);
-            top.setAlpha(0.3f);
+            top.setAlpha(0.5f);
             return top;
         }
         catch (IOException e1) {
