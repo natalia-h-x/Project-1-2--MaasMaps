@@ -201,8 +201,6 @@ public class TxtToSQLite {
     private static String[] pruneLines(String[] lines) {
         List<String> prunedLines = new ArrayList<>();
 
-        //FIXME fix this thingy not enclosing maastricht
-
         for (int i = 1; i < lines.length; i++) {
             String[] csv = parseCSV(lines[i]);
             double latitude  = Double.parseDouble(csv[3]);
@@ -213,7 +211,7 @@ public class TxtToSQLite {
             ) {
                 prunedLines.add(lines[i]);
             }
-        }//50.8390987, 5.6892738
+        }
 
         return prunedLines.toArray(new String[0]);
     }

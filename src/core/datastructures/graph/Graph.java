@@ -62,5 +62,5 @@ public interface Graph<T> extends Iterable<T> {
 
     public Graph<T> clone();
 
-    public List<T> getVertecesList();
+    public List<T> getVertices();
 }

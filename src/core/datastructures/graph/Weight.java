@@ -6,27 +6,22 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Weight {
-    private int value;
-    private int waitTime;
+public abstract class Weight {
+    private int weight;
 
     public boolean isReachable() {
-        return value != Integer.MAX_VALUE;
-    }
-
-    public int getTotal() {
-        return value + waitTime;
-    }
-
-    public Time time() {
-        return Time.of(getTotal());
+        return weight != Integer.MAX_VALUE;
     }
 
     public Time weightTime() {
-        return Time.of(value);
+        return Time.of(weight);
+    }
+
+    public Time time() {
+        return Time.of(getWeight());
     }
 
     public Time waitTime() {
-        return Time.of(waitTime);
+        return Time.of(0);
     }
 }

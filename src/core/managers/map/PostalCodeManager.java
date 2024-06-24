@@ -24,7 +24,7 @@ public class PostalCodeManager {
     }
 
     public static Location[] getClosestPoint(Location to, int n) {
-        return getClosestPoint(MapManager.getBusGraph().getVertecesList(), to, n);
+        return getClosestPoint(MapManager.getBusGraph().getVertices(), to, n);
     }
 
     public static <P extends Point2D> Location[] getClosestPoint(List<P> list, Location to, int n) {

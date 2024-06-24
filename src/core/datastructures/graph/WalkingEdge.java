@@ -25,7 +25,7 @@ public class WalkingEdge<T> extends Edge<T> {
      * @return
      */
     public Weight getWeight(int arrivalTime, Trip transfer) {
-        return new Weight(super.getWeight(), 0);
+        return new WalkingWeight(super.getWeight(), 0);
     }
 
     @Override

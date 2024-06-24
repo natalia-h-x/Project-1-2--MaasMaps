@@ -6,6 +6,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import core.models.transport.Route;
 import core.models.transport.Transport;
@@ -31,6 +32,7 @@ public class RouteUI extends JPanel {
     public void initializeUI() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setAlignmentX(SwingConstants.LEFT);
 
         Transport previous = null;
 

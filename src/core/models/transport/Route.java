@@ -45,12 +45,8 @@ public class Route implements Iterable<Transport> {
         for (Transport transport : transfers) {
             Transport newTransport = transport.copy();
 
-            if (previous != null && newTransport.canMerge(previous)) {
-                previous.setDestination(newTransport.getDestination());
-                previous.setTime(previous.getTime().add(newTransport.getTime()));
-
+            if (merge(previous, newTransport))
                 continue;
-            }
 
             newTransfers.add(newTransport);
 
@@ -58,6 +54,17 @@ public class Route implements Iterable<Transport> {
         }
 
         return newTransfers;
+    }
+
+    private boolean merge(Transport previous, Transport newTransport) {
+        if (previous != null && newTransport.canMerge(previous)) {
+            previous.setDestination(newTransport.getDestination());
+            previous.setTime(previous.getTime().add(newTransport.getTime()));
+
+            return true;
+        }
+
+        return false;
     }
 
     public Location getStart() {
@@ -91,7 +98,7 @@ public class Route implements Iterable<Transport> {
 
         for (Transport transport : transfers) {
             if (transport instanceof Walking || transport instanceof Biking) {
-                total = total.add(transport.getTime());
+                total = total.add(transport.getTime().add(transport.getWaitTime()));
             }
         }
 
@@ -103,7 +110,7 @@ public class Route implements Iterable<Transport> {
 
         for (Transport transport : transfers) {
             if (transport instanceof Bus) {
-                total = total.add(transport.getTime());
+                total = total.add(transport.getTime().add(transport.getWaitTime()));
             }
         }
 
