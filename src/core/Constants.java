@@ -33,6 +33,7 @@ public final class Constants {
         public static final String AMENITY_ICON_PATH = "resources/visuals/icons/amenity";
         public static final String POSTAL_COORDS_API_URL = "https://project12.ashish.nl/get_coordinates";
         public static final String POSTAL_COORDS_FILE = "resources/MassZipLatLon.csv";
+        public static final String DEMOGRAPHICS_FILE = "resources/Maastricht_PostalCode_demographics.csv";
         public static final String ACCESSIBILITY_FILE = "resources/PostalCodeAccessibility.csv";
         public static final String DATABASE_PATH = "jdbc:sqlite:resources\\gtfs\\gtfs";
         public static final String MAP_IMAGE = "resources/visuals/MaastrichtOpenStreetMap.png";

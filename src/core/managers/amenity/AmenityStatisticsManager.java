@@ -67,6 +67,8 @@ public class AmenityStatisticsManager {
 
         for (ZipCode zipCode : Context.getContext().getZipCodeDatabase().getZipCodes()) {
             String postalCode = zipCode.getCode();
+            if (postalCode.equals("6229EN"))
+                continue;
             double accessibility = PostalCodeAccessibilityManager.getAccessibilityMetric(postalCode);
             sortedList.add(new AccessibilityMeasure(postalCode, accessibility));
         }

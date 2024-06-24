@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import core.Context;
 import core.managers.ExceptionManager;
 import core.models.ZipCode;
-import ui.MaasMapsUI;
 import ui.map.geometry.AccessibilityMapBackground;
 
 public class AccessibilityImageGenerator {
@@ -25,6 +24,8 @@ public class AccessibilityImageGenerator {
             for (ZipCode zipCode : Context.getContext().getZipCodeDatabase().getZipCodes()) {
                 postalCodes.add(zipCode.getCode());
             }
+
+            postalCodes.remove("6229EN");
 
             AccessibilityMapBackground mapBackground = new AccessibilityMapBackground(postalCodes);
             mapBackground.paint(g2d);

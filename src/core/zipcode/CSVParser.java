@@ -2,7 +2,9 @@ package core.zipcode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import core.managers.ExceptionManager;
 import core.managers.FileManager;
@@ -20,11 +22,14 @@ import lombok.Getter;
 @Getter
 public class CSVParser implements LocationReader {
     private List<ZipCode> zipCodeList;
+    private Map<String, Integer> populationSize;
 
     public CSVParser() {
         this.zipCodeList = new ArrayList<>();
+        this.populationSize = new HashMap<>();
 
         initializeZipCodeList();
+        initializeDemographics();
     }
 
     /**
@@ -58,6 +63,36 @@ public class CSVParser implements LocationReader {
         catch (IOException e) {
             ExceptionManager.handle(e);
         }
+    }
+
+    private void initializeDemographics() {
+        try {
+            List<String> data = FileManager.getDemographicData();
+
+            for (String line : data) {
+                String[] parts = line.split(";");
+
+                if (parts.length == 36) {
+                    try {
+                        if (!populationSize.containsKey(parts[0].substring(0, parts[0].length() - 2))) {
+                            populationSize.computeIfAbsent(parts[0].substring(0, parts[0].length() - 2), s -> Integer.parseInt(parts[1]));
+                        } else {
+                            populationSize.put(parts[0].substring(0, parts[0].length() - 2), (populationSize.get(parts[0].substring(0, parts[0].length() - 2)) + Integer.parseInt(parts[1])));
+                        }
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Skipping invalid line: " + line);
+                    }
+                }
+            }
+        }
+        catch (IOException e) {
+            ExceptionManager.handle(e);
+        }
+    }
+
+    public int populationNumber(String zipCode) {
+        return populationSize.get(zipCode);
     }
 
     public boolean containsZipCode(String zipCode) {

@@ -27,6 +27,14 @@ public class ZipCodeDatabase implements LocationReader {
         return apiRequest.getLocation(zipcode);
     }
 
+    public int getPopulation(String zipCode) {
+        if (!ZipCode.isValid(zipCode)) {
+            throw new IllegalArgumentException(zipCode + " not a valid postal code.");
+        }
+
+        return csvParser.populationNumber(zipCode.substring(0, zipCode.length() - 2));
+    }
+
     public List<ZipCode> getZipCodes() {
         return csvParser.getZipCodeList();
     }

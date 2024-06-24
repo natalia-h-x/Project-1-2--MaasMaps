@@ -25,7 +25,8 @@ public class AmenityAccessibilityCalculator {
         List<ZipCode> zipCodes = Context.getContext().getZipCodeDatabase().getZipCodes();
 
         for (ZipCode zipCode : zipCodes) {
-            postalCodes.add(new PostalCodeData(zipCode.getCode(), zipCode.getLocation().getLatitude(), zipCode.getLocation().getLongitude()));
+            if (!zipCode.getCode().equals("6229EN"))
+                postalCodes.add(new PostalCodeData(zipCode.getCode(), zipCode.getLocation().getLatitude(), zipCode.getLocation().getLongitude()));
         }
 
         calculateAccessibilityMetrics(postalCodes, amenities);
@@ -42,6 +43,7 @@ public class AmenityAccessibilityCalculator {
 
     private static double calculateAccessibility(PostalCodeData postalCode, Map<String, List<GeoData>> amenities, List<PostalCodeData> postalCodes) {
         double Ai = 0.0;
+        int Wj = Context.getContext().getZipCodeDatabase().getPopulation(postalCode.getPostalCode());
 
         for (Map.Entry<String, List<GeoData>> amenity : amenities.entrySet()) {
             double Aj = 0.0;
@@ -54,7 +56,6 @@ public class AmenityAccessibilityCalculator {
                     averageDistanceForAmenityType = new HashMap<>();
 
                 double dL = averageDistanceForAmenityType.computeIfAbsent(geoData.toString(), s -> averageDistanceToNearestAmenityType(postalCodes, geoDataOfCertainType));
-                double Wj = PostalCodeAccessibilityManager.getAmenityFrequency(geoData.toString());
 
                 Aj += Wj * Math.exp(-distance / dL);
             }
