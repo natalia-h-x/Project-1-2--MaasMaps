@@ -62,7 +62,7 @@ public class AmenityAccessibilityCalculator {
             if (!amenity.getValue().isEmpty()) {
                 double wL = amenity.getValue().get(0).getWeight();
 
-                Aj *= (wL*1000);
+                Aj *= wL;
             }
 
             Ai += Aj;
