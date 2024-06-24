@@ -37,6 +37,24 @@ public class FileManager {
         return locations;
     }
 
+    public static List<String> getDemographicData() throws IOException {
+        List<String> data = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(Constants.Paths.DEMOGRAPHICS_FILE));
+        String line = br.readLine(); 
+        line = br.readLine();
+        line = br.readLine(); //skip first three lines
+
+        while ((line = br.readLine()) != null) {
+            data.add(line);
+        }
+
+        data.remove(data.size() - 1);
+
+        br.close();
+
+        return data;
+    }
+
     public static BufferedImage getMapImage() throws IOException {
         return getImage(Paths.MAP_IMAGE);
     }

@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import core.Context;
 import core.managers.ExceptionManager;
 import core.models.ZipCode;
-import ui.MaasMapsUI;
 import ui.map.geometry.AccessibilityMapBackground;
 
 public class AccessibilityImageGenerator {
@@ -35,10 +34,5 @@ public class AccessibilityImageGenerator {
         catch (IOException e) {
             ExceptionManager.handle(e);
         }
-    }
-
-    public static void main(String[] args) {
-        new MaasMapsUI();
-        generateImage();
     }
 }
