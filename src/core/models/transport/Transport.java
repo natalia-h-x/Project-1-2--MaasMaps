@@ -38,7 +38,7 @@ public abstract class Transport {
         if (before == null)
             return false;
 
-        if ((canEqual(before) && (this instanceof Bus bus && bus.getTrip().equals(((Bus) before).getTrip()))) || !(this instanceof Bus))
+        if ((getClass().equals(before.getClass()) && ((this instanceof Bus bus && bus.getTrip().equals(((Bus) before).getTrip())) || !(this instanceof Bus))))
             return before.destination.equals(start);
 
         return false;

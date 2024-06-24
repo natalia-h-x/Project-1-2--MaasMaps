@@ -29,12 +29,6 @@ public class Marker implements MapGraphics {
         this.location = location;
     }
 
-    public void setText(String text) {
-        // TODO Meric
-    }
-
-    // TODO Meric: Add getText() method
-
     public void setOffset(Point offset) {
         this.offset = offset;
     }
@@ -81,6 +75,6 @@ public class Marker implements MapGraphics {
         g2.setColor(Color.WHITE);
         g2.fill(whiteEllipse);
 
-        // TODO Meric: Draw text here somewhere
+
     }
 }
