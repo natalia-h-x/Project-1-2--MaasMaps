@@ -25,8 +25,7 @@ public class AmenityAccessibilityCalculator {
         List<ZipCode> zipCodes = Context.getContext().getZipCodeDatabase().getZipCodes();
 
         for (ZipCode zipCode : zipCodes) {
-            if (!zipCode.getCode().equals("6229EN"))
-                postalCodes.add(new PostalCodeData(zipCode.getCode(), zipCode.getLocation().getLatitude(), zipCode.getLocation().getLongitude()));
+            postalCodes.add(new PostalCodeData(zipCode.getCode(), zipCode.getLocation().getLatitude(), zipCode.getLocation().getLongitude()));
         }
 
         calculateAccessibilityMetrics(postalCodes, amenities);

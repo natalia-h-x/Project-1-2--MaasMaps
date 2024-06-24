@@ -25,8 +25,6 @@ public class AccessibilityImageGenerator {
                 postalCodes.add(zipCode.getCode());
             }
 
-            postalCodes.remove("6229EN");
-
             AccessibilityMapBackground mapBackground = new AccessibilityMapBackground(postalCodes);
             mapBackground.paint(g2d);
 
