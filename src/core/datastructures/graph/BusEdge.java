@@ -44,12 +44,12 @@ public class BusEdge<T> extends Edge<T> {
         int closestDepartureTime = getClosestDepartureTime(arrivalTime);
 
         if (closestDepartureTime == Integer.MAX_VALUE)
-            return new Weight(Integer.MAX_VALUE, 0);
+            return new BusWeight(Integer.MAX_VALUE, 0);
 
         // It is possible that the trip changes to another trip here which means a transfer occurred.
         trip.copyInto(departureTimes.get(Time.of(closestDepartureTime)));
 
-        return new Weight(super.getWeight(), closestDepartureTime - arrivalTime);
+        return new BusWeight(super.getWeight(), closestDepartureTime - arrivalTime);
     }
 
     private int getClosestDepartureTime(int arrivalTime) {

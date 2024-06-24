@@ -7,7 +7,9 @@ import java.util.List;
 
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
+import lombok.Data;
 
+@Data
 public class AdjacencyListGraph<T> implements Graph<T> {
     private HashMap<T, List<Edge<T>>> vertices;
 
@@ -110,7 +112,7 @@ public class AdjacencyListGraph<T> implements Graph<T> {
     }
 
     @Override
-    public List<T> getVertecesList() {
+    public List<T> getVertices() {
         return new LinkedList<>(vertices.keySet());
     }
 

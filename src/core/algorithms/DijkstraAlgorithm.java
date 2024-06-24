@@ -12,6 +12,7 @@ import core.datastructures.TriMonoid;
 import core.datastructures.graph.Edge;
 import core.datastructures.graph.Graph;
 import core.datastructures.graph.Weight;
+import core.datastructures.graph.BusWeight;
 import core.models.BusStop;
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
@@ -64,7 +65,7 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
                     continue;
 
                 if (!settled.contains(adjacent)) {
-                    int newTime = currentWeight + weight.getTotal();
+                    int newTime = currentWeight + weight.getWeight();
 
                     if (newTime < weights.getOrDefault(adjacent, Integer.MAX_VALUE)) {
                         weights.put(adjacent, newTime);

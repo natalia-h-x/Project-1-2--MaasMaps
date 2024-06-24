@@ -136,7 +136,7 @@ public class NetworkTest {
         adjacencyListGraph.addEdge(stop, stop2, 0);
         adjacencyListGraph.removeEdge(stop, stop2);
 
-        assertEquals(8, adjacencyListGraph.getVertecesList().size());
+        assertEquals(8, adjacencyListGraph.getVertices().size());
         adjacencyListGraph.toString();
 
         adjacencyListGraph.clone();
