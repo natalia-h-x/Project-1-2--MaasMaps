@@ -13,7 +13,15 @@ public abstract class Weight {
         return weight != Integer.MAX_VALUE;
     }
 
-    public Time time() {
+    public Time weightTime() {
         return Time.of(weight);
+    }
+
+    public Time time() {
+        return Time.of(getWeight());
+    }
+
+    public Time waitTime() {
+        return Time.of(0);
     }
 }

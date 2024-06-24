@@ -20,10 +20,6 @@ public class BusWeight extends Weight {
     }
 
     @Override
-    public Time time() {
-        return Time.of(getWeight());
-    }
-
     public Time waitTime() {
         return Time.of(waitTime);
     }
