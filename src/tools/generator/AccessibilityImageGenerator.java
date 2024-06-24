@@ -36,9 +36,4 @@ public class AccessibilityImageGenerator {
             ExceptionManager.handle(e);
         }
     }
-
-    public static void main(String[] args) {
-        new MaasMapsUI();
-        generateImage();
-    }
 }
