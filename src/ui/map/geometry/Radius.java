@@ -11,17 +11,17 @@ import ui.map.geometry.interfaces.MapGraphics;
 public class Radius implements MapGraphics {
     private int x;
     private int y;
-    private int r;
+    private double r;
 
     @ConstructorProperties({"x", "y", "radius"})
-    public Radius(int x, int y, int r) {
+    public Radius(int x, int y, double r) {
         this.x = x;
         this.y = y;
         this.r = r;
     }
 
     public void paint(Graphics2D g2) {
-        Ellipse2D radius = new Ellipse2D.Double(x - r / 2.0, y - r / 2.0, r, r);
+        Ellipse2D radius = new Ellipse2D.Double(x - r, y - r, r * 2, r * 2);
         g2.draw(radius);
     }
 }

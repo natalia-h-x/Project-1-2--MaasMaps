@@ -12,7 +12,6 @@ import core.datastructures.TriMonoid;
 import core.datastructures.graph.Edge;
 import core.datastructures.graph.Graph;
 import core.datastructures.graph.Weight;
-import core.datastructures.graph.BusWeight;
 import core.models.BusStop;
 import core.models.gtfs.Time;
 import core.models.gtfs.Trip;
@@ -29,9 +28,11 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
         if (source.equals(end))
             throw new IllegalArgumentException("start is destination");
 
+        System.out.println("Calculating shortest path from %s to %s".formatted(((BusStop) source).getStopName(), ((BusStop) end).getStopName()));
+
         Map<T, TriMonoid<Transport, T, Trip, Edge<T>>> pathMonoids = new HashMap<>();
         Map<T, Integer> weights = new HashMap<>();
-        PriorityQueue<T> unsettled = new PriorityQueue<>((a, b) -> weights.get(b).compareTo(weights.get(a)) + heuristic.compare(a, b));
+        PriorityQueue<T> unsettled = new PriorityQueue<>((a, b) -> weights.get(a).compareTo(weights.get(b)) + heuristic.compare(a, b));
         Set<T> settled = new HashSet<>();
 
         weights.put(source, startTime.toSeconds());
@@ -46,20 +47,27 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
             TriMonoid<Transport, T, Trip, Edge<T>> pathMonoid = pathMonoids.get(vertex);
             int currentWeight = weights.get(vertex);
 
-            if (vertex.equals(end))
-                return pathMonoid.toArray(Transport[]::new);
-
             if (!settled.add(vertex))
                 continue; // Skip processing if already settled
+
+            System.out.println("Time on clock: %s, At: %s, to get here, follow: [".formatted(Time.of(currentWeight), ((BusStop) vertex).getStopName()));
+
+            for (int i = 0; i < pathMonoid.getElements().size(); i++) {
+                System.out.println("\tStep %d) Take %s".formatted(i, pathMonoid.getElements().get(i).takeTransport()));
+            }
+
+            System.out.println("]");
+
+            if (vertex.equals(end)) {
+                System.out.println("Found a shortest path");
+                return pathMonoid.toArray(Transport[]::new);
+            }
 
             // Visit all adjacent vertices of the vertex
             for (Edge<T> edge : graph.neighbors(vertex)) {
                 T adjacent = edge.getElement();
                 Trip transfer = Trip.empty();
                 Weight weight = edge.getWeight(currentWeight, transfer);
-
-                if (weight.waitTime().toHours() > 2)
-                    System.out.println();
 
                 if (!weight.isReachable())
                     continue;
@@ -72,9 +80,12 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
                         unsettled.add(adjacent);
 
                         // Add vertex to path
-                        Transport element = pathMonoids.computeIfAbsent(adjacent, v -> new TriMonoid<>(pathMonoid)).add(edge, vertex, transfer).getElement();
+                        pathMonoids.put(adjacent, new TriMonoid<>(pathMonoid));
+                        Transport element = pathMonoids.get(adjacent).add(edge, vertex, transfer).getElement();
                         element.setTime(weight.weightTime());
                         element.setWaitTime(weight.waitTime());
+
+                        System.out.println("-> Exploring bus stop %s,\t bus time: %s,\t wait time: %s.".formatted(((BusStop) adjacent).getStopName(), weight.weightTime(), weight.waitTime()));
 
                         if (adjacent instanceof BusStop busStop && element instanceof Bus bus)
                             bus.setBusStop(busStop);
@@ -82,6 +93,8 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
                 }
             }
         }
+
+        System.out.println("Could not find a connection here!");
 
         throw new IllegalArgumentException("Could not find a route between these two bus stops.");
     }

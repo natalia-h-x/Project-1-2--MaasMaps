@@ -10,12 +10,19 @@ import core.models.Location;
 public class DistanceManager {
     private DistanceManager() {}
 
+    /**
+     *
+     * @param loc1
+     * @param loc2
+     * @return Distance in km
+     */
     public static double haversine(Location loc1, Location loc2) {
         return haversine(loc1.getLatitude(), loc1.getLongitude(), loc2.getLatitude(), loc2.getLongitude());
     }
 
 	/**
      * @see https://en.wikipedia.org/wiki/Haversine_formula/
+     * @return distance in km
      */
     public static double haversine(double lat1, double lon1, double lat2, double lon2) {
         final int EARTH_RADIUS = 6371000; // radius of the earth in meters (assumes non ellipsoidal sphere-- reduced complexity)

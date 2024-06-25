@@ -16,6 +16,7 @@ import core.models.gtfs.Trip;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ui.map.geometry.Radius;
+import ui.map.geometry.factories.ImageMarkerFactory;
 import ui.map.geometry.interfaces.MapGraphics;
 
 @Data
@@ -51,7 +52,7 @@ public class Bus extends Transport {
             return Optional.ofNullable(pathStrategy).orElse(new DijkstraAlgorithm<>()).calculateShortestPath(this).orElseThrow();
         }
         catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("Cannot find a connection between these postal codes.");
+            throw new IllegalArgumentException("Cannot find a connection between these postal codes.", e);
         }
     }
 
@@ -70,6 +71,8 @@ public class Bus extends Transport {
             new Radius((int) getStart      ().getX(), (int) getStart      ().getY(), getRadius()),
             new Radius((int) getDestination().getX(), (int) getDestination().getY(), getRadius()),
             getRoute().getLine(),
+            ImageMarkerFactory.createAImageMarker(getStart()),
+            ImageMarkerFactory.createBImageMarker(getDestination())
         };
     }
 

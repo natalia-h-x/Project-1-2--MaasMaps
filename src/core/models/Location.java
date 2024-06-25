@@ -64,6 +64,9 @@ public class Location extends Point2D {
         return java.lang.Double.doubleToLongBits(longitude) == java.lang.Double.doubleToLongBits(other.longitude);
     }
 
+    /**
+     * @return distance in meters
+     */
     @Override
     public double distance(Point2D destination) {
         if (destination instanceof Location l)
