@@ -3,9 +3,12 @@ package core.models;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
+import java.util.Map;
 
 import core.managers.map.DistanceManager;
 import core.managers.map.MapManager;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * This class represents a location in the map, based on latitude and longitude.
@@ -13,7 +16,8 @@ import core.managers.map.MapManager;
  * @author
  */
 public class Location extends Point2D {
-    private static HashMap<Location, Point> convertedPoints = new HashMap<>();
+    private static Map<Location, Point> convertedPoints = new HashMap<>();
+    private static Map<Pair, java.lang.Double> distances = new HashMap<>();
 
     private double latitude;
     private double longitude;
@@ -69,6 +73,10 @@ public class Location extends Point2D {
      */
     @Override
     public double distance(Point2D destination) {
+        return distances.computeIfAbsent(new Pair(this, destination), p -> calculateDistance(destination));
+    }
+
+    private double calculateDistance(Point2D destination) {
         if (destination instanceof Location l)
             return DistanceManager.haversine(this, l) * 1000;
 
@@ -101,5 +109,12 @@ public class Location extends Point2D {
     public void setLocation(double longitude, double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class Pair {
+        private Point2D a;
+        private Point2D b;
     }
 }
