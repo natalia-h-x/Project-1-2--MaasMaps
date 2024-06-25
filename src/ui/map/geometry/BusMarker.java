@@ -27,6 +27,6 @@ public class BusMarker extends ImageMarker {
         super.paint(g2);
 
         Point point = getIconLocation();
-        DrawManager.drawString(g2, locationName, point);
+        DrawManager.drawString(g2, "Bus ID " + busId + ": " + locationName, point);
     }
 }

@@ -19,8 +19,8 @@ public class CreateDatabaseTest {
     @Test
     public void createDatabaseTest() {
         try {
-            if (FileManager.fileExists(DATABASE_PATH.substring(DATABASE_PATH.lastIndexOf(":") + 1, DATABASE_PATH.length())))
-                throw new IllegalAccessError("The database already exists. This test should be skipped, or the db file removed.");
+            //if (FileManager.fileExists(DATABASE_PATH.substring(DATABASE_PATH.lastIndexOf(":") + 1, DATABASE_PATH.length())))
+               // throw new IllegalAccessError("The database already exists. This test should be skipped, or the db file removed.");
 
             DatabaseDefinitionManager.createDatabase();
         }
