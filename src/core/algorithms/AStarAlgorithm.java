@@ -8,7 +8,7 @@ import core.models.transport.Transport;
 
 public class AStarAlgorithm<T extends Point2D> extends PathStrategy<T> {
     private DijkstraAlgorithm<T> dijkstraAlgorithm;
-    private static final double SCALING_FACTOR = 0.0000001;
+    private static final double SCALING_FACTOR = 0.000001;
 
     @Override
     public Transport[] getShortestPath(Graph<T> graph, T source, T end, Time startTime, Time maxWalkingTime) throws IllegalArgumentException {
