@@ -50,16 +50,7 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
             if (!settled.add(vertex))
                 continue; // Skip processing if already settled
 
-            System.out.println("Time on clock: %s, At: %s, to get here, follow: [".formatted(Time.of(currentWeight), ((BusStop) vertex).getStopName()));
-
-            for (int i = 0; i < pathMonoid.getElements().size(); i++) {
-                System.out.println("\tStep %d) Take %s".formatted(i, pathMonoid.getElements().get(i).takeTransport()));
-            }
-
-            System.out.println("]");
-
             if (vertex.equals(end)) {
-                System.out.println("Found a shortest path");
                 return pathMonoid.toArray(Transport[]::new);
             }
 
@@ -85,16 +76,12 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
                         element.setTime(weight.weightTime());
                         element.setWaitTime(weight.waitTime());
 
-                        System.out.println("-> Exploring bus stop %s,\t bus time: %s,\t wait time: %s.".formatted(((BusStop) adjacent).getStopName(), weight.weightTime(), weight.waitTime()));
-
                         if (adjacent instanceof BusStop busStop && element instanceof Bus bus)
                             bus.setBusStop(busStop);
                     }
                 }
             }
         }
-
-        System.out.println("Could not find a connection here!");
 
         throw new IllegalArgumentException("Could not find a route between these two bus stops.");
     }
