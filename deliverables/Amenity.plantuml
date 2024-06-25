@@ -1,0 +1,386 @@
+@startuml
+
+skinparam linetype ortho
+!theme reddress-darkblue
+' skinparam nodesep 10
+skinparam ranksep 20
+left to right direction
+skinparam backgroundcolor transparent
+
++abstract class Amenity extends GeoData {
+}
++class ArtsCentre extends Amenity {
+    -{static}{static}double WEIGHT = 0.6
+    +ArtsCentre(Location location, String id)
+    +double getWeight()
+}
++class Atm extends Amenity {
+    -{static}{static}double WEIGHT = 0.6
+    +Atm(Location location, String id)
+    +double getWeight()
+}
++class Bank extends Amenity {
+    -{static}{static}double WEIGHT = 0.6
+    +Bank(Location location, String id)
+    +double getWeight()
+}
++class Bar extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +Bar(Location location, String id)
+    +double getWeight()
+}
++class Bench extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +Bench(Location location, String id)
+    +double getWeight()
+}
++class BicycleParking extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +BicycleParking(Location location, String id)
+    +double getWeight()
+}
++class BicycleRental extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +BicycleRental(Location location, String id)
+    +double getWeight()
+}
++class Binoculars extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +Binoculars(Location location, String id)
+    +double getWeight()
+}
++class Brothel extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +Brothel(Location location, String id)
+    +double getWeight()
+}
++class BureauDeChange extends Amenity {
+    -{static}{static}double WEIGHT = 0.2
+    +BureauDeChange(Location location, String id)
+    +double getWeight()
+}
++class Cafe extends Amenity {
+    -{static}{static}double WEIGHT = 0.5
+    +Cafe(Location location, String id)
+    +double getWeight()
+}
++class CarRental extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +CarRental(Location location, String id)
+    +double getWeight()
+}
++class CarWash extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +CarWash(Location location, String id)
+    +double getWeight()
+}
++class Casino extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +Casino(Location location, String id)
+    +double getWeight()
+}
++class Cinema extends Amenity {
+    -{static}{static}double WEIGHT = 0.5
+    +Cinema(Location location, String id)
+    +double getWeight()
+}
++class ChargingStation extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +ChargingStation(Location location, String id)
+    +double getWeight()
+}
++class Childcare extends Amenity {
+    -{static}{static}double WEIGHT = 0.7
+    +Childcare(Location location, String id)
+    +double getWeight()
+}
++class Clinic extends Amenity {
+    -{static}{static}double WEIGHT = 0.8
+    +Clinic(Location location, String id)
+    +double getWeight()
+}
++class Clock extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +Clock(Location location, String id)
+    +double getWeight()
+}
++class College extends Amenity {
+    -{static}{static}double WEIGHT = 0.8
+    +College(Location location, String id)
+    +double getWeight()
+}
++class CommunityCentre extends Amenity {
+    -{static}{static}double WEIGHT = 0.5
+    +CommunityCentre(Location location, String id)
+    +double getWeight()
+}
++class Courthouse extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +Courthouse(Location location, String id)
+    +double getWeight()
+}
++class Dentist extends Amenity {
+    -{static}{static}double WEIGHT = 1
+    +Dentist(Location location, String id)
+    +double getWeight()
+}
++class Doctors extends Amenity {
+    -{static}{static}double WEIGHT = 1
+    +Doctors(Location location, String id)
+    +double getWeight()
+}
++class DrinkingWater extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +DrinkingWater(Location location, String id)
+    +double getWeight()
+}
++class FastFood extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +FastFood(Location location, String id)
+    +double getWeight()
+}
++class FireStation extends Amenity {
+    -{static}{static}double WEIGHT = 1
+    +FireStation(Location location, String id)
+    +double getWeight()
+}
++class FoodCourt extends Amenity {
+    -{static}{static}double WEIGHT = 0.2
+    +FoodCourt(Location location, String id)
+    +double getWeight()
+}
++class Fountain extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +Fountain(Location location, String id)
+    +double getWeight()
+}
++class Fuel extends Amenity {
+    -{static}{static}double WEIGHT = 0.5
+    +Fuel(Location location, String id)
+    +double getWeight()
+}
++class Hospital extends Amenity {
+    -{static}{static}double WEIGHT = 1
+    +Hospital(Location location, String id)
+    +double getWeight()
+}
++class HuntingStand extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +HuntingStand(Location location, String id)
+    +double getWeight()
+}
++class IceCream extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +IceCream(Location location, String id)
+    +double getWeight()
+}
++class Information extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +Information(Location location, String id)
+    +double getWeight()
+}
++class Library extends Amenity {
+    -{static}{static}double WEIGHT = 0.7
+    +Library(Location location, String id)
+    +double getWeight()
+}
++class LuggageLocker extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +LuggageLocker(Location location, String id)
+    +double getWeight()
+}
++class Marketplace extends Amenity {
+    -{static}{static}double WEIGHT = 0.8
+    +Marketplace(Location location, String id)
+    +double getWeight()
+}
++class MopedParking extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +MopedParking(Location location, String id)
+    +double getWeight()
+}
++class Nightclub extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +Nightclub(Location location, String id)
+    +double getWeight()
+}
++class NursingHome extends Amenity {
+    -{static}{static}double WEIGHT = 0.6
+    +NursingHome(Location location, String id)
+    +double getWeight()
+}
++class Parking extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +Parking(Location location, String id)
+    +double getWeight()
+}
++class ParkingEntrance extends Amenity {
+    -{static}{static}double WEIGHT = 0.2
+    +ParkingEntrance(Location location, String id)
+    +double getWeight()
+}
++class ParkingSpace extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +ParkingSpace(Location location, String id)
+    +double getWeight()
+}
++class Pharmacy extends Amenity {
+    -{static}{static}double WEIGHT = 0.8
+    +Pharmacy(Location location, String id)
+    +double getWeight()
+}
++class PhotoBooth extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +PhotoBooth(Location location, String id)
+    +double getWeight()
+}
++class PlaceOfWorship extends Amenity {
+    -{static}{static}double WEIGHT = 0.6
+    +PlaceOfWorship(Location location, String id)
+    +double getWeight()
+}
++class Police extends Amenity {
+    -{static}{static}double WEIGHT = 0.6
+    +Police(Location location, String id)
+    +double getWeight()
+}
++class PostBox extends Amenity {
+    -{static}{static}double WEIGHT = 0.2
+    +PostBox(Location location, String id)
+    +double getWeight()
+}
++class PostOffice extends Amenity {
+    -{static}{static}double WEIGHT = 0.6
+    +PostOffice(Location location, String id)
+    +double getWeight()
+}
++class PrepSchool extends Amenity {
+    -{static}{static}double WEIGHT = 0.5
+    +PrepSchool(Location location, String id)
+    +double getWeight()
+}
++class Pub extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +Pub(Location location, String id)
+    +double getWeight()
+}
++class PublicBookcase extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +PublicBookcase(Location location, String id)
+    +double getWeight()
+}
++class Recycling extends Amenity {
+    -{static}{static}double WEIGHT = 0.9
+    +Recycling(Location location, String id)
+    +double getWeight()
+}
++class Restaurant extends Amenity {
+    -{static}{static}double WEIGHT = 0.6
+    +Restaurant(Location location, String id)
+    +double getWeight()
+}
++class Resthouse extends Amenity {
+    -{static}{static}double WEIGHT = 0.2
+    +Resthouse(Location location, String id)
+    +double getWeight()
+}
++class SanitaryDumpStation extends Amenity {
+    -{static}{static}double WEIGHT = 0.2
+    +SanitaryDumpStation(Location location, String id)
+    +double getWeight()
+}
++class School extends Amenity {
+    -{static}{static}double WEIGHT = 0.9
+    +School(Location location, String id)
+    +double getWeight()
+}
++class Shelter extends Amenity {
+    -{static}{static}double WEIGHT = 0.3
+    +Shelter(Location location, String id)
+    +double getWeight()
+}
++class Shower extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +Shower(Location location, String id)
+    +double getWeight()
+}
++class SocialFacility extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +SocialFacility(Location location, String id)
+    +double getWeight()
+}
++class Taxi extends Amenity {
+    -{static}{static}double WEIGHT = 0.4
+    +Taxi(Location location, String id)
+    +double getWeight()
+}
++class Theatre extends Amenity {
+    -{static}{static}double WEIGHT = 0.7
+    +Theatre(Location location, String id)
+    +double getWeight()
+}
++class Toilets extends Amenity {
+    -{static}{static}double WEIGHT = 0.5
+    +Toilets(Location location, String id)
+    +double getWeight()
+}
++class Townhall extends Amenity {
+    -{static}{static}double WEIGHT = 1
+    +Townhall(Location location, String id)
+    +double getWeight()
+}
++class University extends Amenity {
+    -{static}{static}double WEIGHT = 0.8
+    +University(Location location, String id)
+    +double getWeight()
+}
++class VendingMachine extends Amenity {
+    -{static}{static}double WEIGHT = 0.1
+    +VendingMachine(Location location, String id)
+    +double getWeight()
+}
++class Veterinary extends Amenity {
+    -{static}{static}double WEIGHT = 0.7
+    +Veterinary(Location location, String id)
+    +double getWeight()
+}
++class WasteBasket extends Amenity {
+    -{static}{static}double WEIGHT = 0.8
+    +WasteBasket(Location location, String id)
+    +double getWeight()
+}
++class WaterPoint extends Amenity {
+    -{static}{static}double WEIGHT = 0.2
+    +WaterPoint(Location location, String id)
+    +double getWeight()
+}
++abstract class GeoData {
+    +abstract double getWeight()
+    +BufferedImage getIcon()
+    +String getIconPath()
+    +String toString()
+    +{static}GeoData of(Location location, String id, String type)
+}
++class Shop extends GeoData {
+    +{static}{static}double WEIGHT = 0.7
+    +Shop(Location location, String id)
+    +double getWeight()
+}
++class Tourism extends GeoData {
+    +{static}{static}double WEIGHT = 0.7
+    +Tourism(Location location, String id)
+    +double getWeight()
+}
+
+Amenity -[#DarkSlateGrey]-* Constants: use
+Amenity -[#DarkSlateGrey]-* Paths: use
+Amenity -[#DarkSlateGrey]-* Location: use
+GeoData -[#DarkSlateGrey]-* Constants: use
+GeoData -[#DarkSlateGrey]-* Paths: use
+GeoData -[#DarkSlateGrey]-* AmenityIconManager: use
+GeoData -[#DarkSlateGrey]-* Location: use
+GeoData -[#DarkSlateGrey]-* Amenity: use
+Shop -[#DarkSlateGrey]-* Location: use
+Tourism -[#DarkSlateGrey]-* Location: use
+
+@enduml
