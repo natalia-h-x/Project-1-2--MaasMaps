@@ -2,8 +2,8 @@ package ui.map.geometry;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-import java.beans.ConstructorProperties;
 
+import core.managers.map.MapManager;
 import lombok.Data;
 import ui.map.geometry.interfaces.MapGraphics;
 
@@ -13,11 +13,17 @@ public class Radius implements MapGraphics {
     private int y;
     private double r;
 
-    @ConstructorProperties({"x", "y", "radius"})
+    /**
+     * Constructs a Radius object.
+     *
+     * @param x center x position of the Radius
+     * @param y center y position of the Radius
+     * @param r radius in meters
+     */
     public Radius(int x, int y, double r) {
         this.x = x;
         this.y = y;
-        this.r = r;
+        this.r = MapManager.meterToPixels(r);
     }
 
     public void paint(Graphics2D g2) {

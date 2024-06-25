@@ -23,6 +23,7 @@ public class MapManager {
     protected static final Point MAP_BOTTOM_RIGHT_GLOBAL_XY = getGlobalXY(MAP_BOTTOM_RIGHT_LOCATION);
     private   static       Point MAP_TOP_LEFT_XY;
     private   static       Point MAP_BOTTOM_RIGHT_XY;
+    private   static      double PIXEL_SIZE_METER = -1;
 
     private static final double CENTER_LATITUDE_MAASTRICHT = 50.8506844;
     private static final double RADIUS_MAASTRICHT_EARTH = 6365.368;
@@ -39,6 +40,17 @@ public class MapManager {
             MAP_BOTTOM_RIGHT_XY = locationToPoint(MAP_BOTTOM_RIGHT_LOCATION);
 
         return MAP_BOTTOM_RIGHT_XY;
+    }
+
+    public static double getPixelSize() {
+        if (PIXEL_SIZE_METER == -1)
+            PIXEL_SIZE_METER = Context.getContext().getMap().getMapWidth() / MAP_TOP_LEFT_LOCATION.distance(new Location(MAP_TOP_LEFT_LOCATION.getLatitude(), MAP_BOTTOM_RIGHT_LOCATION.getLongitude()));
+
+        return PIXEL_SIZE_METER;
+    }
+
+    public static double meterToPixels(double meter) {
+        return meter * getPixelSize();
     }
 
     public static Point locationToPoint(Location location) {

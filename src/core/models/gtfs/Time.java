@@ -27,7 +27,7 @@ public class Time implements Comparable<Time> {
             return new Time(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
         String[] parts = string.split(":");
-        return new Time(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+        return new Time(parts.length > 0 && parts[0].isBlank() ? 0 : Integer.parseInt(parts[0]), parts.length > 1 && parts[1].isBlank() ? 0 : Integer.parseInt(parts[1]), parts.length > 2 && parts[2].isBlank() ? 0 : Integer.parseInt(parts[2]));
     }
 
     public static Time of(int seconds) {
