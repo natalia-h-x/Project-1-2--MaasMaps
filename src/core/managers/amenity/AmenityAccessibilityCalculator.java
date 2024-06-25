@@ -32,7 +32,7 @@ public class AmenityAccessibilityCalculator {
         normalizeAccessibilityMetrics(postalCodes);
         writeResultsToCSV(postalCodes, Constants.Paths.ACCESSIBILITY_FILE);
     }
-    
+
     private static void calculateAccessibilityMetrics(List<PostalCodeData> postalCodes, Map<String, List<GeoData>> amenities) {
         for (PostalCodeData postalCode : postalCodes) {
             double accessibilityMetric = calculateAccessibility(postalCode, amenities, postalCodes);
@@ -50,7 +50,7 @@ public class AmenityAccessibilityCalculator {
             for (GeoData geoData : amenity.getValue()) {
                 double distance = DistanceManager.haversine(postalCode.getLocation(), geoData.getLocation());
                 List<GeoData> geoDataOfCertainType = AmenitySerializationManager.getGeoData(geoData.toString().equals("shop") || geoData.toString().equals("tourism")? geoData.toString() : "amenity", geoData.toString());
-                
+
                 if (averageDistanceForAmenityType == null)
                     averageDistanceForAmenityType = new HashMap<>();
 

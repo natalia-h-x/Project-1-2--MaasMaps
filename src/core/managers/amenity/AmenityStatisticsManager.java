@@ -48,7 +48,7 @@ public class AmenityStatisticsManager {
     public static double getMeanAccessibility() {
         double mean = 0;
         List<AccessibilityMeasure> sortedAccessibilityList = getSortedAccessibilityList();
-        
+
         for (AccessibilityMeasure accessibilityMeasure : sortedAccessibilityList) {
             mean += accessibilityMeasure.getAccessibility();
         }
