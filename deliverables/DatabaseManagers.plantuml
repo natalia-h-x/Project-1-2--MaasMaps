@@ -1,0 +1,89 @@
+@startuml
+
+skinparam linetype ortho
+!theme reddress-darkblue
+' skinparam nodesep 10
+skinparam ranksep 20
+left to right direction
+skinparam backgroundcolor transparent
+
+package core.managers.database.gtfs {
+    +class BusStopManager {
+        +{static}Map<Integer, BusStop> getBusStopMap()
+        +{static}BusStop getBusStop(int stopId)
+        -{static}Map<Integer, BusStop> getBusStops()
+    }
+    +class GTFSManager {
+        -GTFSManager()
+        +{static}Graph<Point2D> getBusGraph()
+        -{static}void loadBusGraph()
+        +{static}void addWalkEdges(Graph<Point2D> graph)
+    }
+    +class RouteManager {
+        +{static}Map<Integer, Route> getRouteMap()
+        +{static}Route getRoute(int id)
+        -{static}Map<Integer, Route> getRoutes()
+    }
+    +class ShapeManager {
+        +{static}Shape getShape(int shapeId)
+    }
+    +class TripManager {
+        +{static}Map<Integer, Trip> getTripMap()
+        +{static}Trip getTrip(int id)
+        -{static}Map<Integer, Trip> getTrips()
+    }
+}
+package core.managers.database {
+    +class ConnectionManager {
+        -ConnectionManager()
+        -{static}{static}Connection connection = connect()
+        -{static}Connection connect()
+        +{static}Connection getConnection()
+    }
+    +class DatabaseDefinitionManager {
+        -DatabaseDefinitionManager()
+        +{static}void createTable(String tableName, String[] headers, String[] types) throws IllegalArgumentException
+        +{static}void createDatabase() throws IOException
+    }
+    +class DatabaseModificationManager {
+        -DatabaseModificationManager()
+        +{static}void insertInTable(String tableName, String[] attributes, String[][] data) throws IllegalArgumentException
+        -{static}String createInsertString(String tableName,  String[] attributes, String[][] data)
+    }
+    +class QueryManager {
+        -QueryManager()
+        +{static}List<?>[] executeQuery(String query, List<?>... list) throws IllegalArgumentException
+    }
+    +class StatementManager {
+        -StatementManager()
+        +{static}Connection optimizeDatabaseForBulkInsert(Connection connection) throws SQLException
+    }
+}
+
+ConnectionManager -[#DarkSlateGrey]-* Paths: use
+DatabaseDefinitionManager -[#DarkSlateGrey]-* XMLSerializationManager: use
+DatabaseDefinitionManager -[#DarkSlateGrey]-* TxtToSQLite: use
+BusStopManager -[#DarkSlateGrey]-* ExceptionManager: use
+BusStopManager -[#DarkSlateGrey]-* QueryManager: use
+BusStopManager -[#DarkSlateGrey]-* BusStop: use
+GTFSManager -[#DarkSlateGrey]-* Constants: use
+GTFSManager -[#DarkSlateGrey]-* AdjacencyListGraph: use
+GTFSManager -[#DarkSlateGrey]-* Graph: use
+GTFSManager -[#DarkSlateGrey]-* QueryManager: use
+GTFSManager -[#DarkSlateGrey]-* BusStop: use
+GTFSManager -[#DarkSlateGrey]-* Location: use
+GTFSManager -[#DarkSlateGrey]-* Route: use
+GTFSManager -[#DarkSlateGrey]-* Time: use
+GTFSManager -[#DarkSlateGrey]-* Trip: use
+GTFSManager -[#DarkSlateGrey]-* Walking: use
+RouteManager -[#DarkSlateGrey]-* ExceptionManager: use
+RouteManager -[#DarkSlateGrey]-* QueryManager: use
+RouteManager -[#DarkSlateGrey]-* Route: use
+ShapeManager -[#DarkSlateGrey]-* QueryManager: use
+ShapeManager -[#DarkSlateGrey]-* Location: use
+ShapeManager -[#DarkSlateGrey]-* Shape: use
+TripManager -[#DarkSlateGrey]-* ExceptionManager: use
+TripManager -[#DarkSlateGrey]-* QueryManager: use
+TripManager -[#DarkSlateGrey]-* Trip: use
+
+@enduml
