@@ -2,27 +2,22 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -34,27 +29,24 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
-import core.Constants.BusColors;
 import core.Constants.Paths;
 import core.Constants.UIConstants;
+import core.Context;
 import core.algorithms.AStarAlgorithm;
 import core.algorithms.DijkstraAlgorithm;
 import core.algorithms.PathStrategy;
-import core.Context;
-import core.datastructures.graph.Graph;
 import core.managers.amenity.AmenityIconManager;
 import core.managers.map.MapManager;
 import core.models.Location;
-import core.models.geojson.Amenity;
 import tools.generator.AccessibilityImageGenerator;
 import ui.legend.AccessibilityLegend;
 import ui.legend.BusNetworkLegend;
 import ui.map.ProxyMap;
 import ui.map.geometry.AbstractedBusNetwork;
+import ui.map.geometry.ImageGraphics;
 import ui.map.geometry.ImageMarker;
 import ui.map.geometry.MapBackground;
 import ui.map.geometry.MapGraphicsGroup;
-import ui.map.geometry.Network;
 import ui.map.geometry.interfaces.MapGraphics;
 import ui.route.ResultsProxy;
 import ui.route.RouteUI;
@@ -233,7 +225,7 @@ public class MaasMapsUI extends JFrame {
         ActionListener action2 = f -> {
             if (pressed2[0]) new BusNetworkLegend();
         };
-        
+
         button2.addActionListener(e -> {
             proxyMap.toggleMapGraphics("AbstractedBusMap");
             // Add action listener to the legend button
@@ -241,7 +233,7 @@ public class MaasMapsUI extends JFrame {
             else legend.removeActionListener(action2);
             pressed2[0] = !pressed2[0];
         });
-        
+
         ActionListener action3 = f -> {
             if (pressed3[0]) new AccessibilityLegend();
         };
@@ -276,6 +268,7 @@ public class MaasMapsUI extends JFrame {
     private MapBackground createAccessibilityMap() {
         try {
             File file = new File("resources/accessibilityMap.png");
+
             if (!file.exists())
                 AccessibilityImageGenerator.generateImage();
 
@@ -295,7 +288,7 @@ public class MaasMapsUI extends JFrame {
 
         for (Map.Entry<BufferedImage, List<Location>> icon : AmenityIconManager.getLocationsOfIcons().entrySet()) {
             for (Location loc : icon.getValue())
-                mapGraphics.add(new ImageMarker(loc, icon.getKey()));
+                mapGraphics.add(new ImageGraphics(loc, icon.getKey(), 0.01));
         }
 
         return mapGraphics;
