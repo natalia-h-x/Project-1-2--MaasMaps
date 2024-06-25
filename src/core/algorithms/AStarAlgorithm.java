@@ -1,13 +1,7 @@
 package core.algorithms;
 import java.awt.geom.Point2D;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
 
-import core.datastructures.graph.Edge;
 import core.datastructures.graph.Graph;
 import core.models.gtfs.Time;
 import core.models.transport.Transport;
