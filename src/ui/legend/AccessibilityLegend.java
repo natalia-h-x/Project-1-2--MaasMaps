@@ -31,7 +31,7 @@ public class AccessibilityLegend extends Legend {
         heading.setForeground(UIConstants.GUI_TITLE_COLOR);
         heading.setAlignmentX(CENTER_ALIGNMENT);
         heading.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         JPanel legendPanel = new JPanel(new BorderLayout());
         legendPanel.add(heading, BorderLayout.NORTH);
         legendPanel.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
@@ -40,7 +40,7 @@ public class AccessibilityLegend extends Legend {
         gradientContainer.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
         gradientContainer.add(new AccessibilityGradientLegend());
         legendPanel.add(gradientContainer, BorderLayout.CENTER);
-        
+
         JPanel rankContainer = new JPanel();
         rankContainer.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
         rankContainer.add(new AccessibilityRank());

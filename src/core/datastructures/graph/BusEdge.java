@@ -40,7 +40,7 @@ public class BusEdge<T> extends Edge<T> {
      * @param arrivalTime the time you arrive at the bus stop, where you want to look for departing buses to take.
      * @return
      */
-    public Weight getWeight(int arrivalTime, Trip trip) {
+    public Weight getWeight(int arrivalTime, Trip trip, int maxTime) {
         int closestDepartureTime = getClosestDepartureTime(arrivalTime);
 
         if (closestDepartureTime == Integer.MAX_VALUE)

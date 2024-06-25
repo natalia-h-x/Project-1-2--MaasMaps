@@ -48,7 +48,7 @@ import ui.route.ResultsProxy;
 import ui.route.RouteUI;
 
 public class BusNetworkLegend extends Legend {
-    
+
     public BusNetworkLegend() {
         JFrame legendWindow = new JFrame("Legend");
         legendWindow.setSize(250, 400);

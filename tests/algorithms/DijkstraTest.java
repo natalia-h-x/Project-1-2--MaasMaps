@@ -6,9 +6,7 @@ import java.awt.geom.Point2D;
 
 import org.junit.Test;
 
-
 import core.algorithms.DijkstraAlgorithm;
-import core.algorithms.PathStrategy;
 import core.managers.map.MapManager;
 import core.managers.map.PostalCodeManager;
 import core.models.BusStop;
@@ -29,7 +27,7 @@ public class DijkstraTest {
 
         Route route = Route.empty();
         route.addTransport(TransportFactory.createWalking(start, closestStarts[0]));
-        route.addTransport(new DijkstraAlgorithm().shortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200)));
+        route.addTransport(new DijkstraAlgorithm<>().getShortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200), Time.of(0, 30, 0)));
         route.addTransport(TransportFactory.createWalking(closestDestinations[0], destination));
 
         assertEquals(route.getTime(), Time.of(360));
@@ -54,7 +52,18 @@ public class DijkstraTest {
         try {
             Location[] closestStarts = PostalCodeManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
             Location[] closestDestinations = PostalCodeManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
-            new DijkstraAlgorithm<Point2D>().shortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200));
+            new DijkstraAlgorithm<Point2D>().getShortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200), Time.of(0, 30, 0));
+        } catch (IllegalArgumentException e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    public void testForNoWalkTime() {
+        try {
+            Location[] closestStarts = PostalCodeManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
+            Location[] closestDestinations = PostalCodeManager.getClosestPoint(new Location(50.848101, 5.722739), 1);
+            new DijkstraAlgorithm<Point2D>().getShortestPath(MapManager.getBusGraph(), closestStarts[0], closestDestinations[0], Time.of(25200), Time.of(0));
         } catch (IllegalArgumentException e) {
             assert(true);
         }

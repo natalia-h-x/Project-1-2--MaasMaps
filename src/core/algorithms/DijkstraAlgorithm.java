@@ -20,15 +20,13 @@ import core.models.transport.Transport;
 
 public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
     // Boy do I hope java has objInserting.equals(objInList) instead of the other way around. Why?
-    public Transport[] shortestPath(Graph<T> graph, T source, T end, Time startTime) throws IllegalArgumentException {
-        return shortestPath(graph, source, end, startTime, (a, b) -> 0);
+    public Transport[] getShortestPath(Graph<T> graph, T source, T end, Time startTime, Time maxWalkingTime) throws IllegalArgumentException {
+        return shortestPath(graph, source, end, startTime, (a, b) -> 0, maxWalkingTime.toSeconds());
     }
 
-    public Transport[] shortestPath(Graph<T> graph, T source, T end, Time startTime, Comparator<? super T> heuristic) throws IllegalArgumentException {
+    public Transport[] shortestPath(Graph<T> graph, T source, T end, Time startTime, Comparator<? super T> heuristic, int maxWalkingTime) throws IllegalArgumentException {
         if (source.equals(end))
             throw new IllegalArgumentException("start is destination");
-
-        System.out.println("Calculating shortest path from %s to %s".formatted(((BusStop) source).getStopName(), ((BusStop) end).getStopName()));
 
         Map<T, TriMonoid<Transport, T, Trip, Edge<T>>> pathMonoids = new HashMap<>();
         Map<T, Integer> weights = new HashMap<>();
@@ -58,7 +56,7 @@ public class DijkstraAlgorithm<T extends Point2D> extends PathStrategy<T> {
             for (Edge<T> edge : graph.neighbors(vertex)) {
                 T adjacent = edge.getElement();
                 Trip transfer = Trip.empty();
-                Weight weight = edge.getWeight(currentWeight, transfer);
+                Weight weight = edge.getWeight(currentWeight, transfer, maxWalkingTime);
 
                 if (!weight.isReachable())
                     continue;

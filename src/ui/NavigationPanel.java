@@ -232,6 +232,8 @@ public class NavigationPanel extends JPanel {
                         if (option instanceof Bus b) {
                             b.setDepartingTime(Time.of(departureField.getText()));
                             b.setPathStrategy(parentUI.getSelectedAlgorithm());
+                            b.setMaxWalking(Time.of(0, Integer.parseInt(walkingField.getText()), 0));
+
                             if (radiusField.getText().length() > 0)
                                 b.setRadius(Integer.parseInt(radiusField.getText()));
                         }

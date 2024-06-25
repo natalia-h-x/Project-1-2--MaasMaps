@@ -31,7 +31,7 @@ public class Bus extends Transport {
     private PathStrategy<Location> pathStrategy;
 
     private int radius;
-    private int maxWalking;
+    private Time maxWalking;
 
     public Bus() {}
     public Bus(Location start, Location destination) {

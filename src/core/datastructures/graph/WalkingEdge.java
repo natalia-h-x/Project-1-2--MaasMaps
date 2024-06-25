@@ -25,8 +25,8 @@ public class WalkingEdge<T> extends Edge<T> {
      * @param arrivalTime the time you arrive at the bus stop, where you want to look for departing buses to take.
      * @return
      */
-    public Weight getWeight(int arrivalTime, Trip transfer) {
-        return new WalkingWeight(super.getWeight(), Constants.Map.WALKING_MAX_TIME * 60);
+    public Weight getWeight(int arrivalTime, Trip transfer, int maxTime) {
+        return new WalkingWeight(super.getWeight(), maxTime);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class AccessibilityGradientLegend extends JPanel {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
         mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
+
         JPanel leftPanel = new AccessibilityGradient();
         leftPanel.setBackground(UIConstants.GUI_LEGENDITEM_COLOR);
         leftPanel.setAlignmentX(Component.LEFT_ALIGNMENT);

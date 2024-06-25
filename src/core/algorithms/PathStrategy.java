@@ -20,7 +20,7 @@ import core.models.transport.Walking;
 public abstract class PathStrategy<T extends Point2D> {
     private static Map<Bus, Optional<Route>> shortestPaths = new HashMap<>();
 
-    public abstract Transport[] shortestPath(Graph<T> graph, T source, T end, Time startTime) throws IllegalArgumentException;
+    public abstract Transport[] getShortestPath(Graph<T> graph, T source, T end, Time startTime, Time maxWalking) throws IllegalArgumentException;
 
     @SuppressWarnings("unchecked")
     public Optional<Route> calculateShortestPath(Bus bus) {
@@ -48,10 +48,11 @@ public abstract class PathStrategy<T extends Point2D> {
                     manualDestination.setDestination(bus.getDestination());
 
                     route.addTransport(manualSource);
-                    route.addTransport(shortestPath(
+                    route.addTransport(getShortestPath(
                         (Graph<T>) MapManager.getBusGraph(),
                         (T) closestStarts[i], (T) closestDestinations[j],
-                        bus.getDepartingTime().add(manualSource.getTravelTime())
+                        bus.getDepartingTime().add(manualSource.getTravelTime()),
+                        bus.getMaxWalking()
                     ));
                     route.addTransport(manualDestination);
 

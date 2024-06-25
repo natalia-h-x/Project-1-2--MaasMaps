@@ -12,7 +12,7 @@ public abstract class Edge<T> {
     private int weight;
 
     public abstract Transport asTransport(T outgoingVertex, Trip trip);
-    public abstract Weight getWeight(int arrivalTime, Trip transfer);
+    public abstract Weight getWeight(int arrivalTime, Trip transfer, int maxWalkingTime);
 
     @Override
     @SuppressWarnings("unchecked")
