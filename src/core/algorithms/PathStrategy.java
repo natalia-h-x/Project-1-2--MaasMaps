@@ -1,7 +1,5 @@
 package core.algorithms;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import core.Constants;
-import core.Context;
 import core.datastructures.graph.Graph;
 import core.managers.map.MapManager;
 import core.managers.map.PostalCodeManager;
@@ -23,7 +19,6 @@ import core.models.transport.Walking;
 
 public abstract class PathStrategy<T extends Point2D> {
     private static Map<Bus, Optional<Route>> shortestPaths = new HashMap<>();
-    private static Graph<Point2D> clone = MapManager.getBusGraph();
 
     public abstract Transport[] shortestPath(Graph<T> graph, T source, T end, Time startTime) throws IllegalArgumentException;
 
@@ -87,8 +82,6 @@ public abstract class PathStrategy<T extends Point2D> {
         }
 
         shortestPaths.put(bus, shortestRoute);
-
-        System.out.println("Is the graph still thesame? " + clone.equals(MapManager.getBusGraph()));
 
         long executionEnd = System.currentTimeMillis();
 

@@ -1,5 +1,6 @@
 package core.datastructures.graph;
 
+import core.Constants;
 import core.models.Location;
 import core.models.gtfs.Trip;
 import core.models.transport.Transport;
@@ -25,7 +26,7 @@ public class WalkingEdge<T> extends Edge<T> {
      * @return
      */
     public Weight getWeight(int arrivalTime, Trip transfer) {
-        return new WalkingWeight(super.getWeight(), 0);
+        return new WalkingWeight(super.getWeight(), Constants.Map.WALKING_MAX_TIME * 60);
     }
 
     @Override

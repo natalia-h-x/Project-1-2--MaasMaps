@@ -47,7 +47,6 @@ public class GTFSManager {
             "from stop_times ORDER BY trip_id, stop_sequence LIMIT -1;\r\n", new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Double>(), new ArrayList<Double>());
 
         int previousTripId = -1;
-        // int previousStopId = -1;
         Time departureTime = null;
         BusStop previousBusStop = null;
 
@@ -60,9 +59,6 @@ public class GTFSManager {
             Time arrivalTime = Time.of((String) attributes[2].get(i));
 
             busStop.addRoute(route);
-
-            // if (stopId == 2578418 && previousStopId == 2578363)
-            //     System.out.println();
 
             // We have this following if statement to check if there are at least two stops in a trip.
             // If there is only one, we do not need to connect / add vertices.
@@ -79,10 +75,9 @@ public class GTFSManager {
             previousTripId = tripId;
             previousBusStop = busStop;
             departureTime = Time.of((String) attributes[3].get(i));
-            // previousStopId = stopId;
         }
 
-        //addWalkEdges(busGraph);
+        addWalkEdges(busGraph);
 
         System.out.println("Generated graph.");
     }
@@ -90,6 +85,9 @@ public class GTFSManager {
     public static void addWalkEdges(Graph<Point2D> graph) {
         for (Point2D vertex : graph) {
             for (Point2D unconnectedVertex : graph) {
+                if (vertex == unconnectedVertex)
+                    continue;
+
                 Time travelTime = new Walking((Location) vertex, (Location) unconnectedVertex).getTravelTime();
 
                 if (travelTime.toMinutes() < Constants.Map.WALKING_MAX_TIME) {
