@@ -1,0 +1,73 @@
+@startuml
+
+skinparam linetype ortho
+!theme reddress-darkblue
+' skinparam nodesep 10
+skinparam ranksep 20
+left to right direction
+skinparam backgroundcolor transparent
+
++class AmenityAccessibilityCalculator {
+    +{static}void main(String[] args)
+    -{static}void calculateAccessibilityMetrics(List<PostalCodeData> postalCodes, Map<String, List<GeoData>> amenities)
+    -{static}double calculateAccessibility(PostalCodeData postalCode, Map<String, List<GeoData>> amenities, List<PostalCodeData> postalCodes)
+    -{static}double averageDistanceToNearestAmenityType(List<PostalCodeData> postalCodes, List<GeoData> amenities)
+    -{static}void normalizeAccessibilityMetrics(List<PostalCodeData> postalCodes)
+    -{static}void writeResultsToCSV(List<PostalCodeData> postalCodes, String outputFilePath)
+    +PostalCodeData(String postalCode, double latitude, double longitude)
+    +Location getLocation()
+}
++class AmenityIconManager {
+    -AmenityIconManager()
+    +{static}void loadIcon()
+    +{static}Map<String, BufferedImage> getAmenityIcons()
+    +{static}Map<BufferedImage, List<Location>> getLocationsOfIcons()
+    +{static}BufferedImage getIcon(String type)
+}
++class AmenitySerializationManager {
+    -{static}Map<String, Map<String, List<GeoData>>> geoData = new HashMap<>()
+    -AmenitySerializationManager()
+    -{static}Map<String, List<GeoData>> amenities(String type)
+    +{static}Map<String, List<GeoData>> getGeoData()
+    +{static}List<GeoData> getGeoData(String type, String amenity)
+    +{static}List<GeoData> getGeoDataList(String type)
+    +{static}List<GeoData> getGeoDataList()
+}
++class AmenityStatisticsManager {
+    -AmenityStatisticsManager()
+    +{static}double getMaxAccessibilityMetric()
+    +{static}double getMinAccessibilityMetric()
+    +{static}double getMedianAccessibilityMetric()
+    +{static}List<AccessibilityMeasure> getTop5()
+    +{static}List<AccessibilityMeasure> getBottom5()
+    +{static}double getMeanAccessibility()
+    +{static}double getAccessibilityMetric(double position)
+    +{static}List<AccessibilityMeasure> getSortedAccessibilityList()
+}
++class PostalCodeAccessibilityManager {
+    -PostalCodeAccessibilityManager()
+    -{static}double loadAccessibilityMetric()
+    +{static}double getAccessibilityMetric(String postalCode)
+    +{static}int getAmenityFrequency(String type)
+}
+
+AmenityAccessibilityCalculator -[#DarkSlateGrey]-* Constants: use
+AmenityAccessibilityCalculator -[#DarkSlateGrey]-* Context: use
+AmenityAccessibilityCalculator -[#DarkSlateGrey]-* DistanceManager: use
+AmenityAccessibilityCalculator -[#DarkSlateGrey]-* Location: use
+AmenityAccessibilityCalculator -[#DarkSlateGrey]-* ZipCode: use
+AmenityAccessibilityCalculator -[#DarkSlateGrey]-* GeoData: use
+AmenityIconManager -[#DarkSlateGrey]-* FileManager: use
+AmenityIconManager -[#DarkSlateGrey]-* Location: use
+AmenityIconManager -[#DarkSlateGrey]-* GeoData: use
+AmenitySerializationManager -[#DarkSlateGrey]-* JSONSerializationManager: use
+AmenitySerializationManager -[#DarkSlateGrey]-* Location: use
+AmenitySerializationManager -[#DarkSlateGrey]-* GeoData: use
+AmenitySerializationManager -[#DarkSlateGrey]-* Serializable: use
+AmenityStatisticsManager -[#DarkSlateGrey]-* Context: use
+AmenityStatisticsManager -[#DarkSlateGrey]-* AccessibilityMeasure: use
+AmenityStatisticsManager -[#DarkSlateGrey]-* ZipCode: use
+PostalCodeAccessibilityManager -[#DarkSlateGrey]-* Constants: use
+PostalCodeAccessibilityManager -[#DarkSlateGrey]-* FileManager: use
+
+@enduml
